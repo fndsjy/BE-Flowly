@@ -14,11 +14,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  username  String  @id @db.VarChar(100)
-  password  String  @db.VarChar(100)
-  name      String  @db.VarChar(100)
-  token     String? @db.VarChar
+/// Role defines user permissions and access tiers
+/// Level: 1 = Super Admin, 2 = Supervisor, 3 = Staff, 4 = Non Staff, 5 = Guest
+model Role {
+  roleId       String    @id @db.NVarChar(20) /// e.g., "ROL251117-0001"
+  roleName     String    @db.NVarChar(50)
+  roleLevel    Int
+  roleDesc     String?   @db.NVarChar(255)
+  roleIsActive Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @db.DateTime2
+  createdBy    String?   @db.NVarChar(20) /// references User.userId
+  updatedAt    DateTime  @updatedAt @db.DateTime2
+  updatedBy    String?   @db.NVarChar(20) /// references User.userId
+  isDeleted    Boolean   @default(false)
+  deletedAt    DateTime? @db.DateTime2
+  deletedBy    String?   @db.NVarChar(20) /// references User.userId
 
+  /// Relations to User (audit trail)
+  creator User? @relation("RoleCreatedBy", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  updater User? @relation("RoleUpdatedBy", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  deleter User? @relation("RoleDeletedBy", fields: [deletedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+
+  /// Users assigned to this role
+  users User[]
+
+  @@index([createdBy])
+  @@index([updatedBy])
+  @@index([deletedBy])
+  @@map("roles")
+}
+
+/// User represents an authenticated individual in the system
+model User {
+  userId      String    @id @db.NVarChar(20) /// e.g., "USR251117-0001"
+  username    String    @unique @db.NVarChar(30)
+  password    String    @db.NVarChar(100) /// bcrypt/scrypt hashed
+  name        String    @db.NVarChar(100)
+  badgeNumber String    @db.NVarChar(20)
+  department  String?   @db.NVarChar(50)
+  isActive    Boolean   @default(true)
+  lastLogin   DateTime? @db.DateTime2
+  createdAt   DateTime  @default(now()) @db.DateTime2
+  createdBy   String?   @db.NVarChar(20) /// references User.userId
+  updatedAt   DateTime  @updatedAt @db.DateTime2
+  updatedBy   String?   @db.NVarChar(20) /// references User.userId
+  isDeleted   Boolean   @default(false)
+  deletedAt   DateTime? @db.DateTime2
+  deletedBy   String?   @db.NVarChar(20) /// references User.userId
+
+  /// Self-relations (audit trail)
+  creator      User?  @relation("UserCreatedBy", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  createdUsers User[] @relation("UserCreatedBy")
+
+  updater      User?  @relation("UserUpdatedBy", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  updatedUsers User[] @relation("UserUpdatedBy")
+
+  deleter      User?  @relation("UserDeletedBy", fields: [deletedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  deletedUsers User[] @relation("UserDeletedBy")
+
+  /// Role assignment
+  roleId String @db.NVarChar(20)
+  role   Role   @relation(fields: [roleId], references: [roleId])
+
+  // 🔹 Field lawan untuk relasi dari Role (audit trail balik)
+  createdRoles Role[] @relation("RoleCreatedBy") // roles yang dibuat oleh user ini
+  updatedRoles Role[] @relation("RoleUpdatedBy") // roles yang di-update oleh user ini
+  deletedRoles Role[] @relation("RoleDeletedBy") // roles yang di-delete oleh user ini
+
+  /// Optional auth token (e.g., refresh token)
+  token String? @db.NVarChar(500)
+
+  @@index([username])
+  @@index([badgeNumber])
+  @@index([roleId])
+  @@index([createdBy])
+  @@index([updatedBy])
+  @@index([deletedBy])
   @@map("users")
 }
