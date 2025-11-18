@@ -8,6 +8,8 @@ export type CreateUserRequest = {
     username: string;
     name: string;
     password: string;
+    badgeNumber: string;
+    roleId?: string;
 };
 export type LoginRequest = {
     username: string;
@@ -17,6 +19,8 @@ export type LoginResponse = {
     username: string;
     name: string;
     token: string;
+    expiresIn: number;
+    expiresAt: string;
 };
 export type ChangePasswordRequest = {
     oldPassword: string;

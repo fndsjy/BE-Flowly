@@ -1,3 +1,4 @@
+import { getTokenExpiresIn } from "../utils/auth.js"; // sesuaikan path
 export function toUserResponse(user) {
     return {
         username: user.username,
@@ -5,10 +6,14 @@ export function toUserResponse(user) {
     };
 }
 export function toLoginResponse(user, token) {
+    const expiresIn = getTokenExpiresIn(token); // dalam detik
+    const expiresAt = new Date(Date.now() + expiresIn * 1000).toLocaleString();
     return {
         username: user.username,
         name: user.name,
         token,
+        expiresIn,
+        expiresAt,
     };
 }
 export function toUserProfileResponse(user) {

@@ -1,4 +1,5 @@
 import type { User } from "@prisma/client";
+import { getTokenExpiresIn } from "../utils/auth.js"; // sesuaikan path
 
 export type UserResponse = {
   username: string;
@@ -10,6 +11,8 @@ export type CreateUserRequest = {
   username: string;
   name: string;
   password: string;
+  badgeNumber: string;
+  roleId?: string;
 };
 
 export type LoginRequest = {
@@ -21,6 +24,8 @@ export type LoginResponse = {
   username: string;
   name: string;
   token: string;
+  expiresIn: number; // dalam detik (misal: 10800 = 3 jam)
+  expiresAt: string; // timestamp ISO saat token kedaluwarsa
 };
 
 export type ChangePasswordRequest = {
@@ -64,10 +69,14 @@ export function toUserResponse(user: User): UserResponse {
 }
 
 export function toLoginResponse(user: User, token: string): LoginResponse {
+  const expiresIn = getTokenExpiresIn(token); // dalam detik
+  const expiresAt = new Date(Date.now() + expiresIn * 1000).toLocaleString();
   return {
     username: user.username,
     name: user.name,
     token,
+    expiresIn,
+    expiresAt,
   };
 }
 
