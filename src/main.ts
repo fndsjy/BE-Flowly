@@ -1,3 +1,7 @@
+import "dotenv/config";
+console.log("TZ =", process.env.TZ);
+console.log("Now =", new Date().toString());
+
 import { web } from "./application/web.js";
 import { logger } from "./application/logging.js";
 

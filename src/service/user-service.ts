@@ -5,7 +5,7 @@ import { Validation } from "../validation/validation.js";
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
-import { generateToken } from "../utils/auth.js";
+import { getTokenExpiresIn, generateToken, verifyToken } from "../utils/auth.js";
 import { generateUserId } from "../utils/id-generator.js";
 
 export class UserService {
@@ -19,7 +19,7 @@ export class UserService {
       include: { role: true }
     });
     if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only Super Admin can register new users");
+      throw new ResponseError(403, "Only Admin can register new users");
     }
 
     const existing = await prismaClient.user.findUnique({
@@ -29,13 +29,31 @@ export class UserService {
       throw new ResponseError(400, "Username already taken");
     }
 
-    // Get default role (level 3)
-    const defaultRole = await prismaClient.role.findFirst({
-      where: { roleLevel: 3, roleIsActive: true }
+    // ✅ Determine role
+  let roleToAssign;
+  if (registerRequest.roleId) {
+    // Admin explicitly selected a role
+    roleToAssign = await prismaClient.role.findUnique({
+      where: { roleId: registerRequest.roleId, roleIsActive: true }
     });
-    if (!defaultRole) {
-      throw new ResponseError(500, "Default role not found");
+    if (!roleToAssign) {
+      throw new ResponseError(400, "Selected role is invalid or inactive");
     }
+  } else {
+    // Use default role (level 4)
+    roleToAssign = await prismaClient.role.findFirst({
+      where: { roleLevel: 4, roleIsActive: true }
+    });
+    if (!roleToAssign) {
+      throw new ResponseError(500, "Default role (level 4) not found");
+    }
+  }
+
+  // ✅ Badge number — already validated as non-empty via Zod, but double-check:
+  const badgeNumber = registerRequest.badgeNumber.trim();
+  if (!badgeNumber) {
+    throw new ResponseError(400, "Badge number is required");
+  }
 
     // ✅ Generate userId
     const userId = await generateUserId();
@@ -46,11 +64,10 @@ export class UserService {
         userId, // ✅ Required field (from your Prisma schema)
         ...registerRequest,
         password: hashed,
-        roleId: defaultRole.roleId,
-        badgeNumber: `BDG-${Date.now().toString().slice(-6)}`,
+        roleId: roleToAssign.roleId,
+        badgeNumber,
         createdBy: requesterUserId,
         updatedBy: requesterUserId,
-        // Pastikan field lain seperti isActive, isDeleted juga di-set jika required
         isActive: true,
         isDeleted: false,
       }
@@ -68,23 +85,44 @@ export class UserService {
       include: { role: true }
     });
     if (!user || !user.isActive) {
-      throw new ResponseError(401, "Invalid credentials");
+      throw new ResponseError(401, "User not found or inactive");
     }
 
     const valid = await bcrypt.compare(loginRequest.password, user.password);
     if (!valid) {
-      throw new ResponseError(401, "Invalid credentials");
+      throw new ResponseError(401, "Invalid username or password");
     }
 
-    await prismaClient.user.update({
-      where: { userId: user.userId },
-      data: { // ✅ Added `data:`
-        lastLogin: new Date(),
-        updatedBy: user.userId
-      }
-    });
+    let token = user.token;
+    let expiresIn = 0;
 
-    const token = generateToken(user);
+    // Check if existing token exists and is still valid
+    if (token) {
+      expiresIn = getTokenExpiresIn(token);
+      if (expiresIn <= 0) {
+        // Token expired or invalid → discard and generate new one
+        token = null;
+      }
+    }
+
+    // If no valid token, generate a new one
+    if (!token) {
+      token = generateToken(user);
+      expiresIn = 3 * 60 * 60;
+      // expiresIn = 3 * 60 * 60; // 3 hours in seconds (since getTokenExpiresIn() gives seconds)
+
+      // Update DB with new token and lastLogin
+      await prismaClient.user.update({
+        where: { userId: user.userId },
+        data: {
+          token,
+          lastLogin: new Date(),
+          // ✅ Set updatedBy to 'login system' as per your requirement
+          // updatedBy: "login system",
+        }
+      });
+    }
+
     return toLoginResponse(user, token);
   }
 
@@ -104,7 +142,7 @@ export class UserService {
       where: { userId: requesterUserId },
       include: { role: true }
     });
-    if (!requester || requester.role.roleLevel > 2) {
+    if (!requester || requester.role.roleLevel !== 1) {
       throw new ResponseError(403, "Access denied");
     }
 
@@ -121,11 +159,20 @@ export class UserService {
   static async changePassword(userId: string, request: ChangePasswordRequest): Promise<void> {
     const changeReq = Validation.validate(UserValidation.CHANGE_PASSWORD, request);
 
+    // 1. Find user
     const user = await prismaClient.user.findUnique({ where: { userId } });
     if (!user) throw new ResponseError(404, "User not found");
 
-    const valid = await bcrypt.compare(changeReq.oldPassword, user.password);
-    if (!valid) throw new ResponseError(400, "Old password is incorrect");
+    // 2. Verify old password
+    const isOldPasswordCorrect = await bcrypt.compare(changeReq.oldPassword, user.password);
+    if (!isOldPasswordCorrect) {
+      throw new ResponseError(400, "Old password is incorrect");
+    }
+
+    // 3. Prevent reusing the same password
+    if (changeReq.newPassword === changeReq.oldPassword) {
+      throw new ResponseError(400, "New password must be different from the old password");
+    }
 
     const hashed = await bcrypt.hash(changeReq.newPassword, 10);
     await prismaClient.user.update({
@@ -146,11 +193,15 @@ export class UserService {
       include: { role: true }
     });
     if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only Super Admin can change roles");
+      throw new ResponseError(403, "Only admin can change roles");
     }
 
-    const targetUser = await prismaClient.user.findUnique({ where: { userId: changeReq.userId } });
+    const targetUser = await prismaClient.user.findUnique({ where: { userId: changeReq.userId }, select: { userId: true, roleId: true } });
     if (!targetUser) throw new ResponseError(404, "User not found");
+
+    if (targetUser.roleId === changeReq.newRoleId) {
+      throw new ResponseError(400, "User already has this role");
+    }
 
     const newRole = await prismaClient.role.findUnique({
       where: { roleId: changeReq.newRoleId, roleIsActive: true }
