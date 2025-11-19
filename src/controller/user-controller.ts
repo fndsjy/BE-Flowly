@@ -9,11 +9,18 @@ export class UserController {
   static async register(req: Request, res: Response, next: NextFunction) {
     try {
       // Get requester from token
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      // const authHeader = req.headers.authorization;
+      // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      //   throw new ResponseError(401, "Unauthorized");
+      // }
+      // const token = authHeader.substring(7).trim();
+      // const payload = verifyToken(token);
+
+      const token = req.cookies.access_token;
+      if (!token) {
         throw new ResponseError(401, "Unauthorized");
       }
-      const token = authHeader.substring(7).trim();
+
       const payload = verifyToken(token);
 
       const request: CreateUserRequest = req.body as CreateUserRequest;
@@ -29,6 +36,20 @@ export class UserController {
     try {
       const request: LoginRequest = req.body as LoginRequest;
       const response = await UserService.login(request);
+
+      const token = response.token;
+
+      // Kirim token sebagai HTTP-only cookie
+      res.cookie("access_token", token, {
+        httpOnly: true,
+        secure: false,     // ganti ke true kalau sudah pakai HTTPS
+        sameSite: "strict",
+        maxAge: response.expiresIn * 1000 // detik → ms
+      });
+
+      // Jangan kirim token lagi
+      const { token: _, ...safeResponse } = response;
+
       res.status(200).json({  response });
     } catch (error) {
       next(error);
@@ -38,11 +59,18 @@ export class UserController {
   // ✅ Get Profile (Who Am I)
   static async getProfile(req: Request, res: Response, next: NextFunction) {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      // const authHeader = req.headers.authorization;
+      // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      //   throw new ResponseError(401, "Unauthorized");
+      // }
+      // const token = authHeader.substring(7).trim();
+      // const payload = verifyToken(token);
+
+      const token = req.cookies.access_token;
+      if (!token) {
         throw new ResponseError(401, "Unauthorized");
       }
-      const token = authHeader.substring(7).trim();
+
       const payload = verifyToken(token);
 
       const response = await UserService.getProfile(payload.userId);
@@ -55,11 +83,18 @@ export class UserController {
   // ✅ List Users
   static async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      // const authHeader = req.headers.authorization;
+      // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      //   throw new ResponseError(401, "Unauthorized");
+      // }
+      // const token = authHeader.substring(7).trim();
+      // const payload = verifyToken(token);
+
+      const token = req.cookies.access_token;
+      if (!token) {
         throw new ResponseError(401, "Unauthorized");
       }
-      const token = authHeader.substring(7).trim();
+
       const payload = verifyToken(token);
 
       const response = await UserService.listUsers(payload.userId);
@@ -72,11 +107,18 @@ export class UserController {
   // ✅ Change Password
   static async changePassword(req: Request, res: Response, next: NextFunction) {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      // const authHeader = req.headers.authorization;
+      // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      //   throw new ResponseError(401, "Unauthorized");
+      // }
+      // const token = authHeader.substring(7).trim();
+      // const payload = verifyToken(token);
+
+      const token = req.cookies.access_token;
+      if (!token) {
         throw new ResponseError(401, "Unauthorized");
       }
-      const token = authHeader.substring(7).trim();
+
       const payload = verifyToken(token);
 
       const request: ChangePasswordRequest = req.body as ChangePasswordRequest;
@@ -90,11 +132,18 @@ export class UserController {
   // ✅ Change Role
   static async changeRole(req: Request, res: Response, next: NextFunction) {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      // const authHeader = req.headers.authorization;
+      // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      //   throw new ResponseError(401, "Unauthorized");
+      // }
+      // const token = authHeader.substring(7).trim();
+      // const payload = verifyToken(token);
+
+      const token = req.cookies.access_token;
+      if (!token) {
         throw new ResponseError(401, "Unauthorized");
       }
-      const token = authHeader.substring(7).trim();
+
       const payload = verifyToken(token);
 
       const request: ChangeRoleRequest = req.body as ChangeRoleRequest;
@@ -104,4 +153,20 @@ export class UserController {
       next(error);
     }
   }
+
+  static async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.clearCookie("access_token", {
+        httpOnly: true,
+        secure: false,   // Ubah ke true kalau pakai HTTPS
+        sameSite: "strict",
+        path: "/",
+      });
+
+      res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
 }
