@@ -84,6 +84,8 @@ model User {
   /// Optional auth token (e.g., refresh token)
   token String? @db.NVarChar(500)
 
+  orgNodes OrgChart[]
+
   @@index([username])
   @@index([badgeNumber])
   @@index([roleId])
@@ -91,4 +93,53 @@ model User {
   @@index([updatedBy])
   @@index([deletedBy])
   @@map("users")
+}
+
+model OrgStructure {
+  structureId String    @id @db.NVarChar(20) /// e.g., "STR250101-0001"
+  name        String    @db.NVarChar(100) /// contoh: "SBU CASTING", "INFRASTRUKTUR"
+  description String?   @db.NVarChar(255)
+  rootNodeId  String?   @db.NVarChar(20) /// optional: pointer to root node in org_chart
+  createdAt   DateTime  @default(now()) @db.DateTime2
+  createdBy   String?   @db.NVarChar(20)
+  updatedAt   DateTime  @updatedAt @db.DateTime2
+  updatedBy   String?   @db.NVarChar(20)
+  isDeleted   Boolean   @default(false)
+  deletedAt   DateTime? @db.DateTime2
+  deletedBy   String?   @db.NVarChar(20)
+
+  /// relation -> many nodes
+  nodes OrgChart[] @relation("StructureNodes", fields: [], references: [])
+
+  @@index([structureId])
+  @@map("org_structure")
+}
+
+model OrgChart {
+  nodeId      String    @id @db.NVarChar(20) /// e.g., "NODE251120-0001"
+  structureId String    @db.NVarChar(20)
+  userId      String?   @db.NVarChar(20)
+  parentId    String?   @db.NVarChar(20) /// NULL = posisi teratas (presiden)
+  name        String?   @db.NVarChar(100)
+  position    String    @db.NVarChar(100)
+  orderIndex  Int       @default(0) /// urutan dalam satu level
+  createdAt   DateTime  @default(now()) @db.DateTime2
+  createdBy   String?   @db.NVarChar(20)
+  updatedAt   DateTime  @updatedAt @db.DateTime2
+  updatedBy   String?   @db.NVarChar(20)
+  isDeleted   Boolean   @default(false)
+  deletedAt   DateTime? @db.DateTime2
+  deletedBy   String?   @db.NVarChar(20)
+
+  /// self reference (parent)
+  parent   OrgChart?  @relation("OrgParentChild", fields: [parentId], references: [nodeId], onDelete: NoAction, onUpdate: NoAction)
+  children OrgChart[] @relation("OrgParentChild")
+
+  /// Relation ke User
+  user      User?        @relation(fields: [userId], references: [userId])
+  structure OrgStructure @relation("StructureNodes", fields: [structureId], references: [structureId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([userId])
+  @@index([parentId])
+  @@map("org_chart")
 }
