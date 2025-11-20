@@ -47,4 +47,34 @@ export async function generateRoleId() {
     }
     return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
 }
+export async function generateOrgChartId() {
+    const today = getDDMMYY();
+    const prefix = `CHT${today}`;
+    const existing = await prisma.orgChart.findFirst({
+        where: { nodeId: { startsWith: prefix } },
+        select: { nodeId: true },
+        orderBy: { nodeId: "desc" }
+    });
+    let nextSeq = 1;
+    if (existing?.nodeId) {
+        const currentSeq = extractSeqFromId(existing.nodeId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+}
+export async function generateOrgStructureId() {
+    const today = getDDMMYY();
+    const prefix = `STR${today}`;
+    const existing = await prisma.orgStructure.findFirst({
+        where: { structureId: { startsWith: prefix } },
+        select: { structureId: true },
+        orderBy: { structureId: "desc" }
+    });
+    let nextSeq = 1;
+    if (existing?.structureId) {
+        const currentSeq = extractSeqFromId(existing.structureId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+}
 //# sourceMappingURL=id-generator.js.map
