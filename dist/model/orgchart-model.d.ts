@@ -21,7 +21,7 @@ export type UpdateOrgChartRequest = {
     parentId?: string | null;
     structureId?: string;
     name?: string;
-    position: string;
+    position?: string;
     userId?: string | null;
     orderIndex?: number;
 };
