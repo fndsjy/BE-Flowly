@@ -51,5 +51,20 @@ export class OrgChartController {
             next(err);
         }
     }
+    static async listStructure(req, res, next) {
+        try {
+            const { structureId } = req.body;
+            if (structureId) {
+                const result = await OrgChartService.listByStructure(structureId);
+                return res.status(200).json({ response: result });
+            }
+            // default return all tree
+            const result = await OrgChartService.listTree();
+            return res.status(200).json({ response: result });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
 //# sourceMappingURL=orgchart-controller.js.map

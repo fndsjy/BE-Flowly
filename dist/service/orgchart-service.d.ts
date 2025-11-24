@@ -6,5 +6,6 @@ export declare class OrgChartService {
         message: string;
     }>;
     static listTree(): Promise<import("../model/orgchart-model.js").OrgChartListResponse[]>;
+    static listByStructure(structureId: string): Promise<import("../model/orgchart-model.js").OrgChartListResponse[]>;
 }
 //# sourceMappingURL=orgchart-service.d.ts.map
