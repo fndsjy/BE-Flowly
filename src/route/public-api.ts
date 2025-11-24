@@ -25,6 +25,7 @@ v1.post("/orgchart", OrgChartController.create);
 v1.put("/orgchart", OrgChartController.update);
 v1.delete("/orgchart", OrgChartController.softDelete);
 v1.get("/orgchart", OrgChartController.list);
+v1.get("/orgchart-by-structure", OrgChartController.listStructure);
 
 // Mount /v1
 publicRouter.use("/v1/api", v1);

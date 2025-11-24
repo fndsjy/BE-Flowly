@@ -250,5 +250,28 @@ export class OrgChartService {
         });
         return nodes.map(toOrgChartListResponse);
     }
+    // 📌 LIST BY STRUCTURE
+    static async listByStructure(structureId) {
+        // 1. VALIDATE STRUCTURE
+        const structureExists = await prismaClient.orgStructure.findUnique({
+            where: { structureId, isDeleted: false }
+        });
+        if (!structureExists) {
+            throw new ResponseError(404, "Structure not found");
+        }
+        // 2. GET ALL NODES IN THIS STRUCTURE
+        const nodes = await prismaClient.orgChart.findMany({
+            where: {
+                structureId,
+                isDeleted: false
+            },
+            orderBy: [
+                { parentId: "asc" }, // root first
+                { orderIndex: "asc" } // order inside each parent
+            ]
+        });
+        // 3. MAP TO RESPONSE MODEL
+        return nodes.map(toOrgChartListResponse);
+    }
 }
 //# sourceMappingURL=orgchart-service.js.map
