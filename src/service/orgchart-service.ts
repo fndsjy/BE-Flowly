@@ -285,12 +285,12 @@ export class OrgChartService {
     /* --------------------------------------------
     * 4. OPTIONAL: CEK ROOT (parentId null)
     * -------------------------------------------- */
-    if (node.parentId === null) {
-      throw new ResponseError(
-        400,
-        "Cannot delete root node. Assign a new root or move all nodes first."
-      );
-    }
+    // if (node.parentId === null) {
+    //   throw new ResponseError(
+    //     400,
+    //     "Cannot delete root node. Assign a new root or move all nodes first."
+    //   );
+    // }
 
     /* --------------------------------------------
     * 5. SOFT DELETE
