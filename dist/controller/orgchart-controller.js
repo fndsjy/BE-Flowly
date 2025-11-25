@@ -53,9 +53,9 @@ export class OrgChartController {
     }
     static async listStructure(req, res, next) {
         try {
-            const { structureId } = req.body;
+            const { structureId } = req.query; // <— AMBIL DARI QUERY
             if (structureId) {
-                const result = await OrgChartService.listByStructure(structureId);
+                const result = await OrgChartService.listByStructure(String(structureId));
                 return res.status(200).json({ response: result });
             }
             // default return all tree
