@@ -6,5 +6,11 @@ export declare class UserService {
     static listUsers(requesterUserId: string): Promise<UserListResponse[]>;
     static changePassword(userId: string, request: ChangePasswordRequest): Promise<void>;
     static changeRole(requesterUserId: string, request: ChangeRoleRequest): Promise<void>;
+    static listRoles(requesterUserId: string): Promise<{
+        roleId: string;
+        roleName: string;
+        roleLevel: number;
+        isActive: boolean;
+    }[]>;
 }
 //# sourceMappingURL=user-service.d.ts.map

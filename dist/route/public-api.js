@@ -12,6 +12,7 @@ v1.get("/profile", UserController.getProfile);
 v1.get("/users", UserController.listUsers); // 🔐 role 1 only
 v1.patch("/password", UserController.changePassword);
 v1.patch("/role", UserController.changeRole); // 🔐 role 1 only
+v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
 v1.post("/orgstructure", OrgStructureController.create);
 v1.put("/orgstructure", OrgStructureController.update);

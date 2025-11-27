@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User, Role } from "@prisma/client";
 export type UserResponse = {
     username: string;
     name: string;
@@ -51,6 +51,12 @@ export type UserListResponse = {
     roleName: string;
     createdAt: Date;
 };
+export type RoleListResponse = {
+    roleId: string;
+    roleName: string;
+    roleLevel: number;
+    isActive: boolean;
+};
 export declare function toUserResponse(user: User): UserResponse;
 export declare function toLoginResponse(user: User, token: string): LoginResponse;
 export declare function toUserProfileResponse(user: User & {
@@ -64,4 +70,5 @@ export declare function toUserListResponse(user: User & {
         roleName: string;
     };
 }): UserListResponse;
+export declare function toRoleListResponse(role: Role): RoleListResponse;
 //# sourceMappingURL=user-model.d.ts.map
