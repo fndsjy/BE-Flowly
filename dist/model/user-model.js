@@ -41,4 +41,12 @@ export function toUserListResponse(user) {
         createdAt: user.createdAt,
     };
 }
+export function toRoleListResponse(role) {
+    return {
+        roleId: role.roleId,
+        roleName: role.roleName,
+        roleLevel: role.roleLevel,
+        isActive: role.roleIsActive
+    };
+}
 //# sourceMappingURL=user-model.js.map

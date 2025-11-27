@@ -216,4 +216,29 @@ export class UserService {
       }
     });
   }
+
+  // ✅ List Roles
+  static async listRoles(requesterUserId: string) {
+    const requester = await prismaClient.user.findUnique({
+      where: { userId: requesterUserId },
+      include: { role: true }
+    });
+
+    if (!requester || requester.role.roleLevel !== 1) {
+      throw new ResponseError(403, "Only admin can access roles");
+    }
+
+    const roles = await prismaClient.role.findMany({
+      where: { roleIsActive: true },
+      orderBy: { roleLevel: "asc" }
+    });
+
+    return roles.map(r => ({
+      roleId: r.roleId,
+      roleName: r.roleName,
+      roleLevel: r.roleLevel,
+      isActive: r.roleIsActive
+    }));
+  }
+
 }

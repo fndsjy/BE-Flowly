@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User, Role } from "@prisma/client";
 import { getTokenExpiresIn } from "../utils/auth.js"; // sesuaikan path
 
 export type UserResponse = {
@@ -61,6 +61,13 @@ export type UserListResponse = {
   createdAt: Date;
 };
 
+export type RoleListResponse = {
+  roleId: string;
+  roleName: string;
+  roleLevel: number;
+  isActive: boolean;
+};
+
 export function toUserResponse(user: User): UserResponse {
   return {
     username: user.username,
@@ -104,5 +111,14 @@ export function toUserListResponse(user: User & { role: { roleName: string } }):
     isDeleted: user.isDeleted,
     roleName: user.role.roleName,
     createdAt: user.createdAt,
+  };
+}
+
+export function toRoleListResponse(role: Role): RoleListResponse {
+  return {
+    roleId: role.roleId,
+    roleName: role.roleName,
+    roleLevel: role.roleLevel,
+    isActive: role.roleIsActive
   };
 }

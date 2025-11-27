@@ -154,6 +154,23 @@ export class UserController {
     }
   }
 
+  // ✅ List Roles
+  static async listRoles(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) {
+        throw new ResponseError(401, "Unauthorized");
+      }
+
+      const payload = verifyToken(token);
+
+      const response = await UserService.listRoles(payload.userId);
+      res.status(200).json({ response });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async logout(req: Request, res: Response, next: NextFunction) {
     try {
       res.clearCookie("access_token", {
