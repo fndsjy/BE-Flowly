@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/auth.js";
 import { ResponseError } from "../error/response-error.js";
-import { OrgStructureService } from "../service/orgstructure-service.js";
+import { PilarService } from "../service/pilar-service.js";
 
-export class OrgStructureController {
+export class PilarController {
 
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
@@ -11,7 +11,7 @@ export class OrgStructureController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await OrgStructureService.create(payload.userId, req.body);
+      const response = await PilarService.create(payload.userId, req.body);
 
       res.status(201).json({ response });
     } catch (err) {
@@ -25,7 +25,7 @@ export class OrgStructureController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await OrgStructureService.update(payload.userId, req.body);
+      const response = await PilarService.update(payload.userId, req.body);
 
       res.status(200).json({ response });
     } catch (err) {
@@ -39,9 +39,9 @@ export class OrgStructureController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      await OrgStructureService.softDelete(payload.userId, req.body);
+      const response = await PilarService.softDelete(payload.userId, req.body);
 
-      res.status(200).json({ message: "Structure deleted" });
+      res.status(200).json({ response });
     } catch (err) {
       next(err);
     }
@@ -49,7 +49,7 @@ export class OrgStructureController {
 
   static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await OrgStructureService.list();
+      const response = await PilarService.list();
       res.status(200).json({ response });
     } catch (err) {
       next(err);
