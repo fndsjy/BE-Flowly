@@ -94,9 +94,1042 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Snapshot: 'Snapshot'
 });
 
+exports.Prisma.Em_absensiScalarFieldEnum = {
+  Id: 'Id',
+  faceId: 'faceId',
+  inDate: 'inDate',
+  outDate: 'outDate',
+  fileImage: 'fileImage'
+};
+
+exports.Prisma.Em_apc_academyScalarFieldEnum = {
+  AcademyId: 'AcademyId',
+  ApcId: 'ApcId',
+  SchoolName: 'SchoolName',
+  Province: 'Province',
+  Major: 'Major',
+  Degree: 'Degree',
+  EnrollDate: 'EnrollDate',
+  GraduatDate: 'GraduatDate',
+  IPK: 'IPK',
+  OrganizeExperience: 'OrganizeExperience',
+  Explain: 'Explain',
+  GradeSchool: 'GradeSchool',
+  DailySchedule: 'DailySchedule',
+  SchoolAddress: 'SchoolAddress'
+};
+
+exports.Prisma.Em_apc_personalScalarFieldEnum = {
+  ApcId: 'ApcId',
+  PossId: 'PossId',
+  AboutUs: 'AboutUs',
+  FullName: 'FullName',
+  NickName: 'NickName',
+  PlaceBirth: 'PlaceBirth',
+  DateBirth: 'DateBirth',
+  Age: 'Age',
+  Gender: 'Gender',
+  Religion: 'Religion',
+  MaritalStats: 'MaritalStats',
+  Citizenship: 'Citizenship',
+  Province: 'Province',
+  Regency: 'Regency',
+  Subdistrict: 'Subdistrict',
+  PostCode: 'PostCode',
+  Address: 'Address',
+  IdentityType: 'IdentityType',
+  IdentityNumber: 'IdentityNumber',
+  PhoneCode: 'PhoneCode',
+  PhoneNumber: 'PhoneNumber',
+  EmailAddress: 'EmailAddress',
+  Height: 'Height',
+  Weight: 'Weight',
+  FatherName: 'FatherName',
+  FatherOccupa: 'FatherOccupa',
+  MotherName: 'MotherName',
+  MotherOccupa: 'MotherOccupa',
+  NumofSibling: 'NumofSibling',
+  SiblingNote: 'SiblingNote',
+  NikFileName: 'NikFileName',
+  PhotoFileName: 'PhotoFileName',
+  CvFileName: 'CvFileName',
+  IsTransferPosst: 'IsTransferPosst',
+  Status: 'Status',
+  CreatedAt: 'CreatedAt',
+  isHobby: 'isHobby',
+  LokCat: 'LokCat',
+  isSosmedId: 'isSosmedId',
+  isSosmed: 'isSosmed',
+  IsCall: 'IsCall',
+  DateCall: 'DateCall',
+  isLinked: 'isLinked',
+  PossName: 'PossName'
+};
+
+exports.Prisma.Em_apc_photographScalarFieldEnum = {
+  Id: 'Id',
+  ApcId: 'ApcId',
+  GenrName: 'GenrName'
+};
+
+exports.Prisma.Em_apc_regulationScalarFieldEnum = {
+  ApcRegId: 'ApcRegId',
+  ApcId: 'ApcId',
+  RegId: 'RegId',
+  RegChoice: 'RegChoice'
+};
+
+exports.Prisma.Em_apc_skill_experScalarFieldEnum = {
+  SkillId: 'SkillId',
+  ApcId: 'ApcId',
+  CompanyName: 'CompanyName',
+  Province: 'Province',
+  JobTitle: 'JobTitle',
+  Salary: 'Salary',
+  StartDate: 'StartDate',
+  EndDate: 'EndDate',
+  Responsibilities: 'Responsibilities',
+  CareerGoals: 'CareerGoals',
+  WhyJoin: 'WhyJoin',
+  IsFriend: 'IsFriend',
+  IsMentions: 'IsMentions',
+  IsCompProgram: 'IsCompProgram',
+  IsIllnes: 'IsIllnes',
+  HaveCriminal: 'HaveCriminal',
+  WhenWork: 'WhenWork',
+  ExpectedSalary: 'ExpectedSalary',
+  isContribution: 'isContribution',
+  isDuration: 'isDuration',
+  isAgency: 'isAgency',
+  isExprn: 'isExprn',
+  isGenre: 'isGenre',
+  isRelevan: 'isRelevan',
+  isSpesialSkill: 'isSpesialSkill',
+  isShoot: 'isShoot',
+  isSchedl: 'isSchedl',
+  isMotivation: 'isMotivation',
+  isStress: 'isStress',
+  isLongExpr: 'isLongExpr',
+  isPhotTools: 'isPhotTools',
+  isChalleng: 'isChalleng',
+  isThreeYears: 'isThreeYears',
+  PersonVal: 'PersonVal'
+};
+
+exports.Prisma.Em_api_keysScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  api_key: 'api_key',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_applicant_criteriaScalarFieldEnum = {
+  id_kriteria: 'id_kriteria',
+  id_loker: 'id_loker',
+  jenis_kriteria: 'jenis_kriteria',
+  value: 'value',
+  value_en: 'value_en',
+  bobot: 'bobot',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_applicant_matchScalarFieldEnum = {
+  id_match: 'id_match',
+  id_applicant: 'id_applicant',
+  id_loker: 'id_loker',
+  pendidikan_score: 'pendidikan_score',
+  jurusan_score: 'jurusan_score',
+  pengalaman_score: 'pengalaman_score',
+  skill_score: 'skill_score',
+  bahasa_score: 'bahasa_score',
+  usia_score: 'usia_score',
+  total_score: 'total_score',
+  total_kriteria: 'total_kriteria',
+  scoring_json: 'scoring_json',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_bannerScalarFieldEnum = {
+  Id: 'Id',
+  bannerName: 'bannerName',
+  fileName: 'fileName',
+  menuName: 'menuName',
+  noUrut: 'noUrut',
+  Status: 'Status',
+  created_at: 'created_at',
+  last_update: 'last_update',
+  userid: 'userid'
+};
+
+exports.Prisma.Em_career_contactScalarFieldEnum = {
+  cpId: 'cpId',
+  companyName: 'companyName',
+  email: 'email',
+  waNumber: 'waNumber',
+  fileImage: 'fileImage',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  userid: 'userid'
+};
+
+exports.Prisma.Em_certificate_fieldsScalarFieldEnum = {
+  id: 'id',
+  certificate_id: 'certificate_id',
+  is_text: 'is_text',
+  is_left: 'is_left',
+  is_top: 'is_top',
+  text_width: 'text_width',
+  text_height: 'text_height',
+  font_size: 'font_size',
+  align: 'align',
+  font_family: 'font_family',
+  font_style: 'font_style',
+  font_weight: 'font_weight',
+  font_color: 'font_color',
+  created_date: 'created_date',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_certificate_templatesScalarFieldEnum = {
+  certificate_id: 'certificate_id',
+  name: 'name',
+  background_image: 'background_image',
+  created_at: 'created_at',
+  certificate_name: 'certificate_name',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_certificates_resultScalarFieldEnum = {
+  cert_number: 'cert_number',
+  cert_templ_id: 'cert_templ_id',
+  empl_id: 'empl_id',
+  cert_name: 'cert_name',
+  created_date: 'created_date',
+  status: 'status',
+  generated_by: 'generated_by',
+  schedule_id: 'schedule_id'
+};
+
+exports.Prisma.Em_chanceScalarFieldEnum = {
+  chId: 'chId',
+  chName: 'chName',
+  chDesc: 'chDesc',
+  chStats: 'chStats',
+  chFileImage: 'chFileImage',
+  chLink: 'chLink',
+  chUserid: 'chUserid',
+  chDate: 'chDate',
+  chLastupdate: 'chLastupdate'
+};
+
+exports.Prisma.Em_contrctypeScalarFieldEnum = {
+  id: 'id',
+  contract_text: 'contract_text',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_deptScalarFieldEnum = {
+  DEPTID: 'DEPTID',
+  DEPTNAME: 'DEPTNAME',
+  sbu_sub: 'sbu_sub',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_employeeScalarFieldEnum = {
+  UserId: 'UserId',
+  BadgeNum: 'BadgeNum',
+  Name: 'Name',
+  Gender: 'Gender',
+  BirthDay: 'BirthDay',
+  HireDay: 'HireDay',
+  Street: 'Street',
+  Religion: 'Religion',
+  Tipe: 'Tipe',
+  isLokasi: 'isLokasi',
+  Phone: 'Phone',
+  DeptId: 'DeptId',
+  Password: 'Password',
+  CardNo: 'CardNo',
+  Shift: 'Shift',
+  isMem: 'isMem',
+  AddBy: 'AddBy',
+  Created_at: 'Created_at',
+  Lastupdate: 'Lastupdate',
+  isMemDate: 'isMemDate',
+  isFirstLogin: 'isFirstLogin',
+  ImgName: 'ImgName',
+  SbuSub: 'SbuSub',
+  Nik: 'Nik',
+  ResignDate: 'ResignDate',
+  status: 'status'
+};
+
+exports.Prisma.Em_eventScalarFieldEnum = {
+  event_id: 'event_id',
+  event_name: 'event_name',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  status: 'status',
+  lokasi: 'lokasi',
+  created_date: 'created_date',
+  last_update: 'last_update'
+};
+
+exports.Prisma.Em_event_regScalarFieldEnum = {
+  Regid: 'Regid',
+  name: 'name',
+  optic_name: 'optic_name',
+  password: 'password',
+  wa_num: 'wa_num',
+  email: 'email',
+  profesi_id: 'profesi_id',
+  event_id: 'event_id',
+  status: 'status',
+  first_login: 'first_login',
+  created_date: 'created_date',
+  last_update: 'last_update',
+  image_name: 'image_name'
+};
+
+exports.Prisma.Em_event2ScalarFieldEnum = {
+  sess_id: 'sess_id',
+  event_id: 'event_id',
+  event_name: 'event_name',
+  status: 'status',
+  qr_code: 'qr_code'
+};
+
+exports.Prisma.Em_exam_questionsScalarFieldEnum = {
+  id: 'id',
+  exam_id: 'exam_id',
+  question_id: 'question_id'
+};
+
+exports.Prisma.Em_examsScalarFieldEnum = {
+  id: 'id',
+  exam_name: 'exam_name',
+  UserId: 'UserId',
+  Status: 'Status',
+  LastUpdate: 'LastUpdate',
+  Deskripsi: 'Deskripsi',
+  FileImage: 'FileImage',
+  CatType: 'CatType'
+};
+
+exports.Prisma.Em_exams_monitorScalarFieldEnum = {
+  Id: 'Id',
+  schedule_id: 'schedule_id',
+  exams_id: 'exams_id',
+  empl_id: 'empl_id',
+  tipe_soal: 'tipe_soal',
+  jumlah_soal: 'jumlah_soal',
+  status: 'status',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_exams_resultsScalarFieldEnum = {
+  Id: 'Id',
+  exams_id: 'exams_id',
+  empl_id: 'empl_id',
+  soal_id: 'soal_id',
+  is_changes: 'is_changes',
+  is_answer: 'is_answer',
+  is_time: 'is_time'
+};
+
+exports.Prisma.Em_faqScalarFieldEnum = {
+  fqId: 'fqId',
+  fqcatid: 'fqcatid',
+  isquestions: 'isquestions',
+  isanswer: 'isanswer',
+  status: 'status',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  userid: 'userid'
+};
+
+exports.Prisma.Em_faq_catScalarFieldEnum = {
+  fqcatid: 'fqcatid',
+  name: 'name',
+  status: 'status',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_galeri_materiScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  file_type: 'file_type',
+  file_name: 'file_name',
+  file_size: 'file_size',
+  url: 'url',
+  urutan: 'urutan',
+  status: 'status',
+  created_date: 'created_date',
+  last_update: 'last_update'
+};
+
+exports.Prisma.Em_groupScalarFieldEnum = {
+  GroupId: 'GroupId',
+  GroupName: 'GroupName',
+  Status: 'Status',
+  CreateDate: 'CreateDate',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_hero_sectionScalarFieldEnum = {
+  hsId: 'hsId',
+  hsName: 'hsName',
+  hsDesc: 'hsDesc',
+  hsStats: 'hsStats',
+  hsFileImage: 'hsFileImage',
+  hsLink: 'hsLink',
+  hsUserid: 'hsUserid',
+  hsDate: 'hsDate',
+  hsLastupdate: 'hsLastupdate',
+  Urutan: 'Urutan'
+};
+
+exports.Prisma.Em_jawaban_pesertaScalarFieldEnum = {
+  Id: 'Id',
+  empl_id: 'empl_id',
+  soal_id: 'soal_id',
+  session_exams_id: 'session_exams_id',
+  jawaban: 'jawaban',
+  jawaban2: 'jawaban2',
+  waktu_jawab: 'waktu_jawab',
+  Score: 'Score',
+  is_correction: 'is_correction',
+  is_train_jawaban: 'is_train_jawaban'
+};
+
+exports.Prisma.Em_jawaban_peserta_apcScalarFieldEnum = {
+  Id: 'Id',
+  apc_id: 'apc_id',
+  soal_id: 'soal_id',
+  topic_id: 'topic_id',
+  session_exams_id: 'session_exams_id',
+  jawaban_option: 'jawaban_option',
+  jawaban_text: 'jawaban_text',
+  waktu_jawab: 'waktu_jawab',
+  score: 'score',
+  is_correction: 'is_correction',
+  is_train_jawaban: 'is_train_jawaban'
+};
+
+exports.Prisma.Em_jobfairScalarFieldEnum = {
+  id: 'id',
+  lokasi: 'lokasi',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_levelpossScalarFieldEnum = {
+  id: 'id',
+  level_text: 'level_text',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_logsScalarFieldEnum = {
+  Id: 'Id',
+  IP: 'IP',
+  Login: 'Login',
+  Logout: 'Logout',
+  UserId: 'UserId',
+  LogId: 'LogId',
+  Notes: 'Notes',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_lokerScalarFieldEnum = {
+  lokerid: 'lokerid',
+  possid: 'possid',
+  startdate: 'startdate',
+  enddate: 'enddate',
+  jobdesc: 'jobdesc',
+  qualify: 'qualify',
+  worktype: 'worktype',
+  salary: 'salary',
+  contrtype: 'contrtype',
+  posslevel: 'posslevel',
+  status: 'status',
+  benefit: 'benefit',
+  fileimage: 'fileimage',
+  createdate: 'createdate',
+  lastupdate: 'lastupdate',
+  userid: 'userid',
+  kategori: 'kategori'
+};
+
+exports.Prisma.Em_loktopikScalarFieldEnum = {
+  id: 'id',
+  loker_id: 'loker_id',
+  topik_id: 'topik_id',
+  jmlh_soal: 'jmlh_soal',
+  created_at: 'created_at',
+  possid: 'possid',
+  urutan: 'urutan'
+};
+
+exports.Prisma.Em_materi_fileScalarFieldEnum = {
+  id: 'id',
+  materi_id: 'materi_id',
+  file_name: 'file_name',
+  file_type: 'file_type',
+  file_size: 'file_size',
+  url: 'url',
+  urutan: 'urutan',
+  judul: 'judul',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  galeri_id: 'galeri_id'
+};
+
+exports.Prisma.Em_materi_kategoriScalarFieldEnum = {
+  id: 'id',
+  kategori_nama: 'kategori_nama',
+  kategori_deskripsi: 'kategori_deskripsi',
+  is_active: 'is_active',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_materi_typeScalarFieldEnum = {
+  id: 'id',
+  materi_name: 'materi_name',
+  deskripsi: 'deskripsi',
+  status: 'status',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_materi1ScalarFieldEnum = {
+  id: 'id',
+  kode_materi: 'kode_materi',
+  judul_materi: 'judul_materi',
+  deskripsi_materi: 'deskripsi_materi',
+  kategori: 'kategori',
+  urutan: 'urutan',
+  is_required: 'is_required',
+  status: 'status',
+  created_by: 'created_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_materi2ScalarFieldEnum = {
+  id: 'id',
+  materi_id: 'materi_id',
+  materi_type: 'materi_type'
+};
+
+exports.Prisma.Em_menuScalarFieldEnum = {
+  id: 'id',
+  menuid: 'menuid',
+  name: 'name',
+  parent_id: 'parent_id',
+  link: 'link',
+  visible: 'visible',
+  status: 'status',
+  lastupdate: 'lastupdate',
+  icon: 'icon',
+  menutype: 'menutype'
+};
+
+exports.Prisma.Em_notifikasiScalarFieldEnum = {
+  NotifyId: 'NotifyId',
+  UserId: 'UserId',
+  GroupId: 'GroupId',
+  Note: 'Note',
+  Status: 'Status',
+  CreateDate: 'CreateDate',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_notifikasi_readScalarFieldEnum = {
+  ReadId: 'ReadId',
+  NotifyId: 'NotifyId',
+  UserId: 'UserId',
+  ReadDate: 'ReadDate'
+};
+
+exports.Prisma.Em_onboardingScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  status: 'status',
+  current_step: 'current_step',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Em_pilarScalarFieldEnum = {
+  id: 'id',
+  pilar_name: 'pilar_name',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
+  description: 'description'
+};
+
+exports.Prisma.Em_profesiScalarFieldEnum = {
+  profesi_id: 'profesi_id',
+  profesi_name: 'profesi_name',
+  status: 'status',
+  created_date: 'created_date',
+  last_update: 'last_update'
+};
+
+exports.Prisma.Em_questions1ScalarFieldEnum = {
+  id: 'id',
+  question_text: 'question_text',
+  question_type: 'question_type',
+  correct_answer: 'correct_answer',
+  correct_answer2: 'correct_answer2',
+  exam_id: 'exam_id',
+  time_limit: 'time_limit',
+  score: 'score',
+  status: 'status',
+  userid: 'userid',
+  qdate: 'qdate',
+  lastupdate: 'lastupdate',
+  fileimage: 'fileimage',
+  isExams: 'isExams',
+  isLevel: 'isLevel'
+};
+
+exports.Prisma.Em_questions2ScalarFieldEnum = {
+  Id: 'Id',
+  question_id: 'question_id',
+  option_choices: 'option_choices',
+  option_text: 'option_text'
+};
+
+exports.Prisma.Em_questtypeScalarFieldEnum = {
+  Id: 'Id',
+  TypeName: 'TypeName',
+  Status: 'Status'
+};
+
+exports.Prisma.Em_regulationsScalarFieldEnum = {
+  Id: 'Id',
+  chanceId: 'chanceId',
+  regName: 'regName',
+  urut: 'urut',
+  status: 'status',
+  userid: 'userid',
+  createDate: 'createDate',
+  lastUpdate: 'lastUpdate'
+};
+
+exports.Prisma.Em_sbuScalarFieldEnum = {
+  id: 'id',
+  sbu_code: 'sbu_code',
+  sbu_name: 'sbu_name',
+  sbu_pilar: 'sbu_pilar',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.Em_sbu_subScalarFieldEnum = {
+  id: 'id',
+  sbu_sub_code: 'sbu_sub_code',
+  sbu_sub_name: 'sbu_sub_name',
+  sbu_id: 'sbu_id',
+  sbu_pilar: 'sbu_pilar',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.Em_schedule1ScalarFieldEnum = {
+  Id: 'Id',
+  scheName: 'scheName',
+  scheDeskripsi: 'scheDeskripsi',
+  isMateri: 'isMateri',
+  isQuota: 'isQuota',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  isLokasi: 'isLokasi',
+  isTrainer: 'isTrainer',
+  status: 'status',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  sendWA: 'sendWA',
+  ujian_stats: 'ujian_stats',
+  is_with_soal: 'is_with_soal',
+  usr_by: 'usr_by',
+  is_wa_template: 'is_wa_template',
+  is_batch: 'is_batch',
+  event_id: 'event_id'
+};
+
+exports.Prisma.Em_schedule2ScalarFieldEnum = {
+  Id: 'Id',
+  scheduleId: 'scheduleId',
+  employeeId: 'employeeId',
+  Regid: 'Regid',
+  is_send_wa_stats: 'is_send_wa_stats',
+  send_date: 'send_date',
+  is_code_send: 'is_code_send'
+};
+
+exports.Prisma.Em_schedule3ScalarFieldEnum = {
+  Id: 'Id',
+  scheduleId: 'scheduleId',
+  soalId: 'soalId',
+  urutanSoal: 'urutanSoal',
+  materiId: 'materiId',
+  urutanTipeSoal: 'urutanTipeSoal',
+  tipeSoal: 'tipeSoal'
+};
+
+exports.Prisma.Em_schedule4ScalarFieldEnum = {
+  Id: 'Id',
+  scheduleId: 'scheduleId',
+  tipeSoal: 'tipeSoal',
+  jumlahSoal: 'jumlahSoal',
+  durasiPerTipe: 'durasiPerTipe'
+};
+
+exports.Prisma.Em_session_examsScalarFieldEnum = {
+  Id: 'Id',
+  schedule_id: 'schedule_id',
+  exams_id: 'exams_id',
+  empl_id: 'empl_id',
+  soal_urut: 'soal_urut',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  is_selesai: 'is_selesai',
+  is_token: 'is_token',
+  is_token_expr: 'is_token_expr',
+  durasi: 'durasi',
+  is_correct: 'is_correct',
+  is_notes: 'is_notes',
+  is_score_akhir: 'is_score_akhir'
+};
+
+exports.Prisma.Em_session_exams_apcScalarFieldEnum = {
+  Id: 'Id',
+  lokerid: 'lokerid',
+  exams_id: 'exams_id',
+  apcid: 'apcid',
+  soal_urut: 'soal_urut',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  is_selesai: 'is_selesai',
+  is_token: 'is_token',
+  is_token_expr: 'is_token_expr',
+  durasi: 'durasi',
+  is_correct: 'is_correct',
+  is_notes: 'is_notes',
+  is_score_akhir: 'is_score_akhir',
+  curr_topic_index: 'curr_topic_index',
+  curr_soal_index: 'curr_soal_index',
+  is_intro_topic: 'is_intro_topic',
+  is_jawaban_kosong: 'is_jawaban_kosong'
+};
+
+exports.Prisma.Em_subscribeScalarFieldEnum = {
+  Id: 'Id',
+  UserId: 'UserId',
+  Name: 'Name',
+  Status: 'Status',
+  Endpoint: 'Endpoint',
+  P256dh: 'P256dh',
+  Auth: 'Auth',
+  Created_at: 'Created_at',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_subscriptionScalarFieldEnum = {
+  Id: 'Id',
+  username: 'username',
+  subscription: 'subscription',
+  status: 'status',
+  createdat: 'createdat'
+};
+
+exports.Prisma.Em_topic_selesaiScalarFieldEnum = {
+  id: 'id',
+  session_exams_id: 'session_exams_id',
+  apc_id: 'apc_id',
+  topic_id: 'topic_id',
+  selesai_at: 'selesai_at'
+};
+
+exports.Prisma.Em_user_answers1ScalarFieldEnum = {
+  Id: 'Id',
+  apcid: 'apcid',
+  topic_id: 'topic_id',
+  status: 'status',
+  startdate: 'startdate'
+};
+
+exports.Prisma.Em_user_dashboardScalarFieldEnum = {
+  UserId: 'UserId',
+  Username: 'Username',
+  Password: 'Password',
+  FullName: 'FullName',
+  RoleId: 'RoleId',
+  Status: 'Status',
+  CreateDate: 'CreateDate',
+  LastUpdate: 'LastUpdate',
+  GroupId: 'GroupId'
+};
+
+exports.Prisma.Em_user_listScalarFieldEnum = {
+  id: 'id',
+  userid: 'userid',
+  menuid: 'menuid',
+  visible: 'visible',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_usersScalarFieldEnum = {
+  Id: 'Id',
+  UserId: 'UserId',
+  Username: 'Username',
+  Password: 'Password',
+  LastUpdate: 'LastUpdate',
+  LevelId: 'LevelId',
+  Name: 'Name',
+  Status: 'Status',
+  imagename: 'imagename',
+  Pass_Access_Menu: 'Pass_Access_Menu'
+};
+
+exports.Prisma.Em_verify_linksScalarFieldEnum = {
+  id: 'id',
+  applicant_id: 'applicant_id',
+  token: 'token',
+  expires_at: 'expires_at',
+  created_at: 'created_at',
+  status: 'status',
+  useragent: 'useragent',
+  ipaddress: 'ipaddress',
+  browser: 'browser',
+  platform: 'platform',
+  device: 'device'
+};
+
+exports.Prisma.Em_wa_templatesScalarFieldEnum = {
+  id: 'id',
+  template_name: 'template_name',
+  template_text: 'template_text',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  status: 'status',
+  tpfor: 'tpfor'
+};
+
+exports.Prisma.Em_worktypeScalarFieldEnum = {
+  id: 'id',
+  worktype_text: 'worktype_text',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_xquetestScalarFieldEnum = {
+  ID: 'ID',
+  q_id: 'q_id',
+  question_text: 'question_text'
+};
+
+exports.Prisma.EmappScalarFieldEnum = {
+  AppId: 'AppId',
+  AppName: 'AppName',
+  AppPoss: 'AppPoss',
+  AppWa: 'AppWa',
+  AppMail: 'AppMail',
+  AppAge: 'AppAge',
+  AppJk: 'AppJk',
+  AppAddres: 'AppAddres',
+  AppFakt: 'AppFakt',
+  AppFileName: 'AppFileName',
+  AppLastUpdate: 'AppLastUpdate',
+  AppDate: 'AppDate',
+  AppStatus: 'AppStatus',
+  IsCall: 'IsCall',
+  DateCall: 'DateCall',
+  JobsIs: 'JobsIs',
+  JFStats: 'JFStats',
+  LokasiId: 'LokasiId'
+};
+
+exports.Prisma.EmpasswScalarFieldEnum = {
+  Id: 'Id',
+  Name: 'Name',
+  Pass: 'Pass',
+  Level: 'Level'
+};
+
+exports.Prisma.EmpossScalarFieldEnum = {
+  Id: 'Id',
+  PossName: 'PossName',
+  Status: 'Status',
+  UserId: 'UserId',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.FaceusersScalarFieldEnum = {
+  Id: 'Id',
+  name: 'name',
+  fileimage: 'fileimage',
+  descriptor: 'descriptor',
+  pose: 'pose',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.MenuScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parent_id: 'parent_id',
+  link: 'link',
+  visible: 'visible',
+  role: 'role'
+};
+
+exports.Prisma.ScoresScalarFieldEnum = {
+  id: 'id',
+  exam_id: 'exam_id',
+  user_id: 'user_id',
+  total_score: 'total_score',
+  created_at: 'created_at'
+};
+
+exports.Prisma.SysdiagramsScalarFieldEnum = {
+  name: 'name',
+  principal_id: 'principal_id',
+  diagram_id: 'diagram_id',
+  version: 'version',
+  definition: 'definition'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-
+  em_absensi: 'em_absensi',
+  em_apc_academy: 'em_apc_academy',
+  em_apc_personal: 'em_apc_personal',
+  em_apc_photograph: 'em_apc_photograph',
+  em_apc_regulation: 'em_apc_regulation',
+  em_apc_skill_exper: 'em_apc_skill_exper',
+  em_api_keys: 'em_api_keys',
+  em_applicant_criteria: 'em_applicant_criteria',
+  em_applicant_match: 'em_applicant_match',
+  em_banner: 'em_banner',
+  em_career_contact: 'em_career_contact',
+  em_certificate_fields: 'em_certificate_fields',
+  em_certificate_templates: 'em_certificate_templates',
+  em_certificates_result: 'em_certificates_result',
+  em_chance: 'em_chance',
+  em_contrctype: 'em_contrctype',
+  em_dept: 'em_dept',
+  em_employee: 'em_employee',
+  em_event: 'em_event',
+  em_event_reg: 'em_event_reg',
+  em_event2: 'em_event2',
+  em_exam_questions: 'em_exam_questions',
+  em_exams: 'em_exams',
+  em_exams_monitor: 'em_exams_monitor',
+  em_exams_results: 'em_exams_results',
+  em_faq: 'em_faq',
+  em_faq_cat: 'em_faq_cat',
+  em_galeri_materi: 'em_galeri_materi',
+  em_group: 'em_group',
+  em_hero_section: 'em_hero_section',
+  em_jawaban_peserta: 'em_jawaban_peserta',
+  em_jawaban_peserta_apc: 'em_jawaban_peserta_apc',
+  em_jobfair: 'em_jobfair',
+  em_levelposs: 'em_levelposs',
+  em_logs: 'em_logs',
+  em_loker: 'em_loker',
+  em_loktopik: 'em_loktopik',
+  em_materi_file: 'em_materi_file',
+  em_materi_kategori: 'em_materi_kategori',
+  em_materi_type: 'em_materi_type',
+  em_materi1: 'em_materi1',
+  em_materi2: 'em_materi2',
+  em_menu: 'em_menu',
+  em_notifikasi: 'em_notifikasi',
+  em_notifikasi_read: 'em_notifikasi_read',
+  em_onboarding: 'em_onboarding',
+  em_pilar: 'em_pilar',
+  em_profesi: 'em_profesi',
+  em_questions1: 'em_questions1',
+  em_questions2: 'em_questions2',
+  em_questtype: 'em_questtype',
+  em_regulations: 'em_regulations',
+  em_sbu: 'em_sbu',
+  em_sbu_sub: 'em_sbu_sub',
+  em_schedule1: 'em_schedule1',
+  em_schedule2: 'em_schedule2',
+  em_schedule3: 'em_schedule3',
+  em_schedule4: 'em_schedule4',
+  em_session_exams: 'em_session_exams',
+  em_session_exams_apc: 'em_session_exams_apc',
+  em_subscribe: 'em_subscribe',
+  em_subscription: 'em_subscription',
+  em_topic_selesai: 'em_topic_selesai',
+  em_user_answers1: 'em_user_answers1',
+  em_user_dashboard: 'em_user_dashboard',
+  em_user_list: 'em_user_list',
+  em_users: 'em_users',
+  em_verify_links: 'em_verify_links',
+  em_wa_templates: 'em_wa_templates',
+  em_worktype: 'em_worktype',
+  em_xquetest: 'em_xquetest',
+  emapp: 'emapp',
+  empassw: 'empassw',
+  emposs: 'emposs',
+  faceusers: 'faceusers',
+  menu: 'menu',
+  scores: 'scores',
+  sysdiagrams: 'sysdiagrams'
 };
 /**
  * Create the Client
@@ -146,13 +1179,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// schema-employee.prisma\ndatasource employee {\n  provider = \"sqlserver\"\n  url      = env(\"EMPLOYEE_DATABASE_URL\")\n}\n\ngenerator employeeClient {\n  provider = \"prisma-client-js\"\n  output   = \"../dist/generated/employee\"\n}\n",
-  "inlineSchemaHash": "dedac4ce344f38bd83fcff63ede177c3ddcfd7c9ae0cbb3cfc4b3646b53a15a2",
+  "inlineSchema": "generator employeeClient {\n  provider = \"prisma-client-js\"\n  output   = \"../dist/generated/employee\"\n}\n\ndatasource employee {\n  provider = \"sqlserver\"\n  url      = env(\"EMPLOYEE_DATABASE_URL\")\n}\n\nmodel em_absensi {\n  Id        Int       @id(map: \"PK_em_absensi\") @default(autoincrement())\n  faceId    Int?\n  inDate    DateTime? @employee.DateTime\n  outDate   DateTime? @employee.DateTime\n  fileImage String?   @employee.NVarChar(255)\n}\n\nmodel em_apc_academy {\n  AcademyId          Int             @id(map: \"PK_em_apc_academy\") @default(autoincrement())\n  ApcId              Int\n  SchoolName         String?         @employee.NVarChar(Max)\n  Province           String?         @employee.NVarChar(Max)\n  Major              String?         @employee.NVarChar(50)\n  Degree             String?         @employee.NVarChar(50)\n  EnrollDate         DateTime?       @employee.Date\n  GraduatDate        DateTime?       @employee.Date\n  IPK                Float?\n  OrganizeExperience String?         @employee.VarChar(Max)\n  Explain            String?         @employee.VarChar(Max)\n  GradeSchool        String?         @employee.NVarChar(Max)\n  DailySchedule      String?         @employee.NVarChar(Max)\n  SchoolAddress      String?         @employee.NVarChar(Max)\n  em_apc_personal    em_apc_personal @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: \"FK_apc_academy\")\n}\n\nmodel em_apc_personal {\n  ApcId              Int                  @id(map: \"PK_em_applicant\") @default(autoincrement())\n  PossId             Int?\n  AboutUs            String?              @employee.NVarChar(Max)\n  FullName           String?              @employee.NVarChar(100)\n  NickName           String?              @employee.NVarChar(Max)\n  PlaceBirth         String?              @employee.NVarChar(Max)\n  DateBirth          DateTime?            @employee.Date\n  Age                Int?\n  Gender             Int?\n  Religion           Int?\n  MaritalStats       Int?\n  Citizenship        Int?\n  Province           Int?\n  Regency            Int?\n  Subdistrict        Int?\n  PostCode           String?              @employee.VarChar(10)\n  Address            String?              @employee.NVarChar(Max)\n  IdentityType       String?              @employee.NVarChar(15)\n  IdentityNumber     String?              @employee.NVarChar(20)\n  PhoneCode          Int?\n  PhoneNumber        String?              @employee.NVarChar(20)\n  EmailAddress       String?              @employee.NVarChar(50)\n  Height             Int?\n  Weight             Int?\n  FatherName         String?              @employee.NVarChar(100)\n  FatherOccupa       String?              @employee.NVarChar(100)\n  MotherName         String?              @employee.NVarChar(100)\n  MotherOccupa       String?              @employee.NVarChar(100)\n  NumofSibling       Int?\n  SiblingNote        String?              @employee.NVarChar(Max)\n  NikFileName        String?              @employee.NVarChar(255)\n  PhotoFileName      String?              @employee.NVarChar(255)\n  CvFileName         String?              @employee.NVarChar(255)\n  IsTransferPosst    String?              @employee.NVarChar(5)\n  Status             String?              @employee.VarChar(1)\n  CreatedAt          DateTime?            @employee.DateTime\n  isHobby            String?              @employee.VarChar(255)\n  LokCat             Int?\n  isSosmedId         Int?\n  isSosmed           String?              @employee.VarChar(50)\n  IsCall             Int?\n  DateCall           DateTime?            @employee.DateTime\n  isLinked           String?              @employee.VarChar(255)\n  PossName           String?              @employee.VarChar(100)\n  em_apc_academy     em_apc_academy[]\n  em_apc_photograph  em_apc_photograph[]\n  em_apc_regulation  em_apc_regulation[]\n  em_apc_skill_exper em_apc_skill_exper[]\n  em_applicant_match em_applicant_match[]\n}\n\nmodel em_apc_photograph {\n  Id              Int              @id(map: \"PK_em_apc_photograph\") @default(autoincrement())\n  ApcId           Int?\n  GenrName        String?          @employee.VarChar(50)\n  em_apc_personal em_apc_personal? @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: \"FK_em_apc_photograph_em_apc_personal\")\n}\n\nmodel em_apc_regulation {\n  ApcRegId        Int              @id(map: \"PK_em_apc_regulation\") @default(autoincrement())\n  ApcId           Int?\n  RegId           Int?\n  RegChoice       Boolean?\n  em_apc_personal em_apc_personal? @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: \"FK_apc_regulation\")\n}\n\nmodel em_apc_skill_exper {\n  SkillId          Int             @id(map: \"PK_em_apc_skill_exper\") @default(autoincrement())\n  ApcId            Int\n  CompanyName      String?         @employee.NVarChar(100)\n  Province         String?         @employee.NVarChar(100)\n  JobTitle         String?         @employee.NVarChar(50)\n  Salary           Float?\n  StartDate        DateTime?       @employee.Date\n  EndDate          DateTime?       @employee.Date\n  Responsibilities String?         @employee.NVarChar(Max)\n  CareerGoals      String?         @employee.NVarChar(Max)\n  WhyJoin          String?         @employee.NVarChar(Max)\n  IsFriend         String?         @employee.NVarChar(Max)\n  IsMentions       String?         @employee.NVarChar(Max)\n  IsCompProgram    String?         @employee.NVarChar(Max)\n  IsIllnes         String?         @employee.NVarChar(Max)\n  HaveCriminal     String?         @employee.NVarChar(Max)\n  WhenWork         String?         @employee.NVarChar(Max)\n  ExpectedSalary   Float?\n  isContribution   String?         @employee.NVarChar(Max)\n  isDuration       String?         @employee.VarChar(Max)\n  isAgency         String?         @employee.VarChar(Max)\n  isExprn          String?         @employee.VarChar(Max)\n  isGenre          String?         @employee.VarChar(Max)\n  isRelevan        String?         @employee.VarChar(Max)\n  isSpesialSkill   String?         @employee.VarChar(Max)\n  isShoot          String?         @employee.VarChar(Max)\n  isSchedl         String?         @employee.VarChar(Max)\n  isMotivation     String?         @employee.VarChar(Max)\n  isStress         String?         @employee.VarChar(Max)\n  isLongExpr       String?         @employee.VarChar(Max)\n  isPhotTools      String?         @employee.VarChar(Max)\n  isChalleng       String?         @employee.VarChar(Max)\n  isThreeYears     String?         @employee.NVarChar(Max)\n  PersonVal        String?         @employee.NVarChar(Max)\n  em_apc_personal  em_apc_personal @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: \"FK_apc_skill_exper\")\n}\n\nmodel em_api_keys {\n  id         Int      @id(map: \"PK__em_api_k__3213E83F067B1387\") @default(autoincrement())\n  username   String?  @employee.NVarChar(50)\n  api_key    String   @employee.VarChar(255)\n  created_at DateTime @employee.DateTime\n}\n\nmodel em_applicant_criteria {\n  id_kriteria    Int       @id(map: \"PK__em_appli__905F79A17236FB22\") @default(autoincrement())\n  id_loker       Int\n  jenis_kriteria String?   @employee.NVarChar(Max)\n  value          String?   @employee.NVarChar(Max)\n  value_en       String?   @employee.NVarChar(Max)\n  bobot          Float?\n  created_at     DateTime? @employee.Date\n  lastupdate     DateTime? @employee.DateTime\n  emposs         emposs    @relation(fields: [id_loker], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: \"em_applicant_criteria_emposs_FK\")\n}\n\nmodel em_applicant_match {\n  id_match         Int             @id(map: \"PK__em_appli__7E9B03CB9B8A362B\") @default(autoincrement())\n  id_applicant     Int\n  id_loker         Int\n  pendidikan_score Float?\n  jurusan_score    Float?\n  pengalaman_score Float?\n  skill_score      Float?\n  bahasa_score     Float?\n  usia_score       Float?\n  total_score      Float?\n  total_kriteria   Int?\n  scoring_json     String?         @employee.NVarChar(Max)\n  created_at       DateTime?       @employee.DateTime\n  em_apc_personal  em_apc_personal @relation(fields: [id_applicant], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: \"em_applicant_match_em_apc_personal_FK\")\n  emposs           emposs          @relation(fields: [id_loker], references: [Id], onUpdate: NoAction, map: \"em_applicant_match_emposs_FK\")\n}\n\nmodel em_banner {\n  Id          Int       @id(map: \"PK_em_banner\") @default(autoincrement())\n  bannerName  String?   @employee.NVarChar(50)\n  fileName    String?   @employee.NVarChar(255)\n  menuName    String?   @employee.NVarChar(255)\n  noUrut      Int?\n  Status      String?   @employee.Char(1)\n  created_at  DateTime? @employee.Date\n  last_update DateTime? @employee.DateTime\n  userid      String?   @employee.VarChar(5)\n}\n\nmodel em_career_contact {\n  cpId        Int       @id(map: \"PK_em_career_contact\") @default(autoincrement())\n  companyName String?   @employee.NVarChar(255)\n  email       String?   @employee.NVarChar(255)\n  waNumber    String?   @employee.VarChar(15)\n  fileImage   String?   @employee.NVarChar(50)\n  created_at  DateTime? @employee.Date\n  lastupdate  DateTime? @employee.DateTime\n  userid      String?   @employee.VarChar(5)\n}\n\nmodel em_certificate_fields {\n  id                       Int                      @default(autoincrement())\n  certificate_id           Int\n  is_text                  String                   @employee.NVarChar(Max)\n  is_left                  Float\n  is_top                   Float\n  text_width               Float\n  text_height              Float\n  font_size                Int\n  align                    String                   @employee.VarChar(20)\n  font_family              String                   @employee.VarChar(100)\n  font_style               String?                  @employee.VarChar(20)\n  font_weight              String?                  @employee.VarChar(50)\n  font_color               String?                  @employee.VarChar(50)\n  created_date             DateTime?                @employee.Date\n  lastupdate               DateTime?                @employee.DateTime\n  em_certificate_templates em_certificate_templates @relation(fields: [certificate_id], references: [certificate_id], onDelete: Cascade, onUpdate: NoAction, map: \"em_certificate_fields_em_certificate_templates_FK\")\n\n  @@id([id, certificate_id], map: \"PK__em_certi__3213E83F0976BA73\")\n}\n\nmodel em_certificate_templates {\n  certificate_id        Int                     @id(map: \"PK__em_certi__E2256D31A1F6B5B8\") @default(autoincrement())\n  name                  String?                 @employee.NVarChar(255)\n  background_image      String?                 @employee.NVarChar(255)\n  created_at            DateTime?               @employee.Date\n  certificate_name      String?                 @employee.VarChar(255)\n  lastupdate            DateTime?               @employee.DateTime\n  em_certificate_fields em_certificate_fields[]\n}\n\nmodel em_certificates_result {\n  cert_number   String    @id(map: \"PK__em_certi__3213E83F5F6E1388\") @employee.VarChar(50)\n  cert_templ_id Int\n  empl_id       Int\n  cert_name     String    @employee.VarChar(255)\n  created_date  DateTime? @employee.DateTime\n  status        String?   @employee.VarChar(1)\n  generated_by  String?   @employee.VarChar(5)\n  schedule_id   Int?\n}\n\nmodel em_chance {\n  chId         Int       @id(map: \"PK_em_chance\") @default(autoincrement())\n  chName       String?   @employee.NVarChar(100)\n  chDesc       String?   @employee.NVarChar(255)\n  chStats      String?   @employee.NVarChar(1)\n  chFileImage  String?   @employee.NVarChar(100)\n  chLink       String?   @employee.NVarChar(Max)\n  chUserid     String?   @employee.VarChar(5)\n  chDate       DateTime? @employee.Date\n  chLastupdate DateTime? @employee.DateTime\n}\n\nmodel em_contrctype {\n  id            Int       @id(map: \"PK__em_contr__3213E83F8C0062B4\") @default(autoincrement())\n  contract_text String    @employee.NVarChar(Max)\n  status        String?   @employee.NVarChar(1)\n  lastupdate    DateTime? @employee.DateTime\n}\n\nmodel em_dept {\n  DEPTID     Int       @id(map: \"PK_em_dept\") @default(autoincrement())\n  DEPTNAME   String?   @employee.VarChar(30)\n  sbu_sub    Int?\n  status     String?   @employee.VarChar(1)\n  add_by     String?   @employee.VarChar(5)\n  created_at DateTime? @employee.Date\n  lastupdate DateTime? @employee.DateTime\n}\n\nmodel em_employee {\n  UserId       Int       @id(map: \"PK_em_employee\") @default(autoincrement())\n  BadgeNum     String    @employee.VarChar(24)\n  Name         String?   @employee.VarChar(40)\n  Gender       String?   @employee.VarChar(8)\n  BirthDay     DateTime? @employee.DateTime\n  HireDay      DateTime? @employee.DateTime\n  Street       String?   @employee.VarChar(255)\n  Religion     String?   @employee.VarChar(50)\n  Tipe         String?   @employee.VarChar(50)\n  isLokasi     String?   @employee.VarChar(100)\n  Phone        String?   @employee.VarChar(20)\n  DeptId       Int?      @employee.SmallInt\n  Password     String?   @employee.NVarChar(255)\n  CardNo       String?   @employee.VarChar(20)\n  Shift        Int?\n  isMem        Boolean?\n  AddBy        String?   @employee.VarChar(5)\n  Created_at   DateTime? @employee.DateTime\n  Lastupdate   DateTime? @employee.DateTime\n  isMemDate    DateTime? @employee.DateTime\n  isFirstLogin Int?\n  ImgName      String?   @employee.VarChar(255)\n  SbuSub       Int?\n  Nik          String?   @employee.VarChar(20)\n  ResignDate   DateTime? @employee.DateTime\n  status       String?   @employee.VarChar(1)\n}\n\nmodel em_event {\n  event_id     Int         @id(map: \"PK_em_event\") @default(autoincrement())\n  event_name   String?     @employee.VarChar(255)\n  start_date   DateTime?   @employee.DateTime\n  end_date     DateTime?   @employee.DateTime\n  status       String?     @employee.VarChar(1)\n  lokasi       String?     @employee.VarChar(255)\n  created_date DateTime?   @employee.Date\n  last_update  DateTime?   @employee.DateTime\n  em_event2    em_event2[]\n}\n\nmodel em_event_reg {\n  Regid        Int       @id(map: \"PK_em_event_reg\") @default(autoincrement())\n  name         String?   @employee.NVarChar(255)\n  optic_name   String?   @employee.NVarChar(255)\n  password     String?   @employee.NVarChar(255)\n  wa_num       String?   @employee.VarChar(15)\n  email        String?   @employee.VarChar(100)\n  profesi_id   Int?\n  event_id     Int?\n  status       String?   @employee.VarChar(1)\n  first_login  Boolean?\n  created_date DateTime? @employee.Date\n  last_update  DateTime? @employee.DateTime\n  image_name   String?   @employee.VarChar(255)\n}\n\nmodel em_event2 {\n  sess_id    Int       @id(map: \"PK_em_event_2\") @default(autoincrement())\n  event_id   Int?\n  event_name String?   @employee.NVarChar(255)\n  status     String?   @employee.VarChar(1)\n  qr_code    String?   @employee.VarChar(255)\n  em_event   em_event? @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction, map: \"em_event2_em_event_FK\")\n}\n\nmodel em_exam_questions {\n  id          Int @id(map: \"PK__em_exam___3213E83F5B2151F1\") @default(autoincrement())\n  exam_id     Int\n  question_id Int\n}\n\nmodel em_exams {\n  id          Int           @id(map: \"PK__em_exams__3213E83F77609F07\") @default(autoincrement())\n  exam_name   String        @employee.NVarChar(100)\n  UserId      String?       @employee.VarChar(5)\n  Status      String?       @employee.VarChar(1)\n  LastUpdate  DateTime?     @employee.DateTime\n  Deskripsi   String?       @employee.NVarChar(Max)\n  FileImage   String?       @employee.VarChar(255)\n  CatType     String?       @employee.VarChar(1)\n  em_loktopik em_loktopik[]\n  scores      scores[]\n}\n\nmodel em_exams_monitor {\n  Id          BigInt    @id(map: \"PK_em_exams_monitor\") @default(autoincrement())\n  schedule_id Int?\n  exams_id    String?   @employee.NVarChar(50)\n  empl_id     Int?\n  tipe_soal   String?   @employee.NVarChar(10)\n  jumlah_soal Int?\n  status      String?   @employee.VarChar(1)\n  created_at  DateTime? @employee.DateTime\n}\n\nmodel em_exams_results {\n  Id         Int       @id(map: \"PK_em_exams_results\") @default(autoincrement())\n  exams_id   String?   @employee.NVarChar(50)\n  empl_id    Int?\n  soal_id    Int?\n  is_changes Int?\n  is_answer  String?   @employee.NVarChar(Max)\n  is_time    DateTime? @employee.DateTime\n}\n\n/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.\nmodel em_faces {\n  Id         Int       @default(autoincrement())\n  name       String?   @employee.NVarChar(100)\n  filename   String?   @employee.NVarChar(100)\n  descriptor String?   @employee.NVarChar(1)\n  pose       String?   @employee.NVarChar(15)\n  create_at  DateTime? @employee.Date\n  lastupdate DateTime? @employee.DateTime\n\n  @@ignore\n}\n\nmodel em_faq {\n  fqId        Int         @id(map: \"PK_em_faq\") @default(autoincrement())\n  fqcatid     Int?\n  isquestions String?     @employee.NVarChar(Max)\n  isanswer    String?     @employee.NVarChar(Max)\n  status      String?     @employee.NVarChar(1)\n  created_at  DateTime?   @employee.Date\n  lastupdate  DateTime?   @employee.DateTime\n  userid      String?     @employee.VarChar(5)\n  em_faq_cat  em_faq_cat? @relation(fields: [fqcatid], references: [fqcatid], onDelete: Cascade, onUpdate: NoAction, map: \"FK_em_faq_em_faq_cat\")\n}\n\nmodel em_faq_cat {\n  fqcatid    Int       @id(map: \"PK_em_faq_cat\") @default(autoincrement())\n  name       String?   @employee.NVarChar(255)\n  status     String?   @employee.NVarChar(1)\n  created_at DateTime? @employee.Date\n  lastupdate DateTime? @employee.DateTime\n  em_faq     em_faq[]\n}\n\nmodel em_galeri_materi {\n  id           Int       @id(map: \"PK__em_galer__3213E83F4F8794D4\") @default(autoincrement())\n  title        String    @employee.VarChar(255)\n  file_type    Int\n  file_name    String?   @employee.VarChar(500)\n  file_size    Float?\n  url          String?   @employee.VarChar(500)\n  urutan       Int?\n  status       String?   @employee.VarChar(1)\n  created_date DateTime? @employee.Date\n  last_update  DateTime? @employee.DateTime\n}\n\nmodel em_group {\n  GroupId    Int       @id(map: \"PK_em_role\") @default(autoincrement())\n  GroupName  String?   @employee.VarChar(50)\n  Status     String?   @employee.VarChar(1)\n  CreateDate DateTime? @employee.Date\n  LastUpdate DateTime? @employee.DateTime\n}\n\nmodel em_hero_section {\n  hsId         Int       @id(map: \"PK_em_hero_section\") @default(autoincrement())\n  hsName       String?   @employee.NVarChar(100)\n  hsDesc       String?   @employee.NVarChar(255)\n  hsStats      String?   @employee.NVarChar(1)\n  hsFileImage  String?   @employee.NVarChar(100)\n  hsLink       String?   @employee.NVarChar(Max)\n  hsUserid     String?   @employee.VarChar(5)\n  hsDate       DateTime? @employee.Date\n  hsLastupdate DateTime? @employee.DateTime\n  Urutan       Int?\n}\n\nmodel em_jawaban_peserta {\n  Id               Int              @default(autoincrement())\n  empl_id          Int\n  soal_id          Int\n  session_exams_id String           @employee.NVarChar(50)\n  jawaban          String?          @employee.NVarChar(Max)\n  jawaban2         String?          @employee.NVarChar(Max)\n  waktu_jawab      DateTime?        @employee.DateTime\n  Score            Float?\n  is_correction    Int?\n  is_train_jawaban Boolean?\n  em_session_exams em_session_exams @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: \"fk_sessiujianid\")\n\n  @@id([Id, empl_id, soal_id, session_exams_id], map: \"PK_em_jawaban_peserta\")\n}\n\nmodel em_jawaban_peserta_apc {\n  Id                   Int                  @id(map: \"PK_em_jawaban_peserta_apc_1\") @default(autoincrement())\n  apc_id               Int\n  soal_id              Int\n  topic_id             Int\n  session_exams_id     String               @employee.NVarChar(50)\n  jawaban_option       String?              @employee.NVarChar(Max)\n  jawaban_text         String?              @employee.NVarChar(Max)\n  waktu_jawab          DateTime?            @employee.DateTime\n  score                Float?\n  is_correction        Boolean?\n  is_train_jawaban     Boolean?\n  em_session_exams_apc em_session_exams_apc @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: \"em_jawaban_peserta_apc_em_session_exams_apc_FK\")\n}\n\nmodel em_jobfair {\n  id         Int       @id(map: \"PK__em_jobfa__3213E83F30C4BB76\") @default(autoincrement())\n  lokasi     String    @employee.NVarChar(100)\n  status     String?   @employee.NVarChar(1)\n  lastupdate DateTime? @employee.DateTime\n}\n\nmodel em_levelposs {\n  id         Int       @id(map: \"PK__em_level__3213E83F4D185232\") @default(autoincrement())\n  level_text String    @employee.NVarChar(Max)\n  status     String?   @employee.NVarChar(1)\n  lastupdate DateTime? @employee.DateTime\n}\n\nmodel em_logs {\n  Id         Int       @id(map: \"PK_em_logs\") @default(autoincrement())\n  IP         String?   @employee.NVarChar(25)\n  Login      DateTime? @employee.DateTime\n  Logout     DateTime? @employee.DateTime\n  UserId     String?   @employee.VarChar(16)\n  LogId      Int?\n  Notes      String?   @employee.NVarChar(Max)\n  LastUpdate DateTime? @employee.DateTime\n}\n\n/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.\nmodel em_lok_category {\n  Id        Int\n  LokName   String?   @employee.VarChar(255)\n  Status    String?   @employee.VarChar(1)\n  CreatedAt DateTime? @employee.DateTime\n\n  @@ignore\n}\n\nmodel em_loker {\n  lokerid     Int           @id(map: \"PK__em_loker__1BD11A901CAD3789\") @default(autoincrement())\n  possid      Int\n  startdate   DateTime?     @employee.DateTime\n  enddate     DateTime?     @employee.DateTime\n  jobdesc     String?       @employee.NVarChar(Max)\n  qualify     String?       @employee.NVarChar(Max)\n  worktype    String?       @employee.NVarChar(50)\n  salary      String?       @employee.NVarChar(255)\n  contrtype   String?       @employee.NVarChar(50)\n  posslevel   String?       @employee.NVarChar(50)\n  status      String?       @employee.NVarChar(1)\n  benefit     String?       @employee.NVarChar(Max)\n  fileimage   String?       @employee.NVarChar(255)\n  createdate  DateTime?     @employee.DateTime\n  lastupdate  DateTime?     @employee.DateTime\n  userid      String?       @employee.VarChar(5)\n  kategori    Int?\n  em_loktopik em_loktopik[]\n\n  @@index([enddate], map: \"IX_em_loker_enddate\")\n  @@index([possid], map: \"IX_em_loker_jobsid\")\n}\n\nmodel em_loktopik {\n  id         Int       @id(map: \"PK__em_lokto__3213E83F197A72F3\") @default(autoincrement())\n  loker_id   Int\n  topik_id   Int\n  jmlh_soal  Int\n  created_at DateTime? @employee.DateTime\n  possid     Int?\n  urutan     Int?\n  em_loker   em_loker  @relation(fields: [loker_id], references: [lokerid], onUpdate: NoAction, map: \"FK__em_loktop__loker__7BE56230\")\n  em_exams   em_exams  @relation(fields: [topik_id], references: [id], onUpdate: NoAction, map: \"FK__em_loktop__topik__7CD98669\")\n}\n\nmodel em_materi_file {\n  id         Int        @id(map: \"PK__em_mater__3213E83F14F770FA\") @default(autoincrement())\n  materi_id  Int\n  file_name  String     @employee.VarChar(255)\n  file_type  Int\n  file_size  Float?\n  url        String?    @employee.NVarChar(Max)\n  urutan     Int?\n  judul      String?    @employee.NVarChar(Max)\n  created_at DateTime?  @employee.DateTime\n  updated_at DateTime?  @employee.DateTime\n  galeri_id  Int?\n  em_materi1 em_materi1 @relation(fields: [materi_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: \"fk_materi\")\n}\n\nmodel em_materi_kategori {\n  id                 Int       @id(map: \"PK__em_mater__3213E83F845CFE3F\") @default(autoincrement())\n  kategori_nama      String    @employee.VarChar(100)\n  kategori_deskripsi String?   @employee.VarChar(255)\n  is_active          Boolean?\n  created_at         DateTime? @employee.DateTime\n}\n\nmodel em_materi_type {\n  id          Int          @id(map: \"PK__em_mater__3213E83F9DBE4814\") @default(autoincrement())\n  materi_name String       @employee.VarChar(150)\n  deskripsi   String?      @employee.Text\n  status      String?      @employee.VarChar(1)\n  created_at  DateTime     @employee.DateTime\n  created_by  String?      @employee.VarChar(5)\n  lastupdate  DateTime?    @employee.DateTime\n  em_materi2  em_materi2[]\n}\n\nmodel em_materi1 {\n  id               Int              @id(map: \"PK__em_mater__3213E83F02CE3D92\") @default(autoincrement())\n  kode_materi      String           @employee.VarChar(50)\n  judul_materi     String           @employee.VarChar(255)\n  deskripsi_materi String?          @employee.NVarChar(Max)\n  kategori         Int?\n  urutan           Int\n  is_required      Boolean\n  status           String?          @employee.VarChar(1)\n  created_by       String?          @employee.VarChar(5)\n  created_at       DateTime         @employee.DateTime\n  lastupdate       DateTime?        @employee.DateTime\n  em_materi_file   em_materi_file[]\n  em_materi2       em_materi2[]\n}\n\nmodel em_materi2 {\n  id             Int            @id(map: \"PK__em_mater__3213E83F08951080\") @default(autoincrement())\n  materi_id      Int\n  materi_type    Int\n  em_materi_type em_materi_type @relation(fields: [materi_type], references: [id], onDelete: Cascade, onUpdate: NoAction, map: \"fk_materi_type2\")\n  em_materi1     em_materi1     @relation(fields: [materi_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: \"fk_materi2\")\n}\n\nmodel em_menu {\n  id         Int       @default(autoincrement())\n  menuid     String    @employee.VarChar(10)\n  name       String    @employee.VarChar(100)\n  parent_id  String?   @employee.NVarChar(6)\n  link       String?   @employee.VarChar(200)\n  visible    Boolean\n  status     String?   @employee.NChar(1)\n  lastupdate DateTime? @employee.DateTime\n  icon       String?   @employee.VarChar(100)\n  menutype   String?   @employee.VarChar(1)\n\n  @@id([id, menuid], map: \"PK_em_menu\")\n}\n\nmodel em_notifikasi {\n  NotifyId   Int       @id(map: \"PK_em_notifikasi\") @default(autoincrement())\n  UserId     Int?\n  GroupId    Int?\n  Note       String?   @employee.VarChar(Max)\n  Status     String?   @employee.VarChar(1)\n  CreateDate DateTime? @employee.DateTime\n  LastUpdate DateTime? @employee.DateTime\n}\n\nmodel em_notifikasi_read {\n  ReadId   Int       @id(map: \"PK_em_notifikasi_read\") @default(autoincrement())\n  NotifyId Int?\n  UserId   Int?\n  ReadDate DateTime? @employee.DateTime\n}\n\nmodel em_onboarding {\n  id           Int       @id(map: \"PK__em_onboa__3213E83FC73BD233\") @default(autoincrement())\n  user_id      Int\n  status       String?   @employee.VarChar(20)\n  current_step Int?\n  created_at   DateTime? @employee.DateTime\n  updated_at   DateTime? @employee.DateTime\n}\n\nmodel em_pilar {\n  id          Int       @id(map: \"PK__em_pilar__3213E83F399C32B6\") @default(autoincrement())\n  pilar_name  String    @employee.NVarChar(255)\n  status      String    @employee.NVarChar(1)\n  add_by      String?   @employee.VarChar(5)\n  created_at  DateTime? @employee.Date\n  lastupdate  DateTime? @employee.DateTime\n  createdAt   DateTime?\n  createdBy   String?   @employee.NVarChar(20)\n  updatedAt   DateTime?\n  updatedBy   String?   @employee.NVarChar(20)\n  isDeleted   Boolean?\n  deletedAt   DateTime?\n  deletedBy   String?   @employee.NVarChar(20)\n  description String?   @employee.NVarChar(255)\n}\n\nmodel em_profesi {\n  profesi_id   Int       @id(map: \"PK_em_profesi\") @default(autoincrement())\n  profesi_name String?   @employee.VarChar(255)\n  status       String?   @employee.VarChar(1)\n  created_date DateTime? @employee.Date\n  last_update  DateTime? @employee.DateTime\n}\n\nmodel em_questions1 {\n  id              Int             @id(map: \"PK__em_quest__3213E83F98AF5B47\") @default(autoincrement())\n  question_text   String          @employee.NVarChar(Max)\n  question_type   Int?\n  correct_answer  String?         @employee.NVarChar(Max)\n  correct_answer2 String?         @employee.NVarChar(Max)\n  exam_id         Int?\n  time_limit      Int\n  score           Float\n  status          String?         @employee.NVarChar(1)\n  userid          String?         @employee.VarChar(5)\n  qdate           DateTime?       @employee.DateTime\n  lastupdate      DateTime?       @employee.DateTime\n  fileimage       String?         @employee.VarChar(100)\n  isExams         String?         @employee.VarChar(1)\n  isLevel         Int?\n  em_questions2   em_questions2[]\n}\n\nmodel em_questions2 {\n  Id             BigInt        @default(autoincrement())\n  question_id    Int\n  option_choices String        @employee.VarChar(1)\n  option_text    String        @employee.NVarChar(Max)\n  em_questions1  em_questions1 @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: \"fk_questions1_id\")\n\n  @@id([Id, question_id, option_choices], map: \"PK_em_questions2\")\n  @@index([question_id], map: \"IX_em_questions2\")\n}\n\nmodel em_questtype {\n  Id       Int     @id(map: \"PK_em_questtype\") @default(autoincrement())\n  TypeName String? @employee.NVarChar(50)\n  Status   String? @employee.NVarChar(1)\n}\n\nmodel em_regulations {\n  Id         Int       @id(map: \"PK_em_regulations\") @default(autoincrement())\n  chanceId   Int?\n  regName    String?   @employee.NVarChar(Max)\n  urut       Int?\n  status     String?   @employee.NVarChar(1)\n  userid     String?   @employee.VarChar(5)\n  createDate DateTime? @employee.Date\n  lastUpdate DateTime? @employee.DateTime\n}\n\nmodel em_sbu {\n  id         Int       @default(autoincrement())\n  sbu_code   String    @employee.NVarChar(50)\n  sbu_name   String    @employee.NVarChar(255)\n  sbu_pilar  Int?\n  status     String    @employee.NVarChar(1)\n  add_by     String?   @employee.VarChar(5)\n  created_at DateTime? @employee.Date\n  lastupdate DateTime? @employee.DateTime\n  createdAt  DateTime?\n  createdBy  String?   @employee.NVarChar(20)\n  updatedAt  DateTime?\n  updatedBy  String?   @employee.NVarChar(20)\n  isDeleted  Boolean\n  deletedAt  DateTime?\n  deletedBy  String?   @employee.NVarChar(20)\n\n  @@id([id, sbu_code], map: \"PK_em_sbu\")\n}\n\nmodel em_sbu_sub {\n  id           Int       @id(map: \"PK__em_sbu_s__3213E83F381656E4\") @default(autoincrement())\n  sbu_sub_code String    @employee.NVarChar(50)\n  sbu_sub_name String    @employee.NVarChar(255)\n  sbu_id       Int?\n  sbu_pilar    Int?\n  status       String    @employee.NVarChar(1)\n  add_by       String?   @employee.VarChar(5)\n  created_at   DateTime? @employee.Date\n  lastupdate   DateTime? @employee.DateTime\n  createdAt    DateTime?\n  createdBy    String?   @employee.NVarChar(20)\n  updatedAt    DateTime?\n  updatedBy    String?   @employee.NVarChar(20)\n  isDeleted    Boolean\n  deletedAt    DateTime?\n  deletedBy    String?   @employee.NVarChar(20)\n}\n\nmodel em_schedule1 {\n  Id             Int            @id(map: \"PK_em_schedule1\") @default(autoincrement())\n  scheName       String?        @employee.NVarChar(255)\n  scheDeskripsi  String?        @employee.NVarChar(Max)\n  isMateri       Int?\n  isQuota        Int?\n  startDate      DateTime?      @employee.Date\n  endDate        DateTime?      @employee.Date\n  startTime      String?        @employee.VarChar(5)\n  endTime        String?        @employee.VarChar(5)\n  isLokasi       String?        @employee.NVarChar(255)\n  isTrainer      String?        @employee.NVarChar(255)\n  status         String?        @employee.Char(1)\n  created_at     DateTime?      @employee.DateTime\n  lastupdate     DateTime?      @employee.DateTime\n  sendWA         Int?\n  ujian_stats    String?        @employee.VarChar(1)\n  is_with_soal   String?        @employee.VarChar(1)\n  usr_by         String?        @employee.VarChar(5)\n  is_wa_template Int?\n  is_batch       String?        @employee.VarChar(3)\n  event_id       Int?\n  em_schedule2   em_schedule2[]\n  em_schedule3   em_schedule3[]\n  em_schedule4   em_schedule4[]\n}\n\nmodel em_schedule2 {\n  Id               Int           @id(map: \"PK_em_schedule2\") @default(autoincrement())\n  scheduleId       Int?\n  employeeId       Int?\n  Regid            String?       @employee.VarChar(16)\n  is_send_wa_stats Int?\n  send_date        DateTime?     @employee.DateTime\n  is_code_send     String?       @employee.VarChar(100)\n  em_schedule1     em_schedule1? @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: \"FK_schedule2_schedule1\")\n\n  @@index([employeeId], map: \"idx_empl_id\")\n  @@index([scheduleId], map: \"idx_scheduleid\")\n}\n\nmodel em_schedule3 {\n  Id             Int          @id(map: \"PK_em_schedule3\") @default(autoincrement())\n  scheduleId     Int\n  soalId         Int\n  urutanSoal     Int\n  materiId       Int\n  urutanTipeSoal Int\n  tipeSoal       Int\n  em_schedule1   em_schedule1 @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: \"FK_schedule3_schedule1\")\n\n  @@index([scheduleId], map: \"idx_scheduleid\")\n  @@index([soalId], map: \"idx_soal_id\")\n}\n\nmodel em_schedule4 {\n  Id            Int           @id(map: \"PK_em_schedule4\") @default(autoincrement())\n  scheduleId    Int?\n  tipeSoal      Int?\n  jumlahSoal    Float?\n  durasiPerTipe Int?\n  em_schedule1  em_schedule1? @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: \"FK_schedule4_schedule1\")\n\n  @@index([scheduleId], map: \"idx_scheduleid\")\n}\n\nmodel em_session_exams {\n  Id                 Int                  @id(map: \"PK_em_session_exams\") @default(autoincrement())\n  schedule_id        Int?\n  exams_id           String?              @unique(map: \"UQ__em_sessi__88BA23E5F000BF47\") @employee.NVarChar(50)\n  empl_id            Int?\n  soal_urut          String?              @employee.NVarChar(Max)\n  start_time         DateTime?            @employee.DateTime\n  end_time           DateTime?            @employee.DateTime\n  is_selesai         String?              @employee.VarChar(1)\n  is_token           String?              @employee.NVarChar(Max)\n  is_token_expr      DateTime?            @employee.DateTime\n  durasi             Int?\n  is_correct         Int?\n  is_notes           String?              @employee.NVarChar(Max)\n  is_score_akhir     Float?\n  em_jawaban_peserta em_jawaban_peserta[]\n\n  @@index([empl_id], map: \"idx_empl_id\")\n  @@index([schedule_id], map: \"idx_scheduleid\")\n}\n\nmodel em_session_exams_apc {\n  Id                     Int                      @id(map: \"PK_em_session_exams_apc_1\") @default(autoincrement())\n  lokerid                Int\n  exams_id               String                   @unique(map: \"em_session_exams_apc_unique\") @employee.NVarChar(50)\n  apcid                  Int\n  soal_urut              String?                  @employee.NVarChar(Max)\n  start_time             DateTime?                @employee.DateTime\n  end_time               DateTime?                @employee.DateTime\n  is_selesai             String?                  @employee.VarChar(1)\n  is_token               String?                  @employee.NVarChar(Max)\n  is_token_expr          DateTime?                @employee.DateTime\n  durasi                 Int?\n  is_correct             Int?\n  is_notes               String?                  @employee.NVarChar(Max)\n  is_score_akhir         Float?\n  curr_topic_index       Int?\n  curr_soal_index        Int?\n  is_intro_topic         Boolean?\n  is_jawaban_kosong      Int?\n  em_jawaban_peserta_apc em_jawaban_peserta_apc[]\n  em_topic_selesai       em_topic_selesai[]\n}\n\nmodel em_subscribe {\n  Id         Int       @id(map: \"PK_em_subscribe\") @default(autoincrement())\n  UserId     String?   @employee.NVarChar(5)\n  Name       String?   @employee.NVarChar(50)\n  Status     String?   @employee.NVarChar(1)\n  Endpoint   String?   @employee.NVarChar(Max)\n  P256dh     String?   @employee.NVarChar(Max)\n  Auth       String?   @employee.NVarChar(Max)\n  Created_at DateTime? @employee.Date\n  LastUpdate DateTime? @employee.DateTime\n}\n\nmodel em_subscription {\n  Id           Int       @id(map: \"PK_em_subscription\") @default(autoincrement())\n  username     String    @employee.VarChar(50)\n  subscription String?   @employee.NVarChar(Max)\n  status       String?   @employee.VarChar(1)\n  createdat    DateTime? @employee.DateTime\n}\n\nmodel em_topic_selesai {\n  id                   Int                  @id(map: \"PK__em_topic__3213E83FCAD82D0E\") @default(autoincrement())\n  session_exams_id     String               @employee.NVarChar(50)\n  apc_id               Int\n  topic_id             Int\n  selesai_at           DateTime?            @employee.DateTime\n  em_session_exams_apc em_session_exams_apc @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: \"em_topic_selesai_em_session_exams_apc_FK\")\n}\n\nmodel em_user_answers1 {\n  Id               Int                @id(map: \"PK__em_user___3214EC075E2971FF\") @default(autoincrement())\n  apcid            Int\n  topic_id         Int\n  status           String?            @employee.NVarChar(1)\n  startdate        DateTime?          @employee.DateTime\n  em_user_answers2 em_user_answers2[] @ignore\n}\n\n/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.\nmodel em_user_answers2 {\n  Id               Int\n  question_id      Int\n  answer           String?          @employee.NVarChar(Max)\n  istime           Int?\n  created_at       DateTime?        @employee.DateTime\n  Score            Float?\n  em_user_answers1 em_user_answers1 @relation(fields: [Id], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: \"em_user_answers2_em_user_answers1_FK\")\n\n  @@ignore\n}\n\nmodel em_user_dashboard {\n  UserId     Int       @id(map: \"PK_em_user_dashboard\") @default(autoincrement())\n  Username   String    @employee.VarChar(50)\n  Password   String    @employee.NVarChar(255)\n  FullName   String?   @employee.VarChar(255)\n  RoleId     Int?\n  Status     String?   @employee.VarChar(1)\n  CreateDate DateTime? @employee.Date\n  LastUpdate DateTime? @employee.DateTime\n  GroupId    Int?\n}\n\nmodel em_user_list {\n  id         Int       @id(map: \"PK__em_user___3213E83FFFACF240\") @default(autoincrement())\n  userid     String    @employee.VarChar(5)\n  menuid     Int?\n  visible    Boolean\n  lastupdate DateTime? @employee.DateTime\n}\n\nmodel em_users {\n  Id               Int       @default(autoincrement())\n  UserId           String    @employee.VarChar(3)\n  Username         String    @employee.NVarChar(Max)\n  Password         String    @employee.NVarChar(Max)\n  LastUpdate       DateTime? @employee.DateTime\n  LevelId          Int?\n  Name             String    @employee.VarChar(255)\n  Status           String?   @employee.VarChar(1)\n  imagename        String?   @employee.VarChar(100)\n  Pass_Access_Menu String?   @employee.NVarChar(255)\n\n  @@id([Id, UserId], map: \"PK__em_users__1788CC4C739C2478\")\n}\n\nmodel em_verify_links {\n  id           Int       @id(map: \"PK__em_verif__3213E83F15F1A2A1\") @default(autoincrement())\n  applicant_id Int\n  token        String?   @employee.NVarChar(100)\n  expires_at   DateTime  @employee.DateTime\n  created_at   DateTime? @employee.DateTime\n  status       String?   @employee.NVarChar(1)\n  useragent    String?   @employee.NVarChar(255)\n  ipaddress    String?   @employee.VarChar(100)\n  browser      String?   @employee.VarChar(100)\n  platform     String?   @employee.VarChar(100)\n  device       String?   @employee.VarChar(100)\n}\n\nmodel em_wa_templates {\n  id            Int       @id(map: \"PK__em_wa_te__3213E83F3327E607\") @default(autoincrement())\n  template_name String    @employee.VarChar(100)\n  template_text String    @employee.NVarChar(Max)\n  add_by        String?   @employee.VarChar(5)\n  created_at    DateTime? @employee.Date\n  lastupdate    DateTime? @employee.DateTime\n  status        String?   @employee.VarChar(1)\n  tpfor         Int?\n}\n\nmodel em_worktype {\n  id            Int       @id(map: \"PK__em_workt__3213E83FF0530D6D\") @default(autoincrement())\n  worktype_text String    @employee.NVarChar(Max)\n  status        String?   @employee.NVarChar(1)\n  lastupdate    DateTime? @employee.DateTime\n}\n\nmodel em_xquetest {\n  ID            Int    @id(map: \"PK_em_xquetest\") @default(autoincrement())\n  q_id          Int\n  question_text String @employee.NVarChar(Max)\n}\n\nmodel emapp {\n  AppId         Int       @id(map: \"PK_emapp\") @default(autoincrement())\n  AppName       String?   @employee.VarChar(255)\n  AppPoss       Int?\n  AppWa         String?   @employee.VarChar(100)\n  AppMail       String?   @employee.VarChar(100)\n  AppAge        Int?\n  AppJk         Int?\n  AppAddres     String?   @employee.VarChar(500)\n  AppFakt       String?   @employee.VarChar(255)\n  AppFileName   String?   @employee.VarChar(255)\n  AppLastUpdate DateTime? @employee.DateTime\n  AppDate       DateTime? @employee.DateTime\n  AppStatus     String?   @employee.VarChar(100)\n  IsCall        Int?\n  DateCall      DateTime? @employee.DateTime\n  JobsIs        String?   @employee.VarChar(255)\n  JFStats       String?   @employee.VarChar(100)\n  LokasiId      Int?\n  scores        scores[]\n}\n\nmodel empassw {\n  Id    Int     @id(map: \"PK_empassw\") @default(autoincrement())\n  Name  String? @employee.NVarChar(50)\n  Pass  String? @employee.NVarChar(50)\n  Level Int?\n}\n\nmodel emposs {\n  Id                    Int                     @id(map: \"PK_emposs\") @default(autoincrement())\n  PossName              String?                 @employee.VarChar(100)\n  Status                String?                 @employee.VarChar(1)\n  UserId                String?                 @employee.VarChar(3)\n  LastUpdate            DateTime?               @employee.DateTime\n  em_applicant_criteria em_applicant_criteria[]\n  em_applicant_match    em_applicant_match[]\n}\n\nmodel faceusers {\n  Id         Int       @id(map: \"PK__faceuser__3214EC07C529469B\") @default(autoincrement())\n  name       String?   @employee.NVarChar(100)\n  fileimage  String?   @employee.NVarChar(255)\n  descriptor String?   @employee.NVarChar(Max)\n  pose       String?   @employee.NVarChar(15)\n  created_at DateTime? @employee.DateTime\n  lastupdate DateTime? @employee.DateTime\n}\n\nmodel menu {\n  id        Int     @id(map: \"PK__menu__3213E83FED7D2BB0\") @default(autoincrement())\n  name      String  @employee.VarChar(100)\n  parent_id Int?\n  link      String? @employee.VarChar(200)\n  visible   Boolean\n  role      String? @employee.VarChar(50)\n}\n\nmodel scores {\n  id          Int       @id(map: \"PK__scores__3213E83F04C8B8CB\") @default(autoincrement())\n  exam_id     Int\n  user_id     Int\n  total_score Int\n  created_at  DateTime? @employee.DateTime\n  em_exams    em_exams  @relation(fields: [exam_id], references: [id], onUpdate: NoAction, map: \"FK__scores__exam_id__71D1E811\")\n  emapp       emapp     @relation(fields: [user_id], references: [AppId], onUpdate: NoAction, map: \"FK__scores__user_id__72C60C4A\")\n}\n\nmodel sysdiagrams {\n  name         String @employee.NVarChar(128)\n  principal_id Int\n  diagram_id   Int    @id(map: \"PK__sysdiagr__C2B05B6131AF5DEF\") @default(autoincrement())\n  version      Int?\n  definition   Bytes?\n\n  @@unique([principal_id, name], map: \"UK_principal_name\")\n}\n",
+  "inlineSchemaHash": "8cb2f27b35bbef9e5116d49ea2c443a10c135d4d9884a83dc87657a1e304ff1d",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"em_absensi\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"faceId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"inDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"outDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fileImage\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_apc_academy\":{\"fields\":[{\"name\":\"AcademyId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ApcId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"SchoolName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Province\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Major\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Degree\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"EnrollDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"GraduatDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"IPK\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"OrganizeExperience\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Explain\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"GradeSchool\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"DailySchedule\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"SchoolAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_apc_personal\",\"kind\":\"object\",\"type\":\"em_apc_personal\",\"relationName\":\"em_apc_academyToem_apc_personal\"}],\"dbName\":null},\"em_apc_personal\":{\"fields\":[{\"name\":\"ApcId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"PossId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"AboutUs\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"FullName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"NickName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"PlaceBirth\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"DateBirth\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Age\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Gender\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Religion\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"MaritalStats\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Citizenship\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Province\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Regency\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Subdistrict\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"PostCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IdentityType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IdentityNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"PhoneCode\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"PhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"EmailAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Height\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Weight\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"FatherName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"FatherOccupa\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"MotherName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"MotherOccupa\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"NumofSibling\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"SiblingNote\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"NikFileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"PhotoFileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CvFileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsTransferPosst\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CreatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isHobby\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LokCat\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isSosmedId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isSosmed\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsCall\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"DateCall\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isLinked\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"PossName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_apc_academy\",\"kind\":\"object\",\"type\":\"em_apc_academy\",\"relationName\":\"em_apc_academyToem_apc_personal\"},{\"name\":\"em_apc_photograph\",\"kind\":\"object\",\"type\":\"em_apc_photograph\",\"relationName\":\"em_apc_personalToem_apc_photograph\"},{\"name\":\"em_apc_regulation\",\"kind\":\"object\",\"type\":\"em_apc_regulation\",\"relationName\":\"em_apc_personalToem_apc_regulation\"},{\"name\":\"em_apc_skill_exper\",\"kind\":\"object\",\"type\":\"em_apc_skill_exper\",\"relationName\":\"em_apc_personalToem_apc_skill_exper\"},{\"name\":\"em_applicant_match\",\"kind\":\"object\",\"type\":\"em_applicant_match\",\"relationName\":\"em_apc_personalToem_applicant_match\"}],\"dbName\":null},\"em_apc_photograph\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ApcId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"GenrName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_apc_personal\",\"kind\":\"object\",\"type\":\"em_apc_personal\",\"relationName\":\"em_apc_personalToem_apc_photograph\"}],\"dbName\":null},\"em_apc_regulation\":{\"fields\":[{\"name\":\"ApcRegId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ApcId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"RegId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"RegChoice\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"em_apc_personal\",\"kind\":\"object\",\"type\":\"em_apc_personal\",\"relationName\":\"em_apc_personalToem_apc_regulation\"}],\"dbName\":null},\"em_apc_skill_exper\":{\"fields\":[{\"name\":\"SkillId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ApcId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"CompanyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Province\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"JobTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Salary\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"StartDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"EndDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Responsibilities\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CareerGoals\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"WhyJoin\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsFriend\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsMentions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsCompProgram\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsIllnes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"HaveCriminal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"WhenWork\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ExpectedSalary\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"isContribution\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isDuration\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isAgency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isExprn\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isGenre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isRelevan\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isSpesialSkill\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isShoot\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isSchedl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isMotivation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isStress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isLongExpr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isPhotTools\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isChalleng\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isThreeYears\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"PersonVal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_apc_personal\",\"kind\":\"object\",\"type\":\"em_apc_personal\",\"relationName\":\"em_apc_personalToem_apc_skill_exper\"}],\"dbName\":null},\"em_api_keys\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"api_key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_applicant_criteria\":{\"fields\":[{\"name\":\"id_kriteria\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"id_loker\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"jenis_kriteria\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value_en\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bobot\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"emposs\",\"kind\":\"object\",\"type\":\"emposs\",\"relationName\":\"em_applicant_criteriaToemposs\"}],\"dbName\":null},\"em_applicant_match\":{\"fields\":[{\"name\":\"id_match\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"id_applicant\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"id_loker\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"pendidikan_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"jurusan_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"pengalaman_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"skill_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"bahasa_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"usia_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total_kriteria\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scoring_json\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_apc_personal\",\"kind\":\"object\",\"type\":\"em_apc_personal\",\"relationName\":\"em_apc_personalToem_applicant_match\"},{\"name\":\"emposs\",\"kind\":\"object\",\"type\":\"emposs\",\"relationName\":\"em_applicant_matchToemposs\"}],\"dbName\":null},\"em_banner\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bannerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"menuName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"noUrut\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_update\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_career_contact\":{\"fields\":[{\"name\":\"cpId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"companyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"waNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileImage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_certificate_fields\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"certificate_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_left\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"is_top\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"text_width\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"text_height\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"font_size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"align\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"font_family\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"font_style\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"font_weight\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"font_color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_certificate_templates\",\"kind\":\"object\",\"type\":\"em_certificate_templates\",\"relationName\":\"em_certificate_fieldsToem_certificate_templates\"}],\"dbName\":null},\"em_certificate_templates\":{\"fields\":[{\"name\":\"certificate_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"background_image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"certificate_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_certificate_fields\",\"kind\":\"object\",\"type\":\"em_certificate_fields\",\"relationName\":\"em_certificate_fieldsToem_certificate_templates\"}],\"dbName\":null},\"em_certificates_result\":{\"fields\":[{\"name\":\"cert_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cert_templ_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"empl_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"cert_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"generated_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"schedule_id\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"em_chance\":{\"fields\":[{\"name\":\"chId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"chName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chDesc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chStats\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chFileImage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chUserid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"chLastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_contrctype\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"contract_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_dept\":{\"fields\":[{\"name\":\"DEPTID\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"DEPTNAME\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sbu_sub\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"add_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_employee\":{\"fields\":[{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"BadgeNum\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Gender\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"BirthDay\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"HireDay\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Street\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Religion\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Tipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isLokasi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"DeptId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CardNo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Shift\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isMem\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"AddBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isMemDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isFirstLogin\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ImgName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"SbuSub\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Nik\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ResignDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_event\":{\"fields\":[{\"name\":\"event_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"event_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"start_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lokasi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_update\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_event2\",\"kind\":\"object\",\"type\":\"em_event2\",\"relationName\":\"em_eventToem_event2\"}],\"dbName\":null},\"em_event_reg\":{\"fields\":[{\"name\":\"Regid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"optic_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"wa_num\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profesi_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"event_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_login\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_update\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"image_name\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_event2\":{\"fields\":[{\"name\":\"sess_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"event_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"event_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qr_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_event\",\"kind\":\"object\",\"type\":\"em_event\",\"relationName\":\"em_eventToem_event2\"}],\"dbName\":null},\"em_exam_questions\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exam_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"question_id\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"em_exams\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exam_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Deskripsi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"FileImage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CatType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_loktopik\",\"kind\":\"object\",\"type\":\"em_loktopik\",\"relationName\":\"em_examsToem_loktopik\"},{\"name\":\"scores\",\"kind\":\"object\",\"type\":\"scores\",\"relationName\":\"em_examsToscores\"}],\"dbName\":null},\"em_exams_monitor\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"schedule_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"empl_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tipe_soal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jumlah_soal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_exams_results\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"empl_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"soal_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_changes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_answer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_time\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_faq\":{\"fields\":[{\"name\":\"fqId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"fqcatid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isquestions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isanswer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_faq_cat\",\"kind\":\"object\",\"type\":\"em_faq_cat\",\"relationName\":\"em_faqToem_faq_cat\"}],\"dbName\":null},\"em_faq_cat\":{\"fields\":[{\"name\":\"fqcatid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_faq\",\"kind\":\"object\",\"type\":\"em_faq\",\"relationName\":\"em_faqToem_faq_cat\"}],\"dbName\":null},\"em_galeri_materi\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_type\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"file_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_size\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"urutan\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_update\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_group\":{\"fields\":[{\"name\":\"GroupId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"GroupName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CreateDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_hero_section\":{\"fields\":[{\"name\":\"hsId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"hsName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hsDesc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hsStats\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hsFileImage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hsLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hsUserid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hsDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"hsLastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Urutan\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"em_jawaban_peserta\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"empl_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"soal_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"session_exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jawaban\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jawaban2\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"waktu_jawab\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"is_correction\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_train_jawaban\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"em_session_exams\",\"kind\":\"object\",\"type\":\"em_session_exams\",\"relationName\":\"em_jawaban_pesertaToem_session_exams\"}],\"dbName\":null},\"em_jawaban_peserta_apc\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"apc_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"soal_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"topic_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"session_exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jawaban_option\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jawaban_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"waktu_jawab\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"is_correction\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_train_jawaban\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"em_session_exams_apc\",\"kind\":\"object\",\"type\":\"em_session_exams_apc\",\"relationName\":\"em_jawaban_peserta_apcToem_session_exams_apc\"}],\"dbName\":null},\"em_jobfair\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lokasi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_levelposs\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"level_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_logs\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"IP\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Login\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Logout\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LogId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_loker\":{\"fields\":[{\"name\":\"lokerid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"possid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"startdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"enddate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"jobdesc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qualify\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"worktype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"salary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contrtype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"posslevel\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"benefit\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileimage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"kategori\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_loktopik\",\"kind\":\"object\",\"type\":\"em_loktopik\",\"relationName\":\"em_lokerToem_loktopik\"}],\"dbName\":null},\"em_loktopik\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"loker_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"topik_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"jmlh_soal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"possid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"urutan\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_loker\",\"kind\":\"object\",\"type\":\"em_loker\",\"relationName\":\"em_lokerToem_loktopik\"},{\"name\":\"em_exams\",\"kind\":\"object\",\"type\":\"em_exams\",\"relationName\":\"em_examsToem_loktopik\"}],\"dbName\":null},\"em_materi_file\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"materi_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"file_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_type\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"file_size\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"urutan\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"judul\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"galeri_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_materi1\",\"kind\":\"object\",\"type\":\"em_materi1\",\"relationName\":\"em_materi1Toem_materi_file\"}],\"dbName\":null},\"em_materi_kategori\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"kategori_nama\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"kategori_deskripsi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_materi_type\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"materi_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"deskripsi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_materi2\",\"kind\":\"object\",\"type\":\"em_materi2\",\"relationName\":\"em_materi2Toem_materi_type\"}],\"dbName\":null},\"em_materi1\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"kode_materi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"judul_materi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"deskripsi_materi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"kategori\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"urutan\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_required\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_materi_file\",\"kind\":\"object\",\"type\":\"em_materi_file\",\"relationName\":\"em_materi1Toem_materi_file\"},{\"name\":\"em_materi2\",\"kind\":\"object\",\"type\":\"em_materi2\",\"relationName\":\"em_materi1Toem_materi2\"}],\"dbName\":null},\"em_materi2\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"materi_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"materi_type\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_materi_type\",\"kind\":\"object\",\"type\":\"em_materi_type\",\"relationName\":\"em_materi2Toem_materi_type\"},{\"name\":\"em_materi1\",\"kind\":\"object\",\"type\":\"em_materi1\",\"relationName\":\"em_materi1Toem_materi2\"}],\"dbName\":null},\"em_menu\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"menuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"parent_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"link\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"visible\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"icon\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"menutype\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_notifikasi\":{\"fields\":[{\"name\":\"NotifyId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"GroupId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Note\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CreateDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_notifikasi_read\":{\"fields\":[{\"name\":\"ReadId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"NotifyId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ReadDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_onboarding\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"current_step\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_pilar\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"pilar_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"add_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isDeleted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_profesi\":{\"fields\":[{\"name\":\"profesi_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"profesi_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_update\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_questions1\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"question_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"question_type\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"correct_answer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"correct_answer2\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"exam_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"time_limit\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fileimage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isExams\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isLevel\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_questions2\",\"kind\":\"object\",\"type\":\"em_questions2\",\"relationName\":\"em_questions1Toem_questions2\"}],\"dbName\":null},\"em_questions2\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"question_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"option_choices\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"option_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_questions1\",\"kind\":\"object\",\"type\":\"em_questions1\",\"relationName\":\"em_questions1Toem_questions2\"}],\"dbName\":null},\"em_questtype\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"TypeName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_regulations\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"chanceId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"regName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"urut\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_sbu\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sbu_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sbu_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sbu_pilar\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"add_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isDeleted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedBy\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_sbu_sub\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sbu_sub_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sbu_sub_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sbu_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sbu_pilar\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"add_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isDeleted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedBy\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_schedule1\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scheName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"scheDeskripsi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isMateri\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isQuota\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"endDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"startTime\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"endTime\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isLokasi\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isTrainer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"sendWA\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ujian_stats\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_with_soal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"usr_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_wa_template\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_batch\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"event_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_schedule2\",\"kind\":\"object\",\"type\":\"em_schedule2\",\"relationName\":\"em_schedule1Toem_schedule2\"},{\"name\":\"em_schedule3\",\"kind\":\"object\",\"type\":\"em_schedule3\",\"relationName\":\"em_schedule1Toem_schedule3\"},{\"name\":\"em_schedule4\",\"kind\":\"object\",\"type\":\"em_schedule4\",\"relationName\":\"em_schedule1Toem_schedule4\"}],\"dbName\":null},\"em_schedule2\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scheduleId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Regid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_send_wa_stats\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"send_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"is_code_send\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"em_schedule1\",\"kind\":\"object\",\"type\":\"em_schedule1\",\"relationName\":\"em_schedule1Toem_schedule2\"}],\"dbName\":null},\"em_schedule3\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scheduleId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"soalId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"urutanSoal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"materiId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"urutanTipeSoal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tipeSoal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_schedule1\",\"kind\":\"object\",\"type\":\"em_schedule1\",\"relationName\":\"em_schedule1Toem_schedule3\"}],\"dbName\":null},\"em_schedule4\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scheduleId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tipeSoal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"jumlahSoal\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"durasiPerTipe\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_schedule1\",\"kind\":\"object\",\"type\":\"em_schedule1\",\"relationName\":\"em_schedule1Toem_schedule4\"}],\"dbName\":null},\"em_session_exams\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"schedule_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"empl_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"soal_urut\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"start_time\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end_time\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"is_selesai\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_token_expr\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"durasi\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_correct\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_score_akhir\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"em_jawaban_peserta\",\"kind\":\"object\",\"type\":\"em_jawaban_peserta\",\"relationName\":\"em_jawaban_pesertaToem_session_exams\"}],\"dbName\":null},\"em_session_exams_apc\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lokerid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"apcid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"soal_urut\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"start_time\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end_time\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"is_selesai\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_token_expr\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"durasi\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_correct\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_score_akhir\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"curr_topic_index\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"curr_soal_index\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_intro_topic\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_jawaban_kosong\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"em_jawaban_peserta_apc\",\"kind\":\"object\",\"type\":\"em_jawaban_peserta_apc\",\"relationName\":\"em_jawaban_peserta_apcToem_session_exams_apc\"},{\"name\":\"em_topic_selesai\",\"kind\":\"object\",\"type\":\"em_topic_selesai\",\"relationName\":\"em_session_exams_apcToem_topic_selesai\"}],\"dbName\":null},\"em_subscribe\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Endpoint\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"P256dh\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Auth\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_subscription\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subscription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdat\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_topic_selesai\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"session_exams_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"apc_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"topic_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"selesai_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_session_exams_apc\",\"kind\":\"object\",\"type\":\"em_session_exams_apc\",\"relationName\":\"em_session_exams_apcToem_topic_selesai\"}],\"dbName\":null},\"em_user_answers1\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"apcid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"topic_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"startdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_user_dashboard\":{\"fields\":[{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"FullName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"RoleId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CreateDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"GroupId\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"em_user_list\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"menuid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"visible\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_users\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"LevelId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imagename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Pass_Access_Menu\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_verify_links\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"applicant_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"useragent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ipaddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"browser\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"platform\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"device\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"em_wa_templates\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"template_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"template_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"add_by\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tpfor\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"em_worktype\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"worktype_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"em_xquetest\":{\"fields\":[{\"name\":\"ID\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"q_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"question_text\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"emapp\":{\"fields\":[{\"name\":\"AppId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"AppName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"AppPoss\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"AppWa\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"AppMail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"AppAge\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"AppJk\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"AppAddres\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"AppFakt\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"AppFileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"AppLastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"AppDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"AppStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"IsCall\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"DateCall\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"JobsIs\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"JFStats\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LokasiId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scores\",\"kind\":\"object\",\"type\":\"scores\",\"relationName\":\"emappToscores\"}],\"dbName\":null},\"empassw\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"Name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Pass\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Level\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"emposs\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"PossName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"UserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"LastUpdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_applicant_criteria\",\"kind\":\"object\",\"type\":\"em_applicant_criteria\",\"relationName\":\"em_applicant_criteriaToemposs\"},{\"name\":\"em_applicant_match\",\"kind\":\"object\",\"type\":\"em_applicant_match\",\"relationName\":\"em_applicant_matchToemposs\"}],\"dbName\":null},\"faceusers\":{\"fields\":[{\"name\":\"Id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileimage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descriptor\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pose\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastupdate\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"menu\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"parent_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"link\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"visible\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"scores\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"exam_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"total_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"em_exams\",\"kind\":\"object\",\"type\":\"em_exams\",\"relationName\":\"em_examsToscores\"},{\"name\":\"emapp\",\"kind\":\"object\",\"type\":\"emapp\",\"relationName\":\"emappToscores\"}],\"dbName\":null},\"sysdiagrams\":{\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"principal_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"diagram_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"version\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"definition\",\"kind\":\"scalar\",\"type\":\"Bytes\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

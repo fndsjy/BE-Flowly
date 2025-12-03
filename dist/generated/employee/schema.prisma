@@ -1,10 +1,1069 @@
-// schema-employee.prisma
+generator employeeClient {
+  provider = "prisma-client-js"
+  output   = "../dist/generated/employee"
+}
+
 datasource employee {
   provider = "sqlserver"
   url      = env("EMPLOYEE_DATABASE_URL")
 }
 
-generator employeeClient {
-  provider = "prisma-client-js"
-  output   = "../dist/generated/employee"
+model em_absensi {
+  Id        Int       @id(map: "PK_em_absensi") @default(autoincrement())
+  faceId    Int?
+  inDate    DateTime? @employee.DateTime
+  outDate   DateTime? @employee.DateTime
+  fileImage String?   @employee.NVarChar(255)
+}
+
+model em_apc_academy {
+  AcademyId          Int             @id(map: "PK_em_apc_academy") @default(autoincrement())
+  ApcId              Int
+  SchoolName         String?         @employee.NVarChar(Max)
+  Province           String?         @employee.NVarChar(Max)
+  Major              String?         @employee.NVarChar(50)
+  Degree             String?         @employee.NVarChar(50)
+  EnrollDate         DateTime?       @employee.Date
+  GraduatDate        DateTime?       @employee.Date
+  IPK                Float?
+  OrganizeExperience String?         @employee.VarChar(Max)
+  Explain            String?         @employee.VarChar(Max)
+  GradeSchool        String?         @employee.NVarChar(Max)
+  DailySchedule      String?         @employee.NVarChar(Max)
+  SchoolAddress      String?         @employee.NVarChar(Max)
+  em_apc_personal    em_apc_personal @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_apc_academy")
+}
+
+model em_apc_personal {
+  ApcId              Int                  @id(map: "PK_em_applicant") @default(autoincrement())
+  PossId             Int?
+  AboutUs            String?              @employee.NVarChar(Max)
+  FullName           String?              @employee.NVarChar(100)
+  NickName           String?              @employee.NVarChar(Max)
+  PlaceBirth         String?              @employee.NVarChar(Max)
+  DateBirth          DateTime?            @employee.Date
+  Age                Int?
+  Gender             Int?
+  Religion           Int?
+  MaritalStats       Int?
+  Citizenship        Int?
+  Province           Int?
+  Regency            Int?
+  Subdistrict        Int?
+  PostCode           String?              @employee.VarChar(10)
+  Address            String?              @employee.NVarChar(Max)
+  IdentityType       String?              @employee.NVarChar(15)
+  IdentityNumber     String?              @employee.NVarChar(20)
+  PhoneCode          Int?
+  PhoneNumber        String?              @employee.NVarChar(20)
+  EmailAddress       String?              @employee.NVarChar(50)
+  Height             Int?
+  Weight             Int?
+  FatherName         String?              @employee.NVarChar(100)
+  FatherOccupa       String?              @employee.NVarChar(100)
+  MotherName         String?              @employee.NVarChar(100)
+  MotherOccupa       String?              @employee.NVarChar(100)
+  NumofSibling       Int?
+  SiblingNote        String?              @employee.NVarChar(Max)
+  NikFileName        String?              @employee.NVarChar(255)
+  PhotoFileName      String?              @employee.NVarChar(255)
+  CvFileName         String?              @employee.NVarChar(255)
+  IsTransferPosst    String?              @employee.NVarChar(5)
+  Status             String?              @employee.VarChar(1)
+  CreatedAt          DateTime?            @employee.DateTime
+  isHobby            String?              @employee.VarChar(255)
+  LokCat             Int?
+  isSosmedId         Int?
+  isSosmed           String?              @employee.VarChar(50)
+  IsCall             Int?
+  DateCall           DateTime?            @employee.DateTime
+  isLinked           String?              @employee.VarChar(255)
+  PossName           String?              @employee.VarChar(100)
+  em_apc_academy     em_apc_academy[]
+  em_apc_photograph  em_apc_photograph[]
+  em_apc_regulation  em_apc_regulation[]
+  em_apc_skill_exper em_apc_skill_exper[]
+  em_applicant_match em_applicant_match[]
+}
+
+model em_apc_photograph {
+  Id              Int              @id(map: "PK_em_apc_photograph") @default(autoincrement())
+  ApcId           Int?
+  GenrName        String?          @employee.VarChar(50)
+  em_apc_personal em_apc_personal? @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_em_apc_photograph_em_apc_personal")
+}
+
+model em_apc_regulation {
+  ApcRegId        Int              @id(map: "PK_em_apc_regulation") @default(autoincrement())
+  ApcId           Int?
+  RegId           Int?
+  RegChoice       Boolean?
+  em_apc_personal em_apc_personal? @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_apc_regulation")
+}
+
+model em_apc_skill_exper {
+  SkillId          Int             @id(map: "PK_em_apc_skill_exper") @default(autoincrement())
+  ApcId            Int
+  CompanyName      String?         @employee.NVarChar(100)
+  Province         String?         @employee.NVarChar(100)
+  JobTitle         String?         @employee.NVarChar(50)
+  Salary           Float?
+  StartDate        DateTime?       @employee.Date
+  EndDate          DateTime?       @employee.Date
+  Responsibilities String?         @employee.NVarChar(Max)
+  CareerGoals      String?         @employee.NVarChar(Max)
+  WhyJoin          String?         @employee.NVarChar(Max)
+  IsFriend         String?         @employee.NVarChar(Max)
+  IsMentions       String?         @employee.NVarChar(Max)
+  IsCompProgram    String?         @employee.NVarChar(Max)
+  IsIllnes         String?         @employee.NVarChar(Max)
+  HaveCriminal     String?         @employee.NVarChar(Max)
+  WhenWork         String?         @employee.NVarChar(Max)
+  ExpectedSalary   Float?
+  isContribution   String?         @employee.NVarChar(Max)
+  isDuration       String?         @employee.VarChar(Max)
+  isAgency         String?         @employee.VarChar(Max)
+  isExprn          String?         @employee.VarChar(Max)
+  isGenre          String?         @employee.VarChar(Max)
+  isRelevan        String?         @employee.VarChar(Max)
+  isSpesialSkill   String?         @employee.VarChar(Max)
+  isShoot          String?         @employee.VarChar(Max)
+  isSchedl         String?         @employee.VarChar(Max)
+  isMotivation     String?         @employee.VarChar(Max)
+  isStress         String?         @employee.VarChar(Max)
+  isLongExpr       String?         @employee.VarChar(Max)
+  isPhotTools      String?         @employee.VarChar(Max)
+  isChalleng       String?         @employee.VarChar(Max)
+  isThreeYears     String?         @employee.NVarChar(Max)
+  PersonVal        String?         @employee.NVarChar(Max)
+  em_apc_personal  em_apc_personal @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_apc_skill_exper")
+}
+
+model em_api_keys {
+  id         Int      @id(map: "PK__em_api_k__3213E83F067B1387") @default(autoincrement())
+  username   String?  @employee.NVarChar(50)
+  api_key    String   @employee.VarChar(255)
+  created_at DateTime @employee.DateTime
+}
+
+model em_applicant_criteria {
+  id_kriteria    Int       @id(map: "PK__em_appli__905F79A17236FB22") @default(autoincrement())
+  id_loker       Int
+  jenis_kriteria String?   @employee.NVarChar(Max)
+  value          String?   @employee.NVarChar(Max)
+  value_en       String?   @employee.NVarChar(Max)
+  bobot          Float?
+  created_at     DateTime? @employee.Date
+  lastupdate     DateTime? @employee.DateTime
+  emposs         emposs    @relation(fields: [id_loker], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "em_applicant_criteria_emposs_FK")
+}
+
+model em_applicant_match {
+  id_match         Int             @id(map: "PK__em_appli__7E9B03CB9B8A362B") @default(autoincrement())
+  id_applicant     Int
+  id_loker         Int
+  pendidikan_score Float?
+  jurusan_score    Float?
+  pengalaman_score Float?
+  skill_score      Float?
+  bahasa_score     Float?
+  usia_score       Float?
+  total_score      Float?
+  total_kriteria   Int?
+  scoring_json     String?         @employee.NVarChar(Max)
+  created_at       DateTime?       @employee.DateTime
+  em_apc_personal  em_apc_personal @relation(fields: [id_applicant], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "em_applicant_match_em_apc_personal_FK")
+  emposs           emposs          @relation(fields: [id_loker], references: [Id], onUpdate: NoAction, map: "em_applicant_match_emposs_FK")
+}
+
+model em_banner {
+  Id          Int       @id(map: "PK_em_banner") @default(autoincrement())
+  bannerName  String?   @employee.NVarChar(50)
+  fileName    String?   @employee.NVarChar(255)
+  menuName    String?   @employee.NVarChar(255)
+  noUrut      Int?
+  Status      String?   @employee.Char(1)
+  created_at  DateTime? @employee.Date
+  last_update DateTime? @employee.DateTime
+  userid      String?   @employee.VarChar(5)
+}
+
+model em_career_contact {
+  cpId        Int       @id(map: "PK_em_career_contact") @default(autoincrement())
+  companyName String?   @employee.NVarChar(255)
+  email       String?   @employee.NVarChar(255)
+  waNumber    String?   @employee.VarChar(15)
+  fileImage   String?   @employee.NVarChar(50)
+  created_at  DateTime? @employee.Date
+  lastupdate  DateTime? @employee.DateTime
+  userid      String?   @employee.VarChar(5)
+}
+
+model em_certificate_fields {
+  id                       Int                      @default(autoincrement())
+  certificate_id           Int
+  is_text                  String                   @employee.NVarChar(Max)
+  is_left                  Float
+  is_top                   Float
+  text_width               Float
+  text_height              Float
+  font_size                Int
+  align                    String                   @employee.VarChar(20)
+  font_family              String                   @employee.VarChar(100)
+  font_style               String?                  @employee.VarChar(20)
+  font_weight              String?                  @employee.VarChar(50)
+  font_color               String?                  @employee.VarChar(50)
+  created_date             DateTime?                @employee.Date
+  lastupdate               DateTime?                @employee.DateTime
+  em_certificate_templates em_certificate_templates @relation(fields: [certificate_id], references: [certificate_id], onDelete: Cascade, onUpdate: NoAction, map: "em_certificate_fields_em_certificate_templates_FK")
+
+  @@id([id, certificate_id], map: "PK__em_certi__3213E83F0976BA73")
+}
+
+model em_certificate_templates {
+  certificate_id        Int                     @id(map: "PK__em_certi__E2256D31A1F6B5B8") @default(autoincrement())
+  name                  String?                 @employee.NVarChar(255)
+  background_image      String?                 @employee.NVarChar(255)
+  created_at            DateTime?               @employee.Date
+  certificate_name      String?                 @employee.VarChar(255)
+  lastupdate            DateTime?               @employee.DateTime
+  em_certificate_fields em_certificate_fields[]
+}
+
+model em_certificates_result {
+  cert_number   String    @id(map: "PK__em_certi__3213E83F5F6E1388") @employee.VarChar(50)
+  cert_templ_id Int
+  empl_id       Int
+  cert_name     String    @employee.VarChar(255)
+  created_date  DateTime? @employee.DateTime
+  status        String?   @employee.VarChar(1)
+  generated_by  String?   @employee.VarChar(5)
+  schedule_id   Int?
+}
+
+model em_chance {
+  chId         Int       @id(map: "PK_em_chance") @default(autoincrement())
+  chName       String?   @employee.NVarChar(100)
+  chDesc       String?   @employee.NVarChar(255)
+  chStats      String?   @employee.NVarChar(1)
+  chFileImage  String?   @employee.NVarChar(100)
+  chLink       String?   @employee.NVarChar(Max)
+  chUserid     String?   @employee.VarChar(5)
+  chDate       DateTime? @employee.Date
+  chLastupdate DateTime? @employee.DateTime
+}
+
+model em_contrctype {
+  id            Int       @id(map: "PK__em_contr__3213E83F8C0062B4") @default(autoincrement())
+  contract_text String    @employee.NVarChar(Max)
+  status        String?   @employee.NVarChar(1)
+  lastupdate    DateTime? @employee.DateTime
+}
+
+model em_dept {
+  DEPTID     Int       @id(map: "PK_em_dept") @default(autoincrement())
+  DEPTNAME   String?   @employee.VarChar(30)
+  sbu_sub    Int?
+  status     String?   @employee.VarChar(1)
+  add_by     String?   @employee.VarChar(5)
+  created_at DateTime? @employee.Date
+  lastupdate DateTime? @employee.DateTime
+}
+
+model em_employee {
+  UserId       Int       @id(map: "PK_em_employee") @default(autoincrement())
+  BadgeNum     String    @employee.VarChar(24)
+  Name         String?   @employee.VarChar(40)
+  Gender       String?   @employee.VarChar(8)
+  BirthDay     DateTime? @employee.DateTime
+  HireDay      DateTime? @employee.DateTime
+  Street       String?   @employee.VarChar(255)
+  Religion     String?   @employee.VarChar(50)
+  Tipe         String?   @employee.VarChar(50)
+  isLokasi     String?   @employee.VarChar(100)
+  Phone        String?   @employee.VarChar(20)
+  DeptId       Int?      @employee.SmallInt
+  Password     String?   @employee.NVarChar(255)
+  CardNo       String?   @employee.VarChar(20)
+  Shift        Int?
+  isMem        Boolean?
+  AddBy        String?   @employee.VarChar(5)
+  Created_at   DateTime? @employee.DateTime
+  Lastupdate   DateTime? @employee.DateTime
+  isMemDate    DateTime? @employee.DateTime
+  isFirstLogin Int?
+  ImgName      String?   @employee.VarChar(255)
+  SbuSub       Int?
+  Nik          String?   @employee.VarChar(20)
+  ResignDate   DateTime? @employee.DateTime
+  status       String?   @employee.VarChar(1)
+}
+
+model em_event {
+  event_id     Int         @id(map: "PK_em_event") @default(autoincrement())
+  event_name   String?     @employee.VarChar(255)
+  start_date   DateTime?   @employee.DateTime
+  end_date     DateTime?   @employee.DateTime
+  status       String?     @employee.VarChar(1)
+  lokasi       String?     @employee.VarChar(255)
+  created_date DateTime?   @employee.Date
+  last_update  DateTime?   @employee.DateTime
+  em_event2    em_event2[]
+}
+
+model em_event_reg {
+  Regid        Int       @id(map: "PK_em_event_reg") @default(autoincrement())
+  name         String?   @employee.NVarChar(255)
+  optic_name   String?   @employee.NVarChar(255)
+  password     String?   @employee.NVarChar(255)
+  wa_num       String?   @employee.VarChar(15)
+  email        String?   @employee.VarChar(100)
+  profesi_id   Int?
+  event_id     Int?
+  status       String?   @employee.VarChar(1)
+  first_login  Boolean?
+  created_date DateTime? @employee.Date
+  last_update  DateTime? @employee.DateTime
+  image_name   String?   @employee.VarChar(255)
+}
+
+model em_event2 {
+  sess_id    Int       @id(map: "PK_em_event_2") @default(autoincrement())
+  event_id   Int?
+  event_name String?   @employee.NVarChar(255)
+  status     String?   @employee.VarChar(1)
+  qr_code    String?   @employee.VarChar(255)
+  em_event   em_event? @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction, map: "em_event2_em_event_FK")
+}
+
+model em_exam_questions {
+  id          Int @id(map: "PK__em_exam___3213E83F5B2151F1") @default(autoincrement())
+  exam_id     Int
+  question_id Int
+}
+
+model em_exams {
+  id          Int           @id(map: "PK__em_exams__3213E83F77609F07") @default(autoincrement())
+  exam_name   String        @employee.NVarChar(100)
+  UserId      String?       @employee.VarChar(5)
+  Status      String?       @employee.VarChar(1)
+  LastUpdate  DateTime?     @employee.DateTime
+  Deskripsi   String?       @employee.NVarChar(Max)
+  FileImage   String?       @employee.VarChar(255)
+  CatType     String?       @employee.VarChar(1)
+  em_loktopik em_loktopik[]
+  scores      scores[]
+}
+
+model em_exams_monitor {
+  Id          BigInt    @id(map: "PK_em_exams_monitor") @default(autoincrement())
+  schedule_id Int?
+  exams_id    String?   @employee.NVarChar(50)
+  empl_id     Int?
+  tipe_soal   String?   @employee.NVarChar(10)
+  jumlah_soal Int?
+  status      String?   @employee.VarChar(1)
+  created_at  DateTime? @employee.DateTime
+}
+
+model em_exams_results {
+  Id         Int       @id(map: "PK_em_exams_results") @default(autoincrement())
+  exams_id   String?   @employee.NVarChar(50)
+  empl_id    Int?
+  soal_id    Int?
+  is_changes Int?
+  is_answer  String?   @employee.NVarChar(Max)
+  is_time    DateTime? @employee.DateTime
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model em_faces {
+  Id         Int       @default(autoincrement())
+  name       String?   @employee.NVarChar(100)
+  filename   String?   @employee.NVarChar(100)
+  descriptor String?   @employee.NVarChar(1)
+  pose       String?   @employee.NVarChar(15)
+  create_at  DateTime? @employee.Date
+  lastupdate DateTime? @employee.DateTime
+
+  @@ignore
+}
+
+model em_faq {
+  fqId        Int         @id(map: "PK_em_faq") @default(autoincrement())
+  fqcatid     Int?
+  isquestions String?     @employee.NVarChar(Max)
+  isanswer    String?     @employee.NVarChar(Max)
+  status      String?     @employee.NVarChar(1)
+  created_at  DateTime?   @employee.Date
+  lastupdate  DateTime?   @employee.DateTime
+  userid      String?     @employee.VarChar(5)
+  em_faq_cat  em_faq_cat? @relation(fields: [fqcatid], references: [fqcatid], onDelete: Cascade, onUpdate: NoAction, map: "FK_em_faq_em_faq_cat")
+}
+
+model em_faq_cat {
+  fqcatid    Int       @id(map: "PK_em_faq_cat") @default(autoincrement())
+  name       String?   @employee.NVarChar(255)
+  status     String?   @employee.NVarChar(1)
+  created_at DateTime? @employee.Date
+  lastupdate DateTime? @employee.DateTime
+  em_faq     em_faq[]
+}
+
+model em_galeri_materi {
+  id           Int       @id(map: "PK__em_galer__3213E83F4F8794D4") @default(autoincrement())
+  title        String    @employee.VarChar(255)
+  file_type    Int
+  file_name    String?   @employee.VarChar(500)
+  file_size    Float?
+  url          String?   @employee.VarChar(500)
+  urutan       Int?
+  status       String?   @employee.VarChar(1)
+  created_date DateTime? @employee.Date
+  last_update  DateTime? @employee.DateTime
+}
+
+model em_group {
+  GroupId    Int       @id(map: "PK_em_role") @default(autoincrement())
+  GroupName  String?   @employee.VarChar(50)
+  Status     String?   @employee.VarChar(1)
+  CreateDate DateTime? @employee.Date
+  LastUpdate DateTime? @employee.DateTime
+}
+
+model em_hero_section {
+  hsId         Int       @id(map: "PK_em_hero_section") @default(autoincrement())
+  hsName       String?   @employee.NVarChar(100)
+  hsDesc       String?   @employee.NVarChar(255)
+  hsStats      String?   @employee.NVarChar(1)
+  hsFileImage  String?   @employee.NVarChar(100)
+  hsLink       String?   @employee.NVarChar(Max)
+  hsUserid     String?   @employee.VarChar(5)
+  hsDate       DateTime? @employee.Date
+  hsLastupdate DateTime? @employee.DateTime
+  Urutan       Int?
+}
+
+model em_jawaban_peserta {
+  Id               Int              @default(autoincrement())
+  empl_id          Int
+  soal_id          Int
+  session_exams_id String           @employee.NVarChar(50)
+  jawaban          String?          @employee.NVarChar(Max)
+  jawaban2         String?          @employee.NVarChar(Max)
+  waktu_jawab      DateTime?        @employee.DateTime
+  Score            Float?
+  is_correction    Int?
+  is_train_jawaban Boolean?
+  em_session_exams em_session_exams @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_sessiujianid")
+
+  @@id([Id, empl_id, soal_id, session_exams_id], map: "PK_em_jawaban_peserta")
+}
+
+model em_jawaban_peserta_apc {
+  Id                   Int                  @id(map: "PK_em_jawaban_peserta_apc_1") @default(autoincrement())
+  apc_id               Int
+  soal_id              Int
+  topic_id             Int
+  session_exams_id     String               @employee.NVarChar(50)
+  jawaban_option       String?              @employee.NVarChar(Max)
+  jawaban_text         String?              @employee.NVarChar(Max)
+  waktu_jawab          DateTime?            @employee.DateTime
+  score                Float?
+  is_correction        Boolean?
+  is_train_jawaban     Boolean?
+  em_session_exams_apc em_session_exams_apc @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: "em_jawaban_peserta_apc_em_session_exams_apc_FK")
+}
+
+model em_jobfair {
+  id         Int       @id(map: "PK__em_jobfa__3213E83F30C4BB76") @default(autoincrement())
+  lokasi     String    @employee.NVarChar(100)
+  status     String?   @employee.NVarChar(1)
+  lastupdate DateTime? @employee.DateTime
+}
+
+model em_levelposs {
+  id         Int       @id(map: "PK__em_level__3213E83F4D185232") @default(autoincrement())
+  level_text String    @employee.NVarChar(Max)
+  status     String?   @employee.NVarChar(1)
+  lastupdate DateTime? @employee.DateTime
+}
+
+model em_logs {
+  Id         Int       @id(map: "PK_em_logs") @default(autoincrement())
+  IP         String?   @employee.NVarChar(25)
+  Login      DateTime? @employee.DateTime
+  Logout     DateTime? @employee.DateTime
+  UserId     String?   @employee.VarChar(16)
+  LogId      Int?
+  Notes      String?   @employee.NVarChar(Max)
+  LastUpdate DateTime? @employee.DateTime
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model em_lok_category {
+  Id        Int
+  LokName   String?   @employee.VarChar(255)
+  Status    String?   @employee.VarChar(1)
+  CreatedAt DateTime? @employee.DateTime
+
+  @@ignore
+}
+
+model em_loker {
+  lokerid     Int           @id(map: "PK__em_loker__1BD11A901CAD3789") @default(autoincrement())
+  possid      Int
+  startdate   DateTime?     @employee.DateTime
+  enddate     DateTime?     @employee.DateTime
+  jobdesc     String?       @employee.NVarChar(Max)
+  qualify     String?       @employee.NVarChar(Max)
+  worktype    String?       @employee.NVarChar(50)
+  salary      String?       @employee.NVarChar(255)
+  contrtype   String?       @employee.NVarChar(50)
+  posslevel   String?       @employee.NVarChar(50)
+  status      String?       @employee.NVarChar(1)
+  benefit     String?       @employee.NVarChar(Max)
+  fileimage   String?       @employee.NVarChar(255)
+  createdate  DateTime?     @employee.DateTime
+  lastupdate  DateTime?     @employee.DateTime
+  userid      String?       @employee.VarChar(5)
+  kategori    Int?
+  em_loktopik em_loktopik[]
+
+  @@index([enddate], map: "IX_em_loker_enddate")
+  @@index([possid], map: "IX_em_loker_jobsid")
+}
+
+model em_loktopik {
+  id         Int       @id(map: "PK__em_lokto__3213E83F197A72F3") @default(autoincrement())
+  loker_id   Int
+  topik_id   Int
+  jmlh_soal  Int
+  created_at DateTime? @employee.DateTime
+  possid     Int?
+  urutan     Int?
+  em_loker   em_loker  @relation(fields: [loker_id], references: [lokerid], onUpdate: NoAction, map: "FK__em_loktop__loker__7BE56230")
+  em_exams   em_exams  @relation(fields: [topik_id], references: [id], onUpdate: NoAction, map: "FK__em_loktop__topik__7CD98669")
+}
+
+model em_materi_file {
+  id         Int        @id(map: "PK__em_mater__3213E83F14F770FA") @default(autoincrement())
+  materi_id  Int
+  file_name  String     @employee.VarChar(255)
+  file_type  Int
+  file_size  Float?
+  url        String?    @employee.NVarChar(Max)
+  urutan     Int?
+  judul      String?    @employee.NVarChar(Max)
+  created_at DateTime?  @employee.DateTime
+  updated_at DateTime?  @employee.DateTime
+  galeri_id  Int?
+  em_materi1 em_materi1 @relation(fields: [materi_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_materi")
+}
+
+model em_materi_kategori {
+  id                 Int       @id(map: "PK__em_mater__3213E83F845CFE3F") @default(autoincrement())
+  kategori_nama      String    @employee.VarChar(100)
+  kategori_deskripsi String?   @employee.VarChar(255)
+  is_active          Boolean?
+  created_at         DateTime? @employee.DateTime
+}
+
+model em_materi_type {
+  id          Int          @id(map: "PK__em_mater__3213E83F9DBE4814") @default(autoincrement())
+  materi_name String       @employee.VarChar(150)
+  deskripsi   String?      @employee.Text
+  status      String?      @employee.VarChar(1)
+  created_at  DateTime     @employee.DateTime
+  created_by  String?      @employee.VarChar(5)
+  lastupdate  DateTime?    @employee.DateTime
+  em_materi2  em_materi2[]
+}
+
+model em_materi1 {
+  id               Int              @id(map: "PK__em_mater__3213E83F02CE3D92") @default(autoincrement())
+  kode_materi      String           @employee.VarChar(50)
+  judul_materi     String           @employee.VarChar(255)
+  deskripsi_materi String?          @employee.NVarChar(Max)
+  kategori         Int?
+  urutan           Int
+  is_required      Boolean
+  status           String?          @employee.VarChar(1)
+  created_by       String?          @employee.VarChar(5)
+  created_at       DateTime         @employee.DateTime
+  lastupdate       DateTime?        @employee.DateTime
+  em_materi_file   em_materi_file[]
+  em_materi2       em_materi2[]
+}
+
+model em_materi2 {
+  id             Int            @id(map: "PK__em_mater__3213E83F08951080") @default(autoincrement())
+  materi_id      Int
+  materi_type    Int
+  em_materi_type em_materi_type @relation(fields: [materi_type], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_materi_type2")
+  em_materi1     em_materi1     @relation(fields: [materi_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_materi2")
+}
+
+model em_menu {
+  id         Int       @default(autoincrement())
+  menuid     String    @employee.VarChar(10)
+  name       String    @employee.VarChar(100)
+  parent_id  String?   @employee.NVarChar(6)
+  link       String?   @employee.VarChar(200)
+  visible    Boolean
+  status     String?   @employee.NChar(1)
+  lastupdate DateTime? @employee.DateTime
+  icon       String?   @employee.VarChar(100)
+  menutype   String?   @employee.VarChar(1)
+
+  @@id([id, menuid], map: "PK_em_menu")
+}
+
+model em_notifikasi {
+  NotifyId   Int       @id(map: "PK_em_notifikasi") @default(autoincrement())
+  UserId     Int?
+  GroupId    Int?
+  Note       String?   @employee.VarChar(Max)
+  Status     String?   @employee.VarChar(1)
+  CreateDate DateTime? @employee.DateTime
+  LastUpdate DateTime? @employee.DateTime
+}
+
+model em_notifikasi_read {
+  ReadId   Int       @id(map: "PK_em_notifikasi_read") @default(autoincrement())
+  NotifyId Int?
+  UserId   Int?
+  ReadDate DateTime? @employee.DateTime
+}
+
+model em_onboarding {
+  id           Int       @id(map: "PK__em_onboa__3213E83FC73BD233") @default(autoincrement())
+  user_id      Int
+  status       String?   @employee.VarChar(20)
+  current_step Int?
+  created_at   DateTime? @employee.DateTime
+  updated_at   DateTime? @employee.DateTime
+}
+
+model em_pilar {
+  id          Int       @id(map: "PK__em_pilar__3213E83F399C32B6") @default(autoincrement())
+  pilar_name  String    @employee.NVarChar(255)
+  status      String    @employee.NVarChar(1)
+  add_by      String?   @employee.VarChar(5)
+  created_at  DateTime? @employee.Date
+  lastupdate  DateTime? @employee.DateTime
+  createdAt   DateTime?
+  createdBy   String?   @employee.NVarChar(20)
+  updatedAt   DateTime?
+  updatedBy   String?   @employee.NVarChar(20)
+  isDeleted   Boolean?
+  deletedAt   DateTime?
+  deletedBy   String?   @employee.NVarChar(20)
+  description String?   @employee.NVarChar(255)
+}
+
+model em_profesi {
+  profesi_id   Int       @id(map: "PK_em_profesi") @default(autoincrement())
+  profesi_name String?   @employee.VarChar(255)
+  status       String?   @employee.VarChar(1)
+  created_date DateTime? @employee.Date
+  last_update  DateTime? @employee.DateTime
+}
+
+model em_questions1 {
+  id              Int             @id(map: "PK__em_quest__3213E83F98AF5B47") @default(autoincrement())
+  question_text   String          @employee.NVarChar(Max)
+  question_type   Int?
+  correct_answer  String?         @employee.NVarChar(Max)
+  correct_answer2 String?         @employee.NVarChar(Max)
+  exam_id         Int?
+  time_limit      Int
+  score           Float
+  status          String?         @employee.NVarChar(1)
+  userid          String?         @employee.VarChar(5)
+  qdate           DateTime?       @employee.DateTime
+  lastupdate      DateTime?       @employee.DateTime
+  fileimage       String?         @employee.VarChar(100)
+  isExams         String?         @employee.VarChar(1)
+  isLevel         Int?
+  em_questions2   em_questions2[]
+}
+
+model em_questions2 {
+  Id             BigInt        @default(autoincrement())
+  question_id    Int
+  option_choices String        @employee.VarChar(1)
+  option_text    String        @employee.NVarChar(Max)
+  em_questions1  em_questions1 @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_questions1_id")
+
+  @@id([Id, question_id, option_choices], map: "PK_em_questions2")
+  @@index([question_id], map: "IX_em_questions2")
+}
+
+model em_questtype {
+  Id       Int     @id(map: "PK_em_questtype") @default(autoincrement())
+  TypeName String? @employee.NVarChar(50)
+  Status   String? @employee.NVarChar(1)
+}
+
+model em_regulations {
+  Id         Int       @id(map: "PK_em_regulations") @default(autoincrement())
+  chanceId   Int?
+  regName    String?   @employee.NVarChar(Max)
+  urut       Int?
+  status     String?   @employee.NVarChar(1)
+  userid     String?   @employee.VarChar(5)
+  createDate DateTime? @employee.Date
+  lastUpdate DateTime? @employee.DateTime
+}
+
+model em_sbu {
+  id         Int       @default(autoincrement())
+  sbu_code   String    @employee.NVarChar(50)
+  sbu_name   String    @employee.NVarChar(255)
+  sbu_pilar  Int?
+  status     String    @employee.NVarChar(1)
+  add_by     String?   @employee.VarChar(5)
+  created_at DateTime? @employee.Date
+  lastupdate DateTime? @employee.DateTime
+  createdAt  DateTime?
+  createdBy  String?   @employee.NVarChar(20)
+  updatedAt  DateTime?
+  updatedBy  String?   @employee.NVarChar(20)
+  isDeleted  Boolean
+  deletedAt  DateTime?
+  deletedBy  String?   @employee.NVarChar(20)
+
+  @@id([id, sbu_code], map: "PK_em_sbu")
+}
+
+model em_sbu_sub {
+  id           Int       @id(map: "PK__em_sbu_s__3213E83F381656E4") @default(autoincrement())
+  sbu_sub_code String    @employee.NVarChar(50)
+  sbu_sub_name String    @employee.NVarChar(255)
+  sbu_id       Int?
+  sbu_pilar    Int?
+  status       String    @employee.NVarChar(1)
+  add_by       String?   @employee.VarChar(5)
+  created_at   DateTime? @employee.Date
+  lastupdate   DateTime? @employee.DateTime
+  createdAt    DateTime?
+  createdBy    String?   @employee.NVarChar(20)
+  updatedAt    DateTime?
+  updatedBy    String?   @employee.NVarChar(20)
+  isDeleted    Boolean
+  deletedAt    DateTime?
+  deletedBy    String?   @employee.NVarChar(20)
+}
+
+model em_schedule1 {
+  Id             Int            @id(map: "PK_em_schedule1") @default(autoincrement())
+  scheName       String?        @employee.NVarChar(255)
+  scheDeskripsi  String?        @employee.NVarChar(Max)
+  isMateri       Int?
+  isQuota        Int?
+  startDate      DateTime?      @employee.Date
+  endDate        DateTime?      @employee.Date
+  startTime      String?        @employee.VarChar(5)
+  endTime        String?        @employee.VarChar(5)
+  isLokasi       String?        @employee.NVarChar(255)
+  isTrainer      String?        @employee.NVarChar(255)
+  status         String?        @employee.Char(1)
+  created_at     DateTime?      @employee.DateTime
+  lastupdate     DateTime?      @employee.DateTime
+  sendWA         Int?
+  ujian_stats    String?        @employee.VarChar(1)
+  is_with_soal   String?        @employee.VarChar(1)
+  usr_by         String?        @employee.VarChar(5)
+  is_wa_template Int?
+  is_batch       String?        @employee.VarChar(3)
+  event_id       Int?
+  em_schedule2   em_schedule2[]
+  em_schedule3   em_schedule3[]
+  em_schedule4   em_schedule4[]
+}
+
+model em_schedule2 {
+  Id               Int           @id(map: "PK_em_schedule2") @default(autoincrement())
+  scheduleId       Int?
+  employeeId       Int?
+  Regid            String?       @employee.VarChar(16)
+  is_send_wa_stats Int?
+  send_date        DateTime?     @employee.DateTime
+  is_code_send     String?       @employee.VarChar(100)
+  em_schedule1     em_schedule1? @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_schedule2_schedule1")
+
+  @@index([employeeId], map: "idx_empl_id")
+  @@index([scheduleId], map: "idx_scheduleid")
+}
+
+model em_schedule3 {
+  Id             Int          @id(map: "PK_em_schedule3") @default(autoincrement())
+  scheduleId     Int
+  soalId         Int
+  urutanSoal     Int
+  materiId       Int
+  urutanTipeSoal Int
+  tipeSoal       Int
+  em_schedule1   em_schedule1 @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_schedule3_schedule1")
+
+  @@index([scheduleId], map: "idx_scheduleid")
+  @@index([soalId], map: "idx_soal_id")
+}
+
+model em_schedule4 {
+  Id            Int           @id(map: "PK_em_schedule4") @default(autoincrement())
+  scheduleId    Int?
+  tipeSoal      Int?
+  jumlahSoal    Float?
+  durasiPerTipe Int?
+  em_schedule1  em_schedule1? @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_schedule4_schedule1")
+
+  @@index([scheduleId], map: "idx_scheduleid")
+}
+
+model em_session_exams {
+  Id                 Int                  @id(map: "PK_em_session_exams") @default(autoincrement())
+  schedule_id        Int?
+  exams_id           String?              @unique(map: "UQ__em_sessi__88BA23E5F000BF47") @employee.NVarChar(50)
+  empl_id            Int?
+  soal_urut          String?              @employee.NVarChar(Max)
+  start_time         DateTime?            @employee.DateTime
+  end_time           DateTime?            @employee.DateTime
+  is_selesai         String?              @employee.VarChar(1)
+  is_token           String?              @employee.NVarChar(Max)
+  is_token_expr      DateTime?            @employee.DateTime
+  durasi             Int?
+  is_correct         Int?
+  is_notes           String?              @employee.NVarChar(Max)
+  is_score_akhir     Float?
+  em_jawaban_peserta em_jawaban_peserta[]
+
+  @@index([empl_id], map: "idx_empl_id")
+  @@index([schedule_id], map: "idx_scheduleid")
+}
+
+model em_session_exams_apc {
+  Id                     Int                      @id(map: "PK_em_session_exams_apc_1") @default(autoincrement())
+  lokerid                Int
+  exams_id               String                   @unique(map: "em_session_exams_apc_unique") @employee.NVarChar(50)
+  apcid                  Int
+  soal_urut              String?                  @employee.NVarChar(Max)
+  start_time             DateTime?                @employee.DateTime
+  end_time               DateTime?                @employee.DateTime
+  is_selesai             String?                  @employee.VarChar(1)
+  is_token               String?                  @employee.NVarChar(Max)
+  is_token_expr          DateTime?                @employee.DateTime
+  durasi                 Int?
+  is_correct             Int?
+  is_notes               String?                  @employee.NVarChar(Max)
+  is_score_akhir         Float?
+  curr_topic_index       Int?
+  curr_soal_index        Int?
+  is_intro_topic         Boolean?
+  is_jawaban_kosong      Int?
+  em_jawaban_peserta_apc em_jawaban_peserta_apc[]
+  em_topic_selesai       em_topic_selesai[]
+}
+
+model em_subscribe {
+  Id         Int       @id(map: "PK_em_subscribe") @default(autoincrement())
+  UserId     String?   @employee.NVarChar(5)
+  Name       String?   @employee.NVarChar(50)
+  Status     String?   @employee.NVarChar(1)
+  Endpoint   String?   @employee.NVarChar(Max)
+  P256dh     String?   @employee.NVarChar(Max)
+  Auth       String?   @employee.NVarChar(Max)
+  Created_at DateTime? @employee.Date
+  LastUpdate DateTime? @employee.DateTime
+}
+
+model em_subscription {
+  Id           Int       @id(map: "PK_em_subscription") @default(autoincrement())
+  username     String    @employee.VarChar(50)
+  subscription String?   @employee.NVarChar(Max)
+  status       String?   @employee.VarChar(1)
+  createdat    DateTime? @employee.DateTime
+}
+
+model em_topic_selesai {
+  id                   Int                  @id(map: "PK__em_topic__3213E83FCAD82D0E") @default(autoincrement())
+  session_exams_id     String               @employee.NVarChar(50)
+  apc_id               Int
+  topic_id             Int
+  selesai_at           DateTime?            @employee.DateTime
+  em_session_exams_apc em_session_exams_apc @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: "em_topic_selesai_em_session_exams_apc_FK")
+}
+
+model em_user_answers1 {
+  Id               Int                @id(map: "PK__em_user___3214EC075E2971FF") @default(autoincrement())
+  apcid            Int
+  topic_id         Int
+  status           String?            @employee.NVarChar(1)
+  startdate        DateTime?          @employee.DateTime
+  em_user_answers2 em_user_answers2[] @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model em_user_answers2 {
+  Id               Int
+  question_id      Int
+  answer           String?          @employee.NVarChar(Max)
+  istime           Int?
+  created_at       DateTime?        @employee.DateTime
+  Score            Float?
+  em_user_answers1 em_user_answers1 @relation(fields: [Id], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "em_user_answers2_em_user_answers1_FK")
+
+  @@ignore
+}
+
+model em_user_dashboard {
+  UserId     Int       @id(map: "PK_em_user_dashboard") @default(autoincrement())
+  Username   String    @employee.VarChar(50)
+  Password   String    @employee.NVarChar(255)
+  FullName   String?   @employee.VarChar(255)
+  RoleId     Int?
+  Status     String?   @employee.VarChar(1)
+  CreateDate DateTime? @employee.Date
+  LastUpdate DateTime? @employee.DateTime
+  GroupId    Int?
+}
+
+model em_user_list {
+  id         Int       @id(map: "PK__em_user___3213E83FFFACF240") @default(autoincrement())
+  userid     String    @employee.VarChar(5)
+  menuid     Int?
+  visible    Boolean
+  lastupdate DateTime? @employee.DateTime
+}
+
+model em_users {
+  Id               Int       @default(autoincrement())
+  UserId           String    @employee.VarChar(3)
+  Username         String    @employee.NVarChar(Max)
+  Password         String    @employee.NVarChar(Max)
+  LastUpdate       DateTime? @employee.DateTime
+  LevelId          Int?
+  Name             String    @employee.VarChar(255)
+  Status           String?   @employee.VarChar(1)
+  imagename        String?   @employee.VarChar(100)
+  Pass_Access_Menu String?   @employee.NVarChar(255)
+
+  @@id([Id, UserId], map: "PK__em_users__1788CC4C739C2478")
+}
+
+model em_verify_links {
+  id           Int       @id(map: "PK__em_verif__3213E83F15F1A2A1") @default(autoincrement())
+  applicant_id Int
+  token        String?   @employee.NVarChar(100)
+  expires_at   DateTime  @employee.DateTime
+  created_at   DateTime? @employee.DateTime
+  status       String?   @employee.NVarChar(1)
+  useragent    String?   @employee.NVarChar(255)
+  ipaddress    String?   @employee.VarChar(100)
+  browser      String?   @employee.VarChar(100)
+  platform     String?   @employee.VarChar(100)
+  device       String?   @employee.VarChar(100)
+}
+
+model em_wa_templates {
+  id            Int       @id(map: "PK__em_wa_te__3213E83F3327E607") @default(autoincrement())
+  template_name String    @employee.VarChar(100)
+  template_text String    @employee.NVarChar(Max)
+  add_by        String?   @employee.VarChar(5)
+  created_at    DateTime? @employee.Date
+  lastupdate    DateTime? @employee.DateTime
+  status        String?   @employee.VarChar(1)
+  tpfor         Int?
+}
+
+model em_worktype {
+  id            Int       @id(map: "PK__em_workt__3213E83FF0530D6D") @default(autoincrement())
+  worktype_text String    @employee.NVarChar(Max)
+  status        String?   @employee.NVarChar(1)
+  lastupdate    DateTime? @employee.DateTime
+}
+
+model em_xquetest {
+  ID            Int    @id(map: "PK_em_xquetest") @default(autoincrement())
+  q_id          Int
+  question_text String @employee.NVarChar(Max)
+}
+
+model emapp {
+  AppId         Int       @id(map: "PK_emapp") @default(autoincrement())
+  AppName       String?   @employee.VarChar(255)
+  AppPoss       Int?
+  AppWa         String?   @employee.VarChar(100)
+  AppMail       String?   @employee.VarChar(100)
+  AppAge        Int?
+  AppJk         Int?
+  AppAddres     String?   @employee.VarChar(500)
+  AppFakt       String?   @employee.VarChar(255)
+  AppFileName   String?   @employee.VarChar(255)
+  AppLastUpdate DateTime? @employee.DateTime
+  AppDate       DateTime? @employee.DateTime
+  AppStatus     String?   @employee.VarChar(100)
+  IsCall        Int?
+  DateCall      DateTime? @employee.DateTime
+  JobsIs        String?   @employee.VarChar(255)
+  JFStats       String?   @employee.VarChar(100)
+  LokasiId      Int?
+  scores        scores[]
+}
+
+model empassw {
+  Id    Int     @id(map: "PK_empassw") @default(autoincrement())
+  Name  String? @employee.NVarChar(50)
+  Pass  String? @employee.NVarChar(50)
+  Level Int?
+}
+
+model emposs {
+  Id                    Int                     @id(map: "PK_emposs") @default(autoincrement())
+  PossName              String?                 @employee.VarChar(100)
+  Status                String?                 @employee.VarChar(1)
+  UserId                String?                 @employee.VarChar(3)
+  LastUpdate            DateTime?               @employee.DateTime
+  em_applicant_criteria em_applicant_criteria[]
+  em_applicant_match    em_applicant_match[]
+}
+
+model faceusers {
+  Id         Int       @id(map: "PK__faceuser__3214EC07C529469B") @default(autoincrement())
+  name       String?   @employee.NVarChar(100)
+  fileimage  String?   @employee.NVarChar(255)
+  descriptor String?   @employee.NVarChar(Max)
+  pose       String?   @employee.NVarChar(15)
+  created_at DateTime? @employee.DateTime
+  lastupdate DateTime? @employee.DateTime
+}
+
+model menu {
+  id        Int     @id(map: "PK__menu__3213E83FED7D2BB0") @default(autoincrement())
+  name      String  @employee.VarChar(100)
+  parent_id Int?
+  link      String? @employee.VarChar(200)
+  visible   Boolean
+  role      String? @employee.VarChar(50)
+}
+
+model scores {
+  id          Int       @id(map: "PK__scores__3213E83F04C8B8CB") @default(autoincrement())
+  exam_id     Int
+  user_id     Int
+  total_score Int
+  created_at  DateTime? @employee.DateTime
+  em_exams    em_exams  @relation(fields: [exam_id], references: [id], onUpdate: NoAction, map: "FK__scores__exam_id__71D1E811")
+  emapp       emapp     @relation(fields: [user_id], references: [AppId], onUpdate: NoAction, map: "FK__scores__user_id__72C60C4A")
+}
+
+model sysdiagrams {
+  name         String @employee.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B6131AF5DEF") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
 }
