@@ -1,4 +1,4 @@
-import type { User, Role } from "@prisma/client";
+import type { User, Role } from "../generated/flowly/client.js";
 export type UserResponse = {
     username: string;
     name: string;

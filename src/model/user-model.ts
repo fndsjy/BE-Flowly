@@ -1,4 +1,4 @@
-import type { User, Role } from "@prisma/client";
+import type { User, Role } from "../generated/flowly/client.js";
 import { getTokenExpiresIn } from "../utils/auth.js"; // sesuaikan path
 
 export type UserResponse = {

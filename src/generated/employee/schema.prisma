@@ -1,0 +1,10 @@
+// schema-employee.prisma
+datasource employee {
+  provider = "sqlserver"
+  url      = env("EMPLOYEE_DATABASE_URL")
+}
+
+generator employeeClient {
+  provider = "prisma-client-js"
+  output   = "../src/generated/employee"
+}

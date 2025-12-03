@@ -1,4 +1,3 @@
-// controller/orgchart-controller.ts
 import type { Request, Response, NextFunction } from "express";
 import { ResponseError } from "../error/response-error.js";
 import { verifyToken } from "../utils/auth.js";

@@ -1,5 +1,5 @@
 // service/orgstructure-service.ts
-import { prismaClient } from "../application/database.js";
+import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { OrgStructureValidation } from "../validation/orgstructure-validation.js";
 import { ResponseError } from "../error/response-error.js";
@@ -12,7 +12,7 @@ export class OrgStructureService {
     static async create(requesterId, reqBody) {
         const request = Validation.validate(OrgStructureValidation.CREATE, reqBody);
         // Role check (only admin)
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterId },
             include: { role: true }
         });
@@ -20,7 +20,7 @@ export class OrgStructureService {
             throw new ResponseError(403, "Only admin can create structure");
         }
         const structureId = await generateOrgStructureId();
-        const structure = await prismaClient.orgStructure.create({
+        const structure = await prismaFlowly.orgStructure.create({
             data: {
                 structureId,
                 name: request.name,
@@ -36,19 +36,19 @@ export class OrgStructureService {
      * ------------------------------------------ */
     static async update(requesterId, reqBody) {
         const request = Validation.validate(OrgStructureValidation.UPDATE, reqBody);
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterId },
             include: { role: true }
         });
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can update structure");
         }
-        const exists = await prismaClient.orgStructure.findUnique({
+        const exists = await prismaFlowly.orgStructure.findUnique({
             where: { structureId: request.structureId, isDeleted: false }
         });
         if (!exists)
             throw new ResponseError(404, "Structure not found");
-        const updated = await prismaClient.orgStructure.update({
+        const updated = await prismaFlowly.orgStructure.update({
             where: { structureId: request.structureId },
             data: {
                 name: request.name ?? exists.name,
@@ -63,19 +63,19 @@ export class OrgStructureService {
      * ------------------------------------------ */
     static async softDelete(requesterId, reqBody) {
         const request = Validation.validate(OrgStructureValidation.DELETE, reqBody);
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterId },
             include: { role: true }
         });
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can delete structure");
         }
-        const exists = await prismaClient.orgStructure.findUnique({
+        const exists = await prismaFlowly.orgStructure.findUnique({
             where: { structureId: request.structureId, isDeleted: false }
         });
         if (!exists)
             throw new ResponseError(404, "Structure not found");
-        await prismaClient.orgStructure.update({
+        await prismaFlowly.orgStructure.update({
             where: { structureId: request.structureId },
             data: {
                 isDeleted: true,
@@ -89,7 +89,7 @@ export class OrgStructureService {
      * LIST ALL ACTIVE STRUCTURES
      * ------------------------------------------ */
     static async list() {
-        const structures = await prismaClient.orgStructure.findMany({
+        const structures = await prismaFlowly.orgStructure.findMany({
             where: { isDeleted: false },
             orderBy: { createdAt: "desc" }
         });

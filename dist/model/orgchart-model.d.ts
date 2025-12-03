@@ -1,4 +1,4 @@
-import type { OrgChart } from "@prisma/client";
+import type { OrgChart } from "../generated/flowly/client.js";
 export type OrgChartResponse = {
     nodeId: string;
     parentId: string | null;

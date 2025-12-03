@@ -2,7 +2,7 @@
 import { toUserResponse, toLoginResponse, toUserProfileResponse, toUserListResponse } from "../model/user-model.js";
 import { UserValidation } from "../validation/user-validation.js";
 import { Validation } from "../validation/validation.js";
-import { prismaClient } from "../application/database.js";
+import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
 import { getTokenExpiresIn, generateToken, verifyToken } from "../utils/auth.js";
@@ -12,14 +12,14 @@ export class UserService {
     static async register(request, requesterUserId) {
         const registerRequest = Validation.validate(UserValidation.REGISTER, request);
         // ✅ Check requester role
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only Admin can register new users");
         }
-        const existing = await prismaClient.user.findUnique({
+        const existing = await prismaFlowly.user.findUnique({
             where: { username: registerRequest.username }
         });
         if (existing) {
@@ -29,7 +29,7 @@ export class UserService {
         let roleToAssign;
         if (registerRequest.roleId) {
             // Admin explicitly selected a role
-            roleToAssign = await prismaClient.role.findUnique({
+            roleToAssign = await prismaFlowly.role.findUnique({
                 where: { roleId: registerRequest.roleId, roleIsActive: true }
             });
             if (!roleToAssign) {
@@ -38,7 +38,7 @@ export class UserService {
         }
         else {
             // Use default role (level 4)
-            roleToAssign = await prismaClient.role.findFirst({
+            roleToAssign = await prismaFlowly.role.findFirst({
                 where: { roleLevel: 4, roleIsActive: true }
             });
             if (!roleToAssign) {
@@ -53,7 +53,7 @@ export class UserService {
         // ✅ Generate userId
         const userId = await generateUserId();
         const hashed = await bcrypt.hash(registerRequest.password, 10);
-        const user = await prismaClient.user.create({
+        const user = await prismaFlowly.user.create({
             data: {
                 userId, // ✅ Required field (from your Prisma schema)
                 ...registerRequest,
@@ -71,7 +71,7 @@ export class UserService {
     // ✅ Login — no change needed (no create/update raw object)
     static async login(request) {
         const loginRequest = Validation.validate(UserValidation.LOGIN, request);
-        const user = await prismaClient.user.findUnique({
+        const user = await prismaFlowly.user.findUnique({
             where: { username: loginRequest.username, isDeleted: false },
             include: { role: true }
         });
@@ -98,7 +98,7 @@ export class UserService {
             expiresIn = 3 * 60 * 60;
             // expiresIn = 3 * 60 * 60; // 3 hours in seconds (since getTokenExpiresIn() gives seconds)
             // Update DB with new token and lastLogin
-            await prismaClient.user.update({
+            await prismaFlowly.user.update({
                 where: { userId: user.userId },
                 data: {
                     token,
@@ -112,7 +112,7 @@ export class UserService {
     }
     // ✅ Get Profile — no change needed
     static async getProfile(userId) {
-        const user = await prismaClient.user.findUnique({
+        const user = await prismaFlowly.user.findUnique({
             where: { userId, isDeleted: false },
             include: { role: { select: { roleName: true, roleLevel: true } } }
         });
@@ -122,14 +122,14 @@ export class UserService {
     }
     // ✅ List Users — no change needed
     static async listUsers(requesterUserId) {
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Access denied");
         }
-        const users = await prismaClient.user.findMany({
+        const users = await prismaFlowly.user.findMany({
             where: { isDeleted: false },
             include: { role: { select: { roleName: true } } },
             orderBy: { createdAt: "desc" }
@@ -140,7 +140,7 @@ export class UserService {
     static async changePassword(userId, request) {
         const changeReq = Validation.validate(UserValidation.CHANGE_PASSWORD, request);
         // 1. Find user
-        const user = await prismaClient.user.findUnique({ where: { userId } });
+        const user = await prismaFlowly.user.findUnique({ where: { userId } });
         if (!user)
             throw new ResponseError(404, "User not found");
         // 2. Verify old password
@@ -153,7 +153,7 @@ export class UserService {
             throw new ResponseError(400, "New password must be different from the old password");
         }
         const hashed = await bcrypt.hash(changeReq.newPassword, 10);
-        await prismaClient.user.update({
+        await prismaFlowly.user.update({
             where: { userId },
             data: {
                 password: hashed,
@@ -164,25 +164,25 @@ export class UserService {
     // ✅ Change Role — fix missing `data:`
     static async changeRole(requesterUserId, request) {
         const changeReq = Validation.validate(UserValidation.CHANGE_ROLE, request);
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can change roles");
         }
-        const targetUser = await prismaClient.user.findUnique({ where: { userId: changeReq.userId }, select: { userId: true, roleId: true } });
+        const targetUser = await prismaFlowly.user.findUnique({ where: { userId: changeReq.userId }, select: { userId: true, roleId: true } });
         if (!targetUser)
             throw new ResponseError(404, "User not found");
         if (targetUser.roleId === changeReq.newRoleId) {
             throw new ResponseError(400, "User already has this role");
         }
-        const newRole = await prismaClient.role.findUnique({
+        const newRole = await prismaFlowly.role.findUnique({
             where: { roleId: changeReq.newRoleId, roleIsActive: true }
         });
         if (!newRole)
             throw new ResponseError(400, "Invalid or inactive role");
-        await prismaClient.user.update({
+        await prismaFlowly.user.update({
             where: { userId: changeReq.userId },
             data: {
                 roleId: newRole.roleId,
@@ -192,14 +192,14 @@ export class UserService {
     }
     // ✅ List Roles
     static async listRoles(requesterUserId) {
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can access roles");
         }
-        const roles = await prismaClient.role.findMany({
+        const roles = await prismaFlowly.role.findMany({
             where: { roleIsActive: true },
             orderBy: { roleLevel: "asc" }
         });

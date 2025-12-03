@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaClient as FlowlyClient } from "../generated/flowly/client.js";
+import { PrismaClient as EmployeeClient } from "../generated/employee/client.js";
 import { logger } from "./logging.js";
 
-export const prismaClient = new PrismaClient({
+export const prismaFlowly = new FlowlyClient({
     log: [
         { 
             emit: "event",
@@ -22,18 +24,55 @@ export const prismaClient = new PrismaClient({
     ],
 });
 
-prismaClient.$on("query", (e: any) => {
+export const prismaEmployee = new EmployeeClient({
+    log: [
+        { 
+            emit: "event",
+            level: "query"
+        },
+        { 
+            emit: "event",
+            level: "error"
+        },
+        { 
+            emit: "event",
+            level: "info"
+        },
+        { 
+            emit: "event",
+            level: "warn"
+        },
+    ],
+});
+
+prismaFlowly.$on("query", (e: any) => {
     logger.info(`[PRISMA QUERY] ${e.query} | ${e.duration}ms`);
 });
 
-prismaClient.$on("error", (e: any) => {
+prismaFlowly.$on("error", (e: any) => {
     logger.error(`[PRISMA ERROR]`, { message: e.message, target: e.target });
 });
 
-prismaClient.$on("info", (e: any) => {
+prismaFlowly.$on("info", (e: any) => {
     logger.info(`[PRISMA INFO]`, { message: e.message });
 });
 
-prismaClient.$on("warn", (e: any) => {
+prismaFlowly.$on("warn", (e: any) => {
+    logger.info(`[PRISMA WARN]`, { message: e.message });
+});
+
+prismaEmployee.$on("query", (e: any) => {
+    logger.info(`[PRISMA QUERY] ${e.query} | ${e.duration}ms`);
+});
+
+prismaEmployee.$on("error", (e: any) => {
+    logger.error(`[PRISMA ERROR]`, { message: e.message, target: e.target });
+});
+
+prismaEmployee.$on("info", (e: any) => {
+    logger.info(`[PRISMA INFO]`, { message: e.message });
+});
+
+prismaEmployee.$on("warn", (e: any) => {
     logger.info(`[PRISMA WARN]`, { message: e.message });
 });

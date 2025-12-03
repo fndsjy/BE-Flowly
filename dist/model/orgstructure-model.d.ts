@@ -1,4 +1,4 @@
-import type { OrgStructure } from "@prisma/client";
+import type { OrgStructure } from "../generated/flowly/client.js";
 export type OrgStructureResponse = {
     structureId: string;
     name: string;
