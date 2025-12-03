@@ -1,4 +1,4 @@
-import { prismaClient } from "../application/database.js";
+import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { OrgChartValidation } from "../validation/orgchart-validation.js";
 import { ResponseError } from "../error/response-error.js";
@@ -10,13 +10,13 @@ export class OrgChartService {
         const validated = Validation.validate(OrgChartValidation.CREATE, request);
         const { structureId, parentId, userId } = validated;
         // Validate structureId
-        const structureExists = await prismaClient.orgStructure.findUnique({
+        const structureExists = await prismaFlowly.orgStructure.findUnique({
             where: { structureId: validated.structureId, isDeleted: false }
         });
         if (!structureExists)
             throw new ResponseError(400, "Invalid structureId");
         if (parentId) {
-            const parentNode = await prismaClient.orgChart.findUnique({
+            const parentNode = await prismaFlowly.orgChart.findUnique({
                 where: { nodeId: parentId, isDeleted: false }
             });
             if (!parentNode) {
@@ -28,21 +28,21 @@ export class OrgChartService {
         }
         // Validate parentId
         // if (validated.parentId) {
-        //   const parentExists = await prismaClient.orgChart.findUnique({
+        //   const parentExists = await prismaFlowly.orgChart.findUnique({
         //     where: { nodeId: validated.parentId, isDeleted: false }
         //   });
         //   if (!parentExists) throw new ResponseError(400, "Invalid parentId");
         // }
         // Validate userId
         if (validated.userId) {
-            const userExists = await prismaClient.user.findUnique({
+            const userExists = await prismaFlowly.user.findUnique({
                 where: { userId: validated.userId, isDeleted: false }
             });
             if (!userExists)
                 throw new ResponseError(400, "Invalid userId");
         }
         // Cek role requester
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
@@ -51,7 +51,7 @@ export class OrgChartService {
         }
         const nodeId = await generateOrgChartId();
         // AUTO-INCREMENT orderIndex per parent / per structure
-        const lastOrder = await prismaClient.orgChart.findFirst({
+        const lastOrder = await prismaFlowly.orgChart.findFirst({
             where: {
                 structureId: validated.structureId,
                 parentId: validated.parentId ?? null,
@@ -61,7 +61,7 @@ export class OrgChartService {
         });
         const nextOrderIndex = lastOrder ? lastOrder.orderIndex + 1 : 0;
         try {
-            const node = await prismaClient.orgChart.create({
+            const node = await prismaFlowly.orgChart.create({
                 data: {
                     nodeId,
                     ...validated,
@@ -85,7 +85,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 1. CEK NODE EXIST
         * -------------------------------------------- */
-        const existing = await prismaClient.orgChart.findUnique({
+        const existing = await prismaFlowly.orgChart.findUnique({
             where: { nodeId, isDeleted: false }
         });
         if (!existing) {
@@ -94,7 +94,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 2. CEK ADMIN
         * -------------------------------------------- */
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
@@ -106,7 +106,7 @@ export class OrgChartService {
         * -------------------------------------------- */
         let finalStructureId = structureId ?? existing.structureId;
         if (structureId && structureId !== existing.structureId) {
-            const structureValid = await prismaClient.orgStructure.findUnique({
+            const structureValid = await prismaFlowly.orgStructure.findUnique({
                 where: { structureId, isDeleted: false }
             });
             if (!structureValid) {
@@ -121,7 +121,7 @@ export class OrgChartService {
             if (finalParentId === nodeId) {
                 throw new ResponseError(400, "Node cannot be its own parent");
             }
-            const parentNode = await prismaClient.orgChart.findUnique({
+            const parentNode = await prismaFlowly.orgChart.findUnique({
                 where: { nodeId: finalParentId, isDeleted: false }
             });
             if (!parentNode) {
@@ -132,7 +132,7 @@ export class OrgChartService {
                 throw new ResponseError(400, "Parent belongs to different structure");
             }
             // Prevent circular reference (node → child → parent)
-            const childCheck = await prismaClient.orgChart.findMany({
+            const childCheck = await prismaFlowly.orgChart.findMany({
                 where: { parentId: nodeId, isDeleted: false }
             });
             for (const c of childCheck) {
@@ -143,7 +143,7 @@ export class OrgChartService {
         }
         // BLOCK STRUCTURE CHANGE IF NODE HAS CHILDREN
         if (structureId && structureId !== existing.structureId) {
-            const childExists = await prismaClient.orgChart.findFirst({
+            const childExists = await prismaFlowly.orgChart.findFirst({
                 where: { parentId: nodeId, isDeleted: false }
             });
             if (childExists) {
@@ -154,7 +154,7 @@ export class OrgChartService {
         * 5. VALIDATE USER ID
         * -------------------------------------------- */
         if (userId) {
-            const userExists = await prismaClient.user.findUnique({
+            const userExists = await prismaFlowly.user.findUnique({
                 where: { userId, isDeleted: false }
             });
             if (!userExists)
@@ -165,7 +165,7 @@ export class OrgChartService {
         * -------------------------------------------- */
         let finalOrderIndex = existing.orderIndex;
         if (structureId && structureId !== existing.structureId) {
-            const lastOrder = await prismaClient.orgChart.findFirst({
+            const lastOrder = await prismaFlowly.orgChart.findFirst({
                 where: {
                     structureId,
                     parentId: finalParentId ?? null,
@@ -178,7 +178,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 7. UPDATE NODE
         * -------------------------------------------- */
-        const updated = await prismaClient.orgChart.update({
+        const updated = await prismaFlowly.orgChart.update({
             where: { nodeId },
             data: {
                 ...validated,
@@ -195,7 +195,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 1. CEK ADMIN
         * -------------------------------------------- */
-        const requester = await prismaClient.user.findUnique({
+        const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true }
         });
@@ -205,7 +205,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 2. CEK NODE EXIST
         * -------------------------------------------- */
-        const node = await prismaClient.orgChart.findUnique({
+        const node = await prismaFlowly.orgChart.findUnique({
             where: { nodeId: validated.nodeId, isDeleted: false }
         });
         if (!node) {
@@ -214,7 +214,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 3. CEK APAKAH PUNYA CHILD
         * -------------------------------------------- */
-        const child = await prismaClient.orgChart.findFirst({
+        const child = await prismaFlowly.orgChart.findFirst({
             where: {
                 parentId: validated.nodeId,
                 isDeleted: false
@@ -235,7 +235,7 @@ export class OrgChartService {
         /* --------------------------------------------
         * 5. SOFT DELETE
         * -------------------------------------------- */
-        await prismaClient.orgChart.update({
+        await prismaFlowly.orgChart.update({
             where: { nodeId: validated.nodeId },
             data: {
                 isDeleted: true,
@@ -247,7 +247,7 @@ export class OrgChartService {
     }
     // 📌 LIST (Tree / Flat)
     static async listTree() {
-        const nodes = await prismaClient.orgChart.findMany({
+        const nodes = await prismaFlowly.orgChart.findMany({
             where: { isDeleted: false },
             orderBy: { orderIndex: "asc" }
         });
@@ -256,14 +256,14 @@ export class OrgChartService {
     // 📌 LIST BY STRUCTURE
     static async listByStructure(structureId) {
         // 1. VALIDATE STRUCTURE
-        const structureExists = await prismaClient.orgStructure.findUnique({
+        const structureExists = await prismaFlowly.orgStructure.findUnique({
             where: { structureId, isDeleted: false }
         });
         if (!structureExists) {
             throw new ResponseError(404, "Structure not found");
         }
         // 2. GET ALL NODES IN THIS STRUCTURE
-        const nodes = await prismaClient.orgChart.findMany({
+        const nodes = await prismaFlowly.orgChart.findMany({
             where: {
                 structureId,
                 isDeleted: false
