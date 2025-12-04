@@ -54027,10 +54027,12 @@ export namespace Prisma {
 
   export type Em_pilarAvgAggregateOutputType = {
     id: number | null
+    pic: number | null
   }
 
   export type Em_pilarSumAggregateOutputType = {
     id: number | null
+    pic: number | null
   }
 
   export type Em_pilarMinAggregateOutputType = {
@@ -54048,6 +54050,7 @@ export namespace Prisma {
     deletedAt: Date | null
     deletedBy: string | null
     description: string | null
+    pic: number | null
   }
 
   export type Em_pilarMaxAggregateOutputType = {
@@ -54065,6 +54068,7 @@ export namespace Prisma {
     deletedAt: Date | null
     deletedBy: string | null
     description: string | null
+    pic: number | null
   }
 
   export type Em_pilarCountAggregateOutputType = {
@@ -54082,16 +54086,19 @@ export namespace Prisma {
     deletedAt: number
     deletedBy: number
     description: number
+    pic: number
     _all: number
   }
 
 
   export type Em_pilarAvgAggregateInputType = {
     id?: true
+    pic?: true
   }
 
   export type Em_pilarSumAggregateInputType = {
     id?: true
+    pic?: true
   }
 
   export type Em_pilarMinAggregateInputType = {
@@ -54109,6 +54116,7 @@ export namespace Prisma {
     deletedAt?: true
     deletedBy?: true
     description?: true
+    pic?: true
   }
 
   export type Em_pilarMaxAggregateInputType = {
@@ -54126,6 +54134,7 @@ export namespace Prisma {
     deletedAt?: true
     deletedBy?: true
     description?: true
+    pic?: true
   }
 
   export type Em_pilarCountAggregateInputType = {
@@ -54143,6 +54152,7 @@ export namespace Prisma {
     deletedAt?: true
     deletedBy?: true
     description?: true
+    pic?: true
     _all?: true
   }
 
@@ -54247,6 +54257,7 @@ export namespace Prisma {
     deletedAt: Date | null
     deletedBy: string | null
     description: string | null
+    pic: number | null
     _count: Em_pilarCountAggregateOutputType | null
     _avg: Em_pilarAvgAggregateOutputType | null
     _sum: Em_pilarSumAggregateOutputType | null
@@ -54283,6 +54294,7 @@ export namespace Prisma {
     deletedAt?: boolean
     deletedBy?: boolean
     description?: boolean
+    pic?: boolean
   }, ExtArgs["result"]["em_pilar"]>
 
 
@@ -54302,9 +54314,10 @@ export namespace Prisma {
     deletedAt?: boolean
     deletedBy?: boolean
     description?: boolean
+    pic?: boolean
   }
 
-  export type em_pilarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pilar_name" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description", ExtArgs["result"]["em_pilar"]>
+  export type em_pilarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pilar_name" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic", ExtArgs["result"]["em_pilar"]>
 
   export type $em_pilarPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_pilar"
@@ -54324,6 +54337,7 @@ export namespace Prisma {
       deletedAt: Date | null
       deletedBy: string | null
       description: string | null
+      pic: number | null
     }, ExtArgs["result"]["em_pilar"]>
     composites: {}
   }
@@ -54707,6 +54721,7 @@ export namespace Prisma {
     readonly deletedAt: FieldRef<"em_pilar", 'DateTime'>
     readonly deletedBy: FieldRef<"em_pilar", 'String'>
     readonly description: FieldRef<"em_pilar", 'String'>
+    readonly pic: FieldRef<"em_pilar", 'Int'>
   }
     
 
@@ -59879,11 +59894,13 @@ export namespace Prisma {
   export type Em_sbuAvgAggregateOutputType = {
     id: number | null
     sbu_pilar: number | null
+    pic: number | null
   }
 
   export type Em_sbuSumAggregateOutputType = {
     id: number | null
     sbu_pilar: number | null
+    pic: number | null
   }
 
   export type Em_sbuMinAggregateOutputType = {
@@ -59902,6 +59919,8 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    description: string | null
+    pic: number | null
   }
 
   export type Em_sbuMaxAggregateOutputType = {
@@ -59920,6 +59939,8 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    description: string | null
+    pic: number | null
   }
 
   export type Em_sbuCountAggregateOutputType = {
@@ -59938,6 +59959,8 @@ export namespace Prisma {
     isDeleted: number
     deletedAt: number
     deletedBy: number
+    description: number
+    pic: number
     _all: number
   }
 
@@ -59945,11 +59968,13 @@ export namespace Prisma {
   export type Em_sbuAvgAggregateInputType = {
     id?: true
     sbu_pilar?: true
+    pic?: true
   }
 
   export type Em_sbuSumAggregateInputType = {
     id?: true
     sbu_pilar?: true
+    pic?: true
   }
 
   export type Em_sbuMinAggregateInputType = {
@@ -59968,6 +59993,8 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    description?: true
+    pic?: true
   }
 
   export type Em_sbuMaxAggregateInputType = {
@@ -59986,6 +60013,8 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    description?: true
+    pic?: true
   }
 
   export type Em_sbuCountAggregateInputType = {
@@ -60004,6 +60033,8 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    description?: true
+    pic?: true
     _all?: true
   }
 
@@ -60109,6 +60140,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt: Date | null
     deletedBy: string | null
+    description: string | null
+    pic: number | null
     _count: Em_sbuCountAggregateOutputType | null
     _avg: Em_sbuAvgAggregateOutputType | null
     _sum: Em_sbuSumAggregateOutputType | null
@@ -60146,6 +60179,8 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    description?: boolean
+    pic?: boolean
   }, ExtArgs["result"]["em_sbu"]>
 
 
@@ -60166,9 +60201,11 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    description?: boolean
+    pic?: boolean
   }
 
-  export type em_sbuOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_code" | "sbu_name" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["em_sbu"]>
+  export type em_sbuOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_code" | "sbu_name" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic", ExtArgs["result"]["em_sbu"]>
 
   export type $em_sbuPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_sbu"
@@ -60189,6 +60226,8 @@ export namespace Prisma {
       isDeleted: boolean
       deletedAt: Date | null
       deletedBy: string | null
+      description: string | null
+      pic: number | null
     }, ExtArgs["result"]["em_sbu"]>
     composites: {}
   }
@@ -60573,6 +60612,8 @@ export namespace Prisma {
     readonly isDeleted: FieldRef<"em_sbu", 'Boolean'>
     readonly deletedAt: FieldRef<"em_sbu", 'DateTime'>
     readonly deletedBy: FieldRef<"em_sbu", 'String'>
+    readonly description: FieldRef<"em_sbu", 'String'>
+    readonly pic: FieldRef<"em_sbu", 'Int'>
   }
     
 
@@ -60909,12 +60950,14 @@ export namespace Prisma {
     id: number | null
     sbu_id: number | null
     sbu_pilar: number | null
+    pic: number | null
   }
 
   export type Em_sbu_subSumAggregateOutputType = {
     id: number | null
     sbu_id: number | null
     sbu_pilar: number | null
+    pic: number | null
   }
 
   export type Em_sbu_subMinAggregateOutputType = {
@@ -60934,6 +60977,8 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    description: string | null
+    pic: number | null
   }
 
   export type Em_sbu_subMaxAggregateOutputType = {
@@ -60953,6 +60998,8 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    description: string | null
+    pic: number | null
   }
 
   export type Em_sbu_subCountAggregateOutputType = {
@@ -60972,6 +61019,8 @@ export namespace Prisma {
     isDeleted: number
     deletedAt: number
     deletedBy: number
+    description: number
+    pic: number
     _all: number
   }
 
@@ -60980,12 +61029,14 @@ export namespace Prisma {
     id?: true
     sbu_id?: true
     sbu_pilar?: true
+    pic?: true
   }
 
   export type Em_sbu_subSumAggregateInputType = {
     id?: true
     sbu_id?: true
     sbu_pilar?: true
+    pic?: true
   }
 
   export type Em_sbu_subMinAggregateInputType = {
@@ -61005,6 +61056,8 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    description?: true
+    pic?: true
   }
 
   export type Em_sbu_subMaxAggregateInputType = {
@@ -61024,6 +61077,8 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    description?: true
+    pic?: true
   }
 
   export type Em_sbu_subCountAggregateInputType = {
@@ -61043,6 +61098,8 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    description?: true
+    pic?: true
     _all?: true
   }
 
@@ -61149,6 +61206,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt: Date | null
     deletedBy: string | null
+    description: string | null
+    pic: number | null
     _count: Em_sbu_subCountAggregateOutputType | null
     _avg: Em_sbu_subAvgAggregateOutputType | null
     _sum: Em_sbu_subSumAggregateOutputType | null
@@ -61187,6 +61246,8 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    description?: boolean
+    pic?: boolean
   }, ExtArgs["result"]["em_sbu_sub"]>
 
 
@@ -61208,9 +61269,11 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    description?: boolean
+    pic?: boolean
   }
 
-  export type em_sbu_subOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_sub_code" | "sbu_sub_name" | "sbu_id" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["em_sbu_sub"]>
+  export type em_sbu_subOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_sub_code" | "sbu_sub_name" | "sbu_id" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic", ExtArgs["result"]["em_sbu_sub"]>
 
   export type $em_sbu_subPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_sbu_sub"
@@ -61232,6 +61295,8 @@ export namespace Prisma {
       isDeleted: boolean
       deletedAt: Date | null
       deletedBy: string | null
+      description: string | null
+      pic: number | null
     }, ExtArgs["result"]["em_sbu_sub"]>
     composites: {}
   }
@@ -61617,6 +61682,8 @@ export namespace Prisma {
     readonly isDeleted: FieldRef<"em_sbu_sub", 'Boolean'>
     readonly deletedAt: FieldRef<"em_sbu_sub", 'DateTime'>
     readonly deletedBy: FieldRef<"em_sbu_sub", 'String'>
+    readonly description: FieldRef<"em_sbu_sub", 'String'>
+    readonly pic: FieldRef<"em_sbu_sub", 'Int'>
   }
     
 
@@ -86444,7 +86511,8 @@ export namespace Prisma {
     isDeleted: 'isDeleted',
     deletedAt: 'deletedAt',
     deletedBy: 'deletedBy',
-    description: 'description'
+    description: 'description',
+    pic: 'pic'
   };
 
   export type Em_pilarScalarFieldEnum = (typeof Em_pilarScalarFieldEnum)[keyof typeof Em_pilarScalarFieldEnum]
@@ -86530,7 +86598,9 @@ export namespace Prisma {
     updatedBy: 'updatedBy',
     isDeleted: 'isDeleted',
     deletedAt: 'deletedAt',
-    deletedBy: 'deletedBy'
+    deletedBy: 'deletedBy',
+    description: 'description',
+    pic: 'pic'
   };
 
   export type Em_sbuScalarFieldEnum = (typeof Em_sbuScalarFieldEnum)[keyof typeof Em_sbuScalarFieldEnum]
@@ -86552,7 +86622,9 @@ export namespace Prisma {
     updatedBy: 'updatedBy',
     isDeleted: 'isDeleted',
     deletedAt: 'deletedAt',
-    deletedBy: 'deletedBy'
+    deletedBy: 'deletedBy',
+    description: 'description',
+    pic: 'pic'
   };
 
   export type Em_sbu_subScalarFieldEnum = (typeof Em_sbu_subScalarFieldEnum)[keyof typeof Em_sbu_subScalarFieldEnum]
@@ -90599,6 +90671,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"em_pilar"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_pilar"> | string | null
     description?: StringNullableFilter<"em_pilar"> | string | null
+    pic?: IntNullableFilter<"em_pilar"> | number | null
   }
 
   export type em_pilarOrderByWithRelationInput = {
@@ -90616,6 +90689,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    pic?: SortOrderInput | SortOrder
   }
 
   export type em_pilarWhereUniqueInput = Prisma.AtLeast<{
@@ -90636,6 +90710,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"em_pilar"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_pilar"> | string | null
     description?: StringNullableFilter<"em_pilar"> | string | null
+    pic?: IntNullableFilter<"em_pilar"> | number | null
   }, "id">
 
   export type em_pilarOrderByWithAggregationInput = {
@@ -90653,6 +90728,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    pic?: SortOrderInput | SortOrder
     _count?: em_pilarCountOrderByAggregateInput
     _avg?: em_pilarAvgOrderByAggregateInput
     _max?: em_pilarMaxOrderByAggregateInput
@@ -90678,6 +90754,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"em_pilar"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"em_pilar"> | string | null
     description?: StringNullableWithAggregatesFilter<"em_pilar"> | string | null
+    pic?: IntNullableWithAggregatesFilter<"em_pilar"> | number | null
   }
 
   export type em_profesiWhereInput = {
@@ -91026,6 +91103,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"em_sbu"> | boolean
     deletedAt?: DateTimeNullableFilter<"em_sbu"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu"> | string | null
+    description?: StringNullableFilter<"em_sbu"> | string | null
+    pic?: IntNullableFilter<"em_sbu"> | number | null
   }
 
   export type em_sbuOrderByWithRelationInput = {
@@ -91044,6 +91123,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    pic?: SortOrderInput | SortOrder
   }
 
   export type em_sbuWhereUniqueInput = Prisma.AtLeast<{
@@ -91066,6 +91147,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"em_sbu"> | boolean
     deletedAt?: DateTimeNullableFilter<"em_sbu"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu"> | string | null
+    description?: StringNullableFilter<"em_sbu"> | string | null
+    pic?: IntNullableFilter<"em_sbu"> | number | null
   }, "id_sbu_code">
 
   export type em_sbuOrderByWithAggregationInput = {
@@ -91084,6 +91167,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    pic?: SortOrderInput | SortOrder
     _count?: em_sbuCountOrderByAggregateInput
     _avg?: em_sbuAvgOrderByAggregateInput
     _max?: em_sbuMaxOrderByAggregateInput
@@ -91110,6 +91195,8 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"em_sbu"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"em_sbu"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
+    description?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
+    pic?: IntNullableWithAggregatesFilter<"em_sbu"> | number | null
   }
 
   export type em_sbu_subWhereInput = {
@@ -91132,6 +91219,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"em_sbu_sub"> | boolean
     deletedAt?: DateTimeNullableFilter<"em_sbu_sub"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu_sub"> | string | null
+    description?: StringNullableFilter<"em_sbu_sub"> | string | null
+    pic?: IntNullableFilter<"em_sbu_sub"> | number | null
   }
 
   export type em_sbu_subOrderByWithRelationInput = {
@@ -91151,6 +91240,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    pic?: SortOrderInput | SortOrder
   }
 
   export type em_sbu_subWhereUniqueInput = Prisma.AtLeast<{
@@ -91173,6 +91264,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"em_sbu_sub"> | boolean
     deletedAt?: DateTimeNullableFilter<"em_sbu_sub"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu_sub"> | string | null
+    description?: StringNullableFilter<"em_sbu_sub"> | string | null
+    pic?: IntNullableFilter<"em_sbu_sub"> | number | null
   }, "id">
 
   export type em_sbu_subOrderByWithAggregationInput = {
@@ -91192,6 +91285,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    pic?: SortOrderInput | SortOrder
     _count?: em_sbu_subCountOrderByAggregateInput
     _avg?: em_sbu_subAvgOrderByAggregateInput
     _max?: em_sbu_subMaxOrderByAggregateInput
@@ -91219,6 +91314,8 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"em_sbu_sub"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"em_sbu_sub"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
+    description?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
+    pic?: IntNullableWithAggregatesFilter<"em_sbu_sub"> | number | null
   }
 
   export type em_schedule1WhereInput = {
@@ -96848,6 +96945,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
+    pic?: number | null
   }
 
   export type em_pilarUncheckedCreateInput = {
@@ -96865,6 +96963,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
+    pic?: number | null
   }
 
   export type em_pilarUpdateInput = {
@@ -96881,6 +96980,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_pilarUncheckedUpdateInput = {
@@ -96898,6 +96998,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_pilarCreateManyInput = {
@@ -96914,6 +97015,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
+    pic?: number | null
   }
 
   export type em_pilarUpdateManyMutationInput = {
@@ -96930,6 +97032,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_pilarUncheckedUpdateManyInput = {
@@ -96947,6 +97050,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_profesiCreateInput = {
@@ -97301,6 +97405,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    description?: string | null
+    pic?: number | null
   }
 
   export type em_sbuUncheckedCreateInput = {
@@ -97319,6 +97425,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    description?: string | null
+    pic?: number | null
   }
 
   export type em_sbuUpdateInput = {
@@ -97337,6 +97445,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbuUncheckedUpdateInput = {
@@ -97355,6 +97465,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbuCreateManyInput = {
@@ -97372,6 +97484,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    description?: string | null
+    pic?: number | null
   }
 
   export type em_sbuUpdateManyMutationInput = {
@@ -97390,6 +97504,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbuUncheckedUpdateManyInput = {
@@ -97408,6 +97524,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbu_subCreateInput = {
@@ -97426,6 +97544,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    description?: string | null
+    pic?: number | null
   }
 
   export type em_sbu_subUncheckedCreateInput = {
@@ -97445,6 +97565,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    description?: string | null
+    pic?: number | null
   }
 
   export type em_sbu_subUpdateInput = {
@@ -97463,6 +97585,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbu_subUncheckedUpdateInput = {
@@ -97482,6 +97606,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbu_subCreateManyInput = {
@@ -97500,6 +97626,8 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    description?: string | null
+    pic?: number | null
   }
 
   export type em_sbu_subUpdateManyMutationInput = {
@@ -97518,6 +97646,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_sbu_subUncheckedUpdateManyInput = {
@@ -97537,6 +97667,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pic?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type em_schedule1CreateInput = {
@@ -102128,10 +102260,12 @@ export namespace Prisma {
     deletedAt?: SortOrder
     deletedBy?: SortOrder
     description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_pilarAvgOrderByAggregateInput = {
     id?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_pilarMaxOrderByAggregateInput = {
@@ -102149,6 +102283,7 @@ export namespace Prisma {
     deletedAt?: SortOrder
     deletedBy?: SortOrder
     description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_pilarMinOrderByAggregateInput = {
@@ -102166,10 +102301,12 @@ export namespace Prisma {
     deletedAt?: SortOrder
     deletedBy?: SortOrder
     description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_pilarSumOrderByAggregateInput = {
     id?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_profesiCountOrderByAggregateInput = {
@@ -102420,11 +102557,14 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbuAvgOrderByAggregateInput = {
     id?: SortOrder
     sbu_pilar?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbuMaxOrderByAggregateInput = {
@@ -102443,6 +102583,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbuMinOrderByAggregateInput = {
@@ -102461,11 +102603,14 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbuSumOrderByAggregateInput = {
     id?: SortOrder
     sbu_pilar?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbu_subCountOrderByAggregateInput = {
@@ -102485,12 +102630,15 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbu_subAvgOrderByAggregateInput = {
     id?: SortOrder
     sbu_id?: SortOrder
     sbu_pilar?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbu_subMaxOrderByAggregateInput = {
@@ -102510,6 +102658,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbu_subMinOrderByAggregateInput = {
@@ -102529,12 +102679,15 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    description?: SortOrder
+    pic?: SortOrder
   }
 
   export type em_sbu_subSumOrderByAggregateInput = {
     id?: SortOrder
     sbu_id?: SortOrder
     sbu_pilar?: SortOrder
+    pic?: SortOrder
   }
 
   export type Em_schedule2ListRelationFilter = {

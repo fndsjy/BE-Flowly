@@ -2,6 +2,7 @@ export type PilarResponse = {
     id: number;
     pilarName: string;
     description: string | null;
+    pic: number | null;
     status: string;
     isDeleted: boolean;
     createdAt: Date;
@@ -11,6 +12,7 @@ export type PilarListResponse = {
     id: number;
     pilarName: string;
     description: string | null;
+    pic: number | null;
     status: string;
     isDeleted: boolean;
     createdAt: Date;
@@ -19,11 +21,13 @@ export type PilarListResponse = {
 export type CreatePilarRequest = {
     pilarName: string;
     description?: string | null;
+    pic?: number | null;
 };
 export type UpdatePilarRequest = {
     id: number;
     pilarName?: string;
     description?: string | null;
+    pic?: number | null;
     status?: string;
 };
 export type DeletePilarRequest = {
