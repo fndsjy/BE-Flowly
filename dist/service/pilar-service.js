@@ -104,6 +104,16 @@ export class PilarService {
         });
         if (!exists)
             throw new ResponseError(404, "Pilar not found");
+        // Cek apakah ada SBU di bawah Pilar ini
+        const sbuCount = await prismaEmployee.em_sbu.count({
+            where: {
+                sbu_pilar: request.id,
+                OR: [{ isDeleted: false }, { isDeleted: null }]
+            }
+        });
+        if (sbuCount > 0) {
+            throw new ResponseError(400, "Cannot delete Pilar because it still has SBU");
+        }
         await prismaEmployee.em_pilar.update({
             where: { id: request.id },
             data: {

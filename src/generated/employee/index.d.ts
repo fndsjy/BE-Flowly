@@ -36,6 +36,7 @@ export class PrismaClient<
 > {
   em_pilar: any;
   em_employee: any;
+    em_sbu: any;
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
     /**
