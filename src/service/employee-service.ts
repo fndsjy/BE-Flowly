@@ -3,18 +3,18 @@ import { ResponseError } from "../error/response-error.js";
 import { toEmployeeResponse } from "../model/employee-model.js";
 
 export class EmployeeService {
-  static async listForPIC(requesterUserId: string) {
+  static async listForPIC() {
     // 1. Cek user + role
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterUserId, isDeleted: false },
-      include: { role: true },
-    });
+    // const requester = await prismaFlowly.user.findUnique({
+    //   where: { userId: requesterUserId, isDeleted: false },
+    //   include: { role: true },
+    // });
 
-    if (!requester) throw new ResponseError(404, "User not found");
+    // if (!requester) throw new ResponseError(404, "User not found");
 
-    if (requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can access this resource");
-    }
+    // if (requester.role.roleLevel !== 1) {
+    //   throw new ResponseError(403, "Only admin can access this resource");
+    // }
 
     // 2. Ambil employee di DB employee
     const employees = await prismaEmployee.em_employee.findMany({

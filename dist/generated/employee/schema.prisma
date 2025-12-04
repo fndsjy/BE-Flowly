@@ -719,7 +719,7 @@ model em_regulations {
 }
 
 model em_sbu {
-  id          Int       @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   sbu_code    String    @employee.NVarChar(50)
   sbu_name    String    @employee.NVarChar(255)
   sbu_pilar   Int?
@@ -731,13 +731,14 @@ model em_sbu {
   createdBy   String?   @employee.NVarChar(20)
   updatedAt   DateTime?
   updatedBy   String?   @employee.NVarChar(20)
-  isDeleted   Boolean
+  isDeleted   Boolean?
   deletedAt   DateTime?
   deletedBy   String?   @employee.NVarChar(20)
   description String?   @employee.NVarChar(255)
   pic         Int?
 
-  @@id([id, sbu_code], map: "PK_em_sbu")
+  @@unique([sbu_code])
+  @@map("em_sbu")
 }
 
 model em_sbu_sub {
@@ -754,7 +755,7 @@ model em_sbu_sub {
   createdBy    String?   @employee.NVarChar(20)
   updatedAt    DateTime?
   updatedBy    String?   @employee.NVarChar(20)
-  isDeleted    Boolean
+  isDeleted    Boolean?
   deletedAt    DateTime?
   deletedBy    String?   @employee.NVarChar(20)
   description  String?   @employee.NVarChar(255)

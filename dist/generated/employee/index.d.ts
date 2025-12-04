@@ -60137,7 +60137,7 @@ export namespace Prisma {
     createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
-    isDeleted: boolean
+    isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
     description: string | null
@@ -60223,7 +60223,7 @@ export namespace Prisma {
       createdBy: string | null
       updatedAt: Date | null
       updatedBy: string | null
-      isDeleted: boolean
+      isDeleted: boolean | null
       deletedAt: Date | null
       deletedBy: string | null
       description: string | null
@@ -61203,7 +61203,7 @@ export namespace Prisma {
     createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
-    isDeleted: boolean
+    isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
     description: string | null
@@ -61292,7 +61292,7 @@ export namespace Prisma {
       createdBy: string | null
       updatedAt: Date | null
       updatedBy: string | null
-      isDeleted: boolean
+      isDeleted: boolean | null
       deletedAt: Date | null
       deletedBy: string | null
       description: string | null
@@ -91100,7 +91100,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"em_sbu"> | string | null
     updatedAt?: DateTimeNullableFilter<"em_sbu"> | Date | string | null
     updatedBy?: StringNullableFilter<"em_sbu"> | string | null
-    isDeleted?: BoolFilter<"em_sbu"> | boolean
+    isDeleted?: BoolNullableFilter<"em_sbu"> | boolean | null
     deletedAt?: DateTimeNullableFilter<"em_sbu"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu"> | string | null
     description?: StringNullableFilter<"em_sbu"> | string | null
@@ -91120,7 +91120,7 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
+    isDeleted?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -91128,12 +91128,11 @@ export namespace Prisma {
   }
 
   export type em_sbuWhereUniqueInput = Prisma.AtLeast<{
-    id_sbu_code?: em_sbuIdSbu_codeCompoundUniqueInput
+    id?: number
+    sbu_code?: string
     AND?: em_sbuWhereInput | em_sbuWhereInput[]
     OR?: em_sbuWhereInput[]
     NOT?: em_sbuWhereInput | em_sbuWhereInput[]
-    id?: IntFilter<"em_sbu"> | number
-    sbu_code?: StringFilter<"em_sbu"> | string
     sbu_name?: StringFilter<"em_sbu"> | string
     sbu_pilar?: IntNullableFilter<"em_sbu"> | number | null
     status?: StringFilter<"em_sbu"> | string
@@ -91144,12 +91143,12 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"em_sbu"> | string | null
     updatedAt?: DateTimeNullableFilter<"em_sbu"> | Date | string | null
     updatedBy?: StringNullableFilter<"em_sbu"> | string | null
-    isDeleted?: BoolFilter<"em_sbu"> | boolean
+    isDeleted?: BoolNullableFilter<"em_sbu"> | boolean | null
     deletedAt?: DateTimeNullableFilter<"em_sbu"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu"> | string | null
     description?: StringNullableFilter<"em_sbu"> | string | null
     pic?: IntNullableFilter<"em_sbu"> | number | null
-  }, "id_sbu_code">
+  }, "id" | "sbu_code">
 
   export type em_sbuOrderByWithAggregationInput = {
     id?: SortOrder
@@ -91164,7 +91163,7 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
+    isDeleted?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -91192,7 +91191,7 @@ export namespace Prisma {
     createdBy?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"em_sbu"> | Date | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
-    isDeleted?: BoolWithAggregatesFilter<"em_sbu"> | boolean
+    isDeleted?: BoolNullableWithAggregatesFilter<"em_sbu"> | boolean | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"em_sbu"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
     description?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
@@ -91216,7 +91215,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"em_sbu_sub"> | string | null
     updatedAt?: DateTimeNullableFilter<"em_sbu_sub"> | Date | string | null
     updatedBy?: StringNullableFilter<"em_sbu_sub"> | string | null
-    isDeleted?: BoolFilter<"em_sbu_sub"> | boolean
+    isDeleted?: BoolNullableFilter<"em_sbu_sub"> | boolean | null
     deletedAt?: DateTimeNullableFilter<"em_sbu_sub"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu_sub"> | string | null
     description?: StringNullableFilter<"em_sbu_sub"> | string | null
@@ -91237,7 +91236,7 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
+    isDeleted?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -91261,7 +91260,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"em_sbu_sub"> | string | null
     updatedAt?: DateTimeNullableFilter<"em_sbu_sub"> | Date | string | null
     updatedBy?: StringNullableFilter<"em_sbu_sub"> | string | null
-    isDeleted?: BoolFilter<"em_sbu_sub"> | boolean
+    isDeleted?: BoolNullableFilter<"em_sbu_sub"> | boolean | null
     deletedAt?: DateTimeNullableFilter<"em_sbu_sub"> | Date | string | null
     deletedBy?: StringNullableFilter<"em_sbu_sub"> | string | null
     description?: StringNullableFilter<"em_sbu_sub"> | string | null
@@ -91282,7 +91281,7 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
+    isDeleted?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -91311,7 +91310,7 @@ export namespace Prisma {
     createdBy?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"em_sbu_sub"> | Date | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
-    isDeleted?: BoolWithAggregatesFilter<"em_sbu_sub"> | boolean
+    isDeleted?: BoolNullableWithAggregatesFilter<"em_sbu_sub"> | boolean | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"em_sbu_sub"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
     description?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
@@ -97390,7 +97389,6 @@ export namespace Prisma {
   }
 
   export type em_sbuCreateInput = {
-    id?: number
     sbu_code: string
     sbu_name: string
     sbu_pilar?: number | null
@@ -97402,7 +97400,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
-    isDeleted: boolean
+    isDeleted?: boolean | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
@@ -97422,7 +97420,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
-    isDeleted: boolean
+    isDeleted?: boolean | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
@@ -97430,7 +97428,6 @@ export namespace Prisma {
   }
 
   export type em_sbuUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     sbu_code?: StringFieldUpdateOperationsInput | string
     sbu_name?: StringFieldUpdateOperationsInput | string
     sbu_pilar?: NullableIntFieldUpdateOperationsInput | number | null
@@ -97442,7 +97439,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97462,7 +97459,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97481,7 +97478,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
-    isDeleted: boolean
+    isDeleted?: boolean | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
@@ -97489,7 +97486,6 @@ export namespace Prisma {
   }
 
   export type em_sbuUpdateManyMutationInput = {
-    id?: IntFieldUpdateOperationsInput | number
     sbu_code?: StringFieldUpdateOperationsInput | string
     sbu_name?: StringFieldUpdateOperationsInput | string
     sbu_pilar?: NullableIntFieldUpdateOperationsInput | number | null
@@ -97501,7 +97497,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97521,7 +97517,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97541,7 +97537,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
-    isDeleted: boolean
+    isDeleted?: boolean | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
@@ -97562,7 +97558,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
-    isDeleted: boolean
+    isDeleted?: boolean | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
@@ -97582,7 +97578,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97603,7 +97599,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97623,7 +97619,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
-    isDeleted: boolean
+    isDeleted?: boolean | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
     description?: string | null
@@ -97643,7 +97639,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97664,7 +97660,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102534,11 +102530,6 @@ export namespace Prisma {
     Id?: SortOrder
     chanceId?: SortOrder
     urut?: SortOrder
-  }
-
-  export type em_sbuIdSbu_codeCompoundUniqueInput = {
-    id: number
-    sbu_code: string
   }
 
   export type em_sbuCountOrderByAggregateInput = {
