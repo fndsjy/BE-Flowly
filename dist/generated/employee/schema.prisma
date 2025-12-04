@@ -660,6 +660,7 @@ model em_pilar {
   deletedAt   DateTime?
   deletedBy   String?   @employee.NVarChar(20)
   description String?   @employee.NVarChar(255)
+  pic         Int?
 }
 
 model em_profesi {
@@ -718,21 +719,23 @@ model em_regulations {
 }
 
 model em_sbu {
-  id         Int       @default(autoincrement())
-  sbu_code   String    @employee.NVarChar(50)
-  sbu_name   String    @employee.NVarChar(255)
-  sbu_pilar  Int?
-  status     String    @employee.NVarChar(1)
-  add_by     String?   @employee.VarChar(5)
-  created_at DateTime? @employee.Date
-  lastupdate DateTime? @employee.DateTime
-  createdAt  DateTime?
-  createdBy  String?   @employee.NVarChar(20)
-  updatedAt  DateTime?
-  updatedBy  String?   @employee.NVarChar(20)
-  isDeleted  Boolean
-  deletedAt  DateTime?
-  deletedBy  String?   @employee.NVarChar(20)
+  id          Int       @default(autoincrement())
+  sbu_code    String    @employee.NVarChar(50)
+  sbu_name    String    @employee.NVarChar(255)
+  sbu_pilar   Int?
+  status      String    @employee.NVarChar(1)
+  add_by      String?   @employee.VarChar(5)
+  created_at  DateTime? @employee.Date
+  lastupdate  DateTime? @employee.DateTime
+  createdAt   DateTime?
+  createdBy   String?   @employee.NVarChar(20)
+  updatedAt   DateTime?
+  updatedBy   String?   @employee.NVarChar(20)
+  isDeleted   Boolean
+  deletedAt   DateTime?
+  deletedBy   String?   @employee.NVarChar(20)
+  description String?   @employee.NVarChar(255)
+  pic         Int?
 
   @@id([id, sbu_code], map: "PK_em_sbu")
 }
@@ -754,6 +757,8 @@ model em_sbu_sub {
   isDeleted    Boolean
   deletedAt    DateTime?
   deletedBy    String?   @employee.NVarChar(20)
+  description  String?   @employee.NVarChar(255)
+  pic          Int?
 }
 
 model em_schedule1 {

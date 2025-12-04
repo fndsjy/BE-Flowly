@@ -19,12 +19,21 @@ export class PilarService {
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can create structure");
         }
+        if (request.pic) {
+            const picExists = await prismaEmployee.em_employee.findUnique({
+                where: { UserId: request.pic }
+            });
+            if (!picExists) {
+                throw new ResponseError(400, "PIC not found in employee table");
+            }
+        }
         // const structureId = await generateOrgStructureId();
         const pilar = await prismaEmployee.em_pilar.create({
             data: {
                 pilar_name: request.pilarName,
                 description: request.description ?? null,
                 status: "A",
+                pic: request.pic ?? null,
                 isDeleted: false,
                 created_at: new Date(),
                 createdAt: new Date(),
@@ -53,12 +62,21 @@ export class PilarService {
         });
         if (!exists)
             throw new ResponseError(404, "Pilar not found");
+        if (request.pic) {
+            const picExists = await prismaEmployee.em_employee.findUnique({
+                where: { UserId: request.pic }
+            });
+            if (!picExists) {
+                throw new ResponseError(400, "PIC not found in employee table");
+            }
+        }
         const updated = await prismaEmployee.em_pilar.update({
             where: { id: request.id },
             data: {
                 pilar_name: request.pilarName ?? exists.pilar_name,
                 description: request.description ?? exists.description,
                 status: request.status ?? exists.status,
+                pic: request.pic ?? exists.pic,
                 lastupdate: new Date(),
                 updatedAt: new Date(),
                 updatedBy: requesterId

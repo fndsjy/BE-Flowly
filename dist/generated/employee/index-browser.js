@@ -710,7 +710,8 @@ exports.Prisma.Em_pilarScalarFieldEnum = {
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
   deletedBy: 'deletedBy',
-  description: 'description'
+  description: 'description',
+  pic: 'pic'
 };
 
 exports.Prisma.Em_profesiScalarFieldEnum = {
@@ -778,7 +779,9 @@ exports.Prisma.Em_sbuScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
-  deletedBy: 'deletedBy'
+  deletedBy: 'deletedBy',
+  description: 'description',
+  pic: 'pic'
 };
 
 exports.Prisma.Em_sbu_subScalarFieldEnum = {
@@ -797,7 +800,9 @@ exports.Prisma.Em_sbu_subScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
-  deletedBy: 'deletedBy'
+  deletedBy: 'deletedBy',
+  description: 'description',
+  pic: 'pic'
 };
 
 exports.Prisma.Em_schedule1ScalarFieldEnum = {
