@@ -154,7 +154,7 @@ export class PilarService {
         { isDeleted: false },
         { isDeleted: null }
       ], status: "A" },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" },
     });
 
     return pilars.map(toPilarListResponse);
