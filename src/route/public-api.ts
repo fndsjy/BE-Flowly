@@ -3,6 +3,7 @@ import { ApplicationController } from "../controller/app-controller.js";
 import { UserController } from "../controller/user-controller.js";
 import { OrgChartController } from "../controller/orgchart-controller.js";
 import { PilarController } from "../controller/pilar-controller.js";
+import { EmployeeController } from "../controller/employee-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -16,6 +17,8 @@ v1.patch("/password", UserController.changePassword);
 v1.patch("/role", UserController.changeRole);           // 🔐 role 1 only
 v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
+
+v1.get("/employee", EmployeeController.listForPIC);
 
 v1.post("/pilar", PilarController.create);
 v1.put("/pilar", PilarController.update);
