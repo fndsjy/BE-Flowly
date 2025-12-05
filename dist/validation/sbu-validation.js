@@ -5,7 +5,7 @@ export class SbuValidation {
         sbuName: z.string().min(1),
         sbuPilar: z.number().min(1),
         description: z.string().optional(),
-        pic: z.number().optional(),
+        pic: z.number().nullable().optional(),
     });
     static UPDATE = z.object({
         id: z.number().min(1),
@@ -13,7 +13,7 @@ export class SbuValidation {
         sbuName: z.string().optional(),
         sbuPilar: z.number().optional(),
         description: z.string().optional(),
-        pic: z.number().optional(),
+        pic: z.number().nullable().optional(),
         status: z.string().optional(),
     });
     static DELETE = z.object({
