@@ -4,15 +4,15 @@ export class PilarValidation {
 
   static readonly CREATE: ZodType = z.object({
     pilarName: z.string().min(1, "Pilar name is required"),
-    description: z.string().optional(),
-    pic: z.number().optional(), 
+    description: z.string().optional().nullable(),
+    pic: z.number().optional().nullable(), 
   });
 
   static readonly UPDATE: ZodType = z.object({
     id: z.number().min(1),
     pilarName: z.string().optional(),
-    description: z.string().optional(),
-    pic: z.number().optional(), 
+    description: z.string().optional().nullable(),
+    pic: z.number().optional().nullable(), 
     status: z.string().optional(),  // "0" / "1"
   });
 
