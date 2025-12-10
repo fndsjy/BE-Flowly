@@ -1,0 +1,78 @@
+import { verifyToken } from "../utils/auth.js";
+import { ResponseError } from "../error/response-error.js";
+import { SbuSubService } from "../service/sbu-sub-service.js";
+export class SbuSubController {
+    static async create(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await SbuSubService.create(payload.userId, req.body);
+            res.status(201).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+    static async update(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await SbuSubService.update(payload.userId, req.body);
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+    static async softDelete(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await SbuSubService.softDelete(payload.userId, req.body);
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+    static async list(req, res, next) {
+        try {
+            const response = await SbuSubService.list();
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+    static async getBySbu(req, res, next) {
+        try {
+            const sbuId = Number(req.query.sbuId);
+            if (isNaN(sbuId))
+                throw new ResponseError(400, "Invalid sbuId");
+            const data = await SbuSubService.getBySbu(sbuId);
+            res.status(200).json({ success: true, message: "Success", data });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+    static async getByPilar(req, res, next) {
+        try {
+            const pilarId = Number(req.query.pilarId);
+            if (isNaN(pilarId))
+                throw new ResponseError(400, "Invalid pilarId");
+            const data = await SbuSubService.getByPilar(pilarId);
+            res.status(200).json({ success: true, message: "Success", data });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+}
+//# sourceMappingURL=sbu-sub-controller.js.map

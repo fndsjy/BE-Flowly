@@ -1,17 +1,20 @@
+// sbu-sub-validation.ts
 import { z, ZodType } from "zod";
-export class SbuValidation {
+export class SbuSubValidation {
     static CREATE = z.object({
-        sbuCode: z.string().min(1),
-        sbuName: z.string().min(1),
-        sbuPilar: z.number().min(1),
+        sbuSubCode: z.string().min(1),
+        sbuSubName: z.string().min(1),
+        sbuId: z.number().min(1),
+        sbuPilar: z.number().nullable().optional(),
         description: z.string().optional().nullable(),
         pic: z.number().nullable().optional().nullable(),
     });
     static UPDATE = z.object({
         id: z.number().min(1),
-        sbuCode: z.string().optional(),
-        sbuName: z.string().optional(),
-        sbuPilar: z.number().optional(),
+        sbuSubCode: z.string().optional(),
+        sbuSubName: z.string().optional(),
+        sbuId: z.number().optional(),
+        sbuPilar: z.number().nullable().optional(),
         description: z.string().optional().nullable(),
         pic: z.number().nullable().optional().nullable(),
         status: z.string().optional(),
@@ -20,4 +23,4 @@ export class SbuValidation {
         id: z.number().min(1),
     });
 }
-//# sourceMappingURL=sbu-validation.js.map
+//# sourceMappingURL=sbu-sub-validation.js.map
