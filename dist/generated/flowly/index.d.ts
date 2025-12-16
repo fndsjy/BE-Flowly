@@ -25,15 +25,15 @@ export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model OrgStructure
+ * Model Chart
  * 
  */
-export type OrgStructure = $Result.DefaultSelection<Prisma.$OrgStructurePayload>
+export type Chart = $Result.DefaultSelection<Prisma.$ChartPayload>
 /**
- * Model OrgChart
+ * Model ChartMember
  * 
  */
-export type OrgChart = $Result.DefaultSelection<Prisma.$OrgChartPayload>
+export type ChartMember = $Result.DefaultSelection<Prisma.$ChartMemberPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -174,24 +174,24 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.orgStructure`: Exposes CRUD operations for the **OrgStructure** model.
+   * `prisma.chart`: Exposes CRUD operations for the **Chart** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more OrgStructures
-    * const orgStructures = await prisma.orgStructure.findMany()
+    * // Fetch zero or more Charts
+    * const charts = await prisma.chart.findMany()
     * ```
     */
-  get orgStructure(): Prisma.OrgStructureDelegate<ExtArgs, ClientOptions>;
+  get chart(): Prisma.ChartDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.orgChart`: Exposes CRUD operations for the **OrgChart** model.
+   * `prisma.chartMember`: Exposes CRUD operations for the **ChartMember** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more OrgCharts
-    * const orgCharts = await prisma.orgChart.findMany()
+    * // Fetch zero or more ChartMembers
+    * const chartMembers = await prisma.chartMember.findMany()
     * ```
     */
-  get orgChart(): Prisma.OrgChartDelegate<ExtArgs, ClientOptions>;
+  get chartMember(): Prisma.ChartMemberDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -635,8 +635,8 @@ export namespace Prisma {
   export const ModelName: {
     Role: 'Role',
     User: 'User',
-    OrgStructure: 'OrgStructure',
-    OrgChart: 'OrgChart'
+    Chart: 'Chart',
+    ChartMember: 'ChartMember'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -655,7 +655,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "orgStructure" | "orgChart"
+      modelProps: "role" | "user" | "chart" | "chartMember"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -791,135 +791,135 @@ export namespace Prisma {
           }
         }
       }
-      OrgStructure: {
-        payload: Prisma.$OrgStructurePayload<ExtArgs>
-        fields: Prisma.OrgStructureFieldRefs
+      Chart: {
+        payload: Prisma.$ChartPayload<ExtArgs>
+        fields: Prisma.ChartFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.OrgStructureFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload> | null
+            args: Prisma.ChartFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.OrgStructureFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>
+            args: Prisma.ChartFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>
           }
           findFirst: {
-            args: Prisma.OrgStructureFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload> | null
+            args: Prisma.ChartFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.OrgStructureFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>
+            args: Prisma.ChartFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>
           }
           findMany: {
-            args: Prisma.OrgStructureFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>[]
+            args: Prisma.ChartFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>[]
           }
           create: {
-            args: Prisma.OrgStructureCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>
+            args: Prisma.ChartCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>
           }
           createMany: {
-            args: Prisma.OrgStructureCreateManyArgs<ExtArgs>
+            args: Prisma.ChartCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.OrgStructureDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>
+            args: Prisma.ChartDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>
           }
           update: {
-            args: Prisma.OrgStructureUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>
+            args: Prisma.ChartUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>
           }
           deleteMany: {
-            args: Prisma.OrgStructureDeleteManyArgs<ExtArgs>
+            args: Prisma.ChartDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.OrgStructureUpdateManyArgs<ExtArgs>
+            args: Prisma.ChartUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.OrgStructureUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgStructurePayload>
+            args: Prisma.ChartUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartPayload>
           }
           aggregate: {
-            args: Prisma.OrgStructureAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateOrgStructure>
+            args: Prisma.ChartAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChart>
           }
           groupBy: {
-            args: Prisma.OrgStructureGroupByArgs<ExtArgs>
-            result: $Utils.Optional<OrgStructureGroupByOutputType>[]
+            args: Prisma.ChartGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChartGroupByOutputType>[]
           }
           count: {
-            args: Prisma.OrgStructureCountArgs<ExtArgs>
-            result: $Utils.Optional<OrgStructureCountAggregateOutputType> | number
+            args: Prisma.ChartCountArgs<ExtArgs>
+            result: $Utils.Optional<ChartCountAggregateOutputType> | number
           }
         }
       }
-      OrgChart: {
-        payload: Prisma.$OrgChartPayload<ExtArgs>
-        fields: Prisma.OrgChartFieldRefs
+      ChartMember: {
+        payload: Prisma.$ChartMemberPayload<ExtArgs>
+        fields: Prisma.ChartMemberFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.OrgChartFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload> | null
+            args: Prisma.ChartMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.OrgChartFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>
+            args: Prisma.ChartMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>
           }
           findFirst: {
-            args: Prisma.OrgChartFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload> | null
+            args: Prisma.ChartMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.OrgChartFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>
+            args: Prisma.ChartMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>
           }
           findMany: {
-            args: Prisma.OrgChartFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>[]
+            args: Prisma.ChartMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>[]
           }
           create: {
-            args: Prisma.OrgChartCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>
+            args: Prisma.ChartMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>
           }
           createMany: {
-            args: Prisma.OrgChartCreateManyArgs<ExtArgs>
+            args: Prisma.ChartMemberCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.OrgChartDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>
+            args: Prisma.ChartMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>
           }
           update: {
-            args: Prisma.OrgChartUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>
+            args: Prisma.ChartMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>
           }
           deleteMany: {
-            args: Prisma.OrgChartDeleteManyArgs<ExtArgs>
+            args: Prisma.ChartMemberDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.OrgChartUpdateManyArgs<ExtArgs>
+            args: Prisma.ChartMemberUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.OrgChartUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrgChartPayload>
+            args: Prisma.ChartMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChartMemberPayload>
           }
           aggregate: {
-            args: Prisma.OrgChartAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateOrgChart>
+            args: Prisma.ChartMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChartMember>
           }
           groupBy: {
-            args: Prisma.OrgChartGroupByArgs<ExtArgs>
-            result: $Utils.Optional<OrgChartGroupByOutputType>[]
+            args: Prisma.ChartMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChartMemberGroupByOutputType>[]
           }
           count: {
-            args: Prisma.OrgChartCountArgs<ExtArgs>
-            result: $Utils.Optional<OrgChartCountAggregateOutputType> | number
+            args: Prisma.ChartMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<ChartMemberCountAggregateOutputType> | number
           }
         }
       }
@@ -1021,8 +1021,8 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     role?: RoleOmit
     user?: UserOmit
-    orgStructure?: OrgStructureOmit
-    orgChart?: OrgChartOmit
+    chart?: ChartOmit
+    chartMember?: ChartMemberOmit
   }
 
   /* Types for Logging */
@@ -1140,7 +1140,6 @@ export namespace Prisma {
     createdRoles: number
     updatedRoles: number
     deletedRoles: number
-    orgNodes: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1150,7 +1149,6 @@ export namespace Prisma {
     createdRoles?: boolean | UserCountOutputTypeCountCreatedRolesArgs
     updatedRoles?: boolean | UserCountOutputTypeCountUpdatedRolesArgs
     deletedRoles?: boolean | UserCountOutputTypeCountDeletedRolesArgs
-    orgNodes?: boolean | UserCountOutputTypeCountOrgNodesArgs
   }
 
   // Custom InputTypes
@@ -1206,73 +1204,44 @@ export namespace Prisma {
     where?: RoleWhereInput
   }
 
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountOrgNodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrgChartWhereInput
-  }
-
 
   /**
-   * Count Type OrgStructureCountOutputType
+   * Count Type ChartCountOutputType
    */
 
-  export type OrgStructureCountOutputType = {
-    nodes: number
-  }
-
-  export type OrgStructureCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    nodes?: boolean | OrgStructureCountOutputTypeCountNodesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * OrgStructureCountOutputType without action
-   */
-  export type OrgStructureCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructureCountOutputType
-     */
-    select?: OrgStructureCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * OrgStructureCountOutputType without action
-   */
-  export type OrgStructureCountOutputTypeCountNodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrgChartWhereInput
-  }
-
-
-  /**
-   * Count Type OrgChartCountOutputType
-   */
-
-  export type OrgChartCountOutputType = {
+  export type ChartCountOutputType = {
     children: number
+    members: number
   }
 
-  export type OrgChartCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    children?: boolean | OrgChartCountOutputTypeCountChildrenArgs
+  export type ChartCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    children?: boolean | ChartCountOutputTypeCountChildrenArgs
+    members?: boolean | ChartCountOutputTypeCountMembersArgs
   }
 
   // Custom InputTypes
   /**
-   * OrgChartCountOutputType without action
+   * ChartCountOutputType without action
    */
-  export type OrgChartCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChartCountOutputType
+     * Select specific fields to fetch from the ChartCountOutputType
      */
-    select?: OrgChartCountOutputTypeSelect<ExtArgs> | null
+    select?: ChartCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * OrgChartCountOutputType without action
+   * ChartCountOutputType without action
    */
-  export type OrgChartCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrgChartWhereInput
+  export type ChartCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChartWhereInput
+  }
+
+  /**
+   * ChartCountOutputType without action
+   */
+  export type ChartCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChartMemberWhereInput
   }
 
 
@@ -2702,7 +2671,6 @@ export namespace Prisma {
     createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
     updatedRoles?: boolean | User$updatedRolesArgs<ExtArgs>
     deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
-    orgNodes?: boolean | User$orgNodesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2740,7 +2708,6 @@ export namespace Prisma {
     createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
     updatedRoles?: boolean | User$updatedRolesArgs<ExtArgs>
     deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
-    orgNodes?: boolean | User$orgNodesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -2760,7 +2727,6 @@ export namespace Prisma {
       createdRoles: Prisma.$RolePayload<ExtArgs>[]
       updatedRoles: Prisma.$RolePayload<ExtArgs>[]
       deletedRoles: Prisma.$RolePayload<ExtArgs>[]
-      orgNodes: Prisma.$OrgChartPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       /**
@@ -3151,7 +3117,6 @@ export namespace Prisma {
     createdRoles<T extends User$createdRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     updatedRoles<T extends User$updatedRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     deletedRoles<T extends User$deletedRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    orgNodes<T extends User$orgNodesArgs<ExtArgs> = {}>(args?: Subset<T, User$orgNodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3741,30 +3706,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.orgNodes
-   */
-  export type User$orgNodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgChart
-     */
-    select?: OrgChartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgChart
-     */
-    omit?: OrgChartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgChartInclude<ExtArgs> | null
-    where?: OrgChartWhereInput
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
-    cursor?: OrgChartWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrgChartScalarFieldEnum | OrgChartScalarFieldEnum[]
-  }
-
-  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3784,1064 +3725,41 @@ export namespace Prisma {
 
 
   /**
-   * Model OrgStructure
+   * Model Chart
    */
 
-  export type AggregateOrgStructure = {
-    _count: OrgStructureCountAggregateOutputType | null
-    _min: OrgStructureMinAggregateOutputType | null
-    _max: OrgStructureMaxAggregateOutputType | null
+  export type AggregateChart = {
+    _count: ChartCountAggregateOutputType | null
+    _avg: ChartAvgAggregateOutputType | null
+    _sum: ChartSumAggregateOutputType | null
+    _min: ChartMinAggregateOutputType | null
+    _max: ChartMaxAggregateOutputType | null
   }
 
-  export type OrgStructureMinAggregateOutputType = {
-    structureId: string | null
-    name: string | null
-    description: string | null
-    rootNodeId: string | null
-    createdAt: Date | null
-    createdBy: string | null
-    updatedAt: Date | null
-    updatedBy: string | null
-    isDeleted: boolean | null
-    deletedAt: Date | null
-    deletedBy: string | null
-  }
-
-  export type OrgStructureMaxAggregateOutputType = {
-    structureId: string | null
-    name: string | null
-    description: string | null
-    rootNodeId: string | null
-    createdAt: Date | null
-    createdBy: string | null
-    updatedAt: Date | null
-    updatedBy: string | null
-    isDeleted: boolean | null
-    deletedAt: Date | null
-    deletedBy: string | null
-  }
-
-  export type OrgStructureCountAggregateOutputType = {
-    structureId: number
-    name: number
-    description: number
-    rootNodeId: number
-    createdAt: number
-    createdBy: number
-    updatedAt: number
-    updatedBy: number
-    isDeleted: number
-    deletedAt: number
-    deletedBy: number
-    _all: number
-  }
-
-
-  export type OrgStructureMinAggregateInputType = {
-    structureId?: true
-    name?: true
-    description?: true
-    rootNodeId?: true
-    createdAt?: true
-    createdBy?: true
-    updatedAt?: true
-    updatedBy?: true
-    isDeleted?: true
-    deletedAt?: true
-    deletedBy?: true
-  }
-
-  export type OrgStructureMaxAggregateInputType = {
-    structureId?: true
-    name?: true
-    description?: true
-    rootNodeId?: true
-    createdAt?: true
-    createdBy?: true
-    updatedAt?: true
-    updatedBy?: true
-    isDeleted?: true
-    deletedAt?: true
-    deletedBy?: true
-  }
-
-  export type OrgStructureCountAggregateInputType = {
-    structureId?: true
-    name?: true
-    description?: true
-    rootNodeId?: true
-    createdAt?: true
-    createdBy?: true
-    updatedAt?: true
-    updatedBy?: true
-    isDeleted?: true
-    deletedAt?: true
-    deletedBy?: true
-    _all?: true
-  }
-
-  export type OrgStructureAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which OrgStructure to aggregate.
-     */
-    where?: OrgStructureWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrgStructures to fetch.
-     */
-    orderBy?: OrgStructureOrderByWithRelationInput | OrgStructureOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: OrgStructureWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrgStructures from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrgStructures.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned OrgStructures
-    **/
-    _count?: true | OrgStructureCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: OrgStructureMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: OrgStructureMaxAggregateInputType
-  }
-
-  export type GetOrgStructureAggregateType<T extends OrgStructureAggregateArgs> = {
-        [P in keyof T & keyof AggregateOrgStructure]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateOrgStructure[P]>
-      : GetScalarType<T[P], AggregateOrgStructure[P]>
-  }
-
-
-
-
-  export type OrgStructureGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrgStructureWhereInput
-    orderBy?: OrgStructureOrderByWithAggregationInput | OrgStructureOrderByWithAggregationInput[]
-    by: OrgStructureScalarFieldEnum[] | OrgStructureScalarFieldEnum
-    having?: OrgStructureScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: OrgStructureCountAggregateInputType | true
-    _min?: OrgStructureMinAggregateInputType
-    _max?: OrgStructureMaxAggregateInputType
-  }
-
-  export type OrgStructureGroupByOutputType = {
-    structureId: string
-    name: string
-    description: string | null
-    rootNodeId: string | null
-    createdAt: Date
-    createdBy: string | null
-    updatedAt: Date
-    updatedBy: string | null
-    isDeleted: boolean
-    deletedAt: Date | null
-    deletedBy: string | null
-    _count: OrgStructureCountAggregateOutputType | null
-    _min: OrgStructureMinAggregateOutputType | null
-    _max: OrgStructureMaxAggregateOutputType | null
-  }
-
-  type GetOrgStructureGroupByPayload<T extends OrgStructureGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<OrgStructureGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof OrgStructureGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], OrgStructureGroupByOutputType[P]>
-            : GetScalarType<T[P], OrgStructureGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type OrgStructureSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    structureId?: boolean
-    name?: boolean
-    description?: boolean
-    rootNodeId?: boolean
-    createdAt?: boolean
-    createdBy?: boolean
-    updatedAt?: boolean
-    updatedBy?: boolean
-    isDeleted?: boolean
-    deletedAt?: boolean
-    deletedBy?: boolean
-    nodes?: boolean | OrgStructure$nodesArgs<ExtArgs>
-    _count?: boolean | OrgStructureCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["orgStructure"]>
-
-
-
-  export type OrgStructureSelectScalar = {
-    structureId?: boolean
-    name?: boolean
-    description?: boolean
-    rootNodeId?: boolean
-    createdAt?: boolean
-    createdBy?: boolean
-    updatedAt?: boolean
-    updatedBy?: boolean
-    isDeleted?: boolean
-    deletedAt?: boolean
-    deletedBy?: boolean
-  }
-
-  export type OrgStructureOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"structureId" | "name" | "description" | "rootNodeId" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["orgStructure"]>
-  export type OrgStructureInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    nodes?: boolean | OrgStructure$nodesArgs<ExtArgs>
-    _count?: boolean | OrgStructureCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $OrgStructurePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "OrgStructure"
-    objects: {
-      /**
-       * relation -> many nodes
-       */
-      nodes: Prisma.$OrgChartPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      /**
-       * e.g., "STR250101-0001"
-       */
-      structureId: string
-      /**
-       * contoh: "SBU CASTING", "INFRASTRUKTUR"
-       */
-      name: string
-      description: string | null
-      /**
-       * optional: pointer to root node in org_chart
-       */
-      rootNodeId: string | null
-      createdAt: Date
-      createdBy: string | null
-      updatedAt: Date
-      updatedBy: string | null
-      isDeleted: boolean
-      deletedAt: Date | null
-      deletedBy: string | null
-    }, ExtArgs["result"]["orgStructure"]>
-    composites: {}
-  }
-
-  type OrgStructureGetPayload<S extends boolean | null | undefined | OrgStructureDefaultArgs> = $Result.GetResult<Prisma.$OrgStructurePayload, S>
-
-  type OrgStructureCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrgStructureFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: OrgStructureCountAggregateInputType | true
-    }
-
-  export interface OrgStructureDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrgStructure'], meta: { name: 'OrgStructure' } }
-    /**
-     * Find zero or one OrgStructure that matches the filter.
-     * @param {OrgStructureFindUniqueArgs} args - Arguments to find a OrgStructure
-     * @example
-     * // Get one OrgStructure
-     * const orgStructure = await prisma.orgStructure.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends OrgStructureFindUniqueArgs>(args: SelectSubset<T, OrgStructureFindUniqueArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one OrgStructure that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {OrgStructureFindUniqueOrThrowArgs} args - Arguments to find a OrgStructure
-     * @example
-     * // Get one OrgStructure
-     * const orgStructure = await prisma.orgStructure.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends OrgStructureFindUniqueOrThrowArgs>(args: SelectSubset<T, OrgStructureFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first OrgStructure that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureFindFirstArgs} args - Arguments to find a OrgStructure
-     * @example
-     * // Get one OrgStructure
-     * const orgStructure = await prisma.orgStructure.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends OrgStructureFindFirstArgs>(args?: SelectSubset<T, OrgStructureFindFirstArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first OrgStructure that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureFindFirstOrThrowArgs} args - Arguments to find a OrgStructure
-     * @example
-     * // Get one OrgStructure
-     * const orgStructure = await prisma.orgStructure.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends OrgStructureFindFirstOrThrowArgs>(args?: SelectSubset<T, OrgStructureFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more OrgStructures that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all OrgStructures
-     * const orgStructures = await prisma.orgStructure.findMany()
-     * 
-     * // Get first 10 OrgStructures
-     * const orgStructures = await prisma.orgStructure.findMany({ take: 10 })
-     * 
-     * // Only select the `structureId`
-     * const orgStructureWithStructureIdOnly = await prisma.orgStructure.findMany({ select: { structureId: true } })
-     * 
-     */
-    findMany<T extends OrgStructureFindManyArgs>(args?: SelectSubset<T, OrgStructureFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a OrgStructure.
-     * @param {OrgStructureCreateArgs} args - Arguments to create a OrgStructure.
-     * @example
-     * // Create one OrgStructure
-     * const OrgStructure = await prisma.orgStructure.create({
-     *   data: {
-     *     // ... data to create a OrgStructure
-     *   }
-     * })
-     * 
-     */
-    create<T extends OrgStructureCreateArgs>(args: SelectSubset<T, OrgStructureCreateArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many OrgStructures.
-     * @param {OrgStructureCreateManyArgs} args - Arguments to create many OrgStructures.
-     * @example
-     * // Create many OrgStructures
-     * const orgStructure = await prisma.orgStructure.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends OrgStructureCreateManyArgs>(args?: SelectSubset<T, OrgStructureCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a OrgStructure.
-     * @param {OrgStructureDeleteArgs} args - Arguments to delete one OrgStructure.
-     * @example
-     * // Delete one OrgStructure
-     * const OrgStructure = await prisma.orgStructure.delete({
-     *   where: {
-     *     // ... filter to delete one OrgStructure
-     *   }
-     * })
-     * 
-     */
-    delete<T extends OrgStructureDeleteArgs>(args: SelectSubset<T, OrgStructureDeleteArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one OrgStructure.
-     * @param {OrgStructureUpdateArgs} args - Arguments to update one OrgStructure.
-     * @example
-     * // Update one OrgStructure
-     * const orgStructure = await prisma.orgStructure.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends OrgStructureUpdateArgs>(args: SelectSubset<T, OrgStructureUpdateArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more OrgStructures.
-     * @param {OrgStructureDeleteManyArgs} args - Arguments to filter OrgStructures to delete.
-     * @example
-     * // Delete a few OrgStructures
-     * const { count } = await prisma.orgStructure.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends OrgStructureDeleteManyArgs>(args?: SelectSubset<T, OrgStructureDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more OrgStructures.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many OrgStructures
-     * const orgStructure = await prisma.orgStructure.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends OrgStructureUpdateManyArgs>(args: SelectSubset<T, OrgStructureUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one OrgStructure.
-     * @param {OrgStructureUpsertArgs} args - Arguments to update or create a OrgStructure.
-     * @example
-     * // Update or create a OrgStructure
-     * const orgStructure = await prisma.orgStructure.upsert({
-     *   create: {
-     *     // ... data to create a OrgStructure
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the OrgStructure we want to update
-     *   }
-     * })
-     */
-    upsert<T extends OrgStructureUpsertArgs>(args: SelectSubset<T, OrgStructureUpsertArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of OrgStructures.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureCountArgs} args - Arguments to filter OrgStructures to count.
-     * @example
-     * // Count the number of OrgStructures
-     * const count = await prisma.orgStructure.count({
-     *   where: {
-     *     // ... the filter for the OrgStructures we want to count
-     *   }
-     * })
-    **/
-    count<T extends OrgStructureCountArgs>(
-      args?: Subset<T, OrgStructureCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], OrgStructureCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a OrgStructure.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends OrgStructureAggregateArgs>(args: Subset<T, OrgStructureAggregateArgs>): Prisma.PrismaPromise<GetOrgStructureAggregateType<T>>
-
-    /**
-     * Group by OrgStructure.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgStructureGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends OrgStructureGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: OrgStructureGroupByArgs['orderBy'] }
-        : { orderBy?: OrgStructureGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, OrgStructureGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrgStructureGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the OrgStructure model
-   */
-  readonly fields: OrgStructureFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for OrgStructure.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__OrgStructureClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    nodes<T extends OrgStructure$nodesArgs<ExtArgs> = {}>(args?: Subset<T, OrgStructure$nodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the OrgStructure model
-   */
-  interface OrgStructureFieldRefs {
-    readonly structureId: FieldRef<"OrgStructure", 'String'>
-    readonly name: FieldRef<"OrgStructure", 'String'>
-    readonly description: FieldRef<"OrgStructure", 'String'>
-    readonly rootNodeId: FieldRef<"OrgStructure", 'String'>
-    readonly createdAt: FieldRef<"OrgStructure", 'DateTime'>
-    readonly createdBy: FieldRef<"OrgStructure", 'String'>
-    readonly updatedAt: FieldRef<"OrgStructure", 'DateTime'>
-    readonly updatedBy: FieldRef<"OrgStructure", 'String'>
-    readonly isDeleted: FieldRef<"OrgStructure", 'Boolean'>
-    readonly deletedAt: FieldRef<"OrgStructure", 'DateTime'>
-    readonly deletedBy: FieldRef<"OrgStructure", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * OrgStructure findUnique
-   */
-  export type OrgStructureFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * Filter, which OrgStructure to fetch.
-     */
-    where: OrgStructureWhereUniqueInput
-  }
-
-  /**
-   * OrgStructure findUniqueOrThrow
-   */
-  export type OrgStructureFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * Filter, which OrgStructure to fetch.
-     */
-    where: OrgStructureWhereUniqueInput
-  }
-
-  /**
-   * OrgStructure findFirst
-   */
-  export type OrgStructureFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * Filter, which OrgStructure to fetch.
-     */
-    where?: OrgStructureWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrgStructures to fetch.
-     */
-    orderBy?: OrgStructureOrderByWithRelationInput | OrgStructureOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for OrgStructures.
-     */
-    cursor?: OrgStructureWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrgStructures from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrgStructures.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of OrgStructures.
-     */
-    distinct?: OrgStructureScalarFieldEnum | OrgStructureScalarFieldEnum[]
-  }
-
-  /**
-   * OrgStructure findFirstOrThrow
-   */
-  export type OrgStructureFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * Filter, which OrgStructure to fetch.
-     */
-    where?: OrgStructureWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrgStructures to fetch.
-     */
-    orderBy?: OrgStructureOrderByWithRelationInput | OrgStructureOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for OrgStructures.
-     */
-    cursor?: OrgStructureWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrgStructures from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrgStructures.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of OrgStructures.
-     */
-    distinct?: OrgStructureScalarFieldEnum | OrgStructureScalarFieldEnum[]
-  }
-
-  /**
-   * OrgStructure findMany
-   */
-  export type OrgStructureFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * Filter, which OrgStructures to fetch.
-     */
-    where?: OrgStructureWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrgStructures to fetch.
-     */
-    orderBy?: OrgStructureOrderByWithRelationInput | OrgStructureOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing OrgStructures.
-     */
-    cursor?: OrgStructureWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrgStructures from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrgStructures.
-     */
-    skip?: number
-    distinct?: OrgStructureScalarFieldEnum | OrgStructureScalarFieldEnum[]
-  }
-
-  /**
-   * OrgStructure create
-   */
-  export type OrgStructureCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * The data needed to create a OrgStructure.
-     */
-    data: XOR<OrgStructureCreateInput, OrgStructureUncheckedCreateInput>
-  }
-
-  /**
-   * OrgStructure createMany
-   */
-  export type OrgStructureCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many OrgStructures.
-     */
-    data: OrgStructureCreateManyInput | OrgStructureCreateManyInput[]
-  }
-
-  /**
-   * OrgStructure update
-   */
-  export type OrgStructureUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * The data needed to update a OrgStructure.
-     */
-    data: XOR<OrgStructureUpdateInput, OrgStructureUncheckedUpdateInput>
-    /**
-     * Choose, which OrgStructure to update.
-     */
-    where: OrgStructureWhereUniqueInput
-  }
-
-  /**
-   * OrgStructure updateMany
-   */
-  export type OrgStructureUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update OrgStructures.
-     */
-    data: XOR<OrgStructureUpdateManyMutationInput, OrgStructureUncheckedUpdateManyInput>
-    /**
-     * Filter which OrgStructures to update
-     */
-    where?: OrgStructureWhereInput
-    /**
-     * Limit how many OrgStructures to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * OrgStructure upsert
-   */
-  export type OrgStructureUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * The filter to search for the OrgStructure to update in case it exists.
-     */
-    where: OrgStructureWhereUniqueInput
-    /**
-     * In case the OrgStructure found by the `where` argument doesn't exist, create a new OrgStructure with this data.
-     */
-    create: XOR<OrgStructureCreateInput, OrgStructureUncheckedCreateInput>
-    /**
-     * In case the OrgStructure was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<OrgStructureUpdateInput, OrgStructureUncheckedUpdateInput>
-  }
-
-  /**
-   * OrgStructure delete
-   */
-  export type OrgStructureDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-    /**
-     * Filter which OrgStructure to delete.
-     */
-    where: OrgStructureWhereUniqueInput
-  }
-
-  /**
-   * OrgStructure deleteMany
-   */
-  export type OrgStructureDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which OrgStructures to delete
-     */
-    where?: OrgStructureWhereInput
-    /**
-     * Limit how many OrgStructures to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * OrgStructure.nodes
-   */
-  export type OrgStructure$nodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgChart
-     */
-    select?: OrgChartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgChart
-     */
-    omit?: OrgChartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgChartInclude<ExtArgs> | null
-    where?: OrgChartWhereInput
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
-    cursor?: OrgChartWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrgChartScalarFieldEnum | OrgChartScalarFieldEnum[]
-  }
-
-  /**
-   * OrgStructure without action
-   */
-  export type OrgStructureDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrgStructure
-     */
-    select?: OrgStructureSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrgStructure
-     */
-    omit?: OrgStructureOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrgStructureInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model OrgChart
-   */
-
-  export type AggregateOrgChart = {
-    _count: OrgChartCountAggregateOutputType | null
-    _avg: OrgChartAvgAggregateOutputType | null
-    _sum: OrgChartSumAggregateOutputType | null
-    _min: OrgChartMinAggregateOutputType | null
-    _max: OrgChartMaxAggregateOutputType | null
-  }
-
-  export type OrgChartAvgAggregateOutputType = {
+  export type ChartAvgAggregateOutputType = {
+    pilarId: number | null
+    sbuId: number | null
+    sbuSubId: number | null
+    capacity: number | null
     orderIndex: number | null
   }
 
-  export type OrgChartSumAggregateOutputType = {
+  export type ChartSumAggregateOutputType = {
+    pilarId: number | null
+    sbuId: number | null
+    sbuSubId: number | null
+    capacity: number | null
     orderIndex: number | null
   }
 
-  export type OrgChartMinAggregateOutputType = {
-    nodeId: string | null
-    structureId: string | null
-    userId: string | null
+  export type ChartMinAggregateOutputType = {
+    chartId: string | null
+    pilarId: number | null
+    sbuId: number | null
+    sbuSubId: number | null
     parentId: string | null
-    name: string | null
     position: string | null
+    capacity: number | null
     orderIndex: number | null
     createdAt: Date | null
     createdBy: string | null
@@ -4852,13 +3770,14 @@ export namespace Prisma {
     deletedBy: string | null
   }
 
-  export type OrgChartMaxAggregateOutputType = {
-    nodeId: string | null
-    structureId: string | null
-    userId: string | null
+  export type ChartMaxAggregateOutputType = {
+    chartId: string | null
+    pilarId: number | null
+    sbuId: number | null
+    sbuSubId: number | null
     parentId: string | null
-    name: string | null
     position: string | null
+    capacity: number | null
     orderIndex: number | null
     createdAt: Date | null
     createdBy: string | null
@@ -4869,13 +3788,14 @@ export namespace Prisma {
     deletedBy: string | null
   }
 
-  export type OrgChartCountAggregateOutputType = {
-    nodeId: number
-    structureId: number
-    userId: number
+  export type ChartCountAggregateOutputType = {
+    chartId: number
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     parentId: number
-    name: number
     position: number
+    capacity: number
     orderIndex: number
     createdAt: number
     createdBy: number
@@ -4888,21 +3808,30 @@ export namespace Prisma {
   }
 
 
-  export type OrgChartAvgAggregateInputType = {
+  export type ChartAvgAggregateInputType = {
+    pilarId?: true
+    sbuId?: true
+    sbuSubId?: true
+    capacity?: true
     orderIndex?: true
   }
 
-  export type OrgChartSumAggregateInputType = {
+  export type ChartSumAggregateInputType = {
+    pilarId?: true
+    sbuId?: true
+    sbuSubId?: true
+    capacity?: true
     orderIndex?: true
   }
 
-  export type OrgChartMinAggregateInputType = {
-    nodeId?: true
-    structureId?: true
-    userId?: true
+  export type ChartMinAggregateInputType = {
+    chartId?: true
+    pilarId?: true
+    sbuId?: true
+    sbuSubId?: true
     parentId?: true
-    name?: true
     position?: true
+    capacity?: true
     orderIndex?: true
     createdAt?: true
     createdBy?: true
@@ -4913,13 +3842,14 @@ export namespace Prisma {
     deletedBy?: true
   }
 
-  export type OrgChartMaxAggregateInputType = {
-    nodeId?: true
-    structureId?: true
-    userId?: true
+  export type ChartMaxAggregateInputType = {
+    chartId?: true
+    pilarId?: true
+    sbuId?: true
+    sbuSubId?: true
     parentId?: true
-    name?: true
     position?: true
+    capacity?: true
     orderIndex?: true
     createdAt?: true
     createdBy?: true
@@ -4930,13 +3860,14 @@ export namespace Prisma {
     deletedBy?: true
   }
 
-  export type OrgChartCountAggregateInputType = {
-    nodeId?: true
-    structureId?: true
-    userId?: true
+  export type ChartCountAggregateInputType = {
+    chartId?: true
+    pilarId?: true
+    sbuId?: true
+    sbuSubId?: true
     parentId?: true
-    name?: true
     position?: true
+    capacity?: true
     orderIndex?: true
     createdAt?: true
     createdBy?: true
@@ -4948,99 +3879,100 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type OrgChartAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which OrgChart to aggregate.
+     * Filter which Chart to aggregate.
      */
-    where?: OrgChartWhereInput
+    where?: ChartWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrgCharts to fetch.
+     * Determine the order of Charts to fetch.
      */
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
+    orderBy?: ChartOrderByWithRelationInput | ChartOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: OrgChartWhereUniqueInput
+    cursor?: ChartWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrgCharts from the position of the cursor.
+     * Take `±n` Charts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrgCharts.
+     * Skip the first `n` Charts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned OrgCharts
+     * Count returned Charts
     **/
-    _count?: true | OrgChartCountAggregateInputType
+    _count?: true | ChartCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: OrgChartAvgAggregateInputType
+    _avg?: ChartAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: OrgChartSumAggregateInputType
+    _sum?: ChartSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: OrgChartMinAggregateInputType
+    _min?: ChartMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: OrgChartMaxAggregateInputType
+    _max?: ChartMaxAggregateInputType
   }
 
-  export type GetOrgChartAggregateType<T extends OrgChartAggregateArgs> = {
-        [P in keyof T & keyof AggregateOrgChart]: P extends '_count' | 'count'
+  export type GetChartAggregateType<T extends ChartAggregateArgs> = {
+        [P in keyof T & keyof AggregateChart]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateOrgChart[P]>
-      : GetScalarType<T[P], AggregateOrgChart[P]>
+        : GetScalarType<T[P], AggregateChart[P]>
+      : GetScalarType<T[P], AggregateChart[P]>
   }
 
 
 
 
-  export type OrgChartGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrgChartWhereInput
-    orderBy?: OrgChartOrderByWithAggregationInput | OrgChartOrderByWithAggregationInput[]
-    by: OrgChartScalarFieldEnum[] | OrgChartScalarFieldEnum
-    having?: OrgChartScalarWhereWithAggregatesInput
+  export type ChartGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChartWhereInput
+    orderBy?: ChartOrderByWithAggregationInput | ChartOrderByWithAggregationInput[]
+    by: ChartScalarFieldEnum[] | ChartScalarFieldEnum
+    having?: ChartScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: OrgChartCountAggregateInputType | true
-    _avg?: OrgChartAvgAggregateInputType
-    _sum?: OrgChartSumAggregateInputType
-    _min?: OrgChartMinAggregateInputType
-    _max?: OrgChartMaxAggregateInputType
+    _count?: ChartCountAggregateInputType | true
+    _avg?: ChartAvgAggregateInputType
+    _sum?: ChartSumAggregateInputType
+    _min?: ChartMinAggregateInputType
+    _max?: ChartMaxAggregateInputType
   }
 
-  export type OrgChartGroupByOutputType = {
-    nodeId: string
-    structureId: string
-    userId: string | null
+  export type ChartGroupByOutputType = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     parentId: string | null
-    name: string | null
     position: string
+    capacity: number
     orderIndex: number
     createdAt: Date
     createdBy: string | null
@@ -5049,34 +3981,35 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt: Date | null
     deletedBy: string | null
-    _count: OrgChartCountAggregateOutputType | null
-    _avg: OrgChartAvgAggregateOutputType | null
-    _sum: OrgChartSumAggregateOutputType | null
-    _min: OrgChartMinAggregateOutputType | null
-    _max: OrgChartMaxAggregateOutputType | null
+    _count: ChartCountAggregateOutputType | null
+    _avg: ChartAvgAggregateOutputType | null
+    _sum: ChartSumAggregateOutputType | null
+    _min: ChartMinAggregateOutputType | null
+    _max: ChartMaxAggregateOutputType | null
   }
 
-  type GetOrgChartGroupByPayload<T extends OrgChartGroupByArgs> = Prisma.PrismaPromise<
+  type GetChartGroupByPayload<T extends ChartGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<OrgChartGroupByOutputType, T['by']> &
+      PickEnumerable<ChartGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof OrgChartGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ChartGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], OrgChartGroupByOutputType[P]>
-            : GetScalarType<T[P], OrgChartGroupByOutputType[P]>
+              : GetScalarType<T[P], ChartGroupByOutputType[P]>
+            : GetScalarType<T[P], ChartGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type OrgChartSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    nodeId?: boolean
-    structureId?: boolean
-    userId?: boolean
+  export type ChartSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    chartId?: boolean
+    pilarId?: boolean
+    sbuId?: boolean
+    sbuSubId?: boolean
     parentId?: boolean
-    name?: boolean
     position?: boolean
+    capacity?: boolean
     orderIndex?: boolean
     createdAt?: boolean
     createdBy?: boolean
@@ -5085,22 +4018,22 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
-    parent?: boolean | OrgChart$parentArgs<ExtArgs>
-    children?: boolean | OrgChart$childrenArgs<ExtArgs>
-    user?: boolean | OrgChart$userArgs<ExtArgs>
-    structure?: boolean | OrgStructureDefaultArgs<ExtArgs>
-    _count?: boolean | OrgChartCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["orgChart"]>
+    parent?: boolean | Chart$parentArgs<ExtArgs>
+    children?: boolean | Chart$childrenArgs<ExtArgs>
+    members?: boolean | Chart$membersArgs<ExtArgs>
+    _count?: boolean | ChartCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chart"]>
 
 
 
-  export type OrgChartSelectScalar = {
-    nodeId?: boolean
-    structureId?: boolean
-    userId?: boolean
+  export type ChartSelectScalar = {
+    chartId?: boolean
+    pilarId?: boolean
+    sbuId?: boolean
+    sbuSubId?: boolean
     parentId?: boolean
-    name?: boolean
     position?: boolean
+    capacity?: boolean
     orderIndex?: boolean
     createdAt?: boolean
     createdBy?: boolean
@@ -5111,42 +4044,38 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type OrgChartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"nodeId" | "structureId" | "userId" | "parentId" | "name" | "position" | "orderIndex" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["orgChart"]>
-  export type OrgChartInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    parent?: boolean | OrgChart$parentArgs<ExtArgs>
-    children?: boolean | OrgChart$childrenArgs<ExtArgs>
-    user?: boolean | OrgChart$userArgs<ExtArgs>
-    structure?: boolean | OrgStructureDefaultArgs<ExtArgs>
-    _count?: boolean | OrgChartCountOutputTypeDefaultArgs<ExtArgs>
+  export type ChartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"chartId" | "pilarId" | "sbuId" | "sbuSubId" | "parentId" | "position" | "capacity" | "orderIndex" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["chart"]>
+  export type ChartInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Chart$parentArgs<ExtArgs>
+    children?: boolean | Chart$childrenArgs<ExtArgs>
+    members?: boolean | Chart$membersArgs<ExtArgs>
+    _count?: boolean | ChartCountOutputTypeDefaultArgs<ExtArgs>
   }
 
-  export type $OrgChartPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "OrgChart"
+  export type $ChartPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Chart"
     objects: {
       /**
        * self reference (parent)
        */
-      parent: Prisma.$OrgChartPayload<ExtArgs> | null
-      children: Prisma.$OrgChartPayload<ExtArgs>[]
-      /**
-       * Relation ke User
-       */
-      user: Prisma.$UserPayload<ExtArgs> | null
-      structure: Prisma.$OrgStructurePayload<ExtArgs>
+      parent: Prisma.$ChartPayload<ExtArgs> | null
+      children: Prisma.$ChartPayload<ExtArgs>[]
+      members: Prisma.$ChartMemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       /**
        * e.g., "NODE251120-0001"
        */
-      nodeId: string
-      structureId: string
-      userId: string | null
+      chartId: string
+      pilarId: number
+      sbuId: number
+      sbuSubId: number
       /**
        * NULL = posisi teratas (presiden)
        */
       parentId: string | null
-      name: string | null
       position: string
+      capacity: number
       /**
        * urutan dalam satu level
        */
@@ -5158,143 +4087,143 @@ export namespace Prisma {
       isDeleted: boolean
       deletedAt: Date | null
       deletedBy: string | null
-    }, ExtArgs["result"]["orgChart"]>
+    }, ExtArgs["result"]["chart"]>
     composites: {}
   }
 
-  type OrgChartGetPayload<S extends boolean | null | undefined | OrgChartDefaultArgs> = $Result.GetResult<Prisma.$OrgChartPayload, S>
+  type ChartGetPayload<S extends boolean | null | undefined | ChartDefaultArgs> = $Result.GetResult<Prisma.$ChartPayload, S>
 
-  type OrgChartCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrgChartFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: OrgChartCountAggregateInputType | true
+  type ChartCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChartFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChartCountAggregateInputType | true
     }
 
-  export interface OrgChartDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrgChart'], meta: { name: 'OrgChart' } }
+  export interface ChartDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Chart'], meta: { name: 'Chart' } }
     /**
-     * Find zero or one OrgChart that matches the filter.
-     * @param {OrgChartFindUniqueArgs} args - Arguments to find a OrgChart
+     * Find zero or one Chart that matches the filter.
+     * @param {ChartFindUniqueArgs} args - Arguments to find a Chart
      * @example
-     * // Get one OrgChart
-     * const orgChart = await prisma.orgChart.findUnique({
+     * // Get one Chart
+     * const chart = await prisma.chart.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends OrgChartFindUniqueArgs>(args: SelectSubset<T, OrgChartFindUniqueArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends ChartFindUniqueArgs>(args: SelectSubset<T, ChartFindUniqueArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one OrgChart that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Chart that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {OrgChartFindUniqueOrThrowArgs} args - Arguments to find a OrgChart
+     * @param {ChartFindUniqueOrThrowArgs} args - Arguments to find a Chart
      * @example
-     * // Get one OrgChart
-     * const orgChart = await prisma.orgChart.findUniqueOrThrow({
+     * // Get one Chart
+     * const chart = await prisma.chart.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends OrgChartFindUniqueOrThrowArgs>(args: SelectSubset<T, OrgChartFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends ChartFindUniqueOrThrowArgs>(args: SelectSubset<T, ChartFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first OrgChart that matches the filter.
+     * Find the first Chart that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartFindFirstArgs} args - Arguments to find a OrgChart
+     * @param {ChartFindFirstArgs} args - Arguments to find a Chart
      * @example
-     * // Get one OrgChart
-     * const orgChart = await prisma.orgChart.findFirst({
+     * // Get one Chart
+     * const chart = await prisma.chart.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends OrgChartFindFirstArgs>(args?: SelectSubset<T, OrgChartFindFirstArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends ChartFindFirstArgs>(args?: SelectSubset<T, ChartFindFirstArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first OrgChart that matches the filter or
+     * Find the first Chart that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartFindFirstOrThrowArgs} args - Arguments to find a OrgChart
+     * @param {ChartFindFirstOrThrowArgs} args - Arguments to find a Chart
      * @example
-     * // Get one OrgChart
-     * const orgChart = await prisma.orgChart.findFirstOrThrow({
+     * // Get one Chart
+     * const chart = await prisma.chart.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends OrgChartFindFirstOrThrowArgs>(args?: SelectSubset<T, OrgChartFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends ChartFindFirstOrThrowArgs>(args?: SelectSubset<T, ChartFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more OrgCharts that matches the filter.
+     * Find zero or more Charts that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {ChartFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all OrgCharts
-     * const orgCharts = await prisma.orgChart.findMany()
+     * // Get all Charts
+     * const charts = await prisma.chart.findMany()
      * 
-     * // Get first 10 OrgCharts
-     * const orgCharts = await prisma.orgChart.findMany({ take: 10 })
+     * // Get first 10 Charts
+     * const charts = await prisma.chart.findMany({ take: 10 })
      * 
-     * // Only select the `nodeId`
-     * const orgChartWithNodeIdOnly = await prisma.orgChart.findMany({ select: { nodeId: true } })
+     * // Only select the `chartId`
+     * const chartWithChartIdOnly = await prisma.chart.findMany({ select: { chartId: true } })
      * 
      */
-    findMany<T extends OrgChartFindManyArgs>(args?: SelectSubset<T, OrgChartFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends ChartFindManyArgs>(args?: SelectSubset<T, ChartFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a OrgChart.
-     * @param {OrgChartCreateArgs} args - Arguments to create a OrgChart.
+     * Create a Chart.
+     * @param {ChartCreateArgs} args - Arguments to create a Chart.
      * @example
-     * // Create one OrgChart
-     * const OrgChart = await prisma.orgChart.create({
+     * // Create one Chart
+     * const Chart = await prisma.chart.create({
      *   data: {
-     *     // ... data to create a OrgChart
+     *     // ... data to create a Chart
      *   }
      * })
      * 
      */
-    create<T extends OrgChartCreateArgs>(args: SelectSubset<T, OrgChartCreateArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends ChartCreateArgs>(args: SelectSubset<T, ChartCreateArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many OrgCharts.
-     * @param {OrgChartCreateManyArgs} args - Arguments to create many OrgCharts.
+     * Create many Charts.
+     * @param {ChartCreateManyArgs} args - Arguments to create many Charts.
      * @example
-     * // Create many OrgCharts
-     * const orgChart = await prisma.orgChart.createMany({
+     * // Create many Charts
+     * const chart = await prisma.chart.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends OrgChartCreateManyArgs>(args?: SelectSubset<T, OrgChartCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends ChartCreateManyArgs>(args?: SelectSubset<T, ChartCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a OrgChart.
-     * @param {OrgChartDeleteArgs} args - Arguments to delete one OrgChart.
+     * Delete a Chart.
+     * @param {ChartDeleteArgs} args - Arguments to delete one Chart.
      * @example
-     * // Delete one OrgChart
-     * const OrgChart = await prisma.orgChart.delete({
+     * // Delete one Chart
+     * const Chart = await prisma.chart.delete({
      *   where: {
-     *     // ... filter to delete one OrgChart
+     *     // ... filter to delete one Chart
      *   }
      * })
      * 
      */
-    delete<T extends OrgChartDeleteArgs>(args: SelectSubset<T, OrgChartDeleteArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends ChartDeleteArgs>(args: SelectSubset<T, ChartDeleteArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one OrgChart.
-     * @param {OrgChartUpdateArgs} args - Arguments to update one OrgChart.
+     * Update one Chart.
+     * @param {ChartUpdateArgs} args - Arguments to update one Chart.
      * @example
-     * // Update one OrgChart
-     * const orgChart = await prisma.orgChart.update({
+     * // Update one Chart
+     * const chart = await prisma.chart.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5304,30 +4233,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends OrgChartUpdateArgs>(args: SelectSubset<T, OrgChartUpdateArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends ChartUpdateArgs>(args: SelectSubset<T, ChartUpdateArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more OrgCharts.
-     * @param {OrgChartDeleteManyArgs} args - Arguments to filter OrgCharts to delete.
+     * Delete zero or more Charts.
+     * @param {ChartDeleteManyArgs} args - Arguments to filter Charts to delete.
      * @example
-     * // Delete a few OrgCharts
-     * const { count } = await prisma.orgChart.deleteMany({
+     * // Delete a few Charts
+     * const { count } = await prisma.chart.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends OrgChartDeleteManyArgs>(args?: SelectSubset<T, OrgChartDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends ChartDeleteManyArgs>(args?: SelectSubset<T, ChartDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more OrgCharts.
+     * Update zero or more Charts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ChartUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many OrgCharts
-     * const orgChart = await prisma.orgChart.updateMany({
+     * // Update many Charts
+     * const chart = await prisma.chart.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5337,56 +4266,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends OrgChartUpdateManyArgs>(args: SelectSubset<T, OrgChartUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends ChartUpdateManyArgs>(args: SelectSubset<T, ChartUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one OrgChart.
-     * @param {OrgChartUpsertArgs} args - Arguments to update or create a OrgChart.
+     * Create or update one Chart.
+     * @param {ChartUpsertArgs} args - Arguments to update or create a Chart.
      * @example
-     * // Update or create a OrgChart
-     * const orgChart = await prisma.orgChart.upsert({
+     * // Update or create a Chart
+     * const chart = await prisma.chart.upsert({
      *   create: {
-     *     // ... data to create a OrgChart
+     *     // ... data to create a Chart
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the OrgChart we want to update
+     *     // ... the filter for the Chart we want to update
      *   }
      * })
      */
-    upsert<T extends OrgChartUpsertArgs>(args: SelectSubset<T, OrgChartUpsertArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends ChartUpsertArgs>(args: SelectSubset<T, ChartUpsertArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of OrgCharts.
+     * Count the number of Charts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartCountArgs} args - Arguments to filter OrgCharts to count.
+     * @param {ChartCountArgs} args - Arguments to filter Charts to count.
      * @example
-     * // Count the number of OrgCharts
-     * const count = await prisma.orgChart.count({
+     * // Count the number of Charts
+     * const count = await prisma.chart.count({
      *   where: {
-     *     // ... the filter for the OrgCharts we want to count
+     *     // ... the filter for the Charts we want to count
      *   }
      * })
     **/
-    count<T extends OrgChartCountArgs>(
-      args?: Subset<T, OrgChartCountArgs>,
+    count<T extends ChartCountArgs>(
+      args?: Subset<T, ChartCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], OrgChartCountAggregateOutputType>
+          : GetScalarType<T['select'], ChartCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a OrgChart.
+     * Allows you to perform aggregations operations on a Chart.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ChartAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -5406,13 +4335,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends OrgChartAggregateArgs>(args: Subset<T, OrgChartAggregateArgs>): Prisma.PrismaPromise<GetOrgChartAggregateType<T>>
+    aggregate<T extends ChartAggregateArgs>(args: Subset<T, ChartAggregateArgs>): Prisma.PrismaPromise<GetChartAggregateType<T>>
 
     /**
-     * Group by OrgChart.
+     * Group by Chart.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrgChartGroupByArgs} args - Group by arguments.
+     * @param {ChartGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -5427,14 +4356,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends OrgChartGroupByArgs,
+      T extends ChartGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: OrgChartGroupByArgs['orderBy'] }
-        : { orderBy?: OrgChartGroupByArgs['orderBy'] },
+        ? { orderBy: ChartGroupByArgs['orderBy'] }
+        : { orderBy?: ChartGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5483,25 +4412,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, OrgChartGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrgChartGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, ChartGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChartGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the OrgChart model
+   * Fields of the Chart model
    */
-  readonly fields: OrgChartFieldRefs;
+  readonly fields: ChartFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for OrgChart.
+   * The delegate class that acts as a "Promise-like" for Chart.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__OrgChartClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__ChartClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    parent<T extends OrgChart$parentArgs<ExtArgs> = {}>(args?: Subset<T, OrgChart$parentArgs<ExtArgs>>): Prisma__OrgChartClient<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    children<T extends OrgChart$childrenArgs<ExtArgs> = {}>(args?: Subset<T, OrgChart$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrgChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    user<T extends OrgChart$userArgs<ExtArgs> = {}>(args?: Subset<T, OrgChart$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    structure<T extends OrgStructureDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrgStructureDefaultArgs<ExtArgs>>): Prisma__OrgStructureClient<$Result.GetResult<Prisma.$OrgStructurePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    parent<T extends Chart$parentArgs<ExtArgs> = {}>(args?: Subset<T, Chart$parentArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    children<T extends Chart$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Chart$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends Chart$membersArgs<ExtArgs> = {}>(args?: Subset<T, Chart$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5528,442 +4456,1465 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the OrgChart model
+   * Fields of the Chart model
    */
-  interface OrgChartFieldRefs {
-    readonly nodeId: FieldRef<"OrgChart", 'String'>
-    readonly structureId: FieldRef<"OrgChart", 'String'>
-    readonly userId: FieldRef<"OrgChart", 'String'>
-    readonly parentId: FieldRef<"OrgChart", 'String'>
-    readonly name: FieldRef<"OrgChart", 'String'>
-    readonly position: FieldRef<"OrgChart", 'String'>
-    readonly orderIndex: FieldRef<"OrgChart", 'Int'>
-    readonly createdAt: FieldRef<"OrgChart", 'DateTime'>
-    readonly createdBy: FieldRef<"OrgChart", 'String'>
-    readonly updatedAt: FieldRef<"OrgChart", 'DateTime'>
-    readonly updatedBy: FieldRef<"OrgChart", 'String'>
-    readonly isDeleted: FieldRef<"OrgChart", 'Boolean'>
-    readonly deletedAt: FieldRef<"OrgChart", 'DateTime'>
-    readonly deletedBy: FieldRef<"OrgChart", 'String'>
+  interface ChartFieldRefs {
+    readonly chartId: FieldRef<"Chart", 'String'>
+    readonly pilarId: FieldRef<"Chart", 'Int'>
+    readonly sbuId: FieldRef<"Chart", 'Int'>
+    readonly sbuSubId: FieldRef<"Chart", 'Int'>
+    readonly parentId: FieldRef<"Chart", 'String'>
+    readonly position: FieldRef<"Chart", 'String'>
+    readonly capacity: FieldRef<"Chart", 'Int'>
+    readonly orderIndex: FieldRef<"Chart", 'Int'>
+    readonly createdAt: FieldRef<"Chart", 'DateTime'>
+    readonly createdBy: FieldRef<"Chart", 'String'>
+    readonly updatedAt: FieldRef<"Chart", 'DateTime'>
+    readonly updatedBy: FieldRef<"Chart", 'String'>
+    readonly isDeleted: FieldRef<"Chart", 'Boolean'>
+    readonly deletedAt: FieldRef<"Chart", 'DateTime'>
+    readonly deletedBy: FieldRef<"Chart", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * OrgChart findUnique
+   * Chart findUnique
    */
-  export type OrgChartFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * Filter, which OrgChart to fetch.
+     * Filter, which Chart to fetch.
      */
-    where: OrgChartWhereUniqueInput
+    where: ChartWhereUniqueInput
   }
 
   /**
-   * OrgChart findUniqueOrThrow
+   * Chart findUniqueOrThrow
    */
-  export type OrgChartFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * Filter, which OrgChart to fetch.
+     * Filter, which Chart to fetch.
      */
-    where: OrgChartWhereUniqueInput
+    where: ChartWhereUniqueInput
   }
 
   /**
-   * OrgChart findFirst
+   * Chart findFirst
    */
-  export type OrgChartFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * Filter, which OrgChart to fetch.
+     * Filter, which Chart to fetch.
      */
-    where?: OrgChartWhereInput
+    where?: ChartWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrgCharts to fetch.
+     * Determine the order of Charts to fetch.
      */
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
+    orderBy?: ChartOrderByWithRelationInput | ChartOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for OrgCharts.
+     * Sets the position for searching for Charts.
      */
-    cursor?: OrgChartWhereUniqueInput
+    cursor?: ChartWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrgCharts from the position of the cursor.
+     * Take `±n` Charts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrgCharts.
+     * Skip the first `n` Charts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of OrgCharts.
+     * Filter by unique combinations of Charts.
      */
-    distinct?: OrgChartScalarFieldEnum | OrgChartScalarFieldEnum[]
+    distinct?: ChartScalarFieldEnum | ChartScalarFieldEnum[]
   }
 
   /**
-   * OrgChart findFirstOrThrow
+   * Chart findFirstOrThrow
    */
-  export type OrgChartFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * Filter, which OrgChart to fetch.
+     * Filter, which Chart to fetch.
      */
-    where?: OrgChartWhereInput
+    where?: ChartWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrgCharts to fetch.
+     * Determine the order of Charts to fetch.
      */
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
+    orderBy?: ChartOrderByWithRelationInput | ChartOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for OrgCharts.
+     * Sets the position for searching for Charts.
      */
-    cursor?: OrgChartWhereUniqueInput
+    cursor?: ChartWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrgCharts from the position of the cursor.
+     * Take `±n` Charts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrgCharts.
+     * Skip the first `n` Charts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of OrgCharts.
+     * Filter by unique combinations of Charts.
      */
-    distinct?: OrgChartScalarFieldEnum | OrgChartScalarFieldEnum[]
+    distinct?: ChartScalarFieldEnum | ChartScalarFieldEnum[]
   }
 
   /**
-   * OrgChart findMany
+   * Chart findMany
    */
-  export type OrgChartFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * Filter, which OrgCharts to fetch.
+     * Filter, which Charts to fetch.
      */
-    where?: OrgChartWhereInput
+    where?: ChartWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrgCharts to fetch.
+     * Determine the order of Charts to fetch.
      */
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
+    orderBy?: ChartOrderByWithRelationInput | ChartOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing OrgCharts.
+     * Sets the position for listing Charts.
      */
-    cursor?: OrgChartWhereUniqueInput
+    cursor?: ChartWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrgCharts from the position of the cursor.
+     * Take `±n` Charts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrgCharts.
+     * Skip the first `n` Charts.
      */
     skip?: number
-    distinct?: OrgChartScalarFieldEnum | OrgChartScalarFieldEnum[]
+    distinct?: ChartScalarFieldEnum | ChartScalarFieldEnum[]
   }
 
   /**
-   * OrgChart create
+   * Chart create
    */
-  export type OrgChartCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * The data needed to create a OrgChart.
+     * The data needed to create a Chart.
      */
-    data: XOR<OrgChartCreateInput, OrgChartUncheckedCreateInput>
+    data: XOR<ChartCreateInput, ChartUncheckedCreateInput>
   }
 
   /**
-   * OrgChart createMany
+   * Chart createMany
    */
-  export type OrgChartCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many OrgCharts.
+     * The data used to create many Charts.
      */
-    data: OrgChartCreateManyInput | OrgChartCreateManyInput[]
+    data: ChartCreateManyInput | ChartCreateManyInput[]
   }
 
   /**
-   * OrgChart update
+   * Chart update
    */
-  export type OrgChartUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * The data needed to update a OrgChart.
+     * The data needed to update a Chart.
      */
-    data: XOR<OrgChartUpdateInput, OrgChartUncheckedUpdateInput>
+    data: XOR<ChartUpdateInput, ChartUncheckedUpdateInput>
     /**
-     * Choose, which OrgChart to update.
+     * Choose, which Chart to update.
      */
-    where: OrgChartWhereUniqueInput
+    where: ChartWhereUniqueInput
   }
 
   /**
-   * OrgChart updateMany
+   * Chart updateMany
    */
-  export type OrgChartUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update OrgCharts.
+     * The data used to update Charts.
      */
-    data: XOR<OrgChartUpdateManyMutationInput, OrgChartUncheckedUpdateManyInput>
+    data: XOR<ChartUpdateManyMutationInput, ChartUncheckedUpdateManyInput>
     /**
-     * Filter which OrgCharts to update
+     * Filter which Charts to update
      */
-    where?: OrgChartWhereInput
+    where?: ChartWhereInput
     /**
-     * Limit how many OrgCharts to update.
+     * Limit how many Charts to update.
      */
     limit?: number
   }
 
   /**
-   * OrgChart upsert
+   * Chart upsert
    */
-  export type OrgChartUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * The filter to search for the OrgChart to update in case it exists.
+     * The filter to search for the Chart to update in case it exists.
      */
-    where: OrgChartWhereUniqueInput
+    where: ChartWhereUniqueInput
     /**
-     * In case the OrgChart found by the `where` argument doesn't exist, create a new OrgChart with this data.
+     * In case the Chart found by the `where` argument doesn't exist, create a new Chart with this data.
      */
-    create: XOR<OrgChartCreateInput, OrgChartUncheckedCreateInput>
+    create: XOR<ChartCreateInput, ChartUncheckedCreateInput>
     /**
-     * In case the OrgChart was found with the provided `where` argument, update it with this data.
+     * In case the Chart was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<OrgChartUpdateInput, OrgChartUncheckedUpdateInput>
+    update: XOR<ChartUpdateInput, ChartUncheckedUpdateInput>
   }
 
   /**
-   * OrgChart delete
+   * Chart delete
    */
-  export type OrgChartDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
     /**
-     * Filter which OrgChart to delete.
+     * Filter which Chart to delete.
      */
-    where: OrgChartWhereUniqueInput
+    where: ChartWhereUniqueInput
   }
 
   /**
-   * OrgChart deleteMany
+   * Chart deleteMany
    */
-  export type OrgChartDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which OrgCharts to delete
+     * Filter which Charts to delete
      */
-    where?: OrgChartWhereInput
+    where?: ChartWhereInput
     /**
-     * Limit how many OrgCharts to delete.
+     * Limit how many Charts to delete.
      */
     limit?: number
   }
 
   /**
-   * OrgChart.parent
+   * Chart.parent
    */
-  export type OrgChart$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Chart$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
-    where?: OrgChartWhereInput
+    include?: ChartInclude<ExtArgs> | null
+    where?: ChartWhereInput
   }
 
   /**
-   * OrgChart.children
+   * Chart.children
    */
-  export type OrgChart$childrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Chart$childrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
-    where?: OrgChartWhereInput
-    orderBy?: OrgChartOrderByWithRelationInput | OrgChartOrderByWithRelationInput[]
-    cursor?: OrgChartWhereUniqueInput
+    include?: ChartInclude<ExtArgs> | null
+    where?: ChartWhereInput
+    orderBy?: ChartOrderByWithRelationInput | ChartOrderByWithRelationInput[]
+    cursor?: ChartWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: OrgChartScalarFieldEnum | OrgChartScalarFieldEnum[]
+    distinct?: ChartScalarFieldEnum | ChartScalarFieldEnum[]
   }
 
   /**
-   * OrgChart.user
+   * Chart.members
    */
-  export type OrgChart$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Chart$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the User
+     * Select specific fields to fetch from the ChartMember
      */
-    select?: UserSelect<ExtArgs> | null
+    select?: ChartMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
+     * Omit specific fields from the ChartMember
      */
-    omit?: UserOmit<ExtArgs> | null
+    omit?: ChartMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
+    include?: ChartMemberInclude<ExtArgs> | null
+    where?: ChartMemberWhereInput
+    orderBy?: ChartMemberOrderByWithRelationInput | ChartMemberOrderByWithRelationInput[]
+    cursor?: ChartMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChartMemberScalarFieldEnum | ChartMemberScalarFieldEnum[]
   }
 
   /**
-   * OrgChart without action
+   * Chart without action
    */
-  export type OrgChartDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChartDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrgChart
+     * Select specific fields to fetch from the Chart
      */
-    select?: OrgChartSelect<ExtArgs> | null
+    select?: ChartSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrgChart
+     * Omit specific fields from the Chart
      */
-    omit?: OrgChartOmit<ExtArgs> | null
+    omit?: ChartOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrgChartInclude<ExtArgs> | null
+    include?: ChartInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ChartMember
+   */
+
+  export type AggregateChartMember = {
+    _count: ChartMemberCountAggregateOutputType | null
+    _avg: ChartMemberAvgAggregateOutputType | null
+    _sum: ChartMemberSumAggregateOutputType | null
+    _min: ChartMemberMinAggregateOutputType | null
+    _max: ChartMemberMaxAggregateOutputType | null
+  }
+
+  export type ChartMemberAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type ChartMemberSumAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type ChartMemberMinAggregateOutputType = {
+    memberChartId: string | null
+    chartId: string | null
+    userId: number | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type ChartMemberMaxAggregateOutputType = {
+    memberChartId: string | null
+    chartId: string | null
+    userId: number | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type ChartMemberCountAggregateOutputType = {
+    memberChartId: number
+    chartId: number
+    userId: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type ChartMemberAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type ChartMemberSumAggregateInputType = {
+    userId?: true
+  }
+
+  export type ChartMemberMinAggregateInputType = {
+    memberChartId?: true
+    chartId?: true
+    userId?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type ChartMemberMaxAggregateInputType = {
+    memberChartId?: true
+    chartId?: true
+    userId?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type ChartMemberCountAggregateInputType = {
+    memberChartId?: true
+    chartId?: true
+    userId?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type ChartMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChartMember to aggregate.
+     */
+    where?: ChartMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChartMembers to fetch.
+     */
+    orderBy?: ChartMemberOrderByWithRelationInput | ChartMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChartMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChartMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChartMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChartMembers
+    **/
+    _count?: true | ChartMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ChartMemberAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ChartMemberSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChartMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChartMemberMaxAggregateInputType
+  }
+
+  export type GetChartMemberAggregateType<T extends ChartMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateChartMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChartMember[P]>
+      : GetScalarType<T[P], AggregateChartMember[P]>
+  }
+
+
+
+
+  export type ChartMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChartMemberWhereInput
+    orderBy?: ChartMemberOrderByWithAggregationInput | ChartMemberOrderByWithAggregationInput[]
+    by: ChartMemberScalarFieldEnum[] | ChartMemberScalarFieldEnum
+    having?: ChartMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChartMemberCountAggregateInputType | true
+    _avg?: ChartMemberAvgAggregateInputType
+    _sum?: ChartMemberSumAggregateInputType
+    _min?: ChartMemberMinAggregateInputType
+    _max?: ChartMemberMaxAggregateInputType
+  }
+
+  export type ChartMemberGroupByOutputType = {
+    memberChartId: string
+    chartId: string
+    userId: number | null
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: ChartMemberCountAggregateOutputType | null
+    _avg: ChartMemberAvgAggregateOutputType | null
+    _sum: ChartMemberSumAggregateOutputType | null
+    _min: ChartMemberMinAggregateOutputType | null
+    _max: ChartMemberMaxAggregateOutputType | null
+  }
+
+  type GetChartMemberGroupByPayload<T extends ChartMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChartMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChartMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChartMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], ChartMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChartMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    memberChartId?: boolean
+    chartId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    node?: boolean | ChartDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chartMember"]>
+
+
+
+  export type ChartMemberSelectScalar = {
+    memberChartId?: boolean
+    chartId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type ChartMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"memberChartId" | "chartId" | "userId" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["chartMember"]>
+  export type ChartMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    node?: boolean | ChartDefaultArgs<ExtArgs>
+  }
+
+  export type $ChartMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChartMember"
+    objects: {
+      node: Prisma.$ChartPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      memberChartId: string
+      chartId: string
+      userId: number | null
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["chartMember"]>
+    composites: {}
+  }
+
+  type ChartMemberGetPayload<S extends boolean | null | undefined | ChartMemberDefaultArgs> = $Result.GetResult<Prisma.$ChartMemberPayload, S>
+
+  type ChartMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChartMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChartMemberCountAggregateInputType | true
+    }
+
+  export interface ChartMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChartMember'], meta: { name: 'ChartMember' } }
+    /**
+     * Find zero or one ChartMember that matches the filter.
+     * @param {ChartMemberFindUniqueArgs} args - Arguments to find a ChartMember
+     * @example
+     * // Get one ChartMember
+     * const chartMember = await prisma.chartMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChartMemberFindUniqueArgs>(args: SelectSubset<T, ChartMemberFindUniqueArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ChartMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChartMemberFindUniqueOrThrowArgs} args - Arguments to find a ChartMember
+     * @example
+     * // Get one ChartMember
+     * const chartMember = await prisma.chartMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChartMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, ChartMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChartMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberFindFirstArgs} args - Arguments to find a ChartMember
+     * @example
+     * // Get one ChartMember
+     * const chartMember = await prisma.chartMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChartMemberFindFirstArgs>(args?: SelectSubset<T, ChartMemberFindFirstArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChartMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberFindFirstOrThrowArgs} args - Arguments to find a ChartMember
+     * @example
+     * // Get one ChartMember
+     * const chartMember = await prisma.chartMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChartMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, ChartMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ChartMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChartMembers
+     * const chartMembers = await prisma.chartMember.findMany()
+     * 
+     * // Get first 10 ChartMembers
+     * const chartMembers = await prisma.chartMember.findMany({ take: 10 })
+     * 
+     * // Only select the `memberChartId`
+     * const chartMemberWithMemberChartIdOnly = await prisma.chartMember.findMany({ select: { memberChartId: true } })
+     * 
+     */
+    findMany<T extends ChartMemberFindManyArgs>(args?: SelectSubset<T, ChartMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ChartMember.
+     * @param {ChartMemberCreateArgs} args - Arguments to create a ChartMember.
+     * @example
+     * // Create one ChartMember
+     * const ChartMember = await prisma.chartMember.create({
+     *   data: {
+     *     // ... data to create a ChartMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChartMemberCreateArgs>(args: SelectSubset<T, ChartMemberCreateArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ChartMembers.
+     * @param {ChartMemberCreateManyArgs} args - Arguments to create many ChartMembers.
+     * @example
+     * // Create many ChartMembers
+     * const chartMember = await prisma.chartMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChartMemberCreateManyArgs>(args?: SelectSubset<T, ChartMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ChartMember.
+     * @param {ChartMemberDeleteArgs} args - Arguments to delete one ChartMember.
+     * @example
+     * // Delete one ChartMember
+     * const ChartMember = await prisma.chartMember.delete({
+     *   where: {
+     *     // ... filter to delete one ChartMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChartMemberDeleteArgs>(args: SelectSubset<T, ChartMemberDeleteArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ChartMember.
+     * @param {ChartMemberUpdateArgs} args - Arguments to update one ChartMember.
+     * @example
+     * // Update one ChartMember
+     * const chartMember = await prisma.chartMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChartMemberUpdateArgs>(args: SelectSubset<T, ChartMemberUpdateArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ChartMembers.
+     * @param {ChartMemberDeleteManyArgs} args - Arguments to filter ChartMembers to delete.
+     * @example
+     * // Delete a few ChartMembers
+     * const { count } = await prisma.chartMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChartMemberDeleteManyArgs>(args?: SelectSubset<T, ChartMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChartMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChartMembers
+     * const chartMember = await prisma.chartMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChartMemberUpdateManyArgs>(args: SelectSubset<T, ChartMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ChartMember.
+     * @param {ChartMemberUpsertArgs} args - Arguments to update or create a ChartMember.
+     * @example
+     * // Update or create a ChartMember
+     * const chartMember = await prisma.chartMember.upsert({
+     *   create: {
+     *     // ... data to create a ChartMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChartMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChartMemberUpsertArgs>(args: SelectSubset<T, ChartMemberUpsertArgs<ExtArgs>>): Prisma__ChartMemberClient<$Result.GetResult<Prisma.$ChartMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ChartMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberCountArgs} args - Arguments to filter ChartMembers to count.
+     * @example
+     * // Count the number of ChartMembers
+     * const count = await prisma.chartMember.count({
+     *   where: {
+     *     // ... the filter for the ChartMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChartMemberCountArgs>(
+      args?: Subset<T, ChartMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChartMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChartMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChartMemberAggregateArgs>(args: Subset<T, ChartMemberAggregateArgs>): Prisma.PrismaPromise<GetChartMemberAggregateType<T>>
+
+    /**
+     * Group by ChartMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChartMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChartMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChartMemberGroupByArgs['orderBy'] }
+        : { orderBy?: ChartMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChartMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChartMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChartMember model
+   */
+  readonly fields: ChartMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChartMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChartMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    node<T extends ChartDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ChartDefaultArgs<ExtArgs>>): Prisma__ChartClient<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChartMember model
+   */
+  interface ChartMemberFieldRefs {
+    readonly memberChartId: FieldRef<"ChartMember", 'String'>
+    readonly chartId: FieldRef<"ChartMember", 'String'>
+    readonly userId: FieldRef<"ChartMember", 'Int'>
+    readonly createdAt: FieldRef<"ChartMember", 'DateTime'>
+    readonly createdBy: FieldRef<"ChartMember", 'String'>
+    readonly updatedAt: FieldRef<"ChartMember", 'DateTime'>
+    readonly updatedBy: FieldRef<"ChartMember", 'String'>
+    readonly isDeleted: FieldRef<"ChartMember", 'Boolean'>
+    readonly deletedAt: FieldRef<"ChartMember", 'DateTime'>
+    readonly deletedBy: FieldRef<"ChartMember", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChartMember findUnique
+   */
+  export type ChartMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChartMember to fetch.
+     */
+    where: ChartMemberWhereUniqueInput
+  }
+
+  /**
+   * ChartMember findUniqueOrThrow
+   */
+  export type ChartMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChartMember to fetch.
+     */
+    where: ChartMemberWhereUniqueInput
+  }
+
+  /**
+   * ChartMember findFirst
+   */
+  export type ChartMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChartMember to fetch.
+     */
+    where?: ChartMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChartMembers to fetch.
+     */
+    orderBy?: ChartMemberOrderByWithRelationInput | ChartMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChartMembers.
+     */
+    cursor?: ChartMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChartMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChartMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChartMembers.
+     */
+    distinct?: ChartMemberScalarFieldEnum | ChartMemberScalarFieldEnum[]
+  }
+
+  /**
+   * ChartMember findFirstOrThrow
+   */
+  export type ChartMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChartMember to fetch.
+     */
+    where?: ChartMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChartMembers to fetch.
+     */
+    orderBy?: ChartMemberOrderByWithRelationInput | ChartMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChartMembers.
+     */
+    cursor?: ChartMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChartMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChartMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChartMembers.
+     */
+    distinct?: ChartMemberScalarFieldEnum | ChartMemberScalarFieldEnum[]
+  }
+
+  /**
+   * ChartMember findMany
+   */
+  export type ChartMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChartMembers to fetch.
+     */
+    where?: ChartMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChartMembers to fetch.
+     */
+    orderBy?: ChartMemberOrderByWithRelationInput | ChartMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChartMembers.
+     */
+    cursor?: ChartMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChartMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChartMembers.
+     */
+    skip?: number
+    distinct?: ChartMemberScalarFieldEnum | ChartMemberScalarFieldEnum[]
+  }
+
+  /**
+   * ChartMember create
+   */
+  export type ChartMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChartMember.
+     */
+    data: XOR<ChartMemberCreateInput, ChartMemberUncheckedCreateInput>
+  }
+
+  /**
+   * ChartMember createMany
+   */
+  export type ChartMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChartMembers.
+     */
+    data: ChartMemberCreateManyInput | ChartMemberCreateManyInput[]
+  }
+
+  /**
+   * ChartMember update
+   */
+  export type ChartMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChartMember.
+     */
+    data: XOR<ChartMemberUpdateInput, ChartMemberUncheckedUpdateInput>
+    /**
+     * Choose, which ChartMember to update.
+     */
+    where: ChartMemberWhereUniqueInput
+  }
+
+  /**
+   * ChartMember updateMany
+   */
+  export type ChartMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChartMembers.
+     */
+    data: XOR<ChartMemberUpdateManyMutationInput, ChartMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which ChartMembers to update
+     */
+    where?: ChartMemberWhereInput
+    /**
+     * Limit how many ChartMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChartMember upsert
+   */
+  export type ChartMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChartMember to update in case it exists.
+     */
+    where: ChartMemberWhereUniqueInput
+    /**
+     * In case the ChartMember found by the `where` argument doesn't exist, create a new ChartMember with this data.
+     */
+    create: XOR<ChartMemberCreateInput, ChartMemberUncheckedCreateInput>
+    /**
+     * In case the ChartMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChartMemberUpdateInput, ChartMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * ChartMember delete
+   */
+  export type ChartMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
+    /**
+     * Filter which ChartMember to delete.
+     */
+    where: ChartMemberWhereUniqueInput
+  }
+
+  /**
+   * ChartMember deleteMany
+   */
+  export type ChartMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChartMembers to delete
+     */
+    where?: ChartMemberWhereInput
+    /**
+     * Limit how many ChartMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChartMember without action
+   */
+  export type ChartMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChartMember
+     */
+    select?: ChartMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChartMember
+     */
+    omit?: ChartMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChartMemberInclude<ExtArgs> | null
   }
 
 
@@ -6023,30 +5974,14 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const OrgStructureScalarFieldEnum: {
-    structureId: 'structureId',
-    name: 'name',
-    description: 'description',
-    rootNodeId: 'rootNodeId',
-    createdAt: 'createdAt',
-    createdBy: 'createdBy',
-    updatedAt: 'updatedAt',
-    updatedBy: 'updatedBy',
-    isDeleted: 'isDeleted',
-    deletedAt: 'deletedAt',
-    deletedBy: 'deletedBy'
-  };
-
-  export type OrgStructureScalarFieldEnum = (typeof OrgStructureScalarFieldEnum)[keyof typeof OrgStructureScalarFieldEnum]
-
-
-  export const OrgChartScalarFieldEnum: {
-    nodeId: 'nodeId',
-    structureId: 'structureId',
-    userId: 'userId',
+  export const ChartScalarFieldEnum: {
+    chartId: 'chartId',
+    pilarId: 'pilarId',
+    sbuId: 'sbuId',
+    sbuSubId: 'sbuSubId',
     parentId: 'parentId',
-    name: 'name',
     position: 'position',
+    capacity: 'capacity',
     orderIndex: 'orderIndex',
     createdAt: 'createdAt',
     createdBy: 'createdBy',
@@ -6057,7 +5992,23 @@ export namespace Prisma {
     deletedBy: 'deletedBy'
   };
 
-  export type OrgChartScalarFieldEnum = (typeof OrgChartScalarFieldEnum)[keyof typeof OrgChartScalarFieldEnum]
+  export type ChartScalarFieldEnum = (typeof ChartScalarFieldEnum)[keyof typeof ChartScalarFieldEnum]
+
+
+  export const ChartMemberScalarFieldEnum: {
+    memberChartId: 'memberChartId',
+    chartId: 'chartId',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type ChartMemberScalarFieldEnum = (typeof ChartMemberScalarFieldEnum)[keyof typeof ChartMemberScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6251,7 +6202,6 @@ export namespace Prisma {
     createdRoles?: RoleListRelationFilter
     updatedRoles?: RoleListRelationFilter
     deletedRoles?: RoleListRelationFilter
-    orgNodes?: OrgChartListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6282,7 +6232,6 @@ export namespace Prisma {
     createdRoles?: RoleOrderByRelationAggregateInput
     updatedRoles?: RoleOrderByRelationAggregateInput
     deletedRoles?: RoleOrderByRelationAggregateInput
-    orgNodes?: OrgChartOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6316,7 +6265,6 @@ export namespace Prisma {
     createdRoles?: RoleListRelationFilter
     updatedRoles?: RoleListRelationFilter
     deletedRoles?: RoleListRelationFilter
-    orgNodes?: OrgChartListRelationFilter
   }, "userId" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -6365,122 +6313,38 @@ export namespace Prisma {
     token?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
-  export type OrgStructureWhereInput = {
-    AND?: OrgStructureWhereInput | OrgStructureWhereInput[]
-    OR?: OrgStructureWhereInput[]
-    NOT?: OrgStructureWhereInput | OrgStructureWhereInput[]
-    structureId?: StringFilter<"OrgStructure"> | string
-    name?: StringFilter<"OrgStructure"> | string
-    description?: StringNullableFilter<"OrgStructure"> | string | null
-    rootNodeId?: StringNullableFilter<"OrgStructure"> | string | null
-    createdAt?: DateTimeFilter<"OrgStructure"> | Date | string
-    createdBy?: StringNullableFilter<"OrgStructure"> | string | null
-    updatedAt?: DateTimeFilter<"OrgStructure"> | Date | string
-    updatedBy?: StringNullableFilter<"OrgStructure"> | string | null
-    isDeleted?: BoolFilter<"OrgStructure"> | boolean
-    deletedAt?: DateTimeNullableFilter<"OrgStructure"> | Date | string | null
-    deletedBy?: StringNullableFilter<"OrgStructure"> | string | null
-    nodes?: OrgChartListRelationFilter
+  export type ChartWhereInput = {
+    AND?: ChartWhereInput | ChartWhereInput[]
+    OR?: ChartWhereInput[]
+    NOT?: ChartWhereInput | ChartWhereInput[]
+    chartId?: StringFilter<"Chart"> | string
+    pilarId?: IntFilter<"Chart"> | number
+    sbuId?: IntFilter<"Chart"> | number
+    sbuSubId?: IntFilter<"Chart"> | number
+    parentId?: StringNullableFilter<"Chart"> | string | null
+    position?: StringFilter<"Chart"> | string
+    capacity?: IntFilter<"Chart"> | number
+    orderIndex?: IntFilter<"Chart"> | number
+    createdAt?: DateTimeFilter<"Chart"> | Date | string
+    createdBy?: StringNullableFilter<"Chart"> | string | null
+    updatedAt?: DateTimeFilter<"Chart"> | Date | string
+    updatedBy?: StringNullableFilter<"Chart"> | string | null
+    isDeleted?: BoolFilter<"Chart"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Chart"> | Date | string | null
+    deletedBy?: StringNullableFilter<"Chart"> | string | null
+    parent?: XOR<ChartNullableScalarRelationFilter, ChartWhereInput> | null
+    children?: ChartListRelationFilter
+    members?: ChartMemberListRelationFilter
   }
 
-  export type OrgStructureOrderByWithRelationInput = {
-    structureId?: SortOrder
-    name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    rootNodeId?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
-    updatedAt?: SortOrder
-    updatedBy?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
-    deletedAt?: SortOrderInput | SortOrder
-    deletedBy?: SortOrderInput | SortOrder
-    nodes?: OrgChartOrderByRelationAggregateInput
-  }
-
-  export type OrgStructureWhereUniqueInput = Prisma.AtLeast<{
-    structureId?: string
-    AND?: OrgStructureWhereInput | OrgStructureWhereInput[]
-    OR?: OrgStructureWhereInput[]
-    NOT?: OrgStructureWhereInput | OrgStructureWhereInput[]
-    name?: StringFilter<"OrgStructure"> | string
-    description?: StringNullableFilter<"OrgStructure"> | string | null
-    rootNodeId?: StringNullableFilter<"OrgStructure"> | string | null
-    createdAt?: DateTimeFilter<"OrgStructure"> | Date | string
-    createdBy?: StringNullableFilter<"OrgStructure"> | string | null
-    updatedAt?: DateTimeFilter<"OrgStructure"> | Date | string
-    updatedBy?: StringNullableFilter<"OrgStructure"> | string | null
-    isDeleted?: BoolFilter<"OrgStructure"> | boolean
-    deletedAt?: DateTimeNullableFilter<"OrgStructure"> | Date | string | null
-    deletedBy?: StringNullableFilter<"OrgStructure"> | string | null
-    nodes?: OrgChartListRelationFilter
-  }, "structureId">
-
-  export type OrgStructureOrderByWithAggregationInput = {
-    structureId?: SortOrder
-    name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    rootNodeId?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
-    updatedAt?: SortOrder
-    updatedBy?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
-    deletedAt?: SortOrderInput | SortOrder
-    deletedBy?: SortOrderInput | SortOrder
-    _count?: OrgStructureCountOrderByAggregateInput
-    _max?: OrgStructureMaxOrderByAggregateInput
-    _min?: OrgStructureMinOrderByAggregateInput
-  }
-
-  export type OrgStructureScalarWhereWithAggregatesInput = {
-    AND?: OrgStructureScalarWhereWithAggregatesInput | OrgStructureScalarWhereWithAggregatesInput[]
-    OR?: OrgStructureScalarWhereWithAggregatesInput[]
-    NOT?: OrgStructureScalarWhereWithAggregatesInput | OrgStructureScalarWhereWithAggregatesInput[]
-    structureId?: StringWithAggregatesFilter<"OrgStructure"> | string
-    name?: StringWithAggregatesFilter<"OrgStructure"> | string
-    description?: StringNullableWithAggregatesFilter<"OrgStructure"> | string | null
-    rootNodeId?: StringNullableWithAggregatesFilter<"OrgStructure"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"OrgStructure"> | Date | string
-    createdBy?: StringNullableWithAggregatesFilter<"OrgStructure"> | string | null
-    updatedAt?: DateTimeWithAggregatesFilter<"OrgStructure"> | Date | string
-    updatedBy?: StringNullableWithAggregatesFilter<"OrgStructure"> | string | null
-    isDeleted?: BoolWithAggregatesFilter<"OrgStructure"> | boolean
-    deletedAt?: DateTimeNullableWithAggregatesFilter<"OrgStructure"> | Date | string | null
-    deletedBy?: StringNullableWithAggregatesFilter<"OrgStructure"> | string | null
-  }
-
-  export type OrgChartWhereInput = {
-    AND?: OrgChartWhereInput | OrgChartWhereInput[]
-    OR?: OrgChartWhereInput[]
-    NOT?: OrgChartWhereInput | OrgChartWhereInput[]
-    nodeId?: StringFilter<"OrgChart"> | string
-    structureId?: StringFilter<"OrgChart"> | string
-    userId?: StringNullableFilter<"OrgChart"> | string | null
-    parentId?: StringNullableFilter<"OrgChart"> | string | null
-    name?: StringNullableFilter<"OrgChart"> | string | null
-    position?: StringFilter<"OrgChart"> | string
-    orderIndex?: IntFilter<"OrgChart"> | number
-    createdAt?: DateTimeFilter<"OrgChart"> | Date | string
-    createdBy?: StringNullableFilter<"OrgChart"> | string | null
-    updatedAt?: DateTimeFilter<"OrgChart"> | Date | string
-    updatedBy?: StringNullableFilter<"OrgChart"> | string | null
-    isDeleted?: BoolFilter<"OrgChart"> | boolean
-    deletedAt?: DateTimeNullableFilter<"OrgChart"> | Date | string | null
-    deletedBy?: StringNullableFilter<"OrgChart"> | string | null
-    parent?: XOR<OrgChartNullableScalarRelationFilter, OrgChartWhereInput> | null
-    children?: OrgChartListRelationFilter
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    structure?: XOR<OrgStructureScalarRelationFilter, OrgStructureWhereInput>
-  }
-
-  export type OrgChartOrderByWithRelationInput = {
-    nodeId?: SortOrder
-    structureId?: SortOrder
-    userId?: SortOrderInput | SortOrder
+  export type ChartOrderByWithRelationInput = {
+    chartId?: SortOrder
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
     parentId?: SortOrderInput | SortOrder
-    name?: SortOrderInput | SortOrder
     position?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -6489,43 +6353,43 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
-    parent?: OrgChartOrderByWithRelationInput
-    children?: OrgChartOrderByRelationAggregateInput
-    user?: UserOrderByWithRelationInput
-    structure?: OrgStructureOrderByWithRelationInput
+    parent?: ChartOrderByWithRelationInput
+    children?: ChartOrderByRelationAggregateInput
+    members?: ChartMemberOrderByRelationAggregateInput
   }
 
-  export type OrgChartWhereUniqueInput = Prisma.AtLeast<{
-    nodeId?: string
-    AND?: OrgChartWhereInput | OrgChartWhereInput[]
-    OR?: OrgChartWhereInput[]
-    NOT?: OrgChartWhereInput | OrgChartWhereInput[]
-    structureId?: StringFilter<"OrgChart"> | string
-    userId?: StringNullableFilter<"OrgChart"> | string | null
-    parentId?: StringNullableFilter<"OrgChart"> | string | null
-    name?: StringNullableFilter<"OrgChart"> | string | null
-    position?: StringFilter<"OrgChart"> | string
-    orderIndex?: IntFilter<"OrgChart"> | number
-    createdAt?: DateTimeFilter<"OrgChart"> | Date | string
-    createdBy?: StringNullableFilter<"OrgChart"> | string | null
-    updatedAt?: DateTimeFilter<"OrgChart"> | Date | string
-    updatedBy?: StringNullableFilter<"OrgChart"> | string | null
-    isDeleted?: BoolFilter<"OrgChart"> | boolean
-    deletedAt?: DateTimeNullableFilter<"OrgChart"> | Date | string | null
-    deletedBy?: StringNullableFilter<"OrgChart"> | string | null
-    parent?: XOR<OrgChartNullableScalarRelationFilter, OrgChartWhereInput> | null
-    children?: OrgChartListRelationFilter
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    structure?: XOR<OrgStructureScalarRelationFilter, OrgStructureWhereInput>
-  }, "nodeId">
+  export type ChartWhereUniqueInput = Prisma.AtLeast<{
+    chartId?: string
+    AND?: ChartWhereInput | ChartWhereInput[]
+    OR?: ChartWhereInput[]
+    NOT?: ChartWhereInput | ChartWhereInput[]
+    pilarId?: IntFilter<"Chart"> | number
+    sbuId?: IntFilter<"Chart"> | number
+    sbuSubId?: IntFilter<"Chart"> | number
+    parentId?: StringNullableFilter<"Chart"> | string | null
+    position?: StringFilter<"Chart"> | string
+    capacity?: IntFilter<"Chart"> | number
+    orderIndex?: IntFilter<"Chart"> | number
+    createdAt?: DateTimeFilter<"Chart"> | Date | string
+    createdBy?: StringNullableFilter<"Chart"> | string | null
+    updatedAt?: DateTimeFilter<"Chart"> | Date | string
+    updatedBy?: StringNullableFilter<"Chart"> | string | null
+    isDeleted?: BoolFilter<"Chart"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Chart"> | Date | string | null
+    deletedBy?: StringNullableFilter<"Chart"> | string | null
+    parent?: XOR<ChartNullableScalarRelationFilter, ChartWhereInput> | null
+    children?: ChartListRelationFilter
+    members?: ChartMemberListRelationFilter
+  }, "chartId">
 
-  export type OrgChartOrderByWithAggregationInput = {
-    nodeId?: SortOrder
-    structureId?: SortOrder
-    userId?: SortOrderInput | SortOrder
+  export type ChartOrderByWithAggregationInput = {
+    chartId?: SortOrder
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
     parentId?: SortOrderInput | SortOrder
-    name?: SortOrderInput | SortOrder
     position?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -6534,31 +6398,114 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
-    _count?: OrgChartCountOrderByAggregateInput
-    _avg?: OrgChartAvgOrderByAggregateInput
-    _max?: OrgChartMaxOrderByAggregateInput
-    _min?: OrgChartMinOrderByAggregateInput
-    _sum?: OrgChartSumOrderByAggregateInput
+    _count?: ChartCountOrderByAggregateInput
+    _avg?: ChartAvgOrderByAggregateInput
+    _max?: ChartMaxOrderByAggregateInput
+    _min?: ChartMinOrderByAggregateInput
+    _sum?: ChartSumOrderByAggregateInput
   }
 
-  export type OrgChartScalarWhereWithAggregatesInput = {
-    AND?: OrgChartScalarWhereWithAggregatesInput | OrgChartScalarWhereWithAggregatesInput[]
-    OR?: OrgChartScalarWhereWithAggregatesInput[]
-    NOT?: OrgChartScalarWhereWithAggregatesInput | OrgChartScalarWhereWithAggregatesInput[]
-    nodeId?: StringWithAggregatesFilter<"OrgChart"> | string
-    structureId?: StringWithAggregatesFilter<"OrgChart"> | string
-    userId?: StringNullableWithAggregatesFilter<"OrgChart"> | string | null
-    parentId?: StringNullableWithAggregatesFilter<"OrgChart"> | string | null
-    name?: StringNullableWithAggregatesFilter<"OrgChart"> | string | null
-    position?: StringWithAggregatesFilter<"OrgChart"> | string
-    orderIndex?: IntWithAggregatesFilter<"OrgChart"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"OrgChart"> | Date | string
-    createdBy?: StringNullableWithAggregatesFilter<"OrgChart"> | string | null
-    updatedAt?: DateTimeWithAggregatesFilter<"OrgChart"> | Date | string
-    updatedBy?: StringNullableWithAggregatesFilter<"OrgChart"> | string | null
-    isDeleted?: BoolWithAggregatesFilter<"OrgChart"> | boolean
-    deletedAt?: DateTimeNullableWithAggregatesFilter<"OrgChart"> | Date | string | null
-    deletedBy?: StringNullableWithAggregatesFilter<"OrgChart"> | string | null
+  export type ChartScalarWhereWithAggregatesInput = {
+    AND?: ChartScalarWhereWithAggregatesInput | ChartScalarWhereWithAggregatesInput[]
+    OR?: ChartScalarWhereWithAggregatesInput[]
+    NOT?: ChartScalarWhereWithAggregatesInput | ChartScalarWhereWithAggregatesInput[]
+    chartId?: StringWithAggregatesFilter<"Chart"> | string
+    pilarId?: IntWithAggregatesFilter<"Chart"> | number
+    sbuId?: IntWithAggregatesFilter<"Chart"> | number
+    sbuSubId?: IntWithAggregatesFilter<"Chart"> | number
+    parentId?: StringNullableWithAggregatesFilter<"Chart"> | string | null
+    position?: StringWithAggregatesFilter<"Chart"> | string
+    capacity?: IntWithAggregatesFilter<"Chart"> | number
+    orderIndex?: IntWithAggregatesFilter<"Chart"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Chart"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"Chart"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"Chart"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"Chart"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Chart"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Chart"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"Chart"> | string | null
+  }
+
+  export type ChartMemberWhereInput = {
+    AND?: ChartMemberWhereInput | ChartMemberWhereInput[]
+    OR?: ChartMemberWhereInput[]
+    NOT?: ChartMemberWhereInput | ChartMemberWhereInput[]
+    memberChartId?: StringFilter<"ChartMember"> | string
+    chartId?: StringFilter<"ChartMember"> | string
+    userId?: IntNullableFilter<"ChartMember"> | number | null
+    createdAt?: DateTimeFilter<"ChartMember"> | Date | string
+    createdBy?: StringNullableFilter<"ChartMember"> | string | null
+    updatedAt?: DateTimeFilter<"ChartMember"> | Date | string
+    updatedBy?: StringNullableFilter<"ChartMember"> | string | null
+    isDeleted?: BoolFilter<"ChartMember"> | boolean
+    deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
+    deletedBy?: StringNullableFilter<"ChartMember"> | string | null
+    node?: XOR<ChartScalarRelationFilter, ChartWhereInput>
+  }
+
+  export type ChartMemberOrderByWithRelationInput = {
+    memberChartId?: SortOrder
+    chartId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    node?: ChartOrderByWithRelationInput
+  }
+
+  export type ChartMemberWhereUniqueInput = Prisma.AtLeast<{
+    memberChartId?: string
+    AND?: ChartMemberWhereInput | ChartMemberWhereInput[]
+    OR?: ChartMemberWhereInput[]
+    NOT?: ChartMemberWhereInput | ChartMemberWhereInput[]
+    chartId?: StringFilter<"ChartMember"> | string
+    userId?: IntNullableFilter<"ChartMember"> | number | null
+    createdAt?: DateTimeFilter<"ChartMember"> | Date | string
+    createdBy?: StringNullableFilter<"ChartMember"> | string | null
+    updatedAt?: DateTimeFilter<"ChartMember"> | Date | string
+    updatedBy?: StringNullableFilter<"ChartMember"> | string | null
+    isDeleted?: BoolFilter<"ChartMember"> | boolean
+    deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
+    deletedBy?: StringNullableFilter<"ChartMember"> | string | null
+    node?: XOR<ChartScalarRelationFilter, ChartWhereInput>
+  }, "memberChartId">
+
+  export type ChartMemberOrderByWithAggregationInput = {
+    memberChartId?: SortOrder
+    chartId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: ChartMemberCountOrderByAggregateInput
+    _avg?: ChartMemberAvgOrderByAggregateInput
+    _max?: ChartMemberMaxOrderByAggregateInput
+    _min?: ChartMemberMinOrderByAggregateInput
+    _sum?: ChartMemberSumOrderByAggregateInput
+  }
+
+  export type ChartMemberScalarWhereWithAggregatesInput = {
+    AND?: ChartMemberScalarWhereWithAggregatesInput | ChartMemberScalarWhereWithAggregatesInput[]
+    OR?: ChartMemberScalarWhereWithAggregatesInput[]
+    NOT?: ChartMemberScalarWhereWithAggregatesInput | ChartMemberScalarWhereWithAggregatesInput[]
+    memberChartId?: StringWithAggregatesFilter<"ChartMember"> | string
+    chartId?: StringWithAggregatesFilter<"ChartMember"> | string
+    userId?: IntNullableWithAggregatesFilter<"ChartMember"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"ChartMember"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"ChartMember"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"ChartMember"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"ChartMember"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"ChartMember"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"ChartMember"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"ChartMember"> | string | null
   }
 
   export type RoleCreateInput = {
@@ -6691,7 +6638,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6718,7 +6664,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6745,7 +6690,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6772,7 +6716,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6831,112 +6774,13 @@ export namespace Prisma {
     token?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type OrgStructureCreateInput = {
-    structureId: string
-    name: string
-    description?: string | null
-    rootNodeId?: string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    nodes?: OrgChartCreateNestedManyWithoutStructureInput
-  }
-
-  export type OrgStructureUncheckedCreateInput = {
-    structureId: string
-    name: string
-    description?: string | null
-    rootNodeId?: string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    nodes?: OrgChartUncheckedCreateNestedManyWithoutStructureInput
-  }
-
-  export type OrgStructureUpdateInput = {
-    structureId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    rootNodeId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    nodes?: OrgChartUpdateManyWithoutStructureNestedInput
-  }
-
-  export type OrgStructureUncheckedUpdateInput = {
-    structureId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    rootNodeId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    nodes?: OrgChartUncheckedUpdateManyWithoutStructureNestedInput
-  }
-
-  export type OrgStructureCreateManyInput = {
-    structureId: string
-    name: string
-    description?: string | null
-    rootNodeId?: string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-  }
-
-  export type OrgStructureUpdateManyMutationInput = {
-    structureId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    rootNodeId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type OrgStructureUncheckedUpdateManyInput = {
-    structureId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    rootNodeId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type OrgChartCreateInput = {
-    nodeId: string
-    name?: string | null
+  export type ChartCreateInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -6945,19 +6789,19 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    parent?: OrgChartCreateNestedOneWithoutChildrenInput
-    children?: OrgChartCreateNestedManyWithoutParentInput
-    user?: UserCreateNestedOneWithoutOrgNodesInput
-    structure: OrgStructureCreateNestedOneWithoutNodesInput
+    parent?: ChartCreateNestedOneWithoutChildrenInput
+    children?: ChartCreateNestedManyWithoutParentInput
+    members?: ChartMemberCreateNestedManyWithoutNodeInput
   }
 
-  export type OrgChartUncheckedCreateInput = {
-    nodeId: string
-    structureId: string
-    userId?: string | null
+  export type ChartUncheckedCreateInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     parentId?: string | null
-    name?: string | null
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -6966,13 +6810,17 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    children?: OrgChartUncheckedCreateNestedManyWithoutParentInput
+    children?: ChartUncheckedCreateNestedManyWithoutParentInput
+    members?: ChartMemberUncheckedCreateNestedManyWithoutNodeInput
   }
 
-  export type OrgChartUpdateInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUpdateInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6981,19 +6829,19 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    parent?: OrgChartUpdateOneWithoutChildrenNestedInput
-    children?: OrgChartUpdateManyWithoutParentNestedInput
-    user?: UserUpdateOneWithoutOrgNodesNestedInput
-    structure?: OrgStructureUpdateOneRequiredWithoutNodesNestedInput
+    parent?: ChartUpdateOneWithoutChildrenNestedInput
+    children?: ChartUpdateManyWithoutParentNestedInput
+    members?: ChartMemberUpdateManyWithoutNodeNestedInput
   }
 
-  export type OrgChartUncheckedUpdateInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUncheckedUpdateInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7002,16 +6850,18 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    children?: OrgChartUncheckedUpdateManyWithoutParentNestedInput
+    children?: ChartUncheckedUpdateManyWithoutParentNestedInput
+    members?: ChartMemberUncheckedUpdateManyWithoutNodeNestedInput
   }
 
-  export type OrgChartCreateManyInput = {
-    nodeId: string
-    structureId: string
-    userId?: string | null
+  export type ChartCreateManyInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     parentId?: string | null
-    name?: string | null
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -7022,10 +6872,13 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type OrgChartUpdateManyMutationInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUpdateManyMutationInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7036,14 +6889,105 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type OrgChartUncheckedUpdateManyInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUncheckedUpdateManyInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChartMemberCreateInput = {
+    memberChartId: string
+    userId?: number | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    node: ChartCreateNestedOneWithoutMembersInput
+  }
+
+  export type ChartMemberUncheckedCreateInput = {
+    memberChartId: string
+    chartId: string
+    userId?: number | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type ChartMemberUpdateInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    node?: ChartUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type ChartMemberUncheckedUpdateInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    chartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChartMemberCreateManyInput = {
+    memberChartId: string
+    chartId: string
+    userId?: number | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type ChartMemberUpdateManyMutationInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChartMemberUncheckedUpdateManyInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    chartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7289,17 +7233,7 @@ export namespace Prisma {
     none?: RoleWhereInput
   }
 
-  export type OrgChartListRelationFilter = {
-    every?: OrgChartWhereInput
-    some?: OrgChartWhereInput
-    none?: OrgChartWhereInput
-  }
-
   export type RoleOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OrgChartOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7363,65 +7297,39 @@ export namespace Prisma {
     token?: SortOrder
   }
 
-  export type OrgStructureCountOrderByAggregateInput = {
-    structureId?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    rootNodeId?: SortOrder
-    createdAt?: SortOrder
-    createdBy?: SortOrder
-    updatedAt?: SortOrder
-    updatedBy?: SortOrder
-    isDeleted?: SortOrder
-    deletedAt?: SortOrder
-    deletedBy?: SortOrder
+  export type ChartNullableScalarRelationFilter = {
+    is?: ChartWhereInput | null
+    isNot?: ChartWhereInput | null
   }
 
-  export type OrgStructureMaxOrderByAggregateInput = {
-    structureId?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    rootNodeId?: SortOrder
-    createdAt?: SortOrder
-    createdBy?: SortOrder
-    updatedAt?: SortOrder
-    updatedBy?: SortOrder
-    isDeleted?: SortOrder
-    deletedAt?: SortOrder
-    deletedBy?: SortOrder
+  export type ChartListRelationFilter = {
+    every?: ChartWhereInput
+    some?: ChartWhereInput
+    none?: ChartWhereInput
   }
 
-  export type OrgStructureMinOrderByAggregateInput = {
-    structureId?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    rootNodeId?: SortOrder
-    createdAt?: SortOrder
-    createdBy?: SortOrder
-    updatedAt?: SortOrder
-    updatedBy?: SortOrder
-    isDeleted?: SortOrder
-    deletedAt?: SortOrder
-    deletedBy?: SortOrder
+  export type ChartMemberListRelationFilter = {
+    every?: ChartMemberWhereInput
+    some?: ChartMemberWhereInput
+    none?: ChartMemberWhereInput
   }
 
-  export type OrgChartNullableScalarRelationFilter = {
-    is?: OrgChartWhereInput | null
-    isNot?: OrgChartWhereInput | null
+  export type ChartOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type OrgStructureScalarRelationFilter = {
-    is?: OrgStructureWhereInput
-    isNot?: OrgStructureWhereInput
+  export type ChartMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type OrgChartCountOrderByAggregateInput = {
-    nodeId?: SortOrder
-    structureId?: SortOrder
-    userId?: SortOrder
+  export type ChartCountOrderByAggregateInput = {
+    chartId?: SortOrder
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
     parentId?: SortOrder
-    name?: SortOrder
     position?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
@@ -7432,17 +7340,22 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type OrgChartAvgOrderByAggregateInput = {
+  export type ChartAvgOrderByAggregateInput = {
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
   }
 
-  export type OrgChartMaxOrderByAggregateInput = {
-    nodeId?: SortOrder
-    structureId?: SortOrder
-    userId?: SortOrder
+  export type ChartMaxOrderByAggregateInput = {
+    chartId?: SortOrder
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
     parentId?: SortOrder
-    name?: SortOrder
     position?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
@@ -7453,13 +7366,14 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type OrgChartMinOrderByAggregateInput = {
-    nodeId?: SortOrder
-    structureId?: SortOrder
-    userId?: SortOrder
+  export type ChartMinOrderByAggregateInput = {
+    chartId?: SortOrder
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
     parentId?: SortOrder
-    name?: SortOrder
     position?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
@@ -7470,8 +7384,91 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type OrgChartSumOrderByAggregateInput = {
+  export type ChartSumOrderByAggregateInput = {
+    pilarId?: SortOrder
+    sbuId?: SortOrder
+    sbuSubId?: SortOrder
+    capacity?: SortOrder
     orderIndex?: SortOrder
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type ChartScalarRelationFilter = {
+    is?: ChartWhereInput
+    isNot?: ChartWhereInput
+  }
+
+  export type ChartMemberCountOrderByAggregateInput = {
+    memberChartId?: SortOrder
+    chartId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type ChartMemberAvgOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type ChartMemberMaxOrderByAggregateInput = {
+    memberChartId?: SortOrder
+    chartId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type ChartMemberMinOrderByAggregateInput = {
+    memberChartId?: SortOrder
+    chartId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type ChartMemberSumOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type UserCreateNestedOneWithoutCreatedRolesInput = {
@@ -7658,13 +7655,6 @@ export namespace Prisma {
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
   }
 
-  export type OrgChartCreateNestedManyWithoutUserInput = {
-    create?: XOR<OrgChartCreateWithoutUserInput, OrgChartUncheckedCreateWithoutUserInput> | OrgChartCreateWithoutUserInput[] | OrgChartUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutUserInput | OrgChartCreateOrConnectWithoutUserInput[]
-    createMany?: OrgChartCreateManyUserInputEnvelope
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-  }
-
   export type UserUncheckedCreateNestedManyWithoutCreatorInput = {
     create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
@@ -7705,13 +7695,6 @@ export namespace Prisma {
     connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
     createMany?: RoleCreateManyDeleterInputEnvelope
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
-  export type OrgChartUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<OrgChartCreateWithoutUserInput, OrgChartUncheckedCreateWithoutUserInput> | OrgChartCreateWithoutUserInput[] | OrgChartUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutUserInput | OrgChartCreateOrConnectWithoutUserInput[]
-    createMany?: OrgChartCreateManyUserInputEnvelope
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
   }
 
   export type UserUpdateOneWithoutCreatedUsersNestedInput = {
@@ -7836,20 +7819,6 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
-  export type OrgChartUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OrgChartCreateWithoutUserInput, OrgChartUncheckedCreateWithoutUserInput> | OrgChartCreateWithoutUserInput[] | OrgChartUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutUserInput | OrgChartCreateOrConnectWithoutUserInput[]
-    upsert?: OrgChartUpsertWithWhereUniqueWithoutUserInput | OrgChartUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OrgChartCreateManyUserInputEnvelope
-    set?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    disconnect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    delete?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    update?: OrgChartUpdateWithWhereUniqueWithoutUserInput | OrgChartUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OrgChartUpdateManyWithWhereWithoutUserInput | OrgChartUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
-  }
-
   export type UserUncheckedUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
@@ -7934,148 +7903,126 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
-  export type OrgChartUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OrgChartCreateWithoutUserInput, OrgChartUncheckedCreateWithoutUserInput> | OrgChartCreateWithoutUserInput[] | OrgChartUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutUserInput | OrgChartCreateOrConnectWithoutUserInput[]
-    upsert?: OrgChartUpsertWithWhereUniqueWithoutUserInput | OrgChartUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OrgChartCreateManyUserInputEnvelope
-    set?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    disconnect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    delete?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    update?: OrgChartUpdateWithWhereUniqueWithoutUserInput | OrgChartUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OrgChartUpdateManyWithWhereWithoutUserInput | OrgChartUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
+  export type ChartCreateNestedOneWithoutChildrenInput = {
+    create?: XOR<ChartCreateWithoutChildrenInput, ChartUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: ChartCreateOrConnectWithoutChildrenInput
+    connect?: ChartWhereUniqueInput
   }
 
-  export type OrgChartCreateNestedManyWithoutStructureInput = {
-    create?: XOR<OrgChartCreateWithoutStructureInput, OrgChartUncheckedCreateWithoutStructureInput> | OrgChartCreateWithoutStructureInput[] | OrgChartUncheckedCreateWithoutStructureInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutStructureInput | OrgChartCreateOrConnectWithoutStructureInput[]
-    createMany?: OrgChartCreateManyStructureInputEnvelope
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
+  export type ChartCreateNestedManyWithoutParentInput = {
+    create?: XOR<ChartCreateWithoutParentInput, ChartUncheckedCreateWithoutParentInput> | ChartCreateWithoutParentInput[] | ChartUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: ChartCreateOrConnectWithoutParentInput | ChartCreateOrConnectWithoutParentInput[]
+    createMany?: ChartCreateManyParentInputEnvelope
+    connect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
   }
 
-  export type OrgChartUncheckedCreateNestedManyWithoutStructureInput = {
-    create?: XOR<OrgChartCreateWithoutStructureInput, OrgChartUncheckedCreateWithoutStructureInput> | OrgChartCreateWithoutStructureInput[] | OrgChartUncheckedCreateWithoutStructureInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutStructureInput | OrgChartCreateOrConnectWithoutStructureInput[]
-    createMany?: OrgChartCreateManyStructureInputEnvelope
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
+  export type ChartMemberCreateNestedManyWithoutNodeInput = {
+    create?: XOR<ChartMemberCreateWithoutNodeInput, ChartMemberUncheckedCreateWithoutNodeInput> | ChartMemberCreateWithoutNodeInput[] | ChartMemberUncheckedCreateWithoutNodeInput[]
+    connectOrCreate?: ChartMemberCreateOrConnectWithoutNodeInput | ChartMemberCreateOrConnectWithoutNodeInput[]
+    createMany?: ChartMemberCreateManyNodeInputEnvelope
+    connect?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
   }
 
-  export type OrgChartUpdateManyWithoutStructureNestedInput = {
-    create?: XOR<OrgChartCreateWithoutStructureInput, OrgChartUncheckedCreateWithoutStructureInput> | OrgChartCreateWithoutStructureInput[] | OrgChartUncheckedCreateWithoutStructureInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutStructureInput | OrgChartCreateOrConnectWithoutStructureInput[]
-    upsert?: OrgChartUpsertWithWhereUniqueWithoutStructureInput | OrgChartUpsertWithWhereUniqueWithoutStructureInput[]
-    createMany?: OrgChartCreateManyStructureInputEnvelope
-    set?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    disconnect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    delete?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    update?: OrgChartUpdateWithWhereUniqueWithoutStructureInput | OrgChartUpdateWithWhereUniqueWithoutStructureInput[]
-    updateMany?: OrgChartUpdateManyWithWhereWithoutStructureInput | OrgChartUpdateManyWithWhereWithoutStructureInput[]
-    deleteMany?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
+  export type ChartUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<ChartCreateWithoutParentInput, ChartUncheckedCreateWithoutParentInput> | ChartCreateWithoutParentInput[] | ChartUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: ChartCreateOrConnectWithoutParentInput | ChartCreateOrConnectWithoutParentInput[]
+    createMany?: ChartCreateManyParentInputEnvelope
+    connect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
   }
 
-  export type OrgChartUncheckedUpdateManyWithoutStructureNestedInput = {
-    create?: XOR<OrgChartCreateWithoutStructureInput, OrgChartUncheckedCreateWithoutStructureInput> | OrgChartCreateWithoutStructureInput[] | OrgChartUncheckedCreateWithoutStructureInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutStructureInput | OrgChartCreateOrConnectWithoutStructureInput[]
-    upsert?: OrgChartUpsertWithWhereUniqueWithoutStructureInput | OrgChartUpsertWithWhereUniqueWithoutStructureInput[]
-    createMany?: OrgChartCreateManyStructureInputEnvelope
-    set?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    disconnect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    delete?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    update?: OrgChartUpdateWithWhereUniqueWithoutStructureInput | OrgChartUpdateWithWhereUniqueWithoutStructureInput[]
-    updateMany?: OrgChartUpdateManyWithWhereWithoutStructureInput | OrgChartUpdateManyWithWhereWithoutStructureInput[]
-    deleteMany?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
+  export type ChartMemberUncheckedCreateNestedManyWithoutNodeInput = {
+    create?: XOR<ChartMemberCreateWithoutNodeInput, ChartMemberUncheckedCreateWithoutNodeInput> | ChartMemberCreateWithoutNodeInput[] | ChartMemberUncheckedCreateWithoutNodeInput[]
+    connectOrCreate?: ChartMemberCreateOrConnectWithoutNodeInput | ChartMemberCreateOrConnectWithoutNodeInput[]
+    createMany?: ChartMemberCreateManyNodeInputEnvelope
+    connect?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
   }
 
-  export type OrgChartCreateNestedOneWithoutChildrenInput = {
-    create?: XOR<OrgChartCreateWithoutChildrenInput, OrgChartUncheckedCreateWithoutChildrenInput>
-    connectOrCreate?: OrgChartCreateOrConnectWithoutChildrenInput
-    connect?: OrgChartWhereUniqueInput
+  export type ChartUpdateOneWithoutChildrenNestedInput = {
+    create?: XOR<ChartCreateWithoutChildrenInput, ChartUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: ChartCreateOrConnectWithoutChildrenInput
+    upsert?: ChartUpsertWithoutChildrenInput
+    disconnect?: ChartWhereInput | boolean
+    delete?: ChartWhereInput | boolean
+    connect?: ChartWhereUniqueInput
+    update?: XOR<XOR<ChartUpdateToOneWithWhereWithoutChildrenInput, ChartUpdateWithoutChildrenInput>, ChartUncheckedUpdateWithoutChildrenInput>
   }
 
-  export type OrgChartCreateNestedManyWithoutParentInput = {
-    create?: XOR<OrgChartCreateWithoutParentInput, OrgChartUncheckedCreateWithoutParentInput> | OrgChartCreateWithoutParentInput[] | OrgChartUncheckedCreateWithoutParentInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutParentInput | OrgChartCreateOrConnectWithoutParentInput[]
-    createMany?: OrgChartCreateManyParentInputEnvelope
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
+  export type ChartUpdateManyWithoutParentNestedInput = {
+    create?: XOR<ChartCreateWithoutParentInput, ChartUncheckedCreateWithoutParentInput> | ChartCreateWithoutParentInput[] | ChartUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: ChartCreateOrConnectWithoutParentInput | ChartCreateOrConnectWithoutParentInput[]
+    upsert?: ChartUpsertWithWhereUniqueWithoutParentInput | ChartUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: ChartCreateManyParentInputEnvelope
+    set?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    disconnect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    delete?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    connect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    update?: ChartUpdateWithWhereUniqueWithoutParentInput | ChartUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: ChartUpdateManyWithWhereWithoutParentInput | ChartUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: ChartScalarWhereInput | ChartScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutOrgNodesInput = {
-    create?: XOR<UserCreateWithoutOrgNodesInput, UserUncheckedCreateWithoutOrgNodesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrgNodesInput
-    connect?: UserWhereUniqueInput
+  export type ChartMemberUpdateManyWithoutNodeNestedInput = {
+    create?: XOR<ChartMemberCreateWithoutNodeInput, ChartMemberUncheckedCreateWithoutNodeInput> | ChartMemberCreateWithoutNodeInput[] | ChartMemberUncheckedCreateWithoutNodeInput[]
+    connectOrCreate?: ChartMemberCreateOrConnectWithoutNodeInput | ChartMemberCreateOrConnectWithoutNodeInput[]
+    upsert?: ChartMemberUpsertWithWhereUniqueWithoutNodeInput | ChartMemberUpsertWithWhereUniqueWithoutNodeInput[]
+    createMany?: ChartMemberCreateManyNodeInputEnvelope
+    set?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    disconnect?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    delete?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    connect?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    update?: ChartMemberUpdateWithWhereUniqueWithoutNodeInput | ChartMemberUpdateWithWhereUniqueWithoutNodeInput[]
+    updateMany?: ChartMemberUpdateManyWithWhereWithoutNodeInput | ChartMemberUpdateManyWithWhereWithoutNodeInput[]
+    deleteMany?: ChartMemberScalarWhereInput | ChartMemberScalarWhereInput[]
   }
 
-  export type OrgStructureCreateNestedOneWithoutNodesInput = {
-    create?: XOR<OrgStructureCreateWithoutNodesInput, OrgStructureUncheckedCreateWithoutNodesInput>
-    connectOrCreate?: OrgStructureCreateOrConnectWithoutNodesInput
-    connect?: OrgStructureWhereUniqueInput
+  export type ChartUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<ChartCreateWithoutParentInput, ChartUncheckedCreateWithoutParentInput> | ChartCreateWithoutParentInput[] | ChartUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: ChartCreateOrConnectWithoutParentInput | ChartCreateOrConnectWithoutParentInput[]
+    upsert?: ChartUpsertWithWhereUniqueWithoutParentInput | ChartUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: ChartCreateManyParentInputEnvelope
+    set?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    disconnect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    delete?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    connect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+    update?: ChartUpdateWithWhereUniqueWithoutParentInput | ChartUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: ChartUpdateManyWithWhereWithoutParentInput | ChartUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: ChartScalarWhereInput | ChartScalarWhereInput[]
   }
 
-  export type OrgChartUncheckedCreateNestedManyWithoutParentInput = {
-    create?: XOR<OrgChartCreateWithoutParentInput, OrgChartUncheckedCreateWithoutParentInput> | OrgChartCreateWithoutParentInput[] | OrgChartUncheckedCreateWithoutParentInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutParentInput | OrgChartCreateOrConnectWithoutParentInput[]
-    createMany?: OrgChartCreateManyParentInputEnvelope
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
+  export type ChartMemberUncheckedUpdateManyWithoutNodeNestedInput = {
+    create?: XOR<ChartMemberCreateWithoutNodeInput, ChartMemberUncheckedCreateWithoutNodeInput> | ChartMemberCreateWithoutNodeInput[] | ChartMemberUncheckedCreateWithoutNodeInput[]
+    connectOrCreate?: ChartMemberCreateOrConnectWithoutNodeInput | ChartMemberCreateOrConnectWithoutNodeInput[]
+    upsert?: ChartMemberUpsertWithWhereUniqueWithoutNodeInput | ChartMemberUpsertWithWhereUniqueWithoutNodeInput[]
+    createMany?: ChartMemberCreateManyNodeInputEnvelope
+    set?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    disconnect?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    delete?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    connect?: ChartMemberWhereUniqueInput | ChartMemberWhereUniqueInput[]
+    update?: ChartMemberUpdateWithWhereUniqueWithoutNodeInput | ChartMemberUpdateWithWhereUniqueWithoutNodeInput[]
+    updateMany?: ChartMemberUpdateManyWithWhereWithoutNodeInput | ChartMemberUpdateManyWithWhereWithoutNodeInput[]
+    deleteMany?: ChartMemberScalarWhereInput | ChartMemberScalarWhereInput[]
   }
 
-  export type OrgChartUpdateOneWithoutChildrenNestedInput = {
-    create?: XOR<OrgChartCreateWithoutChildrenInput, OrgChartUncheckedCreateWithoutChildrenInput>
-    connectOrCreate?: OrgChartCreateOrConnectWithoutChildrenInput
-    upsert?: OrgChartUpsertWithoutChildrenInput
-    disconnect?: OrgChartWhereInput | boolean
-    delete?: OrgChartWhereInput | boolean
-    connect?: OrgChartWhereUniqueInput
-    update?: XOR<XOR<OrgChartUpdateToOneWithWhereWithoutChildrenInput, OrgChartUpdateWithoutChildrenInput>, OrgChartUncheckedUpdateWithoutChildrenInput>
+  export type ChartCreateNestedOneWithoutMembersInput = {
+    create?: XOR<ChartCreateWithoutMembersInput, ChartUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: ChartCreateOrConnectWithoutMembersInput
+    connect?: ChartWhereUniqueInput
   }
 
-  export type OrgChartUpdateManyWithoutParentNestedInput = {
-    create?: XOR<OrgChartCreateWithoutParentInput, OrgChartUncheckedCreateWithoutParentInput> | OrgChartCreateWithoutParentInput[] | OrgChartUncheckedCreateWithoutParentInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutParentInput | OrgChartCreateOrConnectWithoutParentInput[]
-    upsert?: OrgChartUpsertWithWhereUniqueWithoutParentInput | OrgChartUpsertWithWhereUniqueWithoutParentInput[]
-    createMany?: OrgChartCreateManyParentInputEnvelope
-    set?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    disconnect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    delete?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    update?: OrgChartUpdateWithWhereUniqueWithoutParentInput | OrgChartUpdateWithWhereUniqueWithoutParentInput[]
-    updateMany?: OrgChartUpdateManyWithWhereWithoutParentInput | OrgChartUpdateManyWithWhereWithoutParentInput[]
-    deleteMany?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
-  export type UserUpdateOneWithoutOrgNodesNestedInput = {
-    create?: XOR<UserCreateWithoutOrgNodesInput, UserUncheckedCreateWithoutOrgNodesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrgNodesInput
-    upsert?: UserUpsertWithoutOrgNodesInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrgNodesInput, UserUpdateWithoutOrgNodesInput>, UserUncheckedUpdateWithoutOrgNodesInput>
-  }
-
-  export type OrgStructureUpdateOneRequiredWithoutNodesNestedInput = {
-    create?: XOR<OrgStructureCreateWithoutNodesInput, OrgStructureUncheckedCreateWithoutNodesInput>
-    connectOrCreate?: OrgStructureCreateOrConnectWithoutNodesInput
-    upsert?: OrgStructureUpsertWithoutNodesInput
-    connect?: OrgStructureWhereUniqueInput
-    update?: XOR<XOR<OrgStructureUpdateToOneWithWhereWithoutNodesInput, OrgStructureUpdateWithoutNodesInput>, OrgStructureUncheckedUpdateWithoutNodesInput>
-  }
-
-  export type OrgChartUncheckedUpdateManyWithoutParentNestedInput = {
-    create?: XOR<OrgChartCreateWithoutParentInput, OrgChartUncheckedCreateWithoutParentInput> | OrgChartCreateWithoutParentInput[] | OrgChartUncheckedCreateWithoutParentInput[]
-    connectOrCreate?: OrgChartCreateOrConnectWithoutParentInput | OrgChartCreateOrConnectWithoutParentInput[]
-    upsert?: OrgChartUpsertWithWhereUniqueWithoutParentInput | OrgChartUpsertWithWhereUniqueWithoutParentInput[]
-    createMany?: OrgChartCreateManyParentInputEnvelope
-    set?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    disconnect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    delete?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    connect?: OrgChartWhereUniqueInput | OrgChartWhereUniqueInput[]
-    update?: OrgChartUpdateWithWhereUniqueWithoutParentInput | OrgChartUpdateWithWhereUniqueWithoutParentInput[]
-    updateMany?: OrgChartUpdateManyWithWhereWithoutParentInput | OrgChartUpdateManyWithWhereWithoutParentInput[]
-    deleteMany?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
+  export type ChartUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<ChartCreateWithoutMembersInput, ChartUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: ChartCreateOrConnectWithoutMembersInput
+    upsert?: ChartUpsertWithoutMembersInput
+    connect?: ChartWhereUniqueInput
+    update?: XOR<XOR<ChartUpdateToOneWithWhereWithoutMembersInput, ChartUpdateWithoutMembersInput>, ChartUncheckedUpdateWithoutMembersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8252,6 +8199,33 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type UserCreateWithoutCreatedRolesInput = {
     userId: string
     username: string
@@ -8275,7 +8249,6 @@ export namespace Prisma {
     role: RoleCreateNestedOneWithoutUsersInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedRolesInput = {
@@ -8301,7 +8274,6 @@ export namespace Prisma {
     deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedRolesInput = {
@@ -8332,7 +8304,6 @@ export namespace Prisma {
     role: RoleCreateNestedOneWithoutUsersInput
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUpdatedRolesInput = {
@@ -8358,7 +8329,6 @@ export namespace Prisma {
     deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUpdatedRolesInput = {
@@ -8389,7 +8359,6 @@ export namespace Prisma {
     role: RoleCreateNestedOneWithoutUsersInput
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeletedRolesInput = {
@@ -8415,7 +8384,6 @@ export namespace Prisma {
     deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeletedRolesInput = {
@@ -8446,7 +8414,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -8472,7 +8439,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -8518,7 +8484,6 @@ export namespace Prisma {
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedRolesInput = {
@@ -8544,7 +8509,6 @@ export namespace Prisma {
     deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutUpdatedRolesInput = {
@@ -8581,7 +8545,6 @@ export namespace Prisma {
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUpdatedRolesInput = {
@@ -8607,7 +8570,6 @@ export namespace Prisma {
     deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutDeletedRolesInput = {
@@ -8644,7 +8606,6 @@ export namespace Prisma {
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedRolesInput = {
@@ -8670,7 +8631,6 @@ export namespace Prisma {
     deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutRoleInput = {
@@ -8735,7 +8695,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedUsersInput = {
@@ -8761,7 +8720,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedUsersInput = {
@@ -8792,7 +8750,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatorInput = {
@@ -8818,7 +8775,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatorInput = {
@@ -8853,7 +8809,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUpdatedUsersInput = {
@@ -8879,7 +8834,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUpdatedUsersInput = {
@@ -8910,7 +8864,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUpdaterInput = {
@@ -8936,7 +8889,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUpdaterInput = {
@@ -8971,7 +8923,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeletedUsersInput = {
@@ -8997,7 +8948,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeletedUsersInput = {
@@ -9028,7 +8978,6 @@ export namespace Prisma {
     createdRoles?: RoleCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeleterInput = {
@@ -9054,7 +9003,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-    orgNodes?: OrgChartUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeleterInput = {
@@ -9218,49 +9166,6 @@ export namespace Prisma {
     data: RoleCreateManyDeleterInput | RoleCreateManyDeleterInput[]
   }
 
-  export type OrgChartCreateWithoutUserInput = {
-    nodeId: string
-    name?: string | null
-    position: string
-    orderIndex?: number
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    parent?: OrgChartCreateNestedOneWithoutChildrenInput
-    children?: OrgChartCreateNestedManyWithoutParentInput
-    structure: OrgStructureCreateNestedOneWithoutNodesInput
-  }
-
-  export type OrgChartUncheckedCreateWithoutUserInput = {
-    nodeId: string
-    structureId: string
-    parentId?: string | null
-    name?: string | null
-    position: string
-    orderIndex?: number
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    children?: OrgChartUncheckedCreateNestedManyWithoutParentInput
-  }
-
-  export type OrgChartCreateOrConnectWithoutUserInput = {
-    where: OrgChartWhereUniqueInput
-    create: XOR<OrgChartCreateWithoutUserInput, OrgChartUncheckedCreateWithoutUserInput>
-  }
-
-  export type OrgChartCreateManyUserInputEnvelope = {
-    data: OrgChartCreateManyUserInput | OrgChartCreateManyUserInput[]
-  }
-
   export type UserUpsertWithoutCreatedUsersInput = {
     update: XOR<UserUpdateWithoutCreatedUsersInput, UserUncheckedUpdateWithoutCreatedUsersInput>
     create: XOR<UserCreateWithoutCreatedUsersInput, UserUncheckedCreateWithoutCreatedUsersInput>
@@ -9295,7 +9200,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedUsersInput = {
@@ -9321,7 +9225,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -9374,7 +9277,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUpdatedUsersInput = {
@@ -9400,7 +9302,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutUpdaterInput = {
@@ -9453,7 +9354,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedUsersInput = {
@@ -9479,7 +9379,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutDeleterInput = {
@@ -9605,46 +9504,13 @@ export namespace Prisma {
     data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutDeleterInput>
   }
 
-  export type OrgChartUpsertWithWhereUniqueWithoutUserInput = {
-    where: OrgChartWhereUniqueInput
-    update: XOR<OrgChartUpdateWithoutUserInput, OrgChartUncheckedUpdateWithoutUserInput>
-    create: XOR<OrgChartCreateWithoutUserInput, OrgChartUncheckedCreateWithoutUserInput>
-  }
-
-  export type OrgChartUpdateWithWhereUniqueWithoutUserInput = {
-    where: OrgChartWhereUniqueInput
-    data: XOR<OrgChartUpdateWithoutUserInput, OrgChartUncheckedUpdateWithoutUserInput>
-  }
-
-  export type OrgChartUpdateManyWithWhereWithoutUserInput = {
-    where: OrgChartScalarWhereInput
-    data: XOR<OrgChartUpdateManyMutationInput, OrgChartUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type OrgChartScalarWhereInput = {
-    AND?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
-    OR?: OrgChartScalarWhereInput[]
-    NOT?: OrgChartScalarWhereInput | OrgChartScalarWhereInput[]
-    nodeId?: StringFilter<"OrgChart"> | string
-    structureId?: StringFilter<"OrgChart"> | string
-    userId?: StringNullableFilter<"OrgChart"> | string | null
-    parentId?: StringNullableFilter<"OrgChart"> | string | null
-    name?: StringNullableFilter<"OrgChart"> | string | null
-    position?: StringFilter<"OrgChart"> | string
-    orderIndex?: IntFilter<"OrgChart"> | number
-    createdAt?: DateTimeFilter<"OrgChart"> | Date | string
-    createdBy?: StringNullableFilter<"OrgChart"> | string | null
-    updatedAt?: DateTimeFilter<"OrgChart"> | Date | string
-    updatedBy?: StringNullableFilter<"OrgChart"> | string | null
-    isDeleted?: BoolFilter<"OrgChart"> | boolean
-    deletedAt?: DateTimeNullableFilter<"OrgChart"> | Date | string | null
-    deletedBy?: StringNullableFilter<"OrgChart"> | string | null
-  }
-
-  export type OrgChartCreateWithoutStructureInput = {
-    nodeId: string
-    name?: string | null
+  export type ChartCreateWithoutChildrenInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -9653,17 +9519,18 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    parent?: OrgChartCreateNestedOneWithoutChildrenInput
-    children?: OrgChartCreateNestedManyWithoutParentInput
-    user?: UserCreateNestedOneWithoutOrgNodesInput
+    parent?: ChartCreateNestedOneWithoutChildrenInput
+    members?: ChartMemberCreateNestedManyWithoutNodeInput
   }
 
-  export type OrgChartUncheckedCreateWithoutStructureInput = {
-    nodeId: string
-    userId?: string | null
+  export type ChartUncheckedCreateWithoutChildrenInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     parentId?: string | null
-    name?: string | null
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -9672,38 +9539,21 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    children?: OrgChartUncheckedCreateNestedManyWithoutParentInput
+    members?: ChartMemberUncheckedCreateNestedManyWithoutNodeInput
   }
 
-  export type OrgChartCreateOrConnectWithoutStructureInput = {
-    where: OrgChartWhereUniqueInput
-    create: XOR<OrgChartCreateWithoutStructureInput, OrgChartUncheckedCreateWithoutStructureInput>
+  export type ChartCreateOrConnectWithoutChildrenInput = {
+    where: ChartWhereUniqueInput
+    create: XOR<ChartCreateWithoutChildrenInput, ChartUncheckedCreateWithoutChildrenInput>
   }
 
-  export type OrgChartCreateManyStructureInputEnvelope = {
-    data: OrgChartCreateManyStructureInput | OrgChartCreateManyStructureInput[]
-  }
-
-  export type OrgChartUpsertWithWhereUniqueWithoutStructureInput = {
-    where: OrgChartWhereUniqueInput
-    update: XOR<OrgChartUpdateWithoutStructureInput, OrgChartUncheckedUpdateWithoutStructureInput>
-    create: XOR<OrgChartCreateWithoutStructureInput, OrgChartUncheckedCreateWithoutStructureInput>
-  }
-
-  export type OrgChartUpdateWithWhereUniqueWithoutStructureInput = {
-    where: OrgChartWhereUniqueInput
-    data: XOR<OrgChartUpdateWithoutStructureInput, OrgChartUncheckedUpdateWithoutStructureInput>
-  }
-
-  export type OrgChartUpdateManyWithWhereWithoutStructureInput = {
-    where: OrgChartScalarWhereInput
-    data: XOR<OrgChartUpdateManyMutationInput, OrgChartUncheckedUpdateManyWithoutStructureInput>
-  }
-
-  export type OrgChartCreateWithoutChildrenInput = {
-    nodeId: string
-    name?: string | null
+  export type ChartCreateWithoutParentInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -9712,18 +9562,17 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    parent?: OrgChartCreateNestedOneWithoutChildrenInput
-    user?: UserCreateNestedOneWithoutOrgNodesInput
-    structure: OrgStructureCreateNestedOneWithoutNodesInput
+    children?: ChartCreateNestedManyWithoutParentInput
+    members?: ChartMemberCreateNestedManyWithoutNodeInput
   }
 
-  export type OrgChartUncheckedCreateWithoutChildrenInput = {
-    nodeId: string
-    structureId: string
-    userId?: string | null
-    parentId?: string | null
-    name?: string | null
+  export type ChartUncheckedCreateWithoutParentInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -9732,118 +9581,22 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    children?: ChartUncheckedCreateNestedManyWithoutParentInput
+    members?: ChartMemberUncheckedCreateNestedManyWithoutNodeInput
   }
 
-  export type OrgChartCreateOrConnectWithoutChildrenInput = {
-    where: OrgChartWhereUniqueInput
-    create: XOR<OrgChartCreateWithoutChildrenInput, OrgChartUncheckedCreateWithoutChildrenInput>
+  export type ChartCreateOrConnectWithoutParentInput = {
+    where: ChartWhereUniqueInput
+    create: XOR<ChartCreateWithoutParentInput, ChartUncheckedCreateWithoutParentInput>
   }
 
-  export type OrgChartCreateWithoutParentInput = {
-    nodeId: string
-    name?: string | null
-    position: string
-    orderIndex?: number
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    children?: OrgChartCreateNestedManyWithoutParentInput
-    user?: UserCreateNestedOneWithoutOrgNodesInput
-    structure: OrgStructureCreateNestedOneWithoutNodesInput
+  export type ChartCreateManyParentInputEnvelope = {
+    data: ChartCreateManyParentInput | ChartCreateManyParentInput[]
   }
 
-  export type OrgChartUncheckedCreateWithoutParentInput = {
-    nodeId: string
-    structureId: string
-    userId?: string | null
-    name?: string | null
-    position: string
-    orderIndex?: number
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    children?: OrgChartUncheckedCreateNestedManyWithoutParentInput
-  }
-
-  export type OrgChartCreateOrConnectWithoutParentInput = {
-    where: OrgChartWhereUniqueInput
-    create: XOR<OrgChartCreateWithoutParentInput, OrgChartUncheckedCreateWithoutParentInput>
-  }
-
-  export type OrgChartCreateManyParentInputEnvelope = {
-    data: OrgChartCreateManyParentInput | OrgChartCreateManyParentInput[]
-  }
-
-  export type UserCreateWithoutOrgNodesInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutOrgNodesInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutOrgNodesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutOrgNodesInput, UserUncheckedCreateWithoutOrgNodesInput>
-  }
-
-  export type OrgStructureCreateWithoutNodesInput = {
-    structureId: string
-    name: string
-    description?: string | null
-    rootNodeId?: string | null
+  export type ChartMemberCreateWithoutNodeInput = {
+    memberChartId: string
+    userId?: number | null
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -9853,11 +9606,9 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type OrgStructureUncheckedCreateWithoutNodesInput = {
-    structureId: string
-    name: string
-    description?: string | null
-    rootNodeId?: string | null
+  export type ChartMemberUncheckedCreateWithoutNodeInput = {
+    memberChartId: string
+    userId?: number | null
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -9867,26 +9618,33 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type OrgStructureCreateOrConnectWithoutNodesInput = {
-    where: OrgStructureWhereUniqueInput
-    create: XOR<OrgStructureCreateWithoutNodesInput, OrgStructureUncheckedCreateWithoutNodesInput>
+  export type ChartMemberCreateOrConnectWithoutNodeInput = {
+    where: ChartMemberWhereUniqueInput
+    create: XOR<ChartMemberCreateWithoutNodeInput, ChartMemberUncheckedCreateWithoutNodeInput>
   }
 
-  export type OrgChartUpsertWithoutChildrenInput = {
-    update: XOR<OrgChartUpdateWithoutChildrenInput, OrgChartUncheckedUpdateWithoutChildrenInput>
-    create: XOR<OrgChartCreateWithoutChildrenInput, OrgChartUncheckedCreateWithoutChildrenInput>
-    where?: OrgChartWhereInput
+  export type ChartMemberCreateManyNodeInputEnvelope = {
+    data: ChartMemberCreateManyNodeInput | ChartMemberCreateManyNodeInput[]
   }
 
-  export type OrgChartUpdateToOneWithWhereWithoutChildrenInput = {
-    where?: OrgChartWhereInput
-    data: XOR<OrgChartUpdateWithoutChildrenInput, OrgChartUncheckedUpdateWithoutChildrenInput>
+  export type ChartUpsertWithoutChildrenInput = {
+    update: XOR<ChartUpdateWithoutChildrenInput, ChartUncheckedUpdateWithoutChildrenInput>
+    create: XOR<ChartCreateWithoutChildrenInput, ChartUncheckedCreateWithoutChildrenInput>
+    where?: ChartWhereInput
   }
 
-  export type OrgChartUpdateWithoutChildrenInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUpdateToOneWithWhereWithoutChildrenInput = {
+    where?: ChartWhereInput
+    data: XOR<ChartUpdateWithoutChildrenInput, ChartUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type ChartUpdateWithoutChildrenInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9895,18 +9653,18 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    parent?: OrgChartUpdateOneWithoutChildrenNestedInput
-    user?: UserUpdateOneWithoutOrgNodesNestedInput
-    structure?: OrgStructureUpdateOneRequiredWithoutNodesNestedInput
+    parent?: ChartUpdateOneWithoutChildrenNestedInput
+    members?: ChartMemberUpdateManyWithoutNodeNestedInput
   }
 
-  export type OrgChartUncheckedUpdateWithoutChildrenInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUncheckedUpdateWithoutChildrenInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9915,70 +9673,140 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: ChartMemberUncheckedUpdateManyWithoutNodeNestedInput
   }
 
-  export type OrgChartUpsertWithWhereUniqueWithoutParentInput = {
-    where: OrgChartWhereUniqueInput
-    update: XOR<OrgChartUpdateWithoutParentInput, OrgChartUncheckedUpdateWithoutParentInput>
-    create: XOR<OrgChartCreateWithoutParentInput, OrgChartUncheckedCreateWithoutParentInput>
+  export type ChartUpsertWithWhereUniqueWithoutParentInput = {
+    where: ChartWhereUniqueInput
+    update: XOR<ChartUpdateWithoutParentInput, ChartUncheckedUpdateWithoutParentInput>
+    create: XOR<ChartCreateWithoutParentInput, ChartUncheckedCreateWithoutParentInput>
   }
 
-  export type OrgChartUpdateWithWhereUniqueWithoutParentInput = {
-    where: OrgChartWhereUniqueInput
-    data: XOR<OrgChartUpdateWithoutParentInput, OrgChartUncheckedUpdateWithoutParentInput>
+  export type ChartUpdateWithWhereUniqueWithoutParentInput = {
+    where: ChartWhereUniqueInput
+    data: XOR<ChartUpdateWithoutParentInput, ChartUncheckedUpdateWithoutParentInput>
   }
 
-  export type OrgChartUpdateManyWithWhereWithoutParentInput = {
-    where: OrgChartScalarWhereInput
-    data: XOR<OrgChartUpdateManyMutationInput, OrgChartUncheckedUpdateManyWithoutParentInput>
+  export type ChartUpdateManyWithWhereWithoutParentInput = {
+    where: ChartScalarWhereInput
+    data: XOR<ChartUpdateManyMutationInput, ChartUncheckedUpdateManyWithoutParentInput>
   }
 
-  export type UserUpsertWithoutOrgNodesInput = {
-    update: XOR<UserUpdateWithoutOrgNodesInput, UserUncheckedUpdateWithoutOrgNodesInput>
-    create: XOR<UserCreateWithoutOrgNodesInput, UserUncheckedCreateWithoutOrgNodesInput>
-    where?: UserWhereInput
+  export type ChartScalarWhereInput = {
+    AND?: ChartScalarWhereInput | ChartScalarWhereInput[]
+    OR?: ChartScalarWhereInput[]
+    NOT?: ChartScalarWhereInput | ChartScalarWhereInput[]
+    chartId?: StringFilter<"Chart"> | string
+    pilarId?: IntFilter<"Chart"> | number
+    sbuId?: IntFilter<"Chart"> | number
+    sbuSubId?: IntFilter<"Chart"> | number
+    parentId?: StringNullableFilter<"Chart"> | string | null
+    position?: StringFilter<"Chart"> | string
+    capacity?: IntFilter<"Chart"> | number
+    orderIndex?: IntFilter<"Chart"> | number
+    createdAt?: DateTimeFilter<"Chart"> | Date | string
+    createdBy?: StringNullableFilter<"Chart"> | string | null
+    updatedAt?: DateTimeFilter<"Chart"> | Date | string
+    updatedBy?: StringNullableFilter<"Chart"> | string | null
+    isDeleted?: BoolFilter<"Chart"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Chart"> | Date | string | null
+    deletedBy?: StringNullableFilter<"Chart"> | string | null
   }
 
-  export type UserUpdateToOneWithWhereWithoutOrgNodesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutOrgNodesInput, UserUncheckedUpdateWithoutOrgNodesInput>
+  export type ChartMemberUpsertWithWhereUniqueWithoutNodeInput = {
+    where: ChartMemberWhereUniqueInput
+    update: XOR<ChartMemberUpdateWithoutNodeInput, ChartMemberUncheckedUpdateWithoutNodeInput>
+    create: XOR<ChartMemberCreateWithoutNodeInput, ChartMemberUncheckedCreateWithoutNodeInput>
   }
 
-  export type UserUpdateWithoutOrgNodesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
-    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
-    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
-    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+  export type ChartMemberUpdateWithWhereUniqueWithoutNodeInput = {
+    where: ChartMemberWhereUniqueInput
+    data: XOR<ChartMemberUpdateWithoutNodeInput, ChartMemberUncheckedUpdateWithoutNodeInput>
   }
 
-  export type UserUncheckedUpdateWithoutOrgNodesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type ChartMemberUpdateManyWithWhereWithoutNodeInput = {
+    where: ChartMemberScalarWhereInput
+    data: XOR<ChartMemberUpdateManyMutationInput, ChartMemberUncheckedUpdateManyWithoutNodeInput>
+  }
+
+  export type ChartMemberScalarWhereInput = {
+    AND?: ChartMemberScalarWhereInput | ChartMemberScalarWhereInput[]
+    OR?: ChartMemberScalarWhereInput[]
+    NOT?: ChartMemberScalarWhereInput | ChartMemberScalarWhereInput[]
+    memberChartId?: StringFilter<"ChartMember"> | string
+    chartId?: StringFilter<"ChartMember"> | string
+    userId?: IntNullableFilter<"ChartMember"> | number | null
+    createdAt?: DateTimeFilter<"ChartMember"> | Date | string
+    createdBy?: StringNullableFilter<"ChartMember"> | string | null
+    updatedAt?: DateTimeFilter<"ChartMember"> | Date | string
+    updatedBy?: StringNullableFilter<"ChartMember"> | string | null
+    isDeleted?: BoolFilter<"ChartMember"> | boolean
+    deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
+    deletedBy?: StringNullableFilter<"ChartMember"> | string | null
+  }
+
+  export type ChartCreateWithoutMembersInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
+    position: string
+    capacity?: number
+    orderIndex?: number
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    parent?: ChartCreateNestedOneWithoutChildrenInput
+    children?: ChartCreateNestedManyWithoutParentInput
+  }
+
+  export type ChartUncheckedCreateWithoutMembersInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
+    parentId?: string | null
+    position: string
+    capacity?: number
+    orderIndex?: number
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    children?: ChartUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type ChartCreateOrConnectWithoutMembersInput = {
+    where: ChartWhereUniqueInput
+    create: XOR<ChartCreateWithoutMembersInput, ChartUncheckedCreateWithoutMembersInput>
+  }
+
+  export type ChartUpsertWithoutMembersInput = {
+    update: XOR<ChartUpdateWithoutMembersInput, ChartUncheckedUpdateWithoutMembersInput>
+    create: XOR<ChartCreateWithoutMembersInput, ChartUncheckedCreateWithoutMembersInput>
+    where?: ChartWhereInput
+  }
+
+  export type ChartUpdateToOneWithWhereWithoutMembersInput = {
+    where?: ChartWhereInput
+    data: XOR<ChartUpdateWithoutMembersInput, ChartUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type ChartUpdateWithoutMembersInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9986,32 +9814,19 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    parent?: ChartUpdateOneWithoutChildrenNestedInput
+    children?: ChartUpdateManyWithoutParentNestedInput
   }
 
-  export type OrgStructureUpsertWithoutNodesInput = {
-    update: XOR<OrgStructureUpdateWithoutNodesInput, OrgStructureUncheckedUpdateWithoutNodesInput>
-    create: XOR<OrgStructureCreateWithoutNodesInput, OrgStructureUncheckedCreateWithoutNodesInput>
-    where?: OrgStructureWhereInput
-  }
-
-  export type OrgStructureUpdateToOneWithWhereWithoutNodesInput = {
-    where?: OrgStructureWhereInput
-    data: XOR<OrgStructureUpdateWithoutNodesInput, OrgStructureUncheckedUpdateWithoutNodesInput>
-  }
-
-  export type OrgStructureUpdateWithoutNodesInput = {
-    structureId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    rootNodeId?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUncheckedUpdateWithoutMembersInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10019,20 +9834,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type OrgStructureUncheckedUpdateWithoutNodesInput = {
-    structureId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    rootNodeId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    children?: ChartUncheckedUpdateManyWithoutParentNestedInput
   }
 
   export type UserCreateManyRoleInput = {
@@ -10077,7 +9879,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -10103,7 +9904,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -10224,22 +10024,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
   }
 
-  export type OrgChartCreateManyUserInput = {
-    nodeId: string
-    structureId: string
-    parentId?: string | null
-    name?: string | null
-    position: string
-    orderIndex?: number
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-  }
-
   export type UserUpdateWithoutCreatorInput = {
     userId?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
@@ -10263,7 +10047,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatorInput = {
@@ -10289,7 +10072,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCreatorInput = {
@@ -10334,7 +10116,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUpdaterInput = {
@@ -10360,7 +10141,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutUpdaterInput = {
@@ -10405,7 +10185,6 @@ export namespace Prisma {
     createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeleterInput = {
@@ -10431,7 +10210,6 @@ export namespace Prisma {
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-    orgNodes?: OrgChartUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDeleterInput = {
@@ -10585,62 +10363,13 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type OrgChartUpdateWithoutUserInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    position?: StringFieldUpdateOperationsInput | string
-    orderIndex?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    parent?: OrgChartUpdateOneWithoutChildrenNestedInput
-    children?: OrgChartUpdateManyWithoutParentNestedInput
-    structure?: OrgStructureUpdateOneRequiredWithoutNodesNestedInput
-  }
-
-  export type OrgChartUncheckedUpdateWithoutUserInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    position?: StringFieldUpdateOperationsInput | string
-    orderIndex?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    children?: OrgChartUncheckedUpdateManyWithoutParentNestedInput
-  }
-
-  export type OrgChartUncheckedUpdateManyWithoutUserInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    position?: StringFieldUpdateOperationsInput | string
-    orderIndex?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type OrgChartCreateManyStructureInput = {
-    nodeId: string
-    userId?: string | null
-    parentId?: string | null
-    name?: string | null
+  export type ChartCreateManyParentInput = {
+    chartId: string
+    pilarId: number
+    sbuId: number
+    sbuSubId: number
     position: string
+    capacity?: number
     orderIndex?: number
     createdAt?: Date | string
     createdBy?: string | null
@@ -10651,63 +10380,9 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type OrgChartUpdateWithoutStructureInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    position?: StringFieldUpdateOperationsInput | string
-    orderIndex?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    parent?: OrgChartUpdateOneWithoutChildrenNestedInput
-    children?: OrgChartUpdateManyWithoutParentNestedInput
-    user?: UserUpdateOneWithoutOrgNodesNestedInput
-  }
-
-  export type OrgChartUncheckedUpdateWithoutStructureInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    position?: StringFieldUpdateOperationsInput | string
-    orderIndex?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    children?: OrgChartUncheckedUpdateManyWithoutParentNestedInput
-  }
-
-  export type OrgChartUncheckedUpdateManyWithoutStructureInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    position?: StringFieldUpdateOperationsInput | string
-    orderIndex?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type OrgChartCreateManyParentInput = {
-    nodeId: string
-    structureId: string
-    userId?: string | null
-    name?: string | null
-    position: string
-    orderIndex?: number
+  export type ChartMemberCreateManyNodeInput = {
+    memberChartId: string
+    userId?: number | null
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -10717,10 +10392,13 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type OrgChartUpdateWithoutParentInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUpdateWithoutParentInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10729,17 +10407,17 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    children?: OrgChartUpdateManyWithoutParentNestedInput
-    user?: UserUpdateOneWithoutOrgNodesNestedInput
-    structure?: OrgStructureUpdateOneRequiredWithoutNodesNestedInput
+    children?: ChartUpdateManyWithoutParentNestedInput
+    members?: ChartMemberUpdateManyWithoutNodeNestedInput
   }
 
-  export type OrgChartUncheckedUpdateWithoutParentInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUncheckedUpdateWithoutParentInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10748,16 +10426,54 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    children?: OrgChartUncheckedUpdateManyWithoutParentNestedInput
+    children?: ChartUncheckedUpdateManyWithoutParentNestedInput
+    members?: ChartMemberUncheckedUpdateManyWithoutNodeNestedInput
   }
 
-  export type OrgChartUncheckedUpdateManyWithoutParentInput = {
-    nodeId?: StringFieldUpdateOperationsInput | string
-    structureId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ChartUncheckedUpdateManyWithoutParentInput = {
+    chartId?: StringFieldUpdateOperationsInput | string
+    pilarId?: IntFieldUpdateOperationsInput | number
+    sbuId?: IntFieldUpdateOperationsInput | number
+    sbuSubId?: IntFieldUpdateOperationsInput | number
     position?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
     orderIndex?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChartMemberUpdateWithoutNodeInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChartMemberUncheckedUpdateWithoutNodeInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChartMemberUncheckedUpdateManyWithoutNodeInput = {
+    memberChartId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

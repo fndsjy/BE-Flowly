@@ -39,6 +39,13 @@ const users = [
     roleName: "Admin", // ❗ roleName sebagai penanda, bukan roleId langsung (opsi bersih & scalable)
   },
   {
+    username: "wingdip",
+    name: "Surilawaty",
+    badgeNumber: "30113",
+    password: "admin123",
+    roleName: "Admin",
+  },
+  {
     username: "lisdip",
     name: "Lisa",
     badgeNumber: "20289",

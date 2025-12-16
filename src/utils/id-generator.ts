@@ -1,7 +1,7 @@
 // src/utils/id-generator.ts
-import { PrismaClient } from "@prisma/client";
+import { prismaFlowly, prismaEmployee } from "../application/database.js";
 
-const prisma = new PrismaClient();
+const prisma = prismaFlowly;
 
 function getDDMMYY(): string {
   const now = new Date();
@@ -59,40 +59,40 @@ export async function generateRoleId(): Promise<string> {
   return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
 }
 
-export async function generateOrgChartId(): Promise<string> {
+export async function generateChartId(): Promise<string> {
   const today = getDDMMYY();
   const prefix = `CHT${today}`;
 
-  const existing = await prisma.orgChart.findFirst({
-    where: { nodeId: { startsWith: prefix } },
-    select: { nodeId: true },
-    orderBy: { nodeId: "desc" }
+  const existing = await prisma.chart.findFirst({
+    where: { chartId: { startsWith: prefix } },
+    select: { chartId: true },
+    orderBy: { chartId: "desc" }
   });
 
   let nextSeq = 1;
-  if (existing?.nodeId) {
-    const currentSeq = extractSeqFromId(existing.nodeId);
+  if (existing?.chartId) {
+    const currentSeq = extractSeqFromId(existing.chartId);
     nextSeq = currentSeq + 1;
   }
 
-  return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
 }
 
-export async function generateOrgStructureId(): Promise<string> {
+export async function generateChartMemberId(): Promise<string> {
   const today = getDDMMYY();
-  const prefix = `STR${today}`;
+  const prefix = `CHM${today}`;
 
-  const existing = await prisma.orgStructure.findFirst({
-    where: { structureId: { startsWith: prefix } },
-    select: { structureId: true },
-    orderBy: { structureId: "desc" }
+  const existing = await prisma.chartMember.findFirst({
+    where: { memberChartId: { startsWith: prefix } },
+    select: { memberChartId: true },
+    orderBy: { memberChartId: "desc" }
   });
 
   let nextSeq = 1;
-  if (existing?.structureId) {
-    const currentSeq = extractSeqFromId(existing.structureId);
+  if (existing?.memberChartId) {
+    const currentSeq = extractSeqFromId(existing.memberChartId);
     nextSeq = currentSeq + 1;
   }
 
-  return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
 }

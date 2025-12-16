@@ -1,0 +1,141 @@
+import { prismaFlowly, prismaEmployee } from "../application/database.js";
+import { Validation } from "../validation/validation.js";
+import { ChartMemberValidation } from "../validation/chart-member-validation.js";
+import { ResponseError } from "../error/response-error.js";
+import { toChartMemberResponse } from "../model/chart-member-model.js";
+import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
+
+export class ChartMemberService {
+  // static async create(requesterUserId: string, request: any) {
+  //   const validated = Validation.validate(ChartMemberValidation.CREATE, request);
+  //   const { chartId, userId } = validated;
+
+  //   const requester = await prismaFlowly.user.findUnique({
+  //     where: { userId: requesterUserId },
+  //     include: { role: true },
+  //   });
+  //   if (!requester || requester.role.roleLevel !== 1)
+  //     throw new ResponseError(403, "Only admin can add member chart");
+
+  //   const chart = await prismaFlowly.chart.findUnique({
+  //     where: { chartId, isDeleted: false },
+  //   });
+  //   if (!chart) throw new ResponseError(404, "Chart not found");
+
+  //   const employee = await prismaEmployee.em_employee.findUnique({ where: { UserId: userId } });
+  //   if (!employee) throw new ResponseError(404, "Employee not found");
+
+  //   const memberChartId = await generateChartMemberId();
+
+  //   const member = await prismaFlowly.chartMember.create({
+  //     data: {
+  //       memberChartId,
+  //       chartId,
+  //       userId,
+  //       createdBy: requesterUserId,
+  //     },
+  //   });
+
+  //   return toChartMemberResponse(member);
+  // }
+
+  static async update(requesterUserId: string, request: any) {
+    const validated = Validation.validate(ChartMemberValidation.UPDATE, request);
+    const { memberChartId, userId: inputUserId } = validated;
+
+    // 🔐 Cek role
+    const requester = await prismaFlowly.user.findUnique({
+      where: { userId: requesterUserId },
+      include: { role: true },
+    });
+    if (!requester || requester.role.roleLevel !== 1) {
+      throw new ResponseError(403, "Only admin can update member chart");
+    }
+
+    // 📌 Cari member yang akan di-update
+    const existing = await prismaFlowly.chartMember.findUnique({
+      where: { memberChartId, isDeleted: false },
+      select: { chartId: true, userId: true }
+    });
+    if (!existing) throw new ResponseError(404, "Member Chart not found");
+
+    // 📌 Ambil semua slot aktif di chart yang sama (kecuali diri sendiri)
+    const otherMembersInSameChart = await prismaFlowly.chartMember.findMany({
+      where: {
+        chartId: existing.chartId,
+        memberChartId: { not: memberChartId }, // kecuali slot ini
+        isDeleted: false,
+        userId: { not: null } // hanya yang terisi
+      },
+      select: { userId: true }
+    });
+
+    // ✅ Cek duplikasi: jika inputUserId > 0 dan sudah ada di chart ini → tolak
+    if (inputUserId && inputUserId > 0) {
+      const isDuplicate = otherMembersInSameChart.some(m => m.userId === inputUserId);
+      if (isDuplicate) {
+        throw new ResponseError(
+          400,
+          `Pegawai sudah terisi di posisi ini. Setiap slot harus berisi pegawai yang berbeda.`
+        );
+      }
+
+      // 🔍 Cek employee valid
+      const employee = await prismaEmployee.em_employee.findUnique({ 
+        where: { UserId: inputUserId } 
+      });
+      if (!employee) throw new ResponseError(404, "Employee not found");
+    }
+
+    // ✅ Logika 0 → null
+    const finalUserId = inputUserId === 0 ? null : inputUserId;
+
+    // 💾 Simpan
+    const updated = await prismaFlowly.chartMember.update({
+      where: { memberChartId },
+      data: {
+        userId: finalUserId,
+        updatedBy: requesterUserId,
+        updatedAt: new Date(),
+      },
+    });
+
+    return toChartMemberResponse(updated);
+  }
+
+  static async softDelete(requesterUserId: string, request: any) {
+    const validated = Validation.validate(ChartMemberValidation.DELETE, request);
+    const { memberChartId } = validated;
+
+    const requester = await prismaFlowly.user.findUnique({
+      where: { userId: requesterUserId },
+      include: { role: true },
+    });
+    if (!requester || requester.role.roleLevel !== 1)
+      throw new ResponseError(403, "Only admin can delete member chart");
+
+    const existing = await prismaFlowly.chartMember.findUnique({
+      where: { memberChartId, isDeleted: false },
+    });
+    if (!existing) throw new ResponseError(404, "Member Chart not found");
+
+    await prismaFlowly.chartMember.update({
+      where: { memberChartId },
+      data: {
+        isDeleted: true,
+        deletedAt: new Date(),
+        deletedBy: requesterUserId,
+      },
+    });
+
+    return { message: "Member Chart deleted" };
+  }
+
+  static async listByChart(chartId: string) {
+    const members = await prismaFlowly.chartMember.findMany({
+      where: { chartId, isDeleted: false },
+    });
+
+    return members.map(toChartMemberResponse);
+  }
+}
