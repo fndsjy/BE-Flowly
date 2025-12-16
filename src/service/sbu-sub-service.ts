@@ -128,9 +128,9 @@ export class SbuSubService {
       if (!picExists) throw new ResponseError(400, "PIC not found");
     }
 
-    if (!req.sbuPilar) {
-      throw new ResponseError(400, "sbuPilar is required");
-    }
+    // if (!req.sbuPilar) {
+    //   throw new ResponseError(400, "sbuPilar is required");
+    // }
 
     // Cek Pilar
     const pilar = await prismaEmployee.em_pilar.findFirst({
