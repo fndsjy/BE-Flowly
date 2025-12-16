@@ -104,6 +104,9 @@ export class SbuSubService {
             if (!picExists)
                 throw new ResponseError(400, "PIC not found");
         }
+        if (!req.sbuPilar) {
+            throw new ResponseError(400, "sbuPilar is required");
+        }
         // Cek Pilar
         const pilar = await prismaEmployee.em_pilar.findFirst({
             where: {
@@ -185,6 +188,14 @@ export class SbuSubService {
     }
     /* ---------- GET BY SBU ---------- */
     static async getBySbu(sbuId) {
+        // Cek apakah sbu masih aktif
+        const sbu = await prismaEmployee.em_sbu.findUnique({
+            where: { id: sbuId },
+        });
+        // Jika sbu tidak ada atau isDeleted true → return [] langsung
+        if (!sbu || sbu.isDeleted === true) {
+            return [];
+        }
         const exists = await prismaEmployee.em_sbu.findUnique({
             where: { id: sbuId, OR: [{ isDeleted: false }, { isDeleted: null }] }
         });
@@ -201,6 +212,14 @@ export class SbuSubService {
     }
     /* ---------- GET BY PILAR ---------- */
     static async getByPilar(pilarId) {
+        // Cek apakah pilar masih aktif
+        const pilar = await prismaEmployee.em_pilar.findUnique({
+            where: { id: pilarId },
+        });
+        // Jika pilar tidak ada atau isDeleted true → return [] langsung
+        if (!pilar || pilar.isDeleted === true) {
+            return [];
+        }
         const exists = await prismaEmployee.em_pilar.findUnique({
             where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }] }
         });

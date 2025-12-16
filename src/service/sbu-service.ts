@@ -179,6 +179,16 @@ export class SbuService {
 
     /* ---------- GET BY PILAR ---------- */
     static async getByPilar(pilarId: number) {
+      // Cek apakah pilar masih aktif
+      const pilar = await prismaEmployee.em_pilar.findUnique({
+        where: { id: pilarId },
+      });
+
+      // Jika pilar tidak ada atau isDeleted true → return [] langsung
+      if (!pilar || pilar.isDeleted === true) {
+        return [];
+      }
+
         const exists = await prismaEmployee.em_pilar.findUnique({
             where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }]}
         });

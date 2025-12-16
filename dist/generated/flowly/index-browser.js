@@ -157,11 +157,15 @@ exports.Prisma.UserScalarFieldEnum = {
   token: 'token'
 };
 
-exports.Prisma.OrgStructureScalarFieldEnum = {
-  structureId: 'structureId',
-  name: 'name',
-  description: 'description',
-  rootNodeId: 'rootNodeId',
+exports.Prisma.ChartScalarFieldEnum = {
+  chartId: 'chartId',
+  pilarId: 'pilarId',
+  sbuId: 'sbuId',
+  sbuSubId: 'sbuSubId',
+  parentId: 'parentId',
+  position: 'position',
+  capacity: 'capacity',
+  orderIndex: 'orderIndex',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
   updatedAt: 'updatedAt',
@@ -171,14 +175,10 @@ exports.Prisma.OrgStructureScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
-exports.Prisma.OrgChartScalarFieldEnum = {
-  nodeId: 'nodeId',
-  structureId: 'structureId',
+exports.Prisma.ChartMemberScalarFieldEnum = {
+  memberChartId: 'memberChartId',
+  chartId: 'chartId',
   userId: 'userId',
-  parentId: 'parentId',
-  name: 'name',
-  position: 'position',
-  orderIndex: 'orderIndex',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
   updatedAt: 'updatedAt',
@@ -202,8 +202,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Role: 'Role',
   User: 'User',
-  OrgStructure: 'OrgStructure',
-  OrgChart: 'OrgChart'
+  Chart: 'Chart',
+  ChartMember: 'ChartMember'
 };
 
 /**
