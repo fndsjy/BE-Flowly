@@ -8,6 +8,7 @@
     "test": "jest",
     "build": "tsc",
     "start": "nodemon dist/main.js",
+    "dev": "nodemon src/main.js",
     "seed": "prisma db seed"
   },
   "prisma": {
@@ -39,6 +40,7 @@
     "@jest/globals": "^30.2.0",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
