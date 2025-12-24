@@ -16,13 +16,15 @@ export type CreateUserRequest = {
 };
 
 export type LoginRequest = {
-  username: string;
+  username?: string;
+  badgeNumber?: string;
   password: string;
 };
 
 export type LoginResponse = {
   username: string;
   name: string;
+  jobDesc?: string | null;
   token: string;
   expiresIn: number; // dalam detik (misal: 10800 = 3 jam)
   expiresAt: string; // timestamp ISO saat token kedaluwarsa
@@ -75,12 +77,15 @@ export function toUserResponse(user: User): UserResponse {
   };
 }
 
-export function toLoginResponse(user: User, token: string): LoginResponse {
+type LoginIdentity = Pick<User, "username" | "name"> & { jobDesc?: string | null };
+
+export function toLoginResponse(user: LoginIdentity, token: string): LoginResponse {
   const expiresIn = getTokenExpiresIn(token); // dalam detik
   const expiresAt = new Date(Date.now() + expiresIn * 1000).toLocaleString();
   return {
     username: user.username,
     name: user.name,
+    jobDesc: user.jobDesc ?? null,
     token,
     expiresIn,
     expiresAt,

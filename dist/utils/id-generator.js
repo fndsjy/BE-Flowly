@@ -1,5 +1,5 @@
 // src/utils/id-generator.ts
-import { prismaFlowly, prismaEmployee } from "../application/database.js";
+import { prismaFlowly } from "../application/database.js";
 const prisma = prismaFlowly;
 function getDDMMYY() {
     const now = new Date();

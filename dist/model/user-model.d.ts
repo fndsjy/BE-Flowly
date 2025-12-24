@@ -12,12 +12,14 @@ export type CreateUserRequest = {
     roleId?: string;
 };
 export type LoginRequest = {
-    username: string;
+    username?: string;
+    badgeNumber?: string;
     password: string;
 };
 export type LoginResponse = {
     username: string;
     name: string;
+    jobDesc?: string | null;
     token: string;
     expiresIn: number;
     expiresAt: string;
@@ -58,7 +60,10 @@ export type RoleListResponse = {
     isActive: boolean;
 };
 export declare function toUserResponse(user: User): UserResponse;
-export declare function toLoginResponse(user: User, token: string): LoginResponse;
+type LoginIdentity = Pick<User, "username" | "name"> & {
+    jobDesc?: string | null;
+};
+export declare function toLoginResponse(user: LoginIdentity, token: string): LoginResponse;
 export declare function toUserProfileResponse(user: User & {
     role: {
         roleName: string;
@@ -71,4 +76,5 @@ export declare function toUserListResponse(user: User & {
     };
 }): UserListResponse;
 export declare function toRoleListResponse(role: Role): RoleListResponse;
+export {};
 //# sourceMappingURL=user-model.d.ts.map

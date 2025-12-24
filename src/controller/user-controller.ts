@@ -34,7 +34,11 @@ export class UserController {
   // ✅ Login
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const request: LoginRequest = req.body as LoginRequest;
+      const request: LoginRequest = {
+        username: req.body?.username,
+        badgeNumber: req.body?.badgeNumber ?? req.body?.batchNumber,
+        password: req.body?.password,
+      };
       const response = await UserService.login(request);
 
       const token = response.token;

@@ -54,7 +54,6 @@ export class PrismaClient<
   const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
-  Chart: any;
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
     /**
@@ -251,8 +250,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.0
-   * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+   * Prisma Client JS version: 6.19.1
+   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
     client: string
@@ -1135,21 +1134,21 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    createdUsers: number
-    updatedUsers: number
-    deletedUsers: number
     createdRoles: number
-    updatedRoles: number
     deletedRoles: number
+    updatedRoles: number
+    createdUsers: number
+    deletedUsers: number
+    updatedUsers: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    createdUsers?: boolean | UserCountOutputTypeCountCreatedUsersArgs
-    updatedUsers?: boolean | UserCountOutputTypeCountUpdatedUsersArgs
-    deletedUsers?: boolean | UserCountOutputTypeCountDeletedUsersArgs
     createdRoles?: boolean | UserCountOutputTypeCountCreatedRolesArgs
-    updatedRoles?: boolean | UserCountOutputTypeCountUpdatedRolesArgs
     deletedRoles?: boolean | UserCountOutputTypeCountDeletedRolesArgs
+    updatedRoles?: boolean | UserCountOutputTypeCountUpdatedRolesArgs
+    createdUsers?: boolean | UserCountOutputTypeCountCreatedUsersArgs
+    deletedUsers?: boolean | UserCountOutputTypeCountDeletedUsersArgs
+    updatedUsers?: boolean | UserCountOutputTypeCountUpdatedUsersArgs
   }
 
   // Custom InputTypes
@@ -1166,28 +1165,14 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCreatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountUpdatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountDeletedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountCreatedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDeletedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RoleWhereInput
   }
 
@@ -1201,8 +1186,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountDeletedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RoleWhereInput
+  export type UserCountOutputTypeCountCreatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDeletedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUpdatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -1505,8 +1504,8 @@ export namespace Prisma {
     deletedAt?: boolean
     deletedBy?: boolean
     creator?: boolean | Role$creatorArgs<ExtArgs>
-    updater?: boolean | Role$updaterArgs<ExtArgs>
     deleter?: boolean | Role$deleterArgs<ExtArgs>
+    updater?: boolean | Role$updaterArgs<ExtArgs>
     users?: boolean | Role$usersArgs<ExtArgs>
     _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["role"]>
@@ -1531,8 +1530,8 @@ export namespace Prisma {
   export type RoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"roleId" | "roleName" | "roleLevel" | "roleDesc" | "roleIsActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["role"]>
   export type RoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     creator?: boolean | Role$creatorArgs<ExtArgs>
-    updater?: boolean | Role$updaterArgs<ExtArgs>
     deleter?: boolean | Role$deleterArgs<ExtArgs>
+    updater?: boolean | Role$updaterArgs<ExtArgs>
     users?: boolean | Role$usersArgs<ExtArgs>
     _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1540,15 +1539,9 @@ export namespace Prisma {
   export type $RolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Role"
     objects: {
-      /**
-       * Relations to User (audit trail)
-       */
       creator: Prisma.$UserPayload<ExtArgs> | null
-      updater: Prisma.$UserPayload<ExtArgs> | null
       deleter: Prisma.$UserPayload<ExtArgs> | null
-      /**
-       * Users assigned to this role
-       */
+      updater: Prisma.$UserPayload<ExtArgs> | null
       users: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -1917,8 +1910,8 @@ export namespace Prisma {
   export interface Prisma__RoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     creator<T extends Role$creatorArgs<ExtArgs> = {}>(args?: Subset<T, Role$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    updater<T extends Role$updaterArgs<ExtArgs> = {}>(args?: Subset<T, Role$updaterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     deleter<T extends Role$deleterArgs<ExtArgs> = {}>(args?: Subset<T, Role$deleterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    updater<T extends Role$updaterArgs<ExtArgs> = {}>(args?: Subset<T, Role$updaterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     users<T extends Role$usersArgs<ExtArgs> = {}>(args?: Subset<T, Role$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2322,9 +2315,9 @@ export namespace Prisma {
   }
 
   /**
-   * Role.updater
+   * Role.deleter
    */
-  export type Role$updaterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Role$deleterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2341,9 +2334,9 @@ export namespace Prisma {
   }
 
   /**
-   * Role.deleter
+   * Role.updater
    */
-  export type Role$deleterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Role$updaterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2662,16 +2655,16 @@ export namespace Prisma {
     deletedBy?: boolean
     roleId?: boolean
     token?: boolean
+    createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
+    deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
+    updatedRoles?: boolean | User$updatedRolesArgs<ExtArgs>
     creator?: boolean | User$creatorArgs<ExtArgs>
     createdUsers?: boolean | User$createdUsersArgs<ExtArgs>
-    updater?: boolean | User$updaterArgs<ExtArgs>
-    updatedUsers?: boolean | User$updatedUsersArgs<ExtArgs>
     deleter?: boolean | User$deleterArgs<ExtArgs>
     deletedUsers?: boolean | User$deletedUsersArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
-    createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
-    updatedRoles?: boolean | User$updatedRolesArgs<ExtArgs>
-    deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
+    updater?: boolean | User$updaterArgs<ExtArgs>
+    updatedUsers?: boolean | User$updatedUsersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2699,35 +2692,32 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "username" | "password" | "name" | "badgeNumber" | "department" | "isActive" | "lastLogin" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "roleId" | "token", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
+    deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
+    updatedRoles?: boolean | User$updatedRolesArgs<ExtArgs>
     creator?: boolean | User$creatorArgs<ExtArgs>
     createdUsers?: boolean | User$createdUsersArgs<ExtArgs>
-    updater?: boolean | User$updaterArgs<ExtArgs>
-    updatedUsers?: boolean | User$updatedUsersArgs<ExtArgs>
     deleter?: boolean | User$deleterArgs<ExtArgs>
     deletedUsers?: boolean | User$deletedUsersArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
-    createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
-    updatedRoles?: boolean | User$updatedRolesArgs<ExtArgs>
-    deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
+    updater?: boolean | User$updaterArgs<ExtArgs>
+    updatedUsers?: boolean | User$updatedUsersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      /**
-       * Self-relations (audit trail)
-       */
+      createdRoles: Prisma.$RolePayload<ExtArgs>[]
+      deletedRoles: Prisma.$RolePayload<ExtArgs>[]
+      updatedRoles: Prisma.$RolePayload<ExtArgs>[]
       creator: Prisma.$UserPayload<ExtArgs> | null
       createdUsers: Prisma.$UserPayload<ExtArgs>[]
-      updater: Prisma.$UserPayload<ExtArgs> | null
-      updatedUsers: Prisma.$UserPayload<ExtArgs>[]
       deleter: Prisma.$UserPayload<ExtArgs> | null
       deletedUsers: Prisma.$UserPayload<ExtArgs>[]
       role: Prisma.$RolePayload<ExtArgs>
-      createdRoles: Prisma.$RolePayload<ExtArgs>[]
-      updatedRoles: Prisma.$RolePayload<ExtArgs>[]
-      deletedRoles: Prisma.$RolePayload<ExtArgs>[]
+      updater: Prisma.$UserPayload<ExtArgs> | null
+      updatedUsers: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       /**
@@ -3108,16 +3098,16 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdRoles<T extends User$createdRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deletedRoles<T extends User$deletedRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    updatedRoles<T extends User$updatedRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     creator<T extends User$creatorArgs<ExtArgs> = {}>(args?: Subset<T, User$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     createdUsers<T extends User$createdUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$createdUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    updater<T extends User$updaterArgs<ExtArgs> = {}>(args?: Subset<T, User$updaterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    updatedUsers<T extends User$updatedUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     deleter<T extends User$deleterArgs<ExtArgs> = {}>(args?: Subset<T, User$deleterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     deletedUsers<T extends User$deletedUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     role<T extends RoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleDefaultArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    createdRoles<T extends User$createdRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    updatedRoles<T extends User$updatedRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    deletedRoles<T extends User$deletedRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    updater<T extends User$updaterArgs<ExtArgs> = {}>(args?: Subset<T, User$updaterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    updatedUsers<T extends User$updatedUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3506,6 +3496,78 @@ export namespace Prisma {
   }
 
   /**
+   * User.createdRoles
+   */
+  export type User$createdRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Role
+     */
+    select?: RoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Role
+     */
+    omit?: RoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleInclude<ExtArgs> | null
+    where?: RoleWhereInput
+    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
+    cursor?: RoleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
+  }
+
+  /**
+   * User.deletedRoles
+   */
+  export type User$deletedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Role
+     */
+    select?: RoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Role
+     */
+    omit?: RoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleInclude<ExtArgs> | null
+    where?: RoleWhereInput
+    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
+    cursor?: RoleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
+  }
+
+  /**
+   * User.updatedRoles
+   */
+  export type User$updatedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Role
+     */
+    select?: RoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Role
+     */
+    omit?: RoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleInclude<ExtArgs> | null
+    where?: RoleWhereInput
+    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
+    cursor?: RoleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
+  }
+
+  /**
    * User.creator
    */
   export type User$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3528,49 +3590,6 @@ export namespace Prisma {
    * User.createdUsers
    */
   export type User$createdUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    cursor?: UserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User.updater
-   */
-  export type User$updaterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * User.updatedUsers
-   */
-  export type User$updatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -3635,75 +3654,46 @@ export namespace Prisma {
   }
 
   /**
-   * User.createdRoles
+   * User.updater
    */
-  export type User$createdRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$updaterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Role
+     * Select specific fields to fetch from the User
      */
-    select?: RoleSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Role
+     * Omit specific fields from the User
      */
-    omit?: RoleOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RoleInclude<ExtArgs> | null
-    where?: RoleWhereInput
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    cursor?: RoleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
-   * User.updatedRoles
+   * User.updatedUsers
    */
-  export type User$updatedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$updatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Role
+     * Select specific fields to fetch from the User
      */
-    select?: RoleSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Role
+     * Omit specific fields from the User
      */
-    omit?: RoleOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RoleInclude<ExtArgs> | null
-    where?: RoleWhereInput
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    cursor?: RoleWhereUniqueInput
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
-  }
-
-  /**
-   * User.deletedRoles
-   */
-  export type User$deletedRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    where?: RoleWhereInput
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    cursor?: RoleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -3769,6 +3759,7 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    jobDesc: string | null
   }
 
   export type ChartMaxAggregateOutputType = {
@@ -3787,6 +3778,7 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    jobDesc: string | null
   }
 
   export type ChartCountAggregateOutputType = {
@@ -3805,6 +3797,7 @@ export namespace Prisma {
     isDeleted: number
     deletedAt: number
     deletedBy: number
+    jobDesc: number
     _all: number
   }
 
@@ -3841,6 +3834,7 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    jobDesc?: true
   }
 
   export type ChartMaxAggregateInputType = {
@@ -3859,6 +3853,7 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    jobDesc?: true
   }
 
   export type ChartCountAggregateInputType = {
@@ -3877,6 +3872,7 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    jobDesc?: true
     _all?: true
   }
 
@@ -3982,6 +3978,7 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt: Date | null
     deletedBy: string | null
+    jobDesc: string | null
     _count: ChartCountAggregateOutputType | null
     _avg: ChartAvgAggregateOutputType | null
     _sum: ChartSumAggregateOutputType | null
@@ -4019,6 +4016,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    jobDesc?: boolean
     parent?: boolean | Chart$parentArgs<ExtArgs>
     children?: boolean | Chart$childrenArgs<ExtArgs>
     members?: boolean | Chart$membersArgs<ExtArgs>
@@ -4043,9 +4041,10 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    jobDesc?: boolean
   }
 
-  export type ChartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"chartId" | "pilarId" | "sbuId" | "sbuSubId" | "parentId" | "position" | "capacity" | "orderIndex" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["chart"]>
+  export type ChartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"chartId" | "pilarId" | "sbuId" | "sbuSubId" | "parentId" | "position" | "capacity" | "orderIndex" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "jobDesc", ExtArgs["result"]["chart"]>
   export type ChartInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parent?: boolean | Chart$parentArgs<ExtArgs>
     children?: boolean | Chart$childrenArgs<ExtArgs>
@@ -4056,9 +4055,6 @@ export namespace Prisma {
   export type $ChartPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Chart"
     objects: {
-      /**
-       * self reference (parent)
-       */
       parent: Prisma.$ChartPayload<ExtArgs> | null
       children: Prisma.$ChartPayload<ExtArgs>[]
       members: Prisma.$ChartMemberPayload<ExtArgs>[]
@@ -4088,6 +4084,7 @@ export namespace Prisma {
       isDeleted: boolean
       deletedAt: Date | null
       deletedBy: string | null
+      jobDesc: string | null
     }, ExtArgs["result"]["chart"]>
     composites: {}
   }
@@ -4475,6 +4472,7 @@ export namespace Prisma {
     readonly isDeleted: FieldRef<"Chart", 'Boolean'>
     readonly deletedAt: FieldRef<"Chart", 'DateTime'>
     readonly deletedBy: FieldRef<"Chart", 'String'>
+    readonly jobDesc: FieldRef<"Chart", 'String'>
   }
     
 
@@ -5990,7 +5988,8 @@ export namespace Prisma {
     updatedBy: 'updatedBy',
     isDeleted: 'isDeleted',
     deletedAt: 'deletedAt',
-    deletedBy: 'deletedBy'
+    deletedBy: 'deletedBy',
+    jobDesc: 'jobDesc'
   };
 
   export type ChartScalarFieldEnum = (typeof ChartScalarFieldEnum)[keyof typeof ChartScalarFieldEnum]
@@ -6088,8 +6087,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Role"> | Date | string | null
     deletedBy?: StringNullableFilter<"Role"> | string | null
     creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deleter?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     users?: UserListRelationFilter
   }
 
@@ -6107,8 +6106,8 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     creator?: UserOrderByWithRelationInput
-    updater?: UserOrderByWithRelationInput
     deleter?: UserOrderByWithRelationInput
+    updater?: UserOrderByWithRelationInput
     users?: UserOrderByRelationAggregateInput
   }
 
@@ -6129,8 +6128,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Role"> | Date | string | null
     deletedBy?: StringNullableFilter<"Role"> | string | null
     creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deleter?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     users?: UserListRelationFilter
   }, "roleId">
 
@@ -6193,16 +6192,16 @@ export namespace Prisma {
     deletedBy?: StringNullableFilter<"User"> | string | null
     roleId?: StringFilter<"User"> | string
     token?: StringNullableFilter<"User"> | string | null
+    createdRoles?: RoleListRelationFilter
+    deletedRoles?: RoleListRelationFilter
+    updatedRoles?: RoleListRelationFilter
     creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     createdUsers?: UserListRelationFilter
-    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    updatedUsers?: UserListRelationFilter
     deleter?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deletedUsers?: UserListRelationFilter
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
-    createdRoles?: RoleListRelationFilter
-    updatedRoles?: RoleListRelationFilter
-    deletedRoles?: RoleListRelationFilter
+    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    updatedUsers?: UserListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6223,16 +6222,16 @@ export namespace Prisma {
     deletedBy?: SortOrderInput | SortOrder
     roleId?: SortOrder
     token?: SortOrderInput | SortOrder
+    createdRoles?: RoleOrderByRelationAggregateInput
+    deletedRoles?: RoleOrderByRelationAggregateInput
+    updatedRoles?: RoleOrderByRelationAggregateInput
     creator?: UserOrderByWithRelationInput
     createdUsers?: UserOrderByRelationAggregateInput
-    updater?: UserOrderByWithRelationInput
-    updatedUsers?: UserOrderByRelationAggregateInput
     deleter?: UserOrderByWithRelationInput
     deletedUsers?: UserOrderByRelationAggregateInput
     role?: RoleOrderByWithRelationInput
-    createdRoles?: RoleOrderByRelationAggregateInput
-    updatedRoles?: RoleOrderByRelationAggregateInput
-    deletedRoles?: RoleOrderByRelationAggregateInput
+    updater?: UserOrderByWithRelationInput
+    updatedUsers?: UserOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6256,16 +6255,16 @@ export namespace Prisma {
     deletedBy?: StringNullableFilter<"User"> | string | null
     roleId?: StringFilter<"User"> | string
     token?: StringNullableFilter<"User"> | string | null
+    createdRoles?: RoleListRelationFilter
+    deletedRoles?: RoleListRelationFilter
+    updatedRoles?: RoleListRelationFilter
     creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     createdUsers?: UserListRelationFilter
-    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    updatedUsers?: UserListRelationFilter
     deleter?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deletedUsers?: UserListRelationFilter
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
-    createdRoles?: RoleListRelationFilter
-    updatedRoles?: RoleListRelationFilter
-    deletedRoles?: RoleListRelationFilter
+    updater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    updatedUsers?: UserListRelationFilter
   }, "userId" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -6333,6 +6332,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"Chart"> | boolean
     deletedAt?: DateTimeNullableFilter<"Chart"> | Date | string | null
     deletedBy?: StringNullableFilter<"Chart"> | string | null
+    jobDesc?: StringNullableFilter<"Chart"> | string | null
     parent?: XOR<ChartNullableScalarRelationFilter, ChartWhereInput> | null
     children?: ChartListRelationFilter
     members?: ChartMemberListRelationFilter
@@ -6354,6 +6354,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    jobDesc?: SortOrderInput | SortOrder
     parent?: ChartOrderByWithRelationInput
     children?: ChartOrderByRelationAggregateInput
     members?: ChartMemberOrderByRelationAggregateInput
@@ -6378,6 +6379,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"Chart"> | boolean
     deletedAt?: DateTimeNullableFilter<"Chart"> | Date | string | null
     deletedBy?: StringNullableFilter<"Chart"> | string | null
+    jobDesc?: StringNullableFilter<"Chart"> | string | null
     parent?: XOR<ChartNullableScalarRelationFilter, ChartWhereInput> | null
     children?: ChartListRelationFilter
     members?: ChartMemberListRelationFilter
@@ -6399,6 +6401,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    jobDesc?: SortOrderInput | SortOrder
     _count?: ChartCountOrderByAggregateInput
     _avg?: ChartAvgOrderByAggregateInput
     _max?: ChartMaxOrderByAggregateInput
@@ -6425,6 +6428,7 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"Chart"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Chart"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"Chart"> | string | null
+    jobDesc?: StringNullableWithAggregatesFilter<"Chart"> | string | null
   }
 
   export type ChartMemberWhereInput = {
@@ -6460,7 +6464,6 @@ export namespace Prisma {
 
   export type ChartMemberWhereUniqueInput = Prisma.AtLeast<{
     memberChartId?: string
-    chartId_userId?: ChartMemberChartIdUserIdCompoundUniqueInput
     AND?: ChartMemberWhereInput | ChartMemberWhereInput[]
     OR?: ChartMemberWhereInput[]
     NOT?: ChartMemberWhereInput | ChartMemberWhereInput[]
@@ -6474,7 +6477,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
     deletedBy?: StringNullableFilter<"ChartMember"> | string | null
     node?: XOR<ChartScalarRelationFilter, ChartWhereInput>
-  }, "memberChartId" | "chartId_userId">
+  }, "memberChartId">
 
   export type ChartMemberOrderByWithAggregationInput = {
     memberChartId?: SortOrder
@@ -6521,8 +6524,8 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     creator?: UserCreateNestedOneWithoutCreatedRolesInput
-    updater?: UserCreateNestedOneWithoutUpdatedRolesInput
     deleter?: UserCreateNestedOneWithoutDeletedRolesInput
+    updater?: UserCreateNestedOneWithoutUpdatedRolesInput
     users?: UserCreateNestedManyWithoutRoleInput
   }
 
@@ -6553,8 +6556,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     creator?: UserUpdateOneWithoutCreatedRolesNestedInput
-    updater?: UserUpdateOneWithoutUpdatedRolesNestedInput
     deleter?: UserUpdateOneWithoutDeletedRolesNestedInput
+    updater?: UserUpdateOneWithoutUpdatedRolesNestedInput
     users?: UserUpdateManyWithoutRoleNestedInput
   }
 
@@ -6630,16 +6633,16 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     creator?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
     deleter?: UserCreateNestedOneWithoutDeletedUsersInput
     deletedUsers?: UserCreateNestedManyWithoutDeleterInput
     role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6660,12 +6663,12 @@ export namespace Prisma {
     deletedBy?: string | null
     roleId: string
     token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserUpdateInput = {
@@ -6682,16 +6685,16 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     creator?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
     deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
     deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6712,12 +6715,12 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     roleId?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6791,6 +6794,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     parent?: ChartCreateNestedOneWithoutChildrenInput
     children?: ChartCreateNestedManyWithoutParentInput
     members?: ChartMemberCreateNestedManyWithoutNodeInput
@@ -6812,6 +6816,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     children?: ChartUncheckedCreateNestedManyWithoutParentInput
     members?: ChartMemberUncheckedCreateNestedManyWithoutNodeInput
   }
@@ -6831,6 +6836,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     parent?: ChartUpdateOneWithoutChildrenNestedInput
     children?: ChartUpdateManyWithoutParentNestedInput
     members?: ChartMemberUpdateManyWithoutNodeNestedInput
@@ -6852,6 +6858,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     children?: ChartUncheckedUpdateManyWithoutParentNestedInput
     members?: ChartMemberUncheckedUpdateManyWithoutNodeNestedInput
   }
@@ -6872,6 +6879,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
   }
 
   export type ChartUpdateManyMutationInput = {
@@ -6889,6 +6897,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartUncheckedUpdateManyInput = {
@@ -6907,6 +6916,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartMemberCreateInput = {
@@ -7224,15 +7234,15 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type RoleScalarRelationFilter = {
-    is?: RoleWhereInput
-    isNot?: RoleWhereInput
-  }
-
   export type RoleListRelationFilter = {
     every?: RoleWhereInput
     some?: RoleWhereInput
     none?: RoleWhereInput
+  }
+
+  export type RoleScalarRelationFilter = {
+    is?: RoleWhereInput
+    isNot?: RoleWhereInput
   }
 
   export type RoleOrderByRelationAggregateInput = {
@@ -7340,6 +7350,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    jobDesc?: SortOrder
   }
 
   export type ChartAvgOrderByAggregateInput = {
@@ -7366,6 +7377,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    jobDesc?: SortOrder
   }
 
   export type ChartMinOrderByAggregateInput = {
@@ -7384,6 +7396,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    jobDesc?: SortOrder
   }
 
   export type ChartSumOrderByAggregateInput = {
@@ -7408,11 +7421,6 @@ export namespace Prisma {
   export type ChartScalarRelationFilter = {
     is?: ChartWhereInput
     isNot?: ChartWhereInput
-  }
-
-  export type ChartMemberChartIdUserIdCompoundUniqueInput = {
-    chartId: string
-    userId: number
   }
 
   export type ChartMemberCountOrderByAggregateInput = {
@@ -7484,15 +7492,15 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutUpdatedRolesInput = {
-    create?: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUpdatedRolesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutDeletedRolesInput = {
     create?: XOR<UserCreateWithoutDeletedRolesInput, UserUncheckedCreateWithoutDeletedRolesInput>
     connectOrCreate?: UserCreateOrConnectWithoutDeletedRolesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutUpdatedRolesInput = {
+    create?: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedRolesInput
     connect?: UserWhereUniqueInput
   }
 
@@ -7548,16 +7556,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedRolesInput, UserUpdateWithoutCreatedRolesInput>, UserUncheckedUpdateWithoutCreatedRolesInput>
   }
 
-  export type UserUpdateOneWithoutUpdatedRolesNestedInput = {
-    create?: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUpdatedRolesInput
-    upsert?: UserUpsertWithoutUpdatedRolesInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUpdatedRolesInput, UserUpdateWithoutUpdatedRolesInput>, UserUncheckedUpdateWithoutUpdatedRolesInput>
-  }
-
   export type UserUpdateOneWithoutDeletedRolesNestedInput = {
     create?: XOR<UserCreateWithoutDeletedRolesInput, UserUncheckedCreateWithoutDeletedRolesInput>
     connectOrCreate?: UserCreateOrConnectWithoutDeletedRolesInput
@@ -7566,6 +7564,16 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDeletedRolesInput, UserUpdateWithoutDeletedRolesInput>, UserUncheckedUpdateWithoutDeletedRolesInput>
+  }
+
+  export type UserUpdateOneWithoutUpdatedRolesNestedInput = {
+    create?: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedRolesInput
+    upsert?: UserUpsertWithoutUpdatedRolesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUpdatedRolesInput, UserUpdateWithoutUpdatedRolesInput>, UserUncheckedUpdateWithoutUpdatedRolesInput>
   }
 
   export type UserUpdateManyWithoutRoleNestedInput = {
@@ -7596,6 +7604,27 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type RoleCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<RoleCreateWithoutCreatorInput, RoleUncheckedCreateWithoutCreatorInput> | RoleCreateWithoutCreatorInput[] | RoleUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutCreatorInput | RoleCreateOrConnectWithoutCreatorInput[]
+    createMany?: RoleCreateManyCreatorInputEnvelope
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+  }
+
+  export type RoleCreateNestedManyWithoutDeleterInput = {
+    create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
+    createMany?: RoleCreateManyDeleterInputEnvelope
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+  }
+
+  export type RoleCreateNestedManyWithoutUpdaterInput = {
+    create?: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput> | RoleCreateWithoutUpdaterInput[] | RoleUncheckedCreateWithoutUpdaterInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutUpdaterInput | RoleCreateOrConnectWithoutUpdaterInput[]
+    createMany?: RoleCreateManyUpdaterInputEnvelope
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutCreatedUsersInput = {
     create?: XOR<UserCreateWithoutCreatedUsersInput, UserUncheckedCreateWithoutCreatedUsersInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedUsersInput
@@ -7606,19 +7635,6 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
     createMany?: UserCreateManyCreatorInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type UserCreateNestedOneWithoutUpdatedUsersInput = {
-    create?: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUpdatedUsersInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserCreateNestedManyWithoutUpdaterInput = {
-    create?: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput> | UserCreateWithoutUpdaterInput[] | UserUncheckedCreateWithoutUpdaterInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutUpdaterInput | UserCreateOrConnectWithoutUpdaterInput[]
-    createMany?: UserCreateManyUpdaterInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
@@ -7641,45 +7657,16 @@ export namespace Prisma {
     connect?: RoleWhereUniqueInput
   }
 
-  export type RoleCreateNestedManyWithoutCreatorInput = {
-    create?: XOR<RoleCreateWithoutCreatorInput, RoleUncheckedCreateWithoutCreatorInput> | RoleCreateWithoutCreatorInput[] | RoleUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutCreatorInput | RoleCreateOrConnectWithoutCreatorInput[]
-    createMany?: RoleCreateManyCreatorInputEnvelope
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+  export type UserCreateNestedOneWithoutUpdatedUsersInput = {
+    create?: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedUsersInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type RoleCreateNestedManyWithoutUpdaterInput = {
-    create?: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput> | RoleCreateWithoutUpdaterInput[] | RoleUncheckedCreateWithoutUpdaterInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutUpdaterInput | RoleCreateOrConnectWithoutUpdaterInput[]
-    createMany?: RoleCreateManyUpdaterInputEnvelope
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
-  export type RoleCreateNestedManyWithoutDeleterInput = {
-    create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
-    createMany?: RoleCreateManyDeleterInputEnvelope
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
-  export type UserUncheckedCreateNestedManyWithoutCreatorInput = {
-    create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
-    createMany?: UserCreateManyCreatorInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type UserUncheckedCreateNestedManyWithoutUpdaterInput = {
+  export type UserCreateNestedManyWithoutUpdaterInput = {
     create?: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput> | UserCreateWithoutUpdaterInput[] | UserUncheckedCreateWithoutUpdaterInput[]
     connectOrCreate?: UserCreateOrConnectWithoutUpdaterInput | UserCreateOrConnectWithoutUpdaterInput[]
     createMany?: UserCreateManyUpdaterInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type UserUncheckedCreateNestedManyWithoutDeleterInput = {
-    create?: XOR<UserCreateWithoutDeleterInput, UserUncheckedCreateWithoutDeleterInput> | UserCreateWithoutDeleterInput[] | UserUncheckedCreateWithoutDeleterInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutDeleterInput | UserCreateOrConnectWithoutDeleterInput[]
-    createMany?: UserCreateManyDeleterInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
@@ -7690,6 +7677,13 @@ export namespace Prisma {
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
   }
 
+  export type RoleUncheckedCreateNestedManyWithoutDeleterInput = {
+    create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
+    createMany?: RoleCreateManyDeleterInputEnvelope
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+  }
+
   export type RoleUncheckedCreateNestedManyWithoutUpdaterInput = {
     create?: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput> | RoleCreateWithoutUpdaterInput[] | RoleUncheckedCreateWithoutUpdaterInput[]
     connectOrCreate?: RoleCreateOrConnectWithoutUpdaterInput | RoleCreateOrConnectWithoutUpdaterInput[]
@@ -7697,11 +7691,67 @@ export namespace Prisma {
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
   }
 
-  export type RoleUncheckedCreateNestedManyWithoutDeleterInput = {
+  export type UserUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
+    createMany?: UserCreateManyCreatorInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutDeleterInput = {
+    create?: XOR<UserCreateWithoutDeleterInput, UserUncheckedCreateWithoutDeleterInput> | UserCreateWithoutDeleterInput[] | UserUncheckedCreateWithoutDeleterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDeleterInput | UserCreateOrConnectWithoutDeleterInput[]
+    createMany?: UserCreateManyDeleterInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutUpdaterInput = {
+    create?: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput> | UserCreateWithoutUpdaterInput[] | UserUncheckedCreateWithoutUpdaterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutUpdaterInput | UserCreateOrConnectWithoutUpdaterInput[]
+    createMany?: UserCreateManyUpdaterInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type RoleUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<RoleCreateWithoutCreatorInput, RoleUncheckedCreateWithoutCreatorInput> | RoleCreateWithoutCreatorInput[] | RoleUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutCreatorInput | RoleCreateOrConnectWithoutCreatorInput[]
+    upsert?: RoleUpsertWithWhereUniqueWithoutCreatorInput | RoleUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: RoleCreateManyCreatorInputEnvelope
+    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    update?: RoleUpdateWithWhereUniqueWithoutCreatorInput | RoleUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: RoleUpdateManyWithWhereWithoutCreatorInput | RoleUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
+  }
+
+  export type RoleUpdateManyWithoutDeleterNestedInput = {
     create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
     connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
+    upsert?: RoleUpsertWithWhereUniqueWithoutDeleterInput | RoleUpsertWithWhereUniqueWithoutDeleterInput[]
     createMany?: RoleCreateManyDeleterInputEnvelope
+    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    update?: RoleUpdateWithWhereUniqueWithoutDeleterInput | RoleUpdateWithWhereUniqueWithoutDeleterInput[]
+    updateMany?: RoleUpdateManyWithWhereWithoutDeleterInput | RoleUpdateManyWithWhereWithoutDeleterInput[]
+    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
+  }
+
+  export type RoleUpdateManyWithoutUpdaterNestedInput = {
+    create?: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput> | RoleCreateWithoutUpdaterInput[] | RoleUncheckedCreateWithoutUpdaterInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutUpdaterInput | RoleCreateOrConnectWithoutUpdaterInput[]
+    upsert?: RoleUpsertWithWhereUniqueWithoutUpdaterInput | RoleUpsertWithWhereUniqueWithoutUpdaterInput[]
+    createMany?: RoleCreateManyUpdaterInputEnvelope
+    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    update?: RoleUpdateWithWhereUniqueWithoutUpdaterInput | RoleUpdateWithWhereUniqueWithoutUpdaterInput[]
+    updateMany?: RoleUpdateManyWithWhereWithoutUpdaterInput | RoleUpdateManyWithWhereWithoutUpdaterInput[]
+    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
   export type UserUpdateOneWithoutCreatedUsersNestedInput = {
@@ -7725,30 +7775,6 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
     update?: UserUpdateWithWhereUniqueWithoutCreatorInput | UserUpdateWithWhereUniqueWithoutCreatorInput[]
     updateMany?: UserUpdateManyWithWhereWithoutCreatorInput | UserUpdateManyWithWhereWithoutCreatorInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
-  }
-
-  export type UserUpdateOneWithoutUpdatedUsersNestedInput = {
-    create?: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUpdatedUsersInput
-    upsert?: UserUpsertWithoutUpdatedUsersInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUpdatedUsersInput, UserUpdateWithoutUpdatedUsersInput>, UserUncheckedUpdateWithoutUpdatedUsersInput>
-  }
-
-  export type UserUpdateManyWithoutUpdaterNestedInput = {
-    create?: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput> | UserCreateWithoutUpdaterInput[] | UserUncheckedCreateWithoutUpdaterInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutUpdaterInput | UserCreateOrConnectWithoutUpdaterInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutUpdaterInput | UserUpsertWithWhereUniqueWithoutUpdaterInput[]
-    createMany?: UserCreateManyUpdaterInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutUpdaterInput | UserUpdateWithWhereUniqueWithoutUpdaterInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutUpdaterInput | UserUpdateManyWithWhereWithoutUpdaterInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
@@ -7784,63 +7810,17 @@ export namespace Prisma {
     update?: XOR<XOR<RoleUpdateToOneWithWhereWithoutUsersInput, RoleUpdateWithoutUsersInput>, RoleUncheckedUpdateWithoutUsersInput>
   }
 
-  export type RoleUpdateManyWithoutCreatorNestedInput = {
-    create?: XOR<RoleCreateWithoutCreatorInput, RoleUncheckedCreateWithoutCreatorInput> | RoleCreateWithoutCreatorInput[] | RoleUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutCreatorInput | RoleCreateOrConnectWithoutCreatorInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutCreatorInput | RoleUpsertWithWhereUniqueWithoutCreatorInput[]
-    createMany?: RoleCreateManyCreatorInputEnvelope
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutCreatorInput | RoleUpdateWithWhereUniqueWithoutCreatorInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutCreatorInput | RoleUpdateManyWithWhereWithoutCreatorInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
+  export type UserUpdateOneWithoutUpdatedUsersNestedInput = {
+    create?: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedUsersInput
+    upsert?: UserUpsertWithoutUpdatedUsersInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUpdatedUsersInput, UserUpdateWithoutUpdatedUsersInput>, UserUncheckedUpdateWithoutUpdatedUsersInput>
   }
 
-  export type RoleUpdateManyWithoutUpdaterNestedInput = {
-    create?: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput> | RoleCreateWithoutUpdaterInput[] | RoleUncheckedCreateWithoutUpdaterInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutUpdaterInput | RoleCreateOrConnectWithoutUpdaterInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutUpdaterInput | RoleUpsertWithWhereUniqueWithoutUpdaterInput[]
-    createMany?: RoleCreateManyUpdaterInputEnvelope
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutUpdaterInput | RoleUpdateWithWhereUniqueWithoutUpdaterInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutUpdaterInput | RoleUpdateManyWithWhereWithoutUpdaterInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
-  }
-
-  export type RoleUpdateManyWithoutDeleterNestedInput = {
-    create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutDeleterInput | RoleUpsertWithWhereUniqueWithoutDeleterInput[]
-    createMany?: RoleCreateManyDeleterInputEnvelope
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutDeleterInput | RoleUpdateWithWhereUniqueWithoutDeleterInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutDeleterInput | RoleUpdateManyWithWhereWithoutDeleterInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
-  }
-
-  export type UserUncheckedUpdateManyWithoutCreatorNestedInput = {
-    create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutCreatorInput | UserUpsertWithWhereUniqueWithoutCreatorInput[]
-    createMany?: UserCreateManyCreatorInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutCreatorInput | UserUpdateWithWhereUniqueWithoutCreatorInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutCreatorInput | UserUpdateManyWithWhereWithoutCreatorInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
-  }
-
-  export type UserUncheckedUpdateManyWithoutUpdaterNestedInput = {
+  export type UserUpdateManyWithoutUpdaterNestedInput = {
     create?: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput> | UserCreateWithoutUpdaterInput[] | UserUncheckedCreateWithoutUpdaterInput[]
     connectOrCreate?: UserCreateOrConnectWithoutUpdaterInput | UserCreateOrConnectWithoutUpdaterInput[]
     upsert?: UserUpsertWithWhereUniqueWithoutUpdaterInput | UserUpsertWithWhereUniqueWithoutUpdaterInput[]
@@ -7851,20 +7831,6 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
     update?: UserUpdateWithWhereUniqueWithoutUpdaterInput | UserUpdateWithWhereUniqueWithoutUpdaterInput[]
     updateMany?: UserUpdateManyWithWhereWithoutUpdaterInput | UserUpdateManyWithWhereWithoutUpdaterInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
-  }
-
-  export type UserUncheckedUpdateManyWithoutDeleterNestedInput = {
-    create?: XOR<UserCreateWithoutDeleterInput, UserUncheckedCreateWithoutDeleterInput> | UserCreateWithoutDeleterInput[] | UserUncheckedCreateWithoutDeleterInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutDeleterInput | UserCreateOrConnectWithoutDeleterInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutDeleterInput | UserUpsertWithWhereUniqueWithoutDeleterInput[]
-    createMany?: UserCreateManyDeleterInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutDeleterInput | UserUpdateWithWhereUniqueWithoutDeleterInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutDeleterInput | UserUpdateManyWithWhereWithoutDeleterInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
@@ -7882,6 +7848,20 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
+  export type RoleUncheckedUpdateManyWithoutDeleterNestedInput = {
+    create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
+    connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
+    upsert?: RoleUpsertWithWhereUniqueWithoutDeleterInput | RoleUpsertWithWhereUniqueWithoutDeleterInput[]
+    createMany?: RoleCreateManyDeleterInputEnvelope
+    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
+    update?: RoleUpdateWithWhereUniqueWithoutDeleterInput | RoleUpdateWithWhereUniqueWithoutDeleterInput[]
+    updateMany?: RoleUpdateManyWithWhereWithoutDeleterInput | RoleUpdateManyWithWhereWithoutDeleterInput[]
+    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
+  }
+
   export type RoleUncheckedUpdateManyWithoutUpdaterNestedInput = {
     create?: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput> | RoleCreateWithoutUpdaterInput[] | RoleUncheckedCreateWithoutUpdaterInput[]
     connectOrCreate?: RoleCreateOrConnectWithoutUpdaterInput | RoleCreateOrConnectWithoutUpdaterInput[]
@@ -7896,18 +7876,46 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
-  export type RoleUncheckedUpdateManyWithoutDeleterNestedInput = {
-    create?: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput> | RoleCreateWithoutDeleterInput[] | RoleUncheckedCreateWithoutDeleterInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutDeleterInput | RoleCreateOrConnectWithoutDeleterInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutDeleterInput | RoleUpsertWithWhereUniqueWithoutDeleterInput[]
-    createMany?: RoleCreateManyDeleterInputEnvelope
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutDeleterInput | RoleUpdateWithWhereUniqueWithoutDeleterInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutDeleterInput | RoleUpdateManyWithWhereWithoutDeleterInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
+  export type UserUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput> | UserCreateWithoutCreatorInput[] | UserUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCreatorInput | UserCreateOrConnectWithoutCreatorInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCreatorInput | UserUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: UserCreateManyCreatorInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCreatorInput | UserUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCreatorInput | UserUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutDeleterNestedInput = {
+    create?: XOR<UserCreateWithoutDeleterInput, UserUncheckedCreateWithoutDeleterInput> | UserCreateWithoutDeleterInput[] | UserUncheckedCreateWithoutDeleterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDeleterInput | UserCreateOrConnectWithoutDeleterInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDeleterInput | UserUpsertWithWhereUniqueWithoutDeleterInput[]
+    createMany?: UserCreateManyDeleterInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDeleterInput | UserUpdateWithWhereUniqueWithoutDeleterInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDeleterInput | UserUpdateManyWithWhereWithoutDeleterInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutUpdaterNestedInput = {
+    create?: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput> | UserCreateWithoutUpdaterInput[] | UserUncheckedCreateWithoutUpdaterInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutUpdaterInput | UserCreateOrConnectWithoutUpdaterInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutUpdaterInput | UserUpsertWithWhereUniqueWithoutUpdaterInput[]
+    createMany?: UserCreateManyUpdaterInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutUpdaterInput | UserUpdateWithWhereUniqueWithoutUpdaterInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutUpdaterInput | UserUpdateManyWithWhereWithoutUpdaterInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type ChartCreateNestedOneWithoutChildrenInput = {
@@ -8247,15 +8255,15 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     token?: string | null
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     creator?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
     deleter?: UserCreateNestedOneWithoutDeletedUsersInput
     deletedUsers?: UserCreateNestedManyWithoutDeleterInput
     role: RoleCreateNestedOneWithoutUsersInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutCreatedRolesInput = {
@@ -8276,71 +8284,16 @@ export namespace Prisma {
     deletedBy?: string | null
     roleId: string
     token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutCreatedRolesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutCreatedRolesInput, UserUncheckedCreateWithoutCreatedRolesInput>
-  }
-
-  export type UserCreateWithoutUpdatedRolesInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutUpdatedRolesInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutUpdatedRolesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
   }
 
   export type UserCreateWithoutDeletedRolesInput = {
@@ -8357,15 +8310,15 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     creator?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
     deleter?: UserCreateNestedOneWithoutDeletedUsersInput
     deletedUsers?: UserCreateNestedManyWithoutDeleterInput
     role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutDeletedRolesInput = {
@@ -8386,16 +8339,71 @@ export namespace Prisma {
     deletedBy?: string | null
     roleId: string
     token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
     updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutDeletedRolesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutDeletedRolesInput, UserUncheckedCreateWithoutDeletedRolesInput>
+  }
+
+  export type UserCreateWithoutUpdatedRolesInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    creator?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatorInput
+    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
+    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutUpdatedRolesInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutUpdatedRolesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
   }
 
   export type UserCreateWithoutRoleInput = {
@@ -8412,15 +8420,15 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
     creator?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
     deleter?: UserCreateNestedOneWithoutDeletedUsersInput
     deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -8440,12 +8448,12 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
     createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
     deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -8482,15 +8490,15 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     creator?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
     deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
     deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedRolesInput = {
@@ -8511,72 +8519,11 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     roleId?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUpsertWithoutUpdatedRolesInput = {
-    update: XOR<UserUpdateWithoutUpdatedRolesInput, UserUncheckedUpdateWithoutUpdatedRolesInput>
-    create: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutUpdatedRolesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUpdatedRolesInput, UserUncheckedUpdateWithoutUpdatedRolesInput>
-  }
-
-  export type UserUpdateWithoutUpdatedRolesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
-    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
-    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
-    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUpdatedRolesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUpsertWithoutDeletedRolesInput = {
@@ -8604,15 +8551,15 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     creator?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
     deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
     deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedRolesInput = {
@@ -8633,11 +8580,72 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     roleId?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
     updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUpsertWithoutUpdatedRolesInput = {
+    update: XOR<UserUpdateWithoutUpdatedRolesInput, UserUncheckedUpdateWithoutUpdatedRolesInput>
+    create: XOR<UserCreateWithoutUpdatedRolesInput, UserUncheckedCreateWithoutUpdatedRolesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUpdatedRolesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUpdatedRolesInput, UserUncheckedUpdateWithoutUpdatedRolesInput>
+  }
+
+  export type UserUpdateWithoutUpdatedRolesInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
+    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
+    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUpdatedRolesInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutRoleInput = {
@@ -8679,383 +8687,6 @@ export namespace Prisma {
     token?: StringNullableFilter<"User"> | string | null
   }
 
-  export type UserCreateWithoutCreatedUsersInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutCreatedUsersInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutCreatedUsersInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCreatedUsersInput, UserUncheckedCreateWithoutCreatedUsersInput>
-  }
-
-  export type UserCreateWithoutCreatorInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutCreatorInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutCreatorInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput>
-  }
-
-  export type UserCreateManyCreatorInputEnvelope = {
-    data: UserCreateManyCreatorInput | UserCreateManyCreatorInput[]
-  }
-
-  export type UserCreateWithoutUpdatedUsersInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutUpdatedUsersInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutUpdatedUsersInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
-  }
-
-  export type UserCreateWithoutUpdaterInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutUpdaterInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutUpdaterInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput>
-  }
-
-  export type UserCreateManyUpdaterInputEnvelope = {
-    data: UserCreateManyUpdaterInput | UserCreateManyUpdaterInput[]
-  }
-
-  export type UserCreateWithoutDeletedUsersInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutDeletedUsersInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutDeletedUsersInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDeletedUsersInput, UserUncheckedCreateWithoutDeletedUsersInput>
-  }
-
-  export type UserCreateWithoutDeleterInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    token?: string | null
-    creator?: UserCreateNestedOneWithoutCreatedUsersInput
-    createdUsers?: UserCreateNestedManyWithoutCreatorInput
-    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
-    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
-    role: RoleCreateNestedOneWithoutUsersInput
-    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserUncheckedCreateWithoutDeleterInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    roleId: string
-    token?: string | null
-    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
-    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
-    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
-    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
-    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
-  }
-
-  export type UserCreateOrConnectWithoutDeleterInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDeleterInput, UserUncheckedCreateWithoutDeleterInput>
-  }
-
-  export type UserCreateManyDeleterInputEnvelope = {
-    data: UserCreateManyDeleterInput | UserCreateManyDeleterInput[]
-  }
-
-  export type RoleCreateWithoutUsersInput = {
-    roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    creator?: UserCreateNestedOneWithoutCreatedRolesInput
-    updater?: UserCreateNestedOneWithoutUpdatedRolesInput
-    deleter?: UserCreateNestedOneWithoutDeletedRolesInput
-  }
-
-  export type RoleUncheckedCreateWithoutUsersInput = {
-    roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-  }
-
-  export type RoleCreateOrConnectWithoutUsersInput = {
-    where: RoleWhereUniqueInput
-    create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
-  }
-
   export type RoleCreateWithoutCreatorInput = {
     roleId: string
     roleName: string
@@ -9066,8 +8697,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     isDeleted?: boolean
     deletedAt?: Date | string | null
-    updater?: UserCreateNestedOneWithoutUpdatedRolesInput
     deleter?: UserCreateNestedOneWithoutDeletedRolesInput
+    updater?: UserCreateNestedOneWithoutUpdatedRolesInput
     users?: UserCreateNestedManyWithoutRoleInput
   }
 
@@ -9093,45 +8724,6 @@ export namespace Prisma {
 
   export type RoleCreateManyCreatorInputEnvelope = {
     data: RoleCreateManyCreatorInput | RoleCreateManyCreatorInput[]
-  }
-
-  export type RoleCreateWithoutUpdaterInput = {
-    roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    creator?: UserCreateNestedOneWithoutCreatedRolesInput
-    deleter?: UserCreateNestedOneWithoutDeletedRolesInput
-    users?: UserCreateNestedManyWithoutRoleInput
-  }
-
-  export type RoleUncheckedCreateWithoutUpdaterInput = {
-    roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    users?: UserUncheckedCreateNestedManyWithoutRoleInput
-  }
-
-  export type RoleCreateOrConnectWithoutUpdaterInput = {
-    where: RoleWhereUniqueInput
-    create: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput>
-  }
-
-  export type RoleCreateManyUpdaterInputEnvelope = {
-    data: RoleCreateManyUpdaterInput | RoleCreateManyUpdaterInput[]
   }
 
   export type RoleCreateWithoutDeleterInput = {
@@ -9173,6 +8765,488 @@ export namespace Prisma {
     data: RoleCreateManyDeleterInput | RoleCreateManyDeleterInput[]
   }
 
+  export type RoleCreateWithoutUpdaterInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    creator?: UserCreateNestedOneWithoutCreatedRolesInput
+    deleter?: UserCreateNestedOneWithoutDeletedRolesInput
+    users?: UserCreateNestedManyWithoutRoleInput
+  }
+
+  export type RoleUncheckedCreateWithoutUpdaterInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    users?: UserUncheckedCreateNestedManyWithoutRoleInput
+  }
+
+  export type RoleCreateOrConnectWithoutUpdaterInput = {
+    where: RoleWhereUniqueInput
+    create: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput>
+  }
+
+  export type RoleCreateManyUpdaterInputEnvelope = {
+    data: RoleCreateManyUpdaterInput | RoleCreateManyUpdaterInput[]
+  }
+
+  export type UserCreateWithoutCreatedUsersInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    creator?: UserCreateNestedOneWithoutCreatedUsersInput
+    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
+    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedUsersInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedUsersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedUsersInput, UserUncheckedCreateWithoutCreatedUsersInput>
+  }
+
+  export type UserCreateWithoutCreatorInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserCreateNestedManyWithoutCreatorInput
+    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
+    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatorInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatorInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatorInput, UserUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type UserCreateManyCreatorInputEnvelope = {
+    data: UserCreateManyCreatorInput | UserCreateManyCreatorInput[]
+  }
+
+  export type UserCreateWithoutDeletedUsersInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    creator?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatorInput
+    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutDeletedUsersInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutDeletedUsersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDeletedUsersInput, UserUncheckedCreateWithoutDeletedUsersInput>
+  }
+
+  export type UserCreateWithoutDeleterInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    creator?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutDeleterInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutDeleterInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDeleterInput, UserUncheckedCreateWithoutDeleterInput>
+  }
+
+  export type UserCreateManyDeleterInputEnvelope = {
+    data: UserCreateManyDeleterInput | UserCreateManyDeleterInput[]
+  }
+
+  export type RoleCreateWithoutUsersInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    creator?: UserCreateNestedOneWithoutCreatedRolesInput
+    deleter?: UserCreateNestedOneWithoutDeletedRolesInput
+    updater?: UserCreateNestedOneWithoutUpdatedRolesInput
+  }
+
+  export type RoleUncheckedCreateWithoutUsersInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type RoleCreateOrConnectWithoutUsersInput = {
+    where: RoleWhereUniqueInput
+    create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
+  }
+
+  export type UserCreateWithoutUpdatedUsersInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    creator?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatorInput
+    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
+    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updater?: UserCreateNestedOneWithoutUpdatedUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutUpdatedUsersInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+  }
+
+  export type UserCreateOrConnectWithoutUpdatedUsersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
+  }
+
+  export type UserCreateWithoutUpdaterInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    token?: string | null
+    createdRoles?: RoleCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleCreateNestedManyWithoutUpdaterInput
+    creator?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatorInput
+    deleter?: UserCreateNestedOneWithoutDeletedUsersInput
+    deletedUsers?: UserCreateNestedManyWithoutDeleterInput
+    role: RoleCreateNestedOneWithoutUsersInput
+    updatedUsers?: UserCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutUpdaterInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    roleId: string
+    token?: string | null
+    createdRoles?: RoleUncheckedCreateNestedManyWithoutCreatorInput
+    deletedRoles?: RoleUncheckedCreateNestedManyWithoutDeleterInput
+    updatedRoles?: RoleUncheckedCreateNestedManyWithoutUpdaterInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatorInput
+    deletedUsers?: UserUncheckedCreateNestedManyWithoutDeleterInput
+    updatedUsers?: UserUncheckedCreateNestedManyWithoutUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutUpdaterInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput>
+  }
+
+  export type UserCreateManyUpdaterInputEnvelope = {
+    data: UserCreateManyUpdaterInput | UserCreateManyUpdaterInput[]
+  }
+
+  export type RoleUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: RoleWhereUniqueInput
+    update: XOR<RoleUpdateWithoutCreatorInput, RoleUncheckedUpdateWithoutCreatorInput>
+    create: XOR<RoleCreateWithoutCreatorInput, RoleUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type RoleUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: RoleWhereUniqueInput
+    data: XOR<RoleUpdateWithoutCreatorInput, RoleUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type RoleUpdateManyWithWhereWithoutCreatorInput = {
+    where: RoleScalarWhereInput
+    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type RoleScalarWhereInput = {
+    AND?: RoleScalarWhereInput | RoleScalarWhereInput[]
+    OR?: RoleScalarWhereInput[]
+    NOT?: RoleScalarWhereInput | RoleScalarWhereInput[]
+    roleId?: StringFilter<"Role"> | string
+    roleName?: StringFilter<"Role"> | string
+    roleLevel?: IntFilter<"Role"> | number
+    roleDesc?: StringNullableFilter<"Role"> | string | null
+    roleIsActive?: BoolFilter<"Role"> | boolean
+    createdAt?: DateTimeFilter<"Role"> | Date | string
+    createdBy?: StringNullableFilter<"Role"> | string | null
+    updatedAt?: DateTimeFilter<"Role"> | Date | string
+    updatedBy?: StringNullableFilter<"Role"> | string | null
+    isDeleted?: BoolFilter<"Role"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Role"> | Date | string | null
+    deletedBy?: StringNullableFilter<"Role"> | string | null
+  }
+
+  export type RoleUpsertWithWhereUniqueWithoutDeleterInput = {
+    where: RoleWhereUniqueInput
+    update: XOR<RoleUpdateWithoutDeleterInput, RoleUncheckedUpdateWithoutDeleterInput>
+    create: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput>
+  }
+
+  export type RoleUpdateWithWhereUniqueWithoutDeleterInput = {
+    where: RoleWhereUniqueInput
+    data: XOR<RoleUpdateWithoutDeleterInput, RoleUncheckedUpdateWithoutDeleterInput>
+  }
+
+  export type RoleUpdateManyWithWhereWithoutDeleterInput = {
+    where: RoleScalarWhereInput
+    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutDeleterInput>
+  }
+
+  export type RoleUpsertWithWhereUniqueWithoutUpdaterInput = {
+    where: RoleWhereUniqueInput
+    update: XOR<RoleUpdateWithoutUpdaterInput, RoleUncheckedUpdateWithoutUpdaterInput>
+    create: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput>
+  }
+
+  export type RoleUpdateWithWhereUniqueWithoutUpdaterInput = {
+    where: RoleWhereUniqueInput
+    data: XOR<RoleUpdateWithoutUpdaterInput, RoleUncheckedUpdateWithoutUpdaterInput>
+  }
+
+  export type RoleUpdateManyWithWhereWithoutUpdaterInput = {
+    where: RoleScalarWhereInput
+    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutUpdaterInput>
+  }
+
   export type UserUpsertWithoutCreatedUsersInput = {
     update: XOR<UserUpdateWithoutCreatedUsersInput, UserUncheckedUpdateWithoutCreatedUsersInput>
     create: XOR<UserCreateWithoutCreatedUsersInput, UserUncheckedCreateWithoutCreatedUsersInput>
@@ -9198,15 +9272,15 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     creator?: UserUpdateOneWithoutCreatedUsersNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
     deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
     deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedUsersInput = {
@@ -9227,11 +9301,11 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     roleId?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -9248,83 +9322,6 @@ export namespace Prisma {
   export type UserUpdateManyWithWhereWithoutCreatorInput = {
     where: UserScalarWhereInput
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCreatorInput>
-  }
-
-  export type UserUpsertWithoutUpdatedUsersInput = {
-    update: XOR<UserUpdateWithoutUpdatedUsersInput, UserUncheckedUpdateWithoutUpdatedUsersInput>
-    create: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutUpdatedUsersInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUpdatedUsersInput, UserUncheckedUpdateWithoutUpdatedUsersInput>
-  }
-
-  export type UserUpdateWithoutUpdatedUsersInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
-    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
-    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUpdatedUsersInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUpsertWithWhereUniqueWithoutUpdaterInput = {
-    where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutUpdaterInput, UserUncheckedUpdateWithoutUpdaterInput>
-    create: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput>
-  }
-
-  export type UserUpdateWithWhereUniqueWithoutUpdaterInput = {
-    where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutUpdaterInput, UserUncheckedUpdateWithoutUpdaterInput>
-  }
-
-  export type UserUpdateManyWithWhereWithoutUpdaterInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutUpdaterInput>
   }
 
   export type UserUpsertWithoutDeletedUsersInput = {
@@ -9352,15 +9349,15 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     creator?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
     deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedUsersInput = {
@@ -9381,11 +9378,11 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     roleId?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
     updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutDeleterInput = {
@@ -9426,8 +9423,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     creator?: UserUpdateOneWithoutCreatedRolesNestedInput
-    updater?: UserUpdateOneWithoutUpdatedRolesNestedInput
     deleter?: UserUpdateOneWithoutDeletedRolesNestedInput
+    updater?: UserUpdateOneWithoutUpdatedRolesNestedInput
   }
 
   export type RoleUncheckedUpdateWithoutUsersInput = {
@@ -9445,70 +9442,81 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type RoleUpsertWithWhereUniqueWithoutCreatorInput = {
-    where: RoleWhereUniqueInput
-    update: XOR<RoleUpdateWithoutCreatorInput, RoleUncheckedUpdateWithoutCreatorInput>
-    create: XOR<RoleCreateWithoutCreatorInput, RoleUncheckedCreateWithoutCreatorInput>
+  export type UserUpsertWithoutUpdatedUsersInput = {
+    update: XOR<UserUpdateWithoutUpdatedUsersInput, UserUncheckedUpdateWithoutUpdatedUsersInput>
+    create: XOR<UserCreateWithoutUpdatedUsersInput, UserUncheckedCreateWithoutUpdatedUsersInput>
+    where?: UserWhereInput
   }
 
-  export type RoleUpdateWithWhereUniqueWithoutCreatorInput = {
-    where: RoleWhereUniqueInput
-    data: XOR<RoleUpdateWithoutCreatorInput, RoleUncheckedUpdateWithoutCreatorInput>
+  export type UserUpdateToOneWithWhereWithoutUpdatedUsersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUpdatedUsersInput, UserUncheckedUpdateWithoutUpdatedUsersInput>
   }
 
-  export type RoleUpdateManyWithWhereWithoutCreatorInput = {
-    where: RoleScalarWhereInput
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutCreatorInput>
+  export type UserUpdateWithoutUpdatedUsersInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
+    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
+    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
+    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
   }
 
-  export type RoleScalarWhereInput = {
-    AND?: RoleScalarWhereInput | RoleScalarWhereInput[]
-    OR?: RoleScalarWhereInput[]
-    NOT?: RoleScalarWhereInput | RoleScalarWhereInput[]
-    roleId?: StringFilter<"Role"> | string
-    roleName?: StringFilter<"Role"> | string
-    roleLevel?: IntFilter<"Role"> | number
-    roleDesc?: StringNullableFilter<"Role"> | string | null
-    roleIsActive?: BoolFilter<"Role"> | boolean
-    createdAt?: DateTimeFilter<"Role"> | Date | string
-    createdBy?: StringNullableFilter<"Role"> | string | null
-    updatedAt?: DateTimeFilter<"Role"> | Date | string
-    updatedBy?: StringNullableFilter<"Role"> | string | null
-    isDeleted?: BoolFilter<"Role"> | boolean
-    deletedAt?: DateTimeNullableFilter<"Role"> | Date | string | null
-    deletedBy?: StringNullableFilter<"Role"> | string | null
+  export type UserUncheckedUpdateWithoutUpdatedUsersInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
   }
 
-  export type RoleUpsertWithWhereUniqueWithoutUpdaterInput = {
-    where: RoleWhereUniqueInput
-    update: XOR<RoleUpdateWithoutUpdaterInput, RoleUncheckedUpdateWithoutUpdaterInput>
-    create: XOR<RoleCreateWithoutUpdaterInput, RoleUncheckedCreateWithoutUpdaterInput>
+  export type UserUpsertWithWhereUniqueWithoutUpdaterInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutUpdaterInput, UserUncheckedUpdateWithoutUpdaterInput>
+    create: XOR<UserCreateWithoutUpdaterInput, UserUncheckedCreateWithoutUpdaterInput>
   }
 
-  export type RoleUpdateWithWhereUniqueWithoutUpdaterInput = {
-    where: RoleWhereUniqueInput
-    data: XOR<RoleUpdateWithoutUpdaterInput, RoleUncheckedUpdateWithoutUpdaterInput>
+  export type UserUpdateWithWhereUniqueWithoutUpdaterInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutUpdaterInput, UserUncheckedUpdateWithoutUpdaterInput>
   }
 
-  export type RoleUpdateManyWithWhereWithoutUpdaterInput = {
-    where: RoleScalarWhereInput
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutUpdaterInput>
-  }
-
-  export type RoleUpsertWithWhereUniqueWithoutDeleterInput = {
-    where: RoleWhereUniqueInput
-    update: XOR<RoleUpdateWithoutDeleterInput, RoleUncheckedUpdateWithoutDeleterInput>
-    create: XOR<RoleCreateWithoutDeleterInput, RoleUncheckedCreateWithoutDeleterInput>
-  }
-
-  export type RoleUpdateWithWhereUniqueWithoutDeleterInput = {
-    where: RoleWhereUniqueInput
-    data: XOR<RoleUpdateWithoutDeleterInput, RoleUncheckedUpdateWithoutDeleterInput>
-  }
-
-  export type RoleUpdateManyWithWhereWithoutDeleterInput = {
-    where: RoleScalarWhereInput
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutDeleterInput>
+  export type UserUpdateManyWithWhereWithoutUpdaterInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutUpdaterInput>
   }
 
   export type ChartCreateWithoutChildrenInput = {
@@ -9526,6 +9534,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     parent?: ChartCreateNestedOneWithoutChildrenInput
     members?: ChartMemberCreateNestedManyWithoutNodeInput
   }
@@ -9546,6 +9555,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     members?: ChartMemberUncheckedCreateNestedManyWithoutNodeInput
   }
 
@@ -9569,6 +9579,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     children?: ChartCreateNestedManyWithoutParentInput
     members?: ChartMemberCreateNestedManyWithoutNodeInput
   }
@@ -9588,6 +9599,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     children?: ChartUncheckedCreateNestedManyWithoutParentInput
     members?: ChartMemberUncheckedCreateNestedManyWithoutNodeInput
   }
@@ -9660,6 +9672,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     parent?: ChartUpdateOneWithoutChildrenNestedInput
     members?: ChartMemberUpdateManyWithoutNodeNestedInput
   }
@@ -9680,6 +9693,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     members?: ChartMemberUncheckedUpdateManyWithoutNodeNestedInput
   }
 
@@ -9718,6 +9732,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"Chart"> | boolean
     deletedAt?: DateTimeNullableFilter<"Chart"> | Date | string | null
     deletedBy?: StringNullableFilter<"Chart"> | string | null
+    jobDesc?: StringNullableFilter<"Chart"> | string | null
   }
 
   export type ChartMemberUpsertWithWhereUniqueWithoutNodeInput = {
@@ -9767,6 +9782,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     parent?: ChartCreateNestedOneWithoutChildrenInput
     children?: ChartCreateNestedManyWithoutParentInput
   }
@@ -9787,6 +9803,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
     children?: ChartUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -9821,6 +9838,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     parent?: ChartUpdateOneWithoutChildrenNestedInput
     children?: ChartUpdateManyWithoutParentNestedInput
   }
@@ -9841,6 +9859,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     children?: ChartUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -9877,15 +9896,15 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
     creator?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
     deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
     deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -9905,12 +9924,12 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
     createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
     deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -9932,6 +9951,48 @@ export namespace Prisma {
     token?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type RoleCreateManyCreatorInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type RoleCreateManyDeleterInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+  }
+
+  export type RoleCreateManyUpdaterInput = {
+    roleId: string
+    roleName: string
+    roleLevel: number
+    roleDesc?: string | null
+    roleIsActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
   export type UserCreateManyCreatorInput = {
     userId: string
     username: string
@@ -9944,25 +10005,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    roleId: string
-    token?: string | null
-  }
-
-  export type UserCreateManyUpdaterInput = {
-    userId: string
-    username: string
-    password: string
-    name: string
-    badgeNumber: string
-    department?: string | null
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
@@ -9989,253 +10031,23 @@ export namespace Prisma {
     token?: string | null
   }
 
-  export type RoleCreateManyCreatorInput = {
-    roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-  }
-
-  export type RoleCreateManyUpdaterInput = {
-    roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
+  export type UserCreateManyUpdaterInput = {
+    userId: string
+    username: string
+    password: string
+    name: string
+    badgeNumber: string
+    department?: string | null
+    isActive?: boolean
+    lastLogin?: Date | string | null
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
-  }
-
-  export type RoleCreateManyDeleterInput = {
     roleId: string
-    roleName: string
-    roleLevel: number
-    roleDesc?: string | null
-    roleIsActive?: boolean
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-  }
-
-  export type UserUpdateWithoutCreatorInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
-    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
-    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCreatorInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutCreatorInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type UserUpdateWithoutUpdaterInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
-    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
-    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
-    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUpdaterInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutUpdaterInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type UserUpdateWithoutDeleterInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
-    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
-    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
-    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
-    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
-    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDeleterInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
-    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
-    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
-    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutDeleterInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    roleId?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: string | null
   }
 
   export type RoleUpdateWithoutCreatorInput = {
@@ -10248,8 +10060,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updater?: UserUpdateOneWithoutUpdatedRolesNestedInput
     deleter?: UserUpdateOneWithoutDeletedRolesNestedInput
+    updater?: UserUpdateOneWithoutUpdatedRolesNestedInput
     users?: UserUpdateManyWithoutRoleNestedInput
   }
 
@@ -10277,50 +10089,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type RoleUpdateWithoutUpdaterInput = {
-    roleId?: StringFieldUpdateOperationsInput | string
-    roleName?: StringFieldUpdateOperationsInput | string
-    roleLevel?: IntFieldUpdateOperationsInput | number
-    roleDesc?: NullableStringFieldUpdateOperationsInput | string | null
-    roleIsActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    creator?: UserUpdateOneWithoutCreatedRolesNestedInput
-    deleter?: UserUpdateOneWithoutDeletedRolesNestedInput
-    users?: UserUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateWithoutUpdaterInput = {
-    roleId?: StringFieldUpdateOperationsInput | string
-    roleName?: StringFieldUpdateOperationsInput | string
-    roleLevel?: IntFieldUpdateOperationsInput | number
-    roleDesc?: NullableStringFieldUpdateOperationsInput | string | null
-    roleIsActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    users?: UserUncheckedUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateManyWithoutUpdaterInput = {
-    roleId?: StringFieldUpdateOperationsInput | string
-    roleName?: StringFieldUpdateOperationsInput | string
-    roleLevel?: IntFieldUpdateOperationsInput | number
-    roleDesc?: NullableStringFieldUpdateOperationsInput | string | null
-    roleIsActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10370,6 +10138,257 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type RoleUpdateWithoutUpdaterInput = {
+    roleId?: StringFieldUpdateOperationsInput | string
+    roleName?: StringFieldUpdateOperationsInput | string
+    roleLevel?: IntFieldUpdateOperationsInput | number
+    roleDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    roleIsActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creator?: UserUpdateOneWithoutCreatedRolesNestedInput
+    deleter?: UserUpdateOneWithoutDeletedRolesNestedInput
+    users?: UserUpdateManyWithoutRoleNestedInput
+  }
+
+  export type RoleUncheckedUpdateWithoutUpdaterInput = {
+    roleId?: StringFieldUpdateOperationsInput | string
+    roleName?: StringFieldUpdateOperationsInput | string
+    roleLevel?: IntFieldUpdateOperationsInput | number
+    roleDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    roleIsActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    users?: UserUncheckedUpdateManyWithoutRoleNestedInput
+  }
+
+  export type RoleUncheckedUpdateManyWithoutUpdaterInput = {
+    roleId?: StringFieldUpdateOperationsInput | string
+    roleName?: StringFieldUpdateOperationsInput | string
+    roleLevel?: IntFieldUpdateOperationsInput | number
+    roleDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    roleIsActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutCreatorInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
+    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
+    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatorInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutCreatorInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutDeleterInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
+    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    updater?: UserUpdateOneWithoutUpdatedUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDeleterInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutDeleterInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutUpdaterInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUpdateManyWithoutUpdaterNestedInput
+    creator?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatorNestedInput
+    deleter?: UserUpdateOneWithoutDeletedUsersNestedInput
+    deletedUsers?: UserUpdateManyWithoutDeleterNestedInput
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    updatedUsers?: UserUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUpdaterInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    createdRoles?: RoleUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedRoles?: RoleUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedRoles?: RoleUncheckedUpdateManyWithoutUpdaterNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatorNestedInput
+    deletedUsers?: UserUncheckedUpdateManyWithoutDeleterNestedInput
+    updatedUsers?: UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutUpdaterInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    badgeNumber?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type ChartCreateManyParentInput = {
     chartId: string
     pilarId: number
@@ -10385,6 +10404,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jobDesc?: string | null
   }
 
   export type ChartMemberCreateManyNodeInput = {
@@ -10414,6 +10434,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     children?: ChartUpdateManyWithoutParentNestedInput
     members?: ChartMemberUpdateManyWithoutNodeNestedInput
   }
@@ -10433,6 +10454,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
     children?: ChartUncheckedUpdateManyWithoutParentNestedInput
     members?: ChartMemberUncheckedUpdateManyWithoutNodeNestedInput
   }
@@ -10452,6 +10474,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartMemberUpdateWithoutNodeInput = {

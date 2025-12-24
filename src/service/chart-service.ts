@@ -20,7 +20,7 @@ export class ChartService {
   static async create(requesterUserId: string, request: CreateChartRequest) {
     const validated = Validation.validate(ChartValidation.CREATE, request);
 
-    const { position, capacity } = validated;
+    const { position, capacity, jobDesc } = validated;
     let { parentId, pilarId, sbuId, sbuSubId } = validated;
 
 
@@ -36,13 +36,17 @@ export class ChartService {
     // --- VALIDASI MASTER: pilar / sbu / sbuSub ---
     // Jika hanya sbuSubId diberikan → otomatis ambil pilar & sbu
     if (sbuSubId && (!pilarId || !sbuId)) {
-      const sub = await prismaEmployee.em_sbu_sub.findUnique({
-      where: { id: sbuSubId, OR: [{ isDeleted: false }, { isDeleted: null }] },
-      include: { sbu: { include: { pilar: true } } }
-    });
-    if (!sub) throw new ResponseError(400, "Invalid sbuSubId");
-      sbuId = sub.sbuId;
-      pilarId = sub.sbu.pilarId;
+      const sub = await prismaEmployee.em_sbu_sub.findFirst({
+        where: { id: sbuSubId, OR: [{ isDeleted: false }, { isDeleted: null }] }
+      });
+      if (!sub) throw new ResponseError(400, "Invalid sbuSubId");
+
+      if (sub.sbu_id === null || sub.sbu_pilar === null) {
+        throw new ResponseError(400, "SBU SUB missing SBU/Pilar reference");
+      }
+
+      sbuId = sub.sbu_id;
+      pilarId = sub.sbu_pilar;
     }
 
 
@@ -54,8 +58,8 @@ export class ChartService {
 
 
     // Validasi SBU
-    const validSbu = await prismaEmployee.em_sbu.findUnique({
-    where: { id: sbuId, OR: [{ isDeleted: false }, { isDeleted: null }]}
+    const validSbu = await prismaEmployee.em_sbu.findFirst({
+      where: { id: sbuId, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
     if (!validSbu) throw new ResponseError(400, "Invalid sbuId");
 
@@ -126,6 +130,7 @@ export class ChartService {
         position,
         capacity,
         orderIndex: nextOrderIndex,
+        jobDesc: jobDesc ?? null,
         createdBy: requesterUserId,
         updatedBy: requesterUserId,
       }
@@ -158,7 +163,8 @@ export class ChartService {
       chartId,
       position: inputPosition,
       capacity: inputCapacity,
-      orderIndex: inputOrderIndex
+      orderIndex: inputOrderIndex,
+      jobDesc: inputJobDesc
     } = validated;
 
     // 1. CEK NODE
@@ -170,6 +176,7 @@ export class ChartService {
     const finalPosition = inputPosition ?? existing.position;
     const finalCapacity = inputCapacity ?? existing.capacity;
     const finalOrderIndex = inputOrderIndex ?? existing.orderIndex;
+    const finalJobDesc = inputJobDesc === undefined ? existing.jobDesc : inputJobDesc;
 
     // 2. CEK ADMIN
     const requester = await prismaFlowly.user.findUnique({
@@ -269,6 +276,7 @@ export class ChartService {
         position: finalPosition,
         capacity: finalCapacity,
         orderIndex: finalOrderIndex,
+        jobDesc: finalJobDesc,
         updatedBy: requesterUserId,
         updatedAt: new Date(),
       },
@@ -394,6 +402,9 @@ export class ChartService {
     sbuId?: number,
     sbuSubId?: number
   ) {
+    if (sbuSubId === undefined) {
+      return [];
+    }
      // Cek apakah SBU_SUB masih aktif
     const sub = await prismaEmployee.em_sbu_sub.findUnique({
       where: { id: sbuSubId },

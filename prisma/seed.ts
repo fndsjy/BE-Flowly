@@ -1,13 +1,11 @@
 // prisma/seed.ts
-import { PrismaClient } from "@prisma/client";
+import { prismaFlowly as prisma } from "../src/application/database.js";
 import bcrypt from "bcrypt";
 import { generateUserId, generateRoleId } from "../src/utils/id-generator.ts";
 
-const prisma = new PrismaClient();
-
 // 🔹 Daftar Role
 const roles = [
-  {
+  { 
     roleName: "Admin",
     roleLevel: 1,
     roleDesc: "System administrator with full access",

@@ -21,12 +21,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.0
- * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+ * Prisma Client JS version: 6.19.1
+ * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
  */
 Prisma.prismaVersion = {
-  client: "6.19.0",
-  engine: "2ba551f319ab1df4bc874a89965d8b3641056773"
+  client: "6.19.1",
+  engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -122,9 +122,1049 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Snapshot: 'Snapshot'
 });
 
+exports.Prisma.Em_absensiScalarFieldEnum = {
+  Id: 'Id',
+  faceId: 'faceId',
+  inDate: 'inDate',
+  outDate: 'outDate',
+  fileImage: 'fileImage'
+};
+
+exports.Prisma.Em_apc_academyScalarFieldEnum = {
+  AcademyId: 'AcademyId',
+  ApcId: 'ApcId',
+  SchoolName: 'SchoolName',
+  Province: 'Province',
+  Major: 'Major',
+  Degree: 'Degree',
+  EnrollDate: 'EnrollDate',
+  GraduatDate: 'GraduatDate',
+  IPK: 'IPK',
+  OrganizeExperience: 'OrganizeExperience',
+  Explain: 'Explain',
+  GradeSchool: 'GradeSchool',
+  DailySchedule: 'DailySchedule',
+  SchoolAddress: 'SchoolAddress'
+};
+
+exports.Prisma.Em_apc_personalScalarFieldEnum = {
+  ApcId: 'ApcId',
+  PossId: 'PossId',
+  AboutUs: 'AboutUs',
+  FullName: 'FullName',
+  NickName: 'NickName',
+  PlaceBirth: 'PlaceBirth',
+  DateBirth: 'DateBirth',
+  Age: 'Age',
+  Gender: 'Gender',
+  Religion: 'Religion',
+  MaritalStats: 'MaritalStats',
+  Citizenship: 'Citizenship',
+  Province: 'Province',
+  Regency: 'Regency',
+  Subdistrict: 'Subdistrict',
+  PostCode: 'PostCode',
+  Address: 'Address',
+  IdentityType: 'IdentityType',
+  IdentityNumber: 'IdentityNumber',
+  PhoneCode: 'PhoneCode',
+  PhoneNumber: 'PhoneNumber',
+  EmailAddress: 'EmailAddress',
+  Height: 'Height',
+  Weight: 'Weight',
+  FatherName: 'FatherName',
+  FatherOccupa: 'FatherOccupa',
+  MotherName: 'MotherName',
+  MotherOccupa: 'MotherOccupa',
+  NumofSibling: 'NumofSibling',
+  SiblingNote: 'SiblingNote',
+  NikFileName: 'NikFileName',
+  PhotoFileName: 'PhotoFileName',
+  CvFileName: 'CvFileName',
+  IsTransferPosst: 'IsTransferPosst',
+  Status: 'Status',
+  CreatedAt: 'CreatedAt',
+  isHobby: 'isHobby',
+  LokCat: 'LokCat',
+  isSosmedId: 'isSosmedId',
+  isSosmed: 'isSosmed',
+  IsCall: 'IsCall',
+  DateCall: 'DateCall',
+  isLinked: 'isLinked',
+  PossName: 'PossName'
+};
+
+exports.Prisma.Em_apc_photographScalarFieldEnum = {
+  Id: 'Id',
+  ApcId: 'ApcId',
+  GenrName: 'GenrName'
+};
+
+exports.Prisma.Em_apc_regulationScalarFieldEnum = {
+  ApcRegId: 'ApcRegId',
+  ApcId: 'ApcId',
+  RegId: 'RegId',
+  RegChoice: 'RegChoice'
+};
+
+exports.Prisma.Em_apc_skill_experScalarFieldEnum = {
+  SkillId: 'SkillId',
+  ApcId: 'ApcId',
+  CompanyName: 'CompanyName',
+  Province: 'Province',
+  JobTitle: 'JobTitle',
+  Salary: 'Salary',
+  StartDate: 'StartDate',
+  EndDate: 'EndDate',
+  Responsibilities: 'Responsibilities',
+  CareerGoals: 'CareerGoals',
+  WhyJoin: 'WhyJoin',
+  IsFriend: 'IsFriend',
+  IsMentions: 'IsMentions',
+  IsCompProgram: 'IsCompProgram',
+  IsIllnes: 'IsIllnes',
+  HaveCriminal: 'HaveCriminal',
+  WhenWork: 'WhenWork',
+  ExpectedSalary: 'ExpectedSalary',
+  isContribution: 'isContribution',
+  isDuration: 'isDuration',
+  isAgency: 'isAgency',
+  isExprn: 'isExprn',
+  isGenre: 'isGenre',
+  isRelevan: 'isRelevan',
+  isSpesialSkill: 'isSpesialSkill',
+  isShoot: 'isShoot',
+  isSchedl: 'isSchedl',
+  isMotivation: 'isMotivation',
+  isStress: 'isStress',
+  isLongExpr: 'isLongExpr',
+  isPhotTools: 'isPhotTools',
+  isChalleng: 'isChalleng',
+  isThreeYears: 'isThreeYears',
+  PersonVal: 'PersonVal'
+};
+
+exports.Prisma.Em_api_keysScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  api_key: 'api_key',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_applicant_criteriaScalarFieldEnum = {
+  id_kriteria: 'id_kriteria',
+  id_loker: 'id_loker',
+  jenis_kriteria: 'jenis_kriteria',
+  value: 'value',
+  value_en: 'value_en',
+  bobot: 'bobot',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_applicant_matchScalarFieldEnum = {
+  id_match: 'id_match',
+  id_applicant: 'id_applicant',
+  id_loker: 'id_loker',
+  pendidikan_score: 'pendidikan_score',
+  jurusan_score: 'jurusan_score',
+  pengalaman_score: 'pengalaman_score',
+  skill_score: 'skill_score',
+  bahasa_score: 'bahasa_score',
+  usia_score: 'usia_score',
+  total_score: 'total_score',
+  total_kriteria: 'total_kriteria',
+  scoring_json: 'scoring_json',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_bannerScalarFieldEnum = {
+  Id: 'Id',
+  bannerName: 'bannerName',
+  fileName: 'fileName',
+  menuName: 'menuName',
+  noUrut: 'noUrut',
+  Status: 'Status',
+  created_at: 'created_at',
+  last_update: 'last_update',
+  userid: 'userid'
+};
+
+exports.Prisma.Em_career_contactScalarFieldEnum = {
+  cpId: 'cpId',
+  companyName: 'companyName',
+  email: 'email',
+  waNumber: 'waNumber',
+  fileImage: 'fileImage',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  userid: 'userid'
+};
+
+exports.Prisma.Em_certificate_fieldsScalarFieldEnum = {
+  id: 'id',
+  certificate_id: 'certificate_id',
+  is_text: 'is_text',
+  is_left: 'is_left',
+  is_top: 'is_top',
+  text_width: 'text_width',
+  text_height: 'text_height',
+  font_size: 'font_size',
+  align: 'align',
+  font_family: 'font_family',
+  font_style: 'font_style',
+  font_weight: 'font_weight',
+  font_color: 'font_color',
+  created_date: 'created_date',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_certificate_templatesScalarFieldEnum = {
+  certificate_id: 'certificate_id',
+  name: 'name',
+  background_image: 'background_image',
+  created_at: 'created_at',
+  certificate_name: 'certificate_name',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_certificates_resultScalarFieldEnum = {
+  cert_number: 'cert_number',
+  cert_templ_id: 'cert_templ_id',
+  empl_id: 'empl_id',
+  cert_name: 'cert_name',
+  created_date: 'created_date',
+  status: 'status',
+  generated_by: 'generated_by',
+  schedule_id: 'schedule_id'
+};
+
+exports.Prisma.Em_chanceScalarFieldEnum = {
+  chId: 'chId',
+  chName: 'chName',
+  chDesc: 'chDesc',
+  chStats: 'chStats',
+  chFileImage: 'chFileImage',
+  chLink: 'chLink',
+  chUserid: 'chUserid',
+  chDate: 'chDate',
+  chLastupdate: 'chLastupdate'
+};
+
+exports.Prisma.Em_contrctypeScalarFieldEnum = {
+  id: 'id',
+  contract_text: 'contract_text',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_deptScalarFieldEnum = {
+  DEPTID: 'DEPTID',
+  DEPTNAME: 'DEPTNAME',
+  sbu_sub: 'sbu_sub',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_employeeScalarFieldEnum = {
+  UserId: 'UserId',
+  BadgeNum: 'BadgeNum',
+  Name: 'Name',
+  Gender: 'Gender',
+  BirthDay: 'BirthDay',
+  HireDay: 'HireDay',
+  Street: 'Street',
+  Religion: 'Religion',
+  Tipe: 'Tipe',
+  isLokasi: 'isLokasi',
+  Phone: 'Phone',
+  DeptId: 'DeptId',
+  Password: 'Password',
+  CardNo: 'CardNo',
+  Shift: 'Shift',
+  isMem: 'isMem',
+  AddBy: 'AddBy',
+  Created_at: 'Created_at',
+  Lastupdate: 'Lastupdate',
+  isMemDate: 'isMemDate',
+  isFirstLogin: 'isFirstLogin',
+  ImgName: 'ImgName',
+  SbuSub: 'SbuSub',
+  Nik: 'Nik',
+  ResignDate: 'ResignDate',
+  status: 'status',
+  roleId: 'roleId',
+  jobDesc: 'jobDesc'
+};
+
+exports.Prisma.Em_eventScalarFieldEnum = {
+  event_id: 'event_id',
+  event_name: 'event_name',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  status: 'status',
+  lokasi: 'lokasi',
+  created_date: 'created_date',
+  last_update: 'last_update'
+};
+
+exports.Prisma.Em_event_regScalarFieldEnum = {
+  Regid: 'Regid',
+  name: 'name',
+  optic_name: 'optic_name',
+  password: 'password',
+  wa_num: 'wa_num',
+  email: 'email',
+  profesi_id: 'profesi_id',
+  event_id: 'event_id',
+  status: 'status',
+  first_login: 'first_login',
+  created_date: 'created_date',
+  last_update: 'last_update',
+  image_name: 'image_name'
+};
+
+exports.Prisma.Em_event2ScalarFieldEnum = {
+  sess_id: 'sess_id',
+  event_id: 'event_id',
+  event_name: 'event_name',
+  status: 'status',
+  qr_code: 'qr_code'
+};
+
+exports.Prisma.Em_exam_questionsScalarFieldEnum = {
+  id: 'id',
+  exam_id: 'exam_id',
+  question_id: 'question_id'
+};
+
+exports.Prisma.Em_examsScalarFieldEnum = {
+  id: 'id',
+  exam_name: 'exam_name',
+  UserId: 'UserId',
+  Status: 'Status',
+  LastUpdate: 'LastUpdate',
+  Deskripsi: 'Deskripsi',
+  FileImage: 'FileImage',
+  CatType: 'CatType'
+};
+
+exports.Prisma.Em_exams_monitorScalarFieldEnum = {
+  Id: 'Id',
+  schedule_id: 'schedule_id',
+  exams_id: 'exams_id',
+  empl_id: 'empl_id',
+  tipe_soal: 'tipe_soal',
+  jumlah_soal: 'jumlah_soal',
+  status: 'status',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_exams_resultsScalarFieldEnum = {
+  Id: 'Id',
+  exams_id: 'exams_id',
+  empl_id: 'empl_id',
+  soal_id: 'soal_id',
+  is_changes: 'is_changes',
+  is_answer: 'is_answer',
+  is_time: 'is_time'
+};
+
+exports.Prisma.Em_faqScalarFieldEnum = {
+  fqId: 'fqId',
+  fqcatid: 'fqcatid',
+  isquestions: 'isquestions',
+  isanswer: 'isanswer',
+  status: 'status',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  userid: 'userid'
+};
+
+exports.Prisma.Em_faq_catScalarFieldEnum = {
+  fqcatid: 'fqcatid',
+  name: 'name',
+  status: 'status',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_galeri_materiScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  file_type: 'file_type',
+  file_name: 'file_name',
+  file_size: 'file_size',
+  url: 'url',
+  urutan: 'urutan',
+  status: 'status',
+  created_date: 'created_date',
+  last_update: 'last_update'
+};
+
+exports.Prisma.Em_groupScalarFieldEnum = {
+  GroupId: 'GroupId',
+  GroupName: 'GroupName',
+  Status: 'Status',
+  CreateDate: 'CreateDate',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_hero_sectionScalarFieldEnum = {
+  hsId: 'hsId',
+  hsName: 'hsName',
+  hsDesc: 'hsDesc',
+  hsStats: 'hsStats',
+  hsFileImage: 'hsFileImage',
+  hsLink: 'hsLink',
+  hsUserid: 'hsUserid',
+  hsDate: 'hsDate',
+  hsLastupdate: 'hsLastupdate',
+  Urutan: 'Urutan'
+};
+
+exports.Prisma.Em_jawaban_pesertaScalarFieldEnum = {
+  Id: 'Id',
+  empl_id: 'empl_id',
+  soal_id: 'soal_id',
+  session_exams_id: 'session_exams_id',
+  jawaban: 'jawaban',
+  jawaban2: 'jawaban2',
+  waktu_jawab: 'waktu_jawab',
+  Score: 'Score',
+  is_correction: 'is_correction',
+  is_train_jawaban: 'is_train_jawaban'
+};
+
+exports.Prisma.Em_jawaban_peserta_apcScalarFieldEnum = {
+  Id: 'Id',
+  apc_id: 'apc_id',
+  soal_id: 'soal_id',
+  topic_id: 'topic_id',
+  session_exams_id: 'session_exams_id',
+  jawaban_option: 'jawaban_option',
+  jawaban_text: 'jawaban_text',
+  waktu_jawab: 'waktu_jawab',
+  score: 'score',
+  is_correction: 'is_correction',
+  is_train_jawaban: 'is_train_jawaban'
+};
+
+exports.Prisma.Em_jobfairScalarFieldEnum = {
+  id: 'id',
+  lokasi: 'lokasi',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_levelpossScalarFieldEnum = {
+  id: 'id',
+  level_text: 'level_text',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_logsScalarFieldEnum = {
+  Id: 'Id',
+  IP: 'IP',
+  Login: 'Login',
+  Logout: 'Logout',
+  UserId: 'UserId',
+  LogId: 'LogId',
+  Notes: 'Notes',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_lokerScalarFieldEnum = {
+  lokerid: 'lokerid',
+  possid: 'possid',
+  startdate: 'startdate',
+  enddate: 'enddate',
+  jobdesc: 'jobdesc',
+  qualify: 'qualify',
+  worktype: 'worktype',
+  salary: 'salary',
+  contrtype: 'contrtype',
+  posslevel: 'posslevel',
+  status: 'status',
+  benefit: 'benefit',
+  fileimage: 'fileimage',
+  createdate: 'createdate',
+  lastupdate: 'lastupdate',
+  userid: 'userid',
+  kategori: 'kategori'
+};
+
+exports.Prisma.Em_loktopikScalarFieldEnum = {
+  id: 'id',
+  loker_id: 'loker_id',
+  topik_id: 'topik_id',
+  jmlh_soal: 'jmlh_soal',
+  created_at: 'created_at',
+  possid: 'possid',
+  urutan: 'urutan'
+};
+
+exports.Prisma.Em_materi_fileScalarFieldEnum = {
+  id: 'id',
+  materi_id: 'materi_id',
+  file_name: 'file_name',
+  file_type: 'file_type',
+  file_size: 'file_size',
+  url: 'url',
+  urutan: 'urutan',
+  judul: 'judul',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  galeri_id: 'galeri_id'
+};
+
+exports.Prisma.Em_materi_kategoriScalarFieldEnum = {
+  id: 'id',
+  kategori_nama: 'kategori_nama',
+  kategori_deskripsi: 'kategori_deskripsi',
+  is_active: 'is_active',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Em_materi_typeScalarFieldEnum = {
+  id: 'id',
+  materi_name: 'materi_name',
+  deskripsi: 'deskripsi',
+  status: 'status',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_materi1ScalarFieldEnum = {
+  id: 'id',
+  kode_materi: 'kode_materi',
+  judul_materi: 'judul_materi',
+  deskripsi_materi: 'deskripsi_materi',
+  kategori: 'kategori',
+  urutan: 'urutan',
+  is_required: 'is_required',
+  status: 'status',
+  created_by: 'created_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_materi2ScalarFieldEnum = {
+  id: 'id',
+  materi_id: 'materi_id',
+  materi_type: 'materi_type'
+};
+
+exports.Prisma.Em_menuScalarFieldEnum = {
+  id: 'id',
+  menuid: 'menuid',
+  name: 'name',
+  parent_id: 'parent_id',
+  link: 'link',
+  visible: 'visible',
+  status: 'status',
+  lastupdate: 'lastupdate',
+  icon: 'icon',
+  menutype: 'menutype'
+};
+
+exports.Prisma.Em_notifikasiScalarFieldEnum = {
+  NotifyId: 'NotifyId',
+  UserId: 'UserId',
+  GroupId: 'GroupId',
+  Note: 'Note',
+  Status: 'Status',
+  CreateDate: 'CreateDate',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_notifikasi_readScalarFieldEnum = {
+  ReadId: 'ReadId',
+  NotifyId: 'NotifyId',
+  UserId: 'UserId',
+  ReadDate: 'ReadDate'
+};
+
+exports.Prisma.Em_onboardingScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  status: 'status',
+  current_step: 'current_step',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Em_pilarScalarFieldEnum = {
+  id: 'id',
+  pilar_name: 'pilar_name',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
+  description: 'description',
+  pic: 'pic'
+};
+
+exports.Prisma.Em_profesiScalarFieldEnum = {
+  profesi_id: 'profesi_id',
+  profesi_name: 'profesi_name',
+  status: 'status',
+  created_date: 'created_date',
+  last_update: 'last_update'
+};
+
+exports.Prisma.Em_questions1ScalarFieldEnum = {
+  id: 'id',
+  question_text: 'question_text',
+  question_type: 'question_type',
+  correct_answer: 'correct_answer',
+  correct_answer2: 'correct_answer2',
+  exam_id: 'exam_id',
+  time_limit: 'time_limit',
+  score: 'score',
+  status: 'status',
+  userid: 'userid',
+  qdate: 'qdate',
+  lastupdate: 'lastupdate',
+  fileimage: 'fileimage',
+  isExams: 'isExams',
+  isLevel: 'isLevel'
+};
+
+exports.Prisma.Em_questions2ScalarFieldEnum = {
+  Id: 'Id',
+  question_id: 'question_id',
+  option_choices: 'option_choices',
+  option_text: 'option_text'
+};
+
+exports.Prisma.Em_questtypeScalarFieldEnum = {
+  Id: 'Id',
+  TypeName: 'TypeName',
+  Status: 'Status'
+};
+
+exports.Prisma.Em_regulationsScalarFieldEnum = {
+  Id: 'Id',
+  chanceId: 'chanceId',
+  regName: 'regName',
+  urut: 'urut',
+  status: 'status',
+  userid: 'userid',
+  createDate: 'createDate',
+  lastUpdate: 'lastUpdate'
+};
+
+exports.Prisma.Em_sbuScalarFieldEnum = {
+  id: 'id',
+  sbu_code: 'sbu_code',
+  sbu_name: 'sbu_name',
+  sbu_pilar: 'sbu_pilar',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
+  description: 'description',
+  pic: 'pic'
+};
+
+exports.Prisma.Em_sbu_subScalarFieldEnum = {
+  id: 'id',
+  sbu_sub_code: 'sbu_sub_code',
+  sbu_sub_name: 'sbu_sub_name',
+  sbu_id: 'sbu_id',
+  sbu_pilar: 'sbu_pilar',
+  status: 'status',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
+  description: 'description',
+  pic: 'pic'
+};
+
+exports.Prisma.Em_schedule1ScalarFieldEnum = {
+  Id: 'Id',
+  scheName: 'scheName',
+  scheDeskripsi: 'scheDeskripsi',
+  isMateri: 'isMateri',
+  isQuota: 'isQuota',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  isLokasi: 'isLokasi',
+  isTrainer: 'isTrainer',
+  status: 'status',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  sendWA: 'sendWA',
+  ujian_stats: 'ujian_stats',
+  is_with_soal: 'is_with_soal',
+  usr_by: 'usr_by',
+  is_wa_template: 'is_wa_template',
+  is_batch: 'is_batch',
+  event_id: 'event_id'
+};
+
+exports.Prisma.Em_schedule2ScalarFieldEnum = {
+  Id: 'Id',
+  scheduleId: 'scheduleId',
+  employeeId: 'employeeId',
+  Regid: 'Regid',
+  is_send_wa_stats: 'is_send_wa_stats',
+  send_date: 'send_date',
+  is_code_send: 'is_code_send'
+};
+
+exports.Prisma.Em_schedule3ScalarFieldEnum = {
+  Id: 'Id',
+  scheduleId: 'scheduleId',
+  soalId: 'soalId',
+  urutanSoal: 'urutanSoal',
+  materiId: 'materiId',
+  urutanTipeSoal: 'urutanTipeSoal',
+  tipeSoal: 'tipeSoal'
+};
+
+exports.Prisma.Em_schedule4ScalarFieldEnum = {
+  Id: 'Id',
+  scheduleId: 'scheduleId',
+  tipeSoal: 'tipeSoal',
+  jumlahSoal: 'jumlahSoal',
+  durasiPerTipe: 'durasiPerTipe'
+};
+
+exports.Prisma.Em_session_examsScalarFieldEnum = {
+  Id: 'Id',
+  schedule_id: 'schedule_id',
+  exams_id: 'exams_id',
+  empl_id: 'empl_id',
+  soal_urut: 'soal_urut',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  is_selesai: 'is_selesai',
+  is_token: 'is_token',
+  is_token_expr: 'is_token_expr',
+  durasi: 'durasi',
+  is_correct: 'is_correct',
+  is_notes: 'is_notes',
+  is_score_akhir: 'is_score_akhir'
+};
+
+exports.Prisma.Em_session_exams_apcScalarFieldEnum = {
+  Id: 'Id',
+  lokerid: 'lokerid',
+  exams_id: 'exams_id',
+  apcid: 'apcid',
+  soal_urut: 'soal_urut',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  is_selesai: 'is_selesai',
+  is_token: 'is_token',
+  is_token_expr: 'is_token_expr',
+  durasi: 'durasi',
+  is_correct: 'is_correct',
+  is_notes: 'is_notes',
+  is_score_akhir: 'is_score_akhir',
+  curr_topic_index: 'curr_topic_index',
+  curr_soal_index: 'curr_soal_index',
+  is_intro_topic: 'is_intro_topic',
+  is_jawaban_kosong: 'is_jawaban_kosong'
+};
+
+exports.Prisma.Em_subscribeScalarFieldEnum = {
+  Id: 'Id',
+  UserId: 'UserId',
+  Name: 'Name',
+  Status: 'Status',
+  Endpoint: 'Endpoint',
+  P256dh: 'P256dh',
+  Auth: 'Auth',
+  Created_at: 'Created_at',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.Em_subscriptionScalarFieldEnum = {
+  Id: 'Id',
+  username: 'username',
+  subscription: 'subscription',
+  status: 'status',
+  createdat: 'createdat'
+};
+
+exports.Prisma.Em_topic_selesaiScalarFieldEnum = {
+  id: 'id',
+  session_exams_id: 'session_exams_id',
+  apc_id: 'apc_id',
+  topic_id: 'topic_id',
+  selesai_at: 'selesai_at'
+};
+
+exports.Prisma.Em_user_answers1ScalarFieldEnum = {
+  Id: 'Id',
+  apcid: 'apcid',
+  topic_id: 'topic_id',
+  status: 'status',
+  startdate: 'startdate'
+};
+
+exports.Prisma.Em_user_dashboardScalarFieldEnum = {
+  UserId: 'UserId',
+  Username: 'Username',
+  Password: 'Password',
+  FullName: 'FullName',
+  RoleId: 'RoleId',
+  Status: 'Status',
+  CreateDate: 'CreateDate',
+  LastUpdate: 'LastUpdate',
+  GroupId: 'GroupId'
+};
+
+exports.Prisma.Em_user_listScalarFieldEnum = {
+  id: 'id',
+  userid: 'userid',
+  menuid: 'menuid',
+  visible: 'visible',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_usersScalarFieldEnum = {
+  Id: 'Id',
+  UserId: 'UserId',
+  Username: 'Username',
+  Password: 'Password',
+  LastUpdate: 'LastUpdate',
+  LevelId: 'LevelId',
+  Name: 'Name',
+  Status: 'Status',
+  imagename: 'imagename',
+  Pass_Access_Menu: 'Pass_Access_Menu'
+};
+
+exports.Prisma.Em_verify_linksScalarFieldEnum = {
+  id: 'id',
+  applicant_id: 'applicant_id',
+  token: 'token',
+  expires_at: 'expires_at',
+  created_at: 'created_at',
+  status: 'status',
+  useragent: 'useragent',
+  ipaddress: 'ipaddress',
+  browser: 'browser',
+  platform: 'platform',
+  device: 'device'
+};
+
+exports.Prisma.Em_wa_templatesScalarFieldEnum = {
+  id: 'id',
+  template_name: 'template_name',
+  template_text: 'template_text',
+  add_by: 'add_by',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate',
+  status: 'status',
+  tpfor: 'tpfor'
+};
+
+exports.Prisma.Em_worktypeScalarFieldEnum = {
+  id: 'id',
+  worktype_text: 'worktype_text',
+  status: 'status',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.Em_xquetestScalarFieldEnum = {
+  ID: 'ID',
+  q_id: 'q_id',
+  question_text: 'question_text'
+};
+
+exports.Prisma.EmappScalarFieldEnum = {
+  AppId: 'AppId',
+  AppName: 'AppName',
+  AppPoss: 'AppPoss',
+  AppWa: 'AppWa',
+  AppMail: 'AppMail',
+  AppAge: 'AppAge',
+  AppJk: 'AppJk',
+  AppAddres: 'AppAddres',
+  AppFakt: 'AppFakt',
+  AppFileName: 'AppFileName',
+  AppLastUpdate: 'AppLastUpdate',
+  AppDate: 'AppDate',
+  AppStatus: 'AppStatus',
+  IsCall: 'IsCall',
+  DateCall: 'DateCall',
+  JobsIs: 'JobsIs',
+  JFStats: 'JFStats',
+  LokasiId: 'LokasiId'
+};
+
+exports.Prisma.EmpasswScalarFieldEnum = {
+  Id: 'Id',
+  Name: 'Name',
+  Pass: 'Pass',
+  Level: 'Level'
+};
+
+exports.Prisma.EmpossScalarFieldEnum = {
+  Id: 'Id',
+  PossName: 'PossName',
+  Status: 'Status',
+  UserId: 'UserId',
+  LastUpdate: 'LastUpdate'
+};
+
+exports.Prisma.FaceusersScalarFieldEnum = {
+  Id: 'Id',
+  name: 'name',
+  fileimage: 'fileimage',
+  descriptor: 'descriptor',
+  pose: 'pose',
+  created_at: 'created_at',
+  lastupdate: 'lastupdate'
+};
+
+exports.Prisma.MenuScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parent_id: 'parent_id',
+  link: 'link',
+  visible: 'visible',
+  role: 'role'
+};
+
+exports.Prisma.ScoresScalarFieldEnum = {
+  id: 'id',
+  exam_id: 'exam_id',
+  user_id: 'user_id',
+  total_score: 'total_score',
+  created_at: 'created_at'
+};
+
+exports.Prisma.SysdiagramsScalarFieldEnum = {
+  name: 'name',
+  principal_id: 'principal_id',
+  diagram_id: 'diagram_id',
+  version: 'version',
+  definition: 'definition'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-
+  em_absensi: 'em_absensi',
+  em_apc_academy: 'em_apc_academy',
+  em_apc_personal: 'em_apc_personal',
+  em_apc_photograph: 'em_apc_photograph',
+  em_apc_regulation: 'em_apc_regulation',
+  em_apc_skill_exper: 'em_apc_skill_exper',
+  em_api_keys: 'em_api_keys',
+  em_applicant_criteria: 'em_applicant_criteria',
+  em_applicant_match: 'em_applicant_match',
+  em_banner: 'em_banner',
+  em_career_contact: 'em_career_contact',
+  em_certificate_fields: 'em_certificate_fields',
+  em_certificate_templates: 'em_certificate_templates',
+  em_certificates_result: 'em_certificates_result',
+  em_chance: 'em_chance',
+  em_contrctype: 'em_contrctype',
+  em_dept: 'em_dept',
+  em_employee: 'em_employee',
+  em_event: 'em_event',
+  em_event_reg: 'em_event_reg',
+  em_event2: 'em_event2',
+  em_exam_questions: 'em_exam_questions',
+  em_exams: 'em_exams',
+  em_exams_monitor: 'em_exams_monitor',
+  em_exams_results: 'em_exams_results',
+  em_faq: 'em_faq',
+  em_faq_cat: 'em_faq_cat',
+  em_galeri_materi: 'em_galeri_materi',
+  em_group: 'em_group',
+  em_hero_section: 'em_hero_section',
+  em_jawaban_peserta: 'em_jawaban_peserta',
+  em_jawaban_peserta_apc: 'em_jawaban_peserta_apc',
+  em_jobfair: 'em_jobfair',
+  em_levelposs: 'em_levelposs',
+  em_logs: 'em_logs',
+  em_loker: 'em_loker',
+  em_loktopik: 'em_loktopik',
+  em_materi_file: 'em_materi_file',
+  em_materi_kategori: 'em_materi_kategori',
+  em_materi_type: 'em_materi_type',
+  em_materi1: 'em_materi1',
+  em_materi2: 'em_materi2',
+  em_menu: 'em_menu',
+  em_notifikasi: 'em_notifikasi',
+  em_notifikasi_read: 'em_notifikasi_read',
+  em_onboarding: 'em_onboarding',
+  em_pilar: 'em_pilar',
+  em_profesi: 'em_profesi',
+  em_questions1: 'em_questions1',
+  em_questions2: 'em_questions2',
+  em_questtype: 'em_questtype',
+  em_regulations: 'em_regulations',
+  em_sbu: 'em_sbu',
+  em_sbu_sub: 'em_sbu_sub',
+  em_schedule1: 'em_schedule1',
+  em_schedule2: 'em_schedule2',
+  em_schedule3: 'em_schedule3',
+  em_schedule4: 'em_schedule4',
+  em_session_exams: 'em_session_exams',
+  em_session_exams_apc: 'em_session_exams_apc',
+  em_subscribe: 'em_subscribe',
+  em_subscription: 'em_subscription',
+  em_topic_selesai: 'em_topic_selesai',
+  em_user_answers1: 'em_user_answers1',
+  em_user_dashboard: 'em_user_dashboard',
+  em_user_list: 'em_user_list',
+  em_users: 'em_users',
+  em_verify_links: 'em_verify_links',
+  em_wa_templates: 'em_wa_templates',
+  em_worktype: 'em_worktype',
+  em_xquetest: 'em_xquetest',
+  emapp: 'emapp',
+  empassw: 'empassw',
+  emposs: 'emposs',
+  faceusers: 'faceusers',
+  menu: 'menu',
+  scores: 'scores',
+  sysdiagrams: 'sysdiagrams'
 };
 
 /**
