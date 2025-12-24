@@ -10,8 +10,19 @@ export class UserValidation {
   });
 
   static readonly LOGIN: ZodType = z.object({
-    username: z.string().min(1),
+    username: z.string().trim().min(1).optional(),
+    badgeNumber: z.string().trim().min(1).optional(),
     password: z.string().min(1),
+  }).superRefine((data, ctx) => {
+    const hasUsername = Boolean(data.username);
+    const hasBadgeNumber = Boolean(data.badgeNumber);
+
+    if (hasUsername === hasBadgeNumber) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Provide either username or badge number",
+      });
+    }
   });
 
   static readonly CHANGE_PASSWORD: ZodType = z.object({

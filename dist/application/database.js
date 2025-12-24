@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { PrismaClient as FlowlyClient } from "../generated/flowly/client.js";
 import { PrismaClient as EmployeeClient } from "../generated/employee/client.js";
 import { logger } from "./logging.js";

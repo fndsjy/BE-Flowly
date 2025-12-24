@@ -8,7 +8,7 @@ export class ChartService {
     // 📌 CREATE
     static async create(requesterUserId, request) {
         const validated = Validation.validate(ChartValidation.CREATE, request);
-        const { position, capacity } = validated;
+        const { position, capacity, jobDesc } = validated;
         let { parentId, pilarId, sbuId, sbuSubId } = validated;
         // Cek role requester
         const requester = await prismaFlowly.user.findUnique({
@@ -21,14 +21,16 @@ export class ChartService {
         // --- VALIDASI MASTER: pilar / sbu / sbuSub ---
         // Jika hanya sbuSubId diberikan → otomatis ambil pilar & sbu
         if (sbuSubId && (!pilarId || !sbuId)) {
-            const sub = await prismaEmployee.em_sbu_sub.findUnique({
-                where: { id: sbuSubId, OR: [{ isDeleted: false }, { isDeleted: null }] },
-                include: { sbu: { include: { pilar: true } } }
+            const sub = await prismaEmployee.em_sbu_sub.findFirst({
+                where: { id: sbuSubId, OR: [{ isDeleted: false }, { isDeleted: null }] }
             });
             if (!sub)
                 throw new ResponseError(400, "Invalid sbuSubId");
-            sbuId = sub.sbuId;
-            pilarId = sub.sbu.pilarId;
+            if (sub.sbu_id === null || sub.sbu_pilar === null) {
+                throw new ResponseError(400, "SBU SUB missing SBU/Pilar reference");
+            }
+            sbuId = sub.sbu_id;
+            pilarId = sub.sbu_pilar;
         }
         // Validasi Pilar
         const validPilar = await prismaEmployee.em_pilar.findUnique({
@@ -37,7 +39,7 @@ export class ChartService {
         if (!validPilar)
             throw new ResponseError(400, "Invalid pilarId");
         // Validasi SBU
-        const validSbu = await prismaEmployee.em_sbu.findUnique({
+        const validSbu = await prismaEmployee.em_sbu.findFirst({
             where: { id: sbuId, OR: [{ isDeleted: false }, { isDeleted: null }] }
         });
         if (!validSbu)
@@ -98,6 +100,7 @@ export class ChartService {
                 position,
                 capacity,
                 orderIndex: nextOrderIndex,
+                jobDesc: jobDesc ?? null,
                 createdBy: requesterUserId,
                 updatedBy: requesterUserId,
             }
@@ -122,7 +125,7 @@ export class ChartService {
     // UPDATE
     static async update(requesterUserId, request) {
         const validated = Validation.validate(ChartValidation.UPDATE, request);
-        const { chartId, position: inputPosition, capacity: inputCapacity, orderIndex: inputOrderIndex } = validated;
+        const { chartId, position: inputPosition, capacity: inputCapacity, orderIndex: inputOrderIndex, jobDesc: inputJobDesc } = validated;
         // 1. CEK NODE
         const existing = await prismaFlowly.chart.findUnique({
             where: { chartId, isDeleted: false },
@@ -132,6 +135,7 @@ export class ChartService {
         const finalPosition = inputPosition ?? existing.position;
         const finalCapacity = inputCapacity ?? existing.capacity;
         const finalOrderIndex = inputOrderIndex ?? existing.orderIndex;
+        const finalJobDesc = inputJobDesc === undefined ? existing.jobDesc : inputJobDesc;
         // 2. CEK ADMIN
         const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
@@ -211,6 +215,7 @@ export class ChartService {
                 position: finalPosition,
                 capacity: finalCapacity,
                 orderIndex: finalOrderIndex,
+                jobDesc: finalJobDesc,
                 updatedBy: requesterUserId,
                 updatedAt: new Date(),
             },
@@ -312,6 +317,9 @@ export class ChartService {
     // 📋 LIST BY SBU / SUB
     // ================================
     static async listBySbuSub(pilarId, sbuId, sbuSubId) {
+        if (sbuSubId === undefined) {
+            return [];
+        }
         // Cek apakah SBU_SUB masih aktif
         const sub = await prismaEmployee.em_sbu_sub.findUnique({
             where: { id: sbuSubId },

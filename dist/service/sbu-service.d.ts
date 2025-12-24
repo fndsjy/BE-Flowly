@@ -5,7 +5,7 @@ export declare class SbuService {
     static softDelete(requesterId: string, reqBody: DeleteSbuRequest): Promise<{
         message: string;
     }>;
-    static list(): Promise<any>;
-    static getByPilar(pilarId: number): Promise<any>;
+    static list(): Promise<import("../model/sbu-model.js").SbuResponse[]>;
+    static getByPilar(pilarId: number): Promise<import("../model/sbu-model.js").SbuResponse[]>;
 }
 //# sourceMappingURL=sbu-service.d.ts.map

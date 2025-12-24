@@ -28,7 +28,11 @@ export class UserController {
     // ✅ Login
     static async login(req, res, next) {
         try {
-            const request = req.body;
+            const request = {
+                username: req.body?.username,
+                badgeNumber: req.body?.badgeNumber ?? req.body?.batchNumber,
+                password: req.body?.password,
+            };
             const response = await UserService.login(request);
             const token = response.token;
             // Kirim token sebagai HTTP-only cookie

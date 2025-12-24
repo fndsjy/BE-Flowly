@@ -66,7 +66,7 @@ export class SbuService {
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can update SBU");
         }
-        const exists = await prismaEmployee.em_sbu.findUnique({
+        const exists = await prismaEmployee.em_sbu.findFirst({
             where: { id: req.id }
         });
         if (!exists)
@@ -95,7 +95,7 @@ export class SbuService {
             }
         }
         const updated = await prismaEmployee.em_sbu.update({
-            where: { id: req.id },
+            where: { id_sbu_code: { id: req.id, sbu_code: exists.sbu_code } },
             data: {
                 sbu_code: req.sbuCode ?? exists.sbu_code,
                 sbu_name: req.sbuName ?? exists.sbu_name,
@@ -120,13 +120,13 @@ export class SbuService {
         if (!requester || requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can delete SBU");
         }
-        const exists = await prismaEmployee.em_sbu.findUnique({
+        const exists = await prismaEmployee.em_sbu.findFirst({
             where: { id: req.id, OR: [{ isDeleted: false }, { isDeleted: null }] }
         });
         if (!exists)
             throw new ResponseError(404, "SBU not found");
         await prismaEmployee.em_sbu.update({
-            where: { id: req.id },
+            where: { id_sbu_code: { id: req.id, sbu_code: exists.sbu_code } },
             data: {
                 isDeleted: true,
                 deletedAt: new Date(),

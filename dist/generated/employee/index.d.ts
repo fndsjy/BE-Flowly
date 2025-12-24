@@ -1359,8 +1359,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.0
-   * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+   * Prisma Client JS version: 6.19.1
+   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
     client: string
@@ -25367,6 +25367,7 @@ export namespace Prisma {
     Shift: number | null
     isFirstLogin: number | null
     SbuSub: number | null
+    roleId: number | null
   }
 
   export type Em_employeeSumAggregateOutputType = {
@@ -25375,6 +25376,7 @@ export namespace Prisma {
     Shift: number | null
     isFirstLogin: number | null
     SbuSub: number | null
+    roleId: number | null
   }
 
   export type Em_employeeMinAggregateOutputType = {
@@ -25404,6 +25406,8 @@ export namespace Prisma {
     Nik: string | null
     ResignDate: Date | null
     status: string | null
+    roleId: number | null
+    jobDesc: string | null
   }
 
   export type Em_employeeMaxAggregateOutputType = {
@@ -25433,6 +25437,8 @@ export namespace Prisma {
     Nik: string | null
     ResignDate: Date | null
     status: string | null
+    roleId: number | null
+    jobDesc: string | null
   }
 
   export type Em_employeeCountAggregateOutputType = {
@@ -25462,6 +25468,8 @@ export namespace Prisma {
     Nik: number
     ResignDate: number
     status: number
+    roleId: number
+    jobDesc: number
     _all: number
   }
 
@@ -25472,6 +25480,7 @@ export namespace Prisma {
     Shift?: true
     isFirstLogin?: true
     SbuSub?: true
+    roleId?: true
   }
 
   export type Em_employeeSumAggregateInputType = {
@@ -25480,6 +25489,7 @@ export namespace Prisma {
     Shift?: true
     isFirstLogin?: true
     SbuSub?: true
+    roleId?: true
   }
 
   export type Em_employeeMinAggregateInputType = {
@@ -25509,6 +25519,8 @@ export namespace Prisma {
     Nik?: true
     ResignDate?: true
     status?: true
+    roleId?: true
+    jobDesc?: true
   }
 
   export type Em_employeeMaxAggregateInputType = {
@@ -25538,6 +25550,8 @@ export namespace Prisma {
     Nik?: true
     ResignDate?: true
     status?: true
+    roleId?: true
+    jobDesc?: true
   }
 
   export type Em_employeeCountAggregateInputType = {
@@ -25567,6 +25581,8 @@ export namespace Prisma {
     Nik?: true
     ResignDate?: true
     status?: true
+    roleId?: true
+    jobDesc?: true
     _all?: true
   }
 
@@ -25683,6 +25699,8 @@ export namespace Prisma {
     Nik: string | null
     ResignDate: Date | null
     status: string | null
+    roleId: number | null
+    jobDesc: string | null
     _count: Em_employeeCountAggregateOutputType | null
     _avg: Em_employeeAvgAggregateOutputType | null
     _sum: Em_employeeSumAggregateOutputType | null
@@ -25731,6 +25749,8 @@ export namespace Prisma {
     Nik?: boolean
     ResignDate?: boolean
     status?: boolean
+    roleId?: boolean
+    jobDesc?: boolean
   }, ExtArgs["result"]["em_employee"]>
 
 
@@ -25762,9 +25782,11 @@ export namespace Prisma {
     Nik?: boolean
     ResignDate?: boolean
     status?: boolean
+    roleId?: boolean
+    jobDesc?: boolean
   }
 
-  export type em_employeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"UserId" | "BadgeNum" | "Name" | "Gender" | "BirthDay" | "HireDay" | "Street" | "Religion" | "Tipe" | "isLokasi" | "Phone" | "DeptId" | "Password" | "CardNo" | "Shift" | "isMem" | "AddBy" | "Created_at" | "Lastupdate" | "isMemDate" | "isFirstLogin" | "ImgName" | "SbuSub" | "Nik" | "ResignDate" | "status", ExtArgs["result"]["em_employee"]>
+  export type em_employeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"UserId" | "BadgeNum" | "Name" | "Gender" | "BirthDay" | "HireDay" | "Street" | "Religion" | "Tipe" | "isLokasi" | "Phone" | "DeptId" | "Password" | "CardNo" | "Shift" | "isMem" | "AddBy" | "Created_at" | "Lastupdate" | "isMemDate" | "isFirstLogin" | "ImgName" | "SbuSub" | "Nik" | "ResignDate" | "status" | "roleId" | "jobDesc", ExtArgs["result"]["em_employee"]>
 
   export type $em_employeePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_employee"
@@ -25796,6 +25818,8 @@ export namespace Prisma {
       Nik: string | null
       ResignDate: Date | null
       status: string | null
+      roleId: number | null
+      jobDesc: string | null
     }, ExtArgs["result"]["em_employee"]>
     composites: {}
   }
@@ -26191,6 +26215,8 @@ export namespace Prisma {
     readonly Nik: FieldRef<"em_employee", 'String'>
     readonly ResignDate: FieldRef<"em_employee", 'DateTime'>
     readonly status: FieldRef<"em_employee", 'String'>
+    readonly roleId: FieldRef<"em_employee", 'Int'>
+    readonly jobDesc: FieldRef<"em_employee", 'String'>
   }
     
 
@@ -86108,7 +86134,9 @@ export namespace Prisma {
     SbuSub: 'SbuSub',
     Nik: 'Nik',
     ResignDate: 'ResignDate',
-    status: 'status'
+    status: 'status',
+    roleId: 'roleId',
+    jobDesc: 'jobDesc'
   };
 
   export type Em_employeeScalarFieldEnum = (typeof Em_employeeScalarFieldEnum)[keyof typeof Em_employeeScalarFieldEnum]
@@ -88584,6 +88612,8 @@ export namespace Prisma {
     Nik?: StringNullableFilter<"em_employee"> | string | null
     ResignDate?: DateTimeNullableFilter<"em_employee"> | Date | string | null
     status?: StringNullableFilter<"em_employee"> | string | null
+    roleId?: IntNullableFilter<"em_employee"> | number | null
+    jobDesc?: StringNullableFilter<"em_employee"> | string | null
   }
 
   export type em_employeeOrderByWithRelationInput = {
@@ -88613,6 +88643,8 @@ export namespace Prisma {
     Nik?: SortOrderInput | SortOrder
     ResignDate?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    roleId?: SortOrderInput | SortOrder
+    jobDesc?: SortOrderInput | SortOrder
   }
 
   export type em_employeeWhereUniqueInput = Prisma.AtLeast<{
@@ -88645,6 +88677,8 @@ export namespace Prisma {
     Nik?: StringNullableFilter<"em_employee"> | string | null
     ResignDate?: DateTimeNullableFilter<"em_employee"> | Date | string | null
     status?: StringNullableFilter<"em_employee"> | string | null
+    roleId?: IntNullableFilter<"em_employee"> | number | null
+    jobDesc?: StringNullableFilter<"em_employee"> | string | null
   }, "UserId">
 
   export type em_employeeOrderByWithAggregationInput = {
@@ -88674,6 +88708,8 @@ export namespace Prisma {
     Nik?: SortOrderInput | SortOrder
     ResignDate?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    roleId?: SortOrderInput | SortOrder
+    jobDesc?: SortOrderInput | SortOrder
     _count?: em_employeeCountOrderByAggregateInput
     _avg?: em_employeeAvgOrderByAggregateInput
     _max?: em_employeeMaxOrderByAggregateInput
@@ -88711,6 +88747,8 @@ export namespace Prisma {
     Nik?: StringNullableWithAggregatesFilter<"em_employee"> | string | null
     ResignDate?: DateTimeNullableWithAggregatesFilter<"em_employee"> | Date | string | null
     status?: StringNullableWithAggregatesFilter<"em_employee"> | string | null
+    roleId?: IntNullableWithAggregatesFilter<"em_employee"> | number | null
+    jobDesc?: StringNullableWithAggregatesFilter<"em_employee"> | string | null
   }
 
   export type em_eventWhereInput = {
@@ -91128,11 +91166,12 @@ export namespace Prisma {
   }
 
   export type em_sbuWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    sbu_code?: string
+    id_sbu_code?: em_sbuIdSbu_codeCompoundUniqueInput
     AND?: em_sbuWhereInput | em_sbuWhereInput[]
     OR?: em_sbuWhereInput[]
     NOT?: em_sbuWhereInput | em_sbuWhereInput[]
+    id?: IntFilter<"em_sbu"> | number
+    sbu_code?: StringFilter<"em_sbu"> | string
     sbu_name?: StringFilter<"em_sbu"> | string
     sbu_pilar?: IntNullableFilter<"em_sbu"> | number | null
     status?: StringFilter<"em_sbu"> | string
@@ -91148,7 +91187,7 @@ export namespace Prisma {
     deletedBy?: StringNullableFilter<"em_sbu"> | string | null
     description?: StringNullableFilter<"em_sbu"> | string | null
     pic?: IntNullableFilter<"em_sbu"> | number | null
-  }, "id" | "sbu_code">
+  }, "id_sbu_code">
 
   export type em_sbuOrderByWithAggregationInput = {
     id?: SortOrder
@@ -94743,6 +94782,8 @@ export namespace Prisma {
     Nik?: string | null
     ResignDate?: Date | string | null
     status?: string | null
+    roleId?: number | null
+    jobDesc?: string | null
   }
 
   export type em_employeeUncheckedCreateInput = {
@@ -94772,6 +94813,8 @@ export namespace Prisma {
     Nik?: string | null
     ResignDate?: Date | string | null
     status?: string | null
+    roleId?: number | null
+    jobDesc?: string | null
   }
 
   export type em_employeeUpdateInput = {
@@ -94800,6 +94843,8 @@ export namespace Prisma {
     Nik?: NullableStringFieldUpdateOperationsInput | string | null
     ResignDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: NullableIntFieldUpdateOperationsInput | number | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_employeeUncheckedUpdateInput = {
@@ -94829,6 +94874,8 @@ export namespace Prisma {
     Nik?: NullableStringFieldUpdateOperationsInput | string | null
     ResignDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: NullableIntFieldUpdateOperationsInput | number | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_employeeCreateManyInput = {
@@ -94857,6 +94904,8 @@ export namespace Prisma {
     Nik?: string | null
     ResignDate?: Date | string | null
     status?: string | null
+    roleId?: number | null
+    jobDesc?: string | null
   }
 
   export type em_employeeUpdateManyMutationInput = {
@@ -94885,6 +94934,8 @@ export namespace Prisma {
     Nik?: NullableStringFieldUpdateOperationsInput | string | null
     ResignDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: NullableIntFieldUpdateOperationsInput | number | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_employeeUncheckedUpdateManyInput = {
@@ -94914,6 +94965,8 @@ export namespace Prisma {
     Nik?: NullableStringFieldUpdateOperationsInput | string | null
     ResignDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    roleId?: NullableIntFieldUpdateOperationsInput | number | null
+    jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_eventCreateInput = {
@@ -97389,6 +97442,7 @@ export namespace Prisma {
   }
 
   export type em_sbuCreateInput = {
+    id?: number
     sbu_code: string
     sbu_name: string
     sbu_pilar?: number | null
@@ -97428,6 +97482,7 @@ export namespace Prisma {
   }
 
   export type em_sbuUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
     sbu_code?: StringFieldUpdateOperationsInput | string
     sbu_name?: StringFieldUpdateOperationsInput | string
     sbu_pilar?: NullableIntFieldUpdateOperationsInput | number | null
@@ -97486,6 +97541,7 @@ export namespace Prisma {
   }
 
   export type em_sbuUpdateManyMutationInput = {
+    id?: IntFieldUpdateOperationsInput | number
     sbu_code?: StringFieldUpdateOperationsInput | string
     sbu_name?: StringFieldUpdateOperationsInput | string
     sbu_pilar?: NullableIntFieldUpdateOperationsInput | number | null
@@ -100798,6 +100854,8 @@ export namespace Prisma {
     Nik?: SortOrder
     ResignDate?: SortOrder
     status?: SortOrder
+    roleId?: SortOrder
+    jobDesc?: SortOrder
   }
 
   export type em_employeeAvgOrderByAggregateInput = {
@@ -100806,6 +100864,7 @@ export namespace Prisma {
     Shift?: SortOrder
     isFirstLogin?: SortOrder
     SbuSub?: SortOrder
+    roleId?: SortOrder
   }
 
   export type em_employeeMaxOrderByAggregateInput = {
@@ -100835,6 +100894,8 @@ export namespace Prisma {
     Nik?: SortOrder
     ResignDate?: SortOrder
     status?: SortOrder
+    roleId?: SortOrder
+    jobDesc?: SortOrder
   }
 
   export type em_employeeMinOrderByAggregateInput = {
@@ -100864,6 +100925,8 @@ export namespace Prisma {
     Nik?: SortOrder
     ResignDate?: SortOrder
     status?: SortOrder
+    roleId?: SortOrder
+    jobDesc?: SortOrder
   }
 
   export type em_employeeSumOrderByAggregateInput = {
@@ -100872,6 +100935,7 @@ export namespace Prisma {
     Shift?: SortOrder
     isFirstLogin?: SortOrder
     SbuSub?: SortOrder
+    roleId?: SortOrder
   }
 
   export type Em_event2ListRelationFilter = {
@@ -102530,6 +102594,11 @@ export namespace Prisma {
     Id?: SortOrder
     chanceId?: SortOrder
     urut?: SortOrder
+  }
+
+  export type em_sbuIdSbu_codeCompoundUniqueInput = {
+    id: number
+    sbu_code: string
   }
 
   export type em_sbuCountOrderByAggregateInput = {

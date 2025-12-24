@@ -35,7 +35,7 @@ export class SbuSubService {
     // if (!pilar) throw new ResponseError(400, "Invalid Pilar");
 
     // Cek SBU
-    const sbuExists = await prismaEmployee.em_sbu.findUnique({
+    const sbuExists = await prismaEmployee.em_sbu.findFirst({
       where: { id: req.sbuId, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
     if (!sbuExists) throw new ResponseError(400, "Invalid SBU");
@@ -47,7 +47,7 @@ export class SbuSubService {
       throw new ResponseError(400, "SBU tidak memiliki pilar");
     }
 
-    const pilar = await prismaEmployee.em_pilar.findUnique({
+    const pilar = await prismaEmployee.em_pilar.findFirst({
       where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
 
@@ -133,14 +133,16 @@ export class SbuSubService {
     // }
 
     // Cek Pilar
-    const pilar = await prismaEmployee.em_pilar.findFirst({
-      where: {
-        id: req.sbuPilar,
-        OR: [{ isDeleted: false }, { isDeleted: null }]
-      }
-    });
+    if (req.sbuPilar !== undefined && req.sbuPilar !== null) {
+      const pilar = await prismaEmployee.em_pilar.findFirst({
+        where: {
+          id: req.sbuPilar,
+          OR: [{ isDeleted: false }, { isDeleted: null }]
+        }
+      });
 
-    if (!pilar) throw new ResponseError(400, "Invalid Pilar");
+      if (!pilar) throw new ResponseError(400, "Invalid Pilar");
+    }
 
     // Prevent change SBU unless logic allows
     if (req.sbuId && req.sbuId !== exists.sbu_id) {
@@ -194,7 +196,7 @@ export class SbuSubService {
       throw new ResponseError(403, "Only admin can delete SBU SUB");
     }
 
-    const exists = await prismaEmployee.em_sbu_sub.findUnique({
+    const exists = await prismaEmployee.em_sbu_sub.findFirst({
       where: { id: req.id, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
 
@@ -224,7 +226,7 @@ export class SbuSubService {
   /* ---------- GET BY SBU ---------- */
   static async getBySbu(sbuId: number) {
     // Cek apakah sbu masih aktif
-      const sbu = await prismaEmployee.em_sbu.findUnique({
+      const sbu = await prismaEmployee.em_sbu.findFirst({
         where: { id: sbuId },
       });
 
@@ -233,7 +235,7 @@ export class SbuSubService {
         return [];
       }
 
-    const exists = await prismaEmployee.em_sbu.findUnique({
+    const exists = await prismaEmployee.em_sbu.findFirst({
       where: { id: sbuId, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
     if (!exists) throw new ResponseError(404, "SBU not found");
@@ -261,7 +263,7 @@ export class SbuSubService {
         return [];
       }
 
-    const exists = await prismaEmployee.em_pilar.findUnique({
+    const exists = await prismaEmployee.em_pilar.findFirst({
       where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
     if (!exists) throw new ResponseError(404, "Pilar not found");

@@ -19,6 +19,7 @@ v1.patch("/role", UserController.changeRole); // 🔐 role 1 only
 v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
 v1.get("/employee", EmployeeController.listForPIC);
+v1.patch("/employee/job-desc", EmployeeController.updateJobDesc);
 v1.post("/pilar", PilarController.create);
 v1.put("/pilar", PilarController.update);
 v1.delete("/pilar", PilarController.softDelete);

@@ -9,6 +9,7 @@ export type ChartResponse = {
   position: string;
   capacity: number;
   orderIndex: number;
+  jobDesc: string | null;
 };
  
 export type CreateChartRequest = {
@@ -19,6 +20,7 @@ export type CreateChartRequest = {
   position: string;
   capacity: number;
   orderIndex?: number;
+  jobDesc?: string | null;
 };
 
 export type UpdateChartRequest = {
@@ -26,6 +28,7 @@ export type UpdateChartRequest = {
   position?: string;
   capacity?: number;
   orderIndex?: number;
+  jobDesc?: string | null;
 };
 
 export type DeleteChartRequest = {
@@ -41,6 +44,7 @@ export type ChartListResponse = {
   position: string;
   capacity: number;
   orderIndex: number;
+  jobDesc: string | null;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -57,6 +61,7 @@ export function toChartResponse(org: Chart): ChartResponse {
     position: org.position,
     capacity: org.capacity,
     orderIndex: org.orderIndex,
+    jobDesc: org.jobDesc,
   };
 }
 
@@ -71,6 +76,7 @@ export function toChartListResponse(org: Chart): ChartListResponse {
     position: org.position,
     capacity: org.capacity,
     orderIndex: org.orderIndex,
+    jobDesc: org.jobDesc,
     isDeleted: org.isDeleted,
     createdAt: org.createdAt,
     updatedAt: org.updatedAt,

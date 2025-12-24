@@ -71,44 +71,82 @@ export class UserService {
     // ✅ Login — no change needed (no create/update raw object)
     static async login(request) {
         const loginRequest = Validation.validate(UserValidation.LOGIN, request);
-        const user = await prismaFlowly.user.findUnique({
-            where: { username: loginRequest.username, isDeleted: false },
-            include: { role: true }
-        });
-        if (!user || !user.isActive) {
-            throw new ResponseError(401, "User not found or inactive");
-        }
-        const valid = await bcrypt.compare(loginRequest.password, user.password);
-        if (!valid) {
-            throw new ResponseError(401, "Invalid username or password");
-        }
-        let token = user.token;
-        let expiresIn = 0;
-        // Check if existing token exists and is still valid
-        if (token) {
-            expiresIn = getTokenExpiresIn(token);
-            if (expiresIn <= 0) {
-                // Token expired or invalid → discard and generate new one
-                token = null;
-            }
-        }
-        // If no valid token, generate a new one
-        if (!token) {
-            token = generateToken(user);
-            expiresIn = 3 * 60 * 60;
-            // expiresIn = 3 * 60 * 60; // 3 hours in seconds (since getTokenExpiresIn() gives seconds)
-            // Update DB with new token and lastLogin
-            await prismaFlowly.user.update({
-                where: { userId: user.userId },
-                data: {
-                    token,
-                    lastLogin: new Date(),
-                    // ✅ Set updatedBy to 'login system' as per your requirement
-                    // updatedBy: "login system",
-                }
+        if (loginRequest.username) {
+            const user = await prismaFlowly.user.findUnique({
+                where: { username: loginRequest.username, isDeleted: false },
+                include: { role: true }
             });
+            if (!user || !user.isActive) {
+                throw new ResponseError(401, "User not found or inactive");
+            }
+            const valid = await bcrypt.compare(loginRequest.password, user.password);
+            if (!valid) {
+                throw new ResponseError(401, "Invalid username or password");
+            }
+            let token = user.token;
+            let expiresIn = 0;
+            // Check if existing token exists and is still valid
+            if (token) {
+                expiresIn = getTokenExpiresIn(token);
+                if (expiresIn <= 0) {
+                    // Token expired or invalid → discard and generate new one
+                    token = null;
+                }
+            }
+            // If no valid token, generate a new one
+            if (!token) {
+                token = generateToken(user);
+                expiresIn = 3 * 60 * 60;
+                // expiresIn = 3 * 60 * 60; // 3 hours in seconds (since getTokenExpiresIn() gives seconds)
+                // Update DB with new token and lastLogin
+                await prismaFlowly.user.update({
+                    where: { userId: user.userId },
+                    data: {
+                        token,
+                        lastLogin: new Date(),
+                        // ✅ Set updatedBy to 'login system' as per your requirement
+                        // updatedBy: "login system",
+                    }
+                });
+            }
+            return toLoginResponse(user, token);
         }
-        return toLoginResponse(user, token);
+        const badgeNumber = loginRequest.badgeNumber;
+        if (!badgeNumber) {
+            throw new ResponseError(400, "Badge number is required");
+        }
+        const employee = await prismaEmployee.em_employee.findFirst({
+            where: { BadgeNum: badgeNumber }
+        });
+        if (!employee || !employee.Password) {
+            throw new ResponseError(401, "Invalid badge number");
+        }
+        const isPasswordValid = await UserService.isEmployeePasswordValid(loginRequest.password, employee.Password);
+        if (!isPasswordValid) {
+            throw new ResponseError(401, "Invalid badge number or password");
+        }
+        const token = generateToken({
+            userId: String(employee.UserId),
+            username: badgeNumber,
+            roleId: String(employee.roleId ?? "EMPLOYEE")
+        });
+        return toLoginResponse({
+            username: badgeNumber,
+            name: employee.Name ?? badgeNumber,
+            jobDesc: employee.jobDesc ?? null,
+        }, token);
+    }
+    static async isEmployeePasswordValid(password, storedPassword) {
+        const normalized = storedPassword.trim();
+        const bcryptHash = normalized.startsWith("$2y$")
+            ? `$2b$${normalized.slice(4)}`
+            : normalized;
+        try {
+            return await bcrypt.compare(password, bcryptHash);
+        }
+        catch {
+            return password === normalized;
+        }
     }
     // ✅ Get Profile — no change needed
     static async getProfile(userId) {

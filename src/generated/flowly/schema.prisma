@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../dist/generated/flowly"
@@ -17,26 +11,26 @@ datasource db {
 /// Role defines user permissions and access tiers
 /// Level: 1 = Super Admin, 2 = Supervisor, 3 = Staff, 4 = Non Staff, 5 = Guest
 model Role {
-  roleId       String    @id @db.NVarChar(20) /// e.g., "ROL251117-0001"
+  /// e.g., "ROL251117-0001"
+  roleId       String    @id @db.NVarChar(20)
   roleName     String    @db.NVarChar(50)
   roleLevel    Int
   roleDesc     String?   @db.NVarChar(255)
   roleIsActive Boolean   @default(true)
-  createdAt    DateTime  @default(now()) @db.DateTime2
-  createdBy    String?   @db.NVarChar(20) /// references User.userId
-  updatedAt    DateTime  @updatedAt @db.DateTime2
-  updatedBy    String?   @db.NVarChar(20) /// references User.userId
+  createdAt    DateTime  @default(now())
+  /// references User.userId
+  createdBy    String?   @db.NVarChar(20)
+  updatedAt    DateTime  @updatedAt
+  /// references User.userId
+  updatedBy    String?   @db.NVarChar(20)
   isDeleted    Boolean   @default(false)
-  deletedAt    DateTime? @db.DateTime2
-  deletedBy    String?   @db.NVarChar(20) /// references User.userId
-
-  /// Relations to User (audit trail)
-  creator User? @relation("RoleCreatedBy", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  updater User? @relation("RoleUpdatedBy", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  deleter User? @relation("RoleDeletedBy", fields: [deletedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-
-  /// Users assigned to this role
-  users User[]
+  deletedAt    DateTime?
+  /// references User.userId
+  deletedBy    String?   @db.NVarChar(20)
+  creator      User?     @relation("RoleCreatedBy", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  deleter      User?     @relation("RoleDeletedBy", fields: [deletedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  updater      User?     @relation("RoleUpdatedBy", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  users        User[]
 
   @@index([createdBy])
   @@index([updatedBy])
@@ -46,43 +40,40 @@ model Role {
 
 /// User represents an authenticated individual in the system
 model User {
-  userId      String    @id @db.NVarChar(20) /// e.g., "USR251117-0001"
-  username    String    @unique @db.NVarChar(30)
-  password    String    @db.NVarChar(100) /// bcrypt/scrypt hashed
-  name        String    @db.NVarChar(100)
-  badgeNumber String    @db.NVarChar(20)
-  department  String?   @db.NVarChar(50)
-  isActive    Boolean   @default(true)
-  lastLogin   DateTime? @db.DateTime2
-  createdAt   DateTime  @default(now()) @db.DateTime2
-  createdBy   String?   @db.NVarChar(20) /// references User.userId
-  updatedAt   DateTime  @updatedAt @db.DateTime2
-  updatedBy   String?   @db.NVarChar(20) /// references User.userId
-  isDeleted   Boolean   @default(false)
-  deletedAt   DateTime? @db.DateTime2
-  deletedBy   String?   @db.NVarChar(20) /// references User.userId
-
-  /// Self-relations (audit trail)
-  creator      User?  @relation("UserCreatedBy", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  createdUsers User[] @relation("UserCreatedBy")
-
-  updater      User?  @relation("UserUpdatedBy", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  updatedUsers User[] @relation("UserUpdatedBy")
-
-  deleter      User?  @relation("UserDeletedBy", fields: [deletedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  deletedUsers User[] @relation("UserDeletedBy")
-
+  /// e.g., "USR251117-0001"
+  userId       String    @id @db.NVarChar(20)
+  username     String    @unique @db.NVarChar(30)
+  /// bcrypt/scrypt hashed
+  password     String    @db.NVarChar(100)
+  name         String    @db.NVarChar(100)
+  badgeNumber  String    @db.NVarChar(20)
+  department   String?   @db.NVarChar(50)
+  isActive     Boolean   @default(true)
+  lastLogin    DateTime?
+  createdAt    DateTime  @default(now())
+  /// references User.userId
+  createdBy    String?   @db.NVarChar(20)
+  updatedAt    DateTime  @updatedAt
+  /// references User.userId
+  updatedBy    String?   @db.NVarChar(20)
+  isDeleted    Boolean   @default(false)
+  deletedAt    DateTime?
+  /// references User.userId
+  deletedBy    String?   @db.NVarChar(20)
   /// Role assignment
-  roleId String @db.NVarChar(20)
-  role   Role   @relation(fields: [roleId], references: [roleId])
-
-  // 🔹 Field lawan untuk relasi dari Role (audit trail balik)
-  createdRoles Role[] @relation("RoleCreatedBy") // roles yang dibuat oleh user ini
-  updatedRoles Role[] @relation("RoleUpdatedBy") // roles yang di-update oleh user ini
-  deletedRoles Role[] @relation("RoleDeletedBy") // roles yang di-delete oleh user ini
-
+  roleId       String    @db.NVarChar(20)
   /// Optional auth token (e.g., refresh token)
-  token String? @db.NVarChar(500)
+  token        String?   @db.NVarChar(500)
+  createdRoles Role[]    @relation("RoleCreatedBy")
+  deletedRoles Role[]    @relation("RoleDeletedBy")
+  updatedRoles Role[]    @relation("RoleUpdatedBy")
+  creator      User?     @relation("UserCreatedBy", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  createdUsers User[]    @relation("UserCreatedBy")
+  deleter      User?     @relation("UserDeletedBy", fields: [deletedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  deletedUsers User[]    @relation("UserDeletedBy")
+  role         Role      @relation(fields: [roleId], references: [roleId])
+  updater      User?     @relation("UserUpdatedBy", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  updatedUsers User[]    @relation("UserUpdatedBy")
 
   @@index([username])
   @@index([badgeNumber])
@@ -94,28 +85,28 @@ model User {
 }
 
 model Chart {
-  chartId    String    @id @db.NVarChar(20) /// e.g., "NODE251120-0001"
+  /// e.g., "NODE251120-0001"
+  chartId    String        @id @db.NVarChar(20)
   pilarId    Int
   sbuId      Int
   sbuSubId   Int
-  parentId   String?   @db.NVarChar(20) /// NULL = posisi teratas (presiden)
-  position   String    @db.NVarChar(100)
-  capacity   Int       @default(1)
-  orderIndex Int       @default(0) /// urutan dalam satu level
-  createdAt  DateTime  @default(now()) @db.DateTime2
-  createdBy  String?   @db.NVarChar(20)
-  updatedAt  DateTime  @updatedAt @db.DateTime2
-  updatedBy  String?   @db.NVarChar(20)
-  isDeleted  Boolean   @default(false)
-  deletedAt  DateTime? @db.DateTime2
-  deletedBy  String?   @db.NVarChar(20)
-
-  /// self reference (parent)
-  parent   Chart?  @relation("ParentChild", fields: [parentId], references: [chartId], onDelete: NoAction, onUpdate: NoAction)
-  children Chart[] @relation("ParentChild")
-
-  // Members
-  members ChartMember[]
+  /// NULL = posisi teratas (presiden)
+  parentId   String?       @db.NVarChar(20)
+  position   String        @db.NVarChar(100)
+  capacity   Int           @default(1)
+  /// urutan dalam satu level
+  orderIndex Int           @default(0)
+  createdAt  DateTime      @default(now())
+  createdBy  String?       @db.NVarChar(20)
+  updatedAt  DateTime      @updatedAt
+  updatedBy  String?       @db.NVarChar(20)
+  isDeleted  Boolean       @default(false)
+  deletedAt  DateTime?
+  deletedBy  String?       @db.NVarChar(20)
+  jobDesc    String?       @db.NVarChar(500)
+  parent     Chart?        @relation("ParentChild", fields: [parentId], references: [chartId], onDelete: NoAction, onUpdate: NoAction)
+  children   Chart[]       @relation("ParentChild")
+  members    ChartMember[]
 
   @@index([parentId])
   @@index([pilarId])
@@ -128,18 +119,15 @@ model ChartMember {
   memberChartId String    @id @db.NVarChar(20)
   chartId       String    @db.NVarChar(20)
   userId        Int?
-  createdAt     DateTime  @default(now()) @db.DateTime2
+  createdAt     DateTime  @default(now())
   createdBy     String?   @db.NVarChar(20)
-  updatedAt     DateTime  @updatedAt @db.DateTime2
+  updatedAt     DateTime  @updatedAt
   updatedBy     String?   @db.NVarChar(20)
   isDeleted     Boolean   @default(false)
-  deletedAt     DateTime? @db.DateTime2
+  deletedAt     DateTime?
   deletedBy     String?   @db.NVarChar(20)
+  node          Chart     @relation(fields: [chartId], references: [chartId])
 
-  // Relations
-  node Chart @relation(fields: [chartId], references: [chartId])
-
-  // @@unique([chartId, userId])
   @@index([chartId])
   @@index([userId])
   @@map("chart_member")

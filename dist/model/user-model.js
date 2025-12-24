@@ -11,6 +11,7 @@ export function toLoginResponse(user, token) {
     return {
         username: user.username,
         name: user.name,
+        jobDesc: user.jobDesc ?? null,
         token,
         expiresIn,
         expiresAt,
