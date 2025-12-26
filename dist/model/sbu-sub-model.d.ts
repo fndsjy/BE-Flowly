@@ -5,6 +5,7 @@ export type SbuSubResponse = {
     sbuId: number | null;
     sbuPilar: number | null;
     description: string | null;
+    jobDesc: string | null;
     pic: number | null;
     status: string;
     isDeleted: boolean;
@@ -18,6 +19,7 @@ export type CreateSbuSubRequest = {
     sbuId: number;
     sbuPilar?: number | null;
     description?: string | null;
+    jobDesc?: string | null;
     pic?: number | null;
 };
 export type UpdateSbuSubRequest = {
@@ -27,6 +29,7 @@ export type UpdateSbuSubRequest = {
     sbuId?: number;
     sbuPilar?: number | null;
     description?: string | null;
+    jobDesc?: string | null;
     pic?: number | null;
     status?: string;
 };

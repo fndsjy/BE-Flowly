@@ -6,6 +6,7 @@ export type SbuSubResponse = {
   sbuId: number | null;
   sbuPilar: number | null;
   description: string | null;
+  jobDesc: string | null;
   pic: number | null;
   status: string;
   isDeleted: boolean;
@@ -21,6 +22,7 @@ export type CreateSbuSubRequest = {
   sbuId: number;
   sbuPilar?: number | null;
   description?: string | null;
+  jobDesc?: string | null;
   pic?: number | null;
 };
 
@@ -31,6 +33,7 @@ export type UpdateSbuSubRequest = {
   sbuId?: number;
   sbuPilar?: number | null;
   description?: string | null;
+  jobDesc?: string | null;
   pic?: number | null;
   status?: string;
 };
@@ -47,6 +50,7 @@ export function toSbuSubResponse(s: any): SbuSubResponse {
     sbuId: s.sbu_id,
     sbuPilar: s.sbu_pilar,
     description: s.description ?? null,
+    jobDesc: s.jobDesc ?? null,
     pic: s.pic ?? null,
     status: s.status,
     isDeleted: s.isDeleted ?? false,

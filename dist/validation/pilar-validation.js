@@ -3,12 +3,14 @@ export class PilarValidation {
     static CREATE = z.object({
         pilarName: z.string().min(1, "Pilar name is required"),
         description: z.string().optional().nullable(),
+        jobDesc: z.string().max(500).nullable().optional(),
         pic: z.number().optional().nullable(),
     });
     static UPDATE = z.object({
         id: z.number().min(1),
         pilarName: z.string().optional(),
         description: z.string().optional().nullable(),
+        jobDesc: z.string().max(500).nullable().optional(),
         pic: z.number().optional().nullable(),
         status: z.string().optional(), // "0" / "1"
     });

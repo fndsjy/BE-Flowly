@@ -60,6 +60,7 @@ export class SbuSubService {
                 sbu_id: req.sbuId,
                 sbu_pilar: pilarId,
                 description: req.description ?? null,
+                jobDesc: req.jobDesc ?? null,
                 pic: req.pic ?? null,
                 status: "A",
                 isDeleted: false,
@@ -138,6 +139,7 @@ export class SbuSubService {
             if (duplicate)
                 throw new ResponseError(400, "SBU SUB Code already exists");
         }
+        const finalJobDesc = req.jobDesc === undefined ? exists.jobDesc : req.jobDesc;
         const updated = await prismaEmployee.em_sbu_sub.update({
             where: { id: req.id },
             data: {
@@ -146,6 +148,7 @@ export class SbuSubService {
                 sbu_id: req.sbuId ?? exists.sbu_id,
                 sbu_pilar: req.sbuPilar ?? exists.sbu_pilar,
                 description: req.description ?? exists.description,
+                jobDesc: finalJobDesc,
                 pic: req.pic ?? exists.pic,
                 status: req.status ?? exists.status,
                 updatedAt: new Date(),

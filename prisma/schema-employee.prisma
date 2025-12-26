@@ -663,6 +663,7 @@ model em_pilar {
   deletedBy   String?   @employee.NVarChar(20)
   description String?   @employee.NVarChar(255)
   pic         Int?
+  jobDesc     String?   @employee.NVarChar(500)
 }
 
 model em_profesi {
@@ -738,6 +739,7 @@ model em_sbu {
   deletedBy   String?   @employee.NVarChar(20)
   description String?   @employee.NVarChar(255)
   pic         Int?
+  jobDesc     String?   @employee.NVarChar(500)
 
   @@id([id, sbu_code], map: "PK_em_sbu")
 }
@@ -761,6 +763,7 @@ model em_sbu_sub {
   deletedBy    String?   @employee.NVarChar(20)
   description  String?   @employee.NVarChar(255)
   pic          Int?
+  jobDesc      String?   @employee.NVarChar(500)
 }
 
 model em_schedule1 {
