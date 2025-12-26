@@ -6,6 +6,7 @@ export function toSbuSubResponse(s) {
         sbuId: s.sbu_id,
         sbuPilar: s.sbu_pilar,
         description: s.description ?? null,
+        jobDesc: s.jobDesc ?? null,
         pic: s.pic ?? null,
         status: s.status,
         isDeleted: s.isDeleted ?? false,

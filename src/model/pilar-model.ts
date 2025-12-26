@@ -3,6 +3,7 @@ export type PilarResponse = {
   id: number;
   pilarName: string;
   description: string | null;
+  jobDesc: string | null;
   pic: number | null; 
   status: string;
   isDeleted: boolean;
@@ -15,6 +16,7 @@ export type PilarListResponse = {
   id: number;
   pilarName: string;
   description: string | null;
+  jobDesc: string | null;
   pic: number | null; 
   status: string;
   isDeleted: boolean;
@@ -26,6 +28,7 @@ export type PilarListResponse = {
 export type CreatePilarRequest = {
   pilarName: string;
   description?: string | null;
+  jobDesc?: string | null;
   pic?: number | null;
 };
 
@@ -33,6 +36,7 @@ export type UpdatePilarRequest = {
   id: number;
   pilarName?: string;
   description?: string | null;
+  jobDesc?: string | null;
   pic?: number | null;
   status?: string;
 };
@@ -49,6 +53,7 @@ export function toPilarResponse(p: any): PilarResponse {
     id: p.id,
     pilarName: p.pilar_name,
     description: p.description ?? null,
+    jobDesc: p.jobDesc ?? null,
     pic: p.pic ?? null, 
     status: p.status,
     isDeleted: p.isDeleted ?? false,
@@ -63,6 +68,7 @@ export function toPilarListResponse(p: any): PilarListResponse {
     id: p.id,
     pilarName: p.pilar_name,
     description: p.description ?? null,
+    jobDesc: p.jobDesc ?? null,
     pic: p.pic ?? null, 
     status: p.status,
     isDeleted: p.isDeleted ?? false,

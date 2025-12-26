@@ -5,6 +5,7 @@ export class SbuValidation {
         sbuName: z.string().min(1),
         sbuPilar: z.number().min(1),
         description: z.string().optional().nullable(),
+        jobDesc: z.string().max(500).nullable().optional(),
         pic: z.number().nullable().optional().nullable(),
     });
     static UPDATE = z.object({
@@ -13,6 +14,7 @@ export class SbuValidation {
         sbuName: z.string().optional(),
         sbuPilar: z.number().optional(),
         description: z.string().optional().nullable(),
+        jobDesc: z.string().max(500).nullable().optional(),
         pic: z.number().nullable().optional().nullable(),
         status: z.string().optional(),
     });

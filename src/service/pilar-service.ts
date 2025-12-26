@@ -47,6 +47,7 @@ export class PilarService {
       data: {
         pilar_name: request.pilarName,
         description: request.description ?? null,
+        jobDesc: request.jobDesc ?? null,
         status: "A",
         pic: request.pic ?? null,
         isDeleted: false,
@@ -93,11 +94,14 @@ export class PilarService {
       } 
     }
 
+    const finalJobDesc = request.jobDesc === undefined ? exists.jobDesc : request.jobDesc;
+
     const updated = await prismaEmployee.em_pilar.update({
       where: { id: request.id },
       data: {
         pilar_name: request.pilarName ?? exists.pilar_name,
         description: request.description ?? exists.description,
+        jobDesc: finalJobDesc,
         status: request.status ?? exists.status,
         pic: request.pic ?? exists.pic,
         lastupdate: new Date(),
