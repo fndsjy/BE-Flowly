@@ -186,6 +186,22 @@ exports.Prisma.ChartMemberScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
+  jabatan: 'jabatan'
+};
+
+exports.Prisma.JabatanScalarFieldEnum = {
+  jabatanId: 'jabatanId',
+  jabatanName: 'jabatanName',
+  jabatanLevel: 'jabatanLevel',
+  jabatanDesc: 'jabatanDesc',
+  jabatanIsActive: 'jabatanIsActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
   deletedBy: 'deletedBy'
 };
 
@@ -204,7 +220,8 @@ exports.Prisma.ModelName = {
   Role: 'Role',
   User: 'User',
   Chart: 'Chart',
-  ChartMember: 'ChartMember'
+  ChartMember: 'ChartMember',
+  jabatan: 'jabatan'
 };
 
 /**

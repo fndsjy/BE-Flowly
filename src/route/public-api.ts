@@ -7,6 +7,7 @@ import { EmployeeController } from "../controller/employee-controller.js";
 import { SbuController } from "../controller/sbu-controller.js";
 import { SbuSubController } from "../controller/sbu-sub-controller.js";
 import { ChartMemberController } from "../controller/chart-member-controller.js";
+import { JabatanController } from "../controller/jabatan-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -41,6 +42,11 @@ v1.delete("/sbu-sub", SbuSubController.softDelete);
 v1.get("/sbu-sub", SbuSubController.list);
 v1.get("/sbu-sub-by-sbu", SbuSubController.getBySbu);
 v1.get("/sbu-sub-by-pilar", SbuSubController.getByPilar);
+
+v1.post("/jabatan", JabatanController.create);
+v1.put("/jabatan", JabatanController.update);
+v1.delete("/jabatan", JabatanController.softDelete);
+v1.get("/jabatan", JabatanController.list);
 
 v1.post("/chart", ChartController.create);
 v1.put("/chart", ChartController.update);

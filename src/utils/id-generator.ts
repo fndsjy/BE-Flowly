@@ -96,3 +96,22 @@ export async function generateChartMemberId(): Promise<string> {
 
   return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
 }
+
+export async function generateJabatanId(): Promise<string> {
+  const today = getDDMMYY();
+  const prefix = `JBT${today}`;
+
+  const existing = await prisma.jabatan.findFirst({
+    where: { jabatanId: { startsWith: prefix } },
+    select: { jabatanId: true },
+    orderBy: { jabatanId: "desc" }
+  });
+
+  let nextSeq = 1;
+  if (existing?.jabatanId) {
+    const currentSeq = extractSeqFromId(existing.jabatanId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}

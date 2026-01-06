@@ -714,7 +714,8 @@ exports.Prisma.Em_pilarScalarFieldEnum = {
   deletedBy: 'deletedBy',
   description: 'description',
   pic: 'pic',
-  jobDesc: 'jobDesc'
+  jobDesc: 'jobDesc',
+  jabatan: 'jabatan'
 };
 
 exports.Prisma.Em_profesiScalarFieldEnum = {
@@ -785,7 +786,8 @@ exports.Prisma.Em_sbuScalarFieldEnum = {
   deletedBy: 'deletedBy',
   description: 'description',
   pic: 'pic',
-  jobDesc: 'jobDesc'
+  jobDesc: 'jobDesc',
+  jabatan: 'jabatan'
 };
 
 exports.Prisma.Em_sbu_subScalarFieldEnum = {
@@ -807,7 +809,8 @@ exports.Prisma.Em_sbu_subScalarFieldEnum = {
   deletedBy: 'deletedBy',
   description: 'description',
   pic: 'pic',
-  jobDesc: 'jobDesc'
+  jobDesc: 'jobDesc',
+  jabatan: 'jabatan'
 };
 
 exports.Prisma.Em_schedule1ScalarFieldEnum = {

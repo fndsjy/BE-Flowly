@@ -126,9 +126,29 @@ model ChartMember {
   isDeleted     Boolean   @default(false)
   deletedAt     DateTime?
   deletedBy     String?   @db.NVarChar(20)
+  jabatan       String?   @db.NVarChar(50)
   node          Chart     @relation(fields: [chartId], references: [chartId])
 
   @@index([chartId])
   @@index([userId])
   @@map("chart_member")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model jabatan {
+  jabatanId       String    @id @db.NVarChar(20)
+  jabatanName     String    @db.NVarChar(100)
+  jabatanLevel    Int
+  jabatanDesc     String?   @db.NVarChar(255)
+  jabatanIsActive Boolean
+  createdAt       DateTime
+  createdBy       String?   @db.NVarChar(20)
+  updatedAt       DateTime
+  updatedBy       String?   @db.NVarChar(20)
+  isDeleted       Boolean
+  deletedAt       DateTime?
+  deletedBy       String?   @db.NVarChar(20)
+
+  @@index([jabatanId])
+  @@map("jabatan")
 }
