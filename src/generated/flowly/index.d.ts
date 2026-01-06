@@ -34,6 +34,11 @@ export type Chart = $Result.DefaultSelection<Prisma.$ChartPayload>
  * 
  */
 export type ChartMember = $Result.DefaultSelection<Prisma.$ChartMemberPayload>
+/**
+ * Model jabatan
+ * The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+ */
+export type jabatan = $Result.DefaultSelection<Prisma.$jabatanPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -192,6 +197,16 @@ export class PrismaClient<
     * ```
     */
   get chartMember(): Prisma.ChartMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.jabatan`: Exposes CRUD operations for the **jabatan** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Jabatans
+    * const jabatans = await prisma.jabatan.findMany()
+    * ```
+    */
+  get jabatan(): Prisma.jabatanDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -636,7 +651,8 @@ export namespace Prisma {
     Role: 'Role',
     User: 'User',
     Chart: 'Chart',
-    ChartMember: 'ChartMember'
+    ChartMember: 'ChartMember',
+    jabatan: 'jabatan'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -655,7 +671,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "jabatan"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -923,6 +939,72 @@ export namespace Prisma {
           }
         }
       }
+      jabatan: {
+        payload: Prisma.$jabatanPayload<ExtArgs>
+        fields: Prisma.jabatanFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.jabatanFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.jabatanFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>
+          }
+          findFirst: {
+            args: Prisma.jabatanFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.jabatanFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>
+          }
+          findMany: {
+            args: Prisma.jabatanFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>[]
+          }
+          create: {
+            args: Prisma.jabatanCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>
+          }
+          createMany: {
+            args: Prisma.jabatanCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.jabatanDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>
+          }
+          update: {
+            args: Prisma.jabatanUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>
+          }
+          deleteMany: {
+            args: Prisma.jabatanDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.jabatanUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.jabatanUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jabatanPayload>
+          }
+          aggregate: {
+            args: Prisma.JabatanAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJabatan>
+          }
+          groupBy: {
+            args: Prisma.jabatanGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JabatanGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.jabatanCountArgs<ExtArgs>
+            result: $Utils.Optional<JabatanCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1023,6 +1105,7 @@ export namespace Prisma {
     user?: UserOmit
     chart?: ChartOmit
     chartMember?: ChartMemberOmit
+    jabatan?: jabatanOmit
   }
 
   /* Types for Logging */
@@ -4931,6 +5014,7 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    jabatan: string | null
   }
 
   export type ChartMemberMaxAggregateOutputType = {
@@ -4944,6 +5028,7 @@ export namespace Prisma {
     isDeleted: boolean | null
     deletedAt: Date | null
     deletedBy: string | null
+    jabatan: string | null
   }
 
   export type ChartMemberCountAggregateOutputType = {
@@ -4957,6 +5042,7 @@ export namespace Prisma {
     isDeleted: number
     deletedAt: number
     deletedBy: number
+    jabatan: number
     _all: number
   }
 
@@ -4980,6 +5066,7 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    jabatan?: true
   }
 
   export type ChartMemberMaxAggregateInputType = {
@@ -4993,6 +5080,7 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    jabatan?: true
   }
 
   export type ChartMemberCountAggregateInputType = {
@@ -5006,6 +5094,7 @@ export namespace Prisma {
     isDeleted?: true
     deletedAt?: true
     deletedBy?: true
+    jabatan?: true
     _all?: true
   }
 
@@ -5106,6 +5195,7 @@ export namespace Prisma {
     isDeleted: boolean
     deletedAt: Date | null
     deletedBy: string | null
+    jabatan: string | null
     _count: ChartMemberCountAggregateOutputType | null
     _avg: ChartMemberAvgAggregateOutputType | null
     _sum: ChartMemberSumAggregateOutputType | null
@@ -5138,6 +5228,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    jabatan?: boolean
     node?: boolean | ChartDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["chartMember"]>
 
@@ -5154,9 +5245,10 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    jabatan?: boolean
   }
 
-  export type ChartMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"memberChartId" | "chartId" | "userId" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["chartMember"]>
+  export type ChartMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"memberChartId" | "chartId" | "userId" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "jabatan", ExtArgs["result"]["chartMember"]>
   export type ChartMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     node?: boolean | ChartDefaultArgs<ExtArgs>
   }
@@ -5177,6 +5269,7 @@ export namespace Prisma {
       isDeleted: boolean
       deletedAt: Date | null
       deletedBy: string | null
+      jabatan: string | null
     }, ExtArgs["result"]["chartMember"]>
     composites: {}
   }
@@ -5557,6 +5650,7 @@ export namespace Prisma {
     readonly isDeleted: FieldRef<"ChartMember", 'Boolean'>
     readonly deletedAt: FieldRef<"ChartMember", 'DateTime'>
     readonly deletedBy: FieldRef<"ChartMember", 'String'>
+    readonly jabatan: FieldRef<"ChartMember", 'String'>
   }
     
 
@@ -5918,6 +6012,998 @@ export namespace Prisma {
 
 
   /**
+   * Model jabatan
+   */
+
+  export type AggregateJabatan = {
+    _count: JabatanCountAggregateOutputType | null
+    _avg: JabatanAvgAggregateOutputType | null
+    _sum: JabatanSumAggregateOutputType | null
+    _min: JabatanMinAggregateOutputType | null
+    _max: JabatanMaxAggregateOutputType | null
+  }
+
+  export type JabatanAvgAggregateOutputType = {
+    jabatanLevel: number | null
+  }
+
+  export type JabatanSumAggregateOutputType = {
+    jabatanLevel: number | null
+  }
+
+  export type JabatanMinAggregateOutputType = {
+    jabatanId: string | null
+    jabatanName: string | null
+    jabatanLevel: number | null
+    jabatanDesc: string | null
+    jabatanIsActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type JabatanMaxAggregateOutputType = {
+    jabatanId: string | null
+    jabatanName: string | null
+    jabatanLevel: number | null
+    jabatanDesc: string | null
+    jabatanIsActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type JabatanCountAggregateOutputType = {
+    jabatanId: number
+    jabatanName: number
+    jabatanLevel: number
+    jabatanDesc: number
+    jabatanIsActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type JabatanAvgAggregateInputType = {
+    jabatanLevel?: true
+  }
+
+  export type JabatanSumAggregateInputType = {
+    jabatanLevel?: true
+  }
+
+  export type JabatanMinAggregateInputType = {
+    jabatanId?: true
+    jabatanName?: true
+    jabatanLevel?: true
+    jabatanDesc?: true
+    jabatanIsActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type JabatanMaxAggregateInputType = {
+    jabatanId?: true
+    jabatanName?: true
+    jabatanLevel?: true
+    jabatanDesc?: true
+    jabatanIsActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type JabatanCountAggregateInputType = {
+    jabatanId?: true
+    jabatanName?: true
+    jabatanLevel?: true
+    jabatanDesc?: true
+    jabatanIsActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type JabatanAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which jabatan to aggregate.
+     */
+    where?: jabatanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jabatans to fetch.
+     */
+    orderBy?: jabatanOrderByWithRelationInput | jabatanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: jabatanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jabatans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jabatans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned jabatans
+    **/
+    _count?: true | JabatanCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: JabatanAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: JabatanSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: JabatanMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: JabatanMaxAggregateInputType
+  }
+
+  export type GetJabatanAggregateType<T extends JabatanAggregateArgs> = {
+        [P in keyof T & keyof AggregateJabatan]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateJabatan[P]>
+      : GetScalarType<T[P], AggregateJabatan[P]>
+  }
+
+
+
+
+  export type jabatanGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: jabatanWhereInput
+    orderBy?: jabatanOrderByWithAggregationInput | jabatanOrderByWithAggregationInput[]
+    by: JabatanScalarFieldEnum[] | JabatanScalarFieldEnum
+    having?: jabatanScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: JabatanCountAggregateInputType | true
+    _avg?: JabatanAvgAggregateInputType
+    _sum?: JabatanSumAggregateInputType
+    _min?: JabatanMinAggregateInputType
+    _max?: JabatanMaxAggregateInputType
+  }
+
+  export type JabatanGroupByOutputType = {
+    jabatanId: string
+    jabatanName: string
+    jabatanLevel: number
+    jabatanDesc: string | null
+    jabatanIsActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: JabatanCountAggregateOutputType | null
+    _avg: JabatanAvgAggregateOutputType | null
+    _sum: JabatanSumAggregateOutputType | null
+    _min: JabatanMinAggregateOutputType | null
+    _max: JabatanMaxAggregateOutputType | null
+  }
+
+  type GetJabatanGroupByPayload<T extends jabatanGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<JabatanGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof JabatanGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], JabatanGroupByOutputType[P]>
+            : GetScalarType<T[P], JabatanGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type jabatanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    jabatanId?: boolean
+    jabatanName?: boolean
+    jabatanLevel?: boolean
+    jabatanDesc?: boolean
+    jabatanIsActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }, ExtArgs["result"]["jabatan"]>
+
+
+
+  export type jabatanSelectScalar = {
+    jabatanId?: boolean
+    jabatanName?: boolean
+    jabatanLevel?: boolean
+    jabatanDesc?: boolean
+    jabatanIsActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type jabatanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"jabatanId" | "jabatanName" | "jabatanLevel" | "jabatanDesc" | "jabatanIsActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["jabatan"]>
+
+  export type $jabatanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "jabatan"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      jabatanId: string
+      jabatanName: string
+      jabatanLevel: number
+      jabatanDesc: string | null
+      jabatanIsActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["jabatan"]>
+    composites: {}
+  }
+
+  type jabatanGetPayload<S extends boolean | null | undefined | jabatanDefaultArgs> = $Result.GetResult<Prisma.$jabatanPayload, S>
+
+  type jabatanCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<jabatanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JabatanCountAggregateInputType | true
+    }
+
+  export interface jabatanDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['jabatan'], meta: { name: 'jabatan' } }
+    /**
+     * Find zero or one Jabatan that matches the filter.
+     * @param {jabatanFindUniqueArgs} args - Arguments to find a Jabatan
+     * @example
+     * // Get one Jabatan
+     * const jabatan = await prisma.jabatan.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends jabatanFindUniqueArgs>(args: SelectSubset<T, jabatanFindUniqueArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Jabatan that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {jabatanFindUniqueOrThrowArgs} args - Arguments to find a Jabatan
+     * @example
+     * // Get one Jabatan
+     * const jabatan = await prisma.jabatan.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends jabatanFindUniqueOrThrowArgs>(args: SelectSubset<T, jabatanFindUniqueOrThrowArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Jabatan that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jabatanFindFirstArgs} args - Arguments to find a Jabatan
+     * @example
+     * // Get one Jabatan
+     * const jabatan = await prisma.jabatan.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends jabatanFindFirstArgs>(args?: SelectSubset<T, jabatanFindFirstArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Jabatan that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jabatanFindFirstOrThrowArgs} args - Arguments to find a Jabatan
+     * @example
+     * // Get one Jabatan
+     * const jabatan = await prisma.jabatan.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends jabatanFindFirstOrThrowArgs>(args?: SelectSubset<T, jabatanFindFirstOrThrowArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Jabatans that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jabatanFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Jabatans
+     * const jabatans = await prisma.jabatan.findMany()
+     * 
+     * // Get first 10 Jabatans
+     * const jabatans = await prisma.jabatan.findMany({ take: 10 })
+     * 
+     * // Only select the `jabatanId`
+     * const jabatanWithJabatanIdOnly = await prisma.jabatan.findMany({ select: { jabatanId: true } })
+     * 
+     */
+    findMany<T extends jabatanFindManyArgs>(args?: SelectSubset<T, jabatanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Jabatan.
+     * @param {jabatanCreateArgs} args - Arguments to create a Jabatan.
+     * @example
+     * // Create one Jabatan
+     * const Jabatan = await prisma.jabatan.create({
+     *   data: {
+     *     // ... data to create a Jabatan
+     *   }
+     * })
+     * 
+     */
+    create<T extends jabatanCreateArgs>(args: SelectSubset<T, jabatanCreateArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Jabatans.
+     * @param {jabatanCreateManyArgs} args - Arguments to create many Jabatans.
+     * @example
+     * // Create many Jabatans
+     * const jabatan = await prisma.jabatan.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends jabatanCreateManyArgs>(args?: SelectSubset<T, jabatanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Jabatan.
+     * @param {jabatanDeleteArgs} args - Arguments to delete one Jabatan.
+     * @example
+     * // Delete one Jabatan
+     * const Jabatan = await prisma.jabatan.delete({
+     *   where: {
+     *     // ... filter to delete one Jabatan
+     *   }
+     * })
+     * 
+     */
+    delete<T extends jabatanDeleteArgs>(args: SelectSubset<T, jabatanDeleteArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Jabatan.
+     * @param {jabatanUpdateArgs} args - Arguments to update one Jabatan.
+     * @example
+     * // Update one Jabatan
+     * const jabatan = await prisma.jabatan.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends jabatanUpdateArgs>(args: SelectSubset<T, jabatanUpdateArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Jabatans.
+     * @param {jabatanDeleteManyArgs} args - Arguments to filter Jabatans to delete.
+     * @example
+     * // Delete a few Jabatans
+     * const { count } = await prisma.jabatan.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends jabatanDeleteManyArgs>(args?: SelectSubset<T, jabatanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Jabatans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jabatanUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Jabatans
+     * const jabatan = await prisma.jabatan.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends jabatanUpdateManyArgs>(args: SelectSubset<T, jabatanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Jabatan.
+     * @param {jabatanUpsertArgs} args - Arguments to update or create a Jabatan.
+     * @example
+     * // Update or create a Jabatan
+     * const jabatan = await prisma.jabatan.upsert({
+     *   create: {
+     *     // ... data to create a Jabatan
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Jabatan we want to update
+     *   }
+     * })
+     */
+    upsert<T extends jabatanUpsertArgs>(args: SelectSubset<T, jabatanUpsertArgs<ExtArgs>>): Prisma__jabatanClient<$Result.GetResult<Prisma.$jabatanPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Jabatans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jabatanCountArgs} args - Arguments to filter Jabatans to count.
+     * @example
+     * // Count the number of Jabatans
+     * const count = await prisma.jabatan.count({
+     *   where: {
+     *     // ... the filter for the Jabatans we want to count
+     *   }
+     * })
+    **/
+    count<T extends jabatanCountArgs>(
+      args?: Subset<T, jabatanCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], JabatanCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Jabatan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JabatanAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends JabatanAggregateArgs>(args: Subset<T, JabatanAggregateArgs>): Prisma.PrismaPromise<GetJabatanAggregateType<T>>
+
+    /**
+     * Group by Jabatan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jabatanGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends jabatanGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: jabatanGroupByArgs['orderBy'] }
+        : { orderBy?: jabatanGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, jabatanGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJabatanGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the jabatan model
+   */
+  readonly fields: jabatanFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for jabatan.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__jabatanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the jabatan model
+   */
+  interface jabatanFieldRefs {
+    readonly jabatanId: FieldRef<"jabatan", 'String'>
+    readonly jabatanName: FieldRef<"jabatan", 'String'>
+    readonly jabatanLevel: FieldRef<"jabatan", 'Int'>
+    readonly jabatanDesc: FieldRef<"jabatan", 'String'>
+    readonly jabatanIsActive: FieldRef<"jabatan", 'Boolean'>
+    readonly createdAt: FieldRef<"jabatan", 'DateTime'>
+    readonly createdBy: FieldRef<"jabatan", 'String'>
+    readonly updatedAt: FieldRef<"jabatan", 'DateTime'>
+    readonly updatedBy: FieldRef<"jabatan", 'String'>
+    readonly isDeleted: FieldRef<"jabatan", 'Boolean'>
+    readonly deletedAt: FieldRef<"jabatan", 'DateTime'>
+    readonly deletedBy: FieldRef<"jabatan", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * jabatan findUnique
+   */
+  export type jabatanFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * Filter, which jabatan to fetch.
+     */
+    where: jabatanWhereUniqueInput
+  }
+
+  /**
+   * jabatan findUniqueOrThrow
+   */
+  export type jabatanFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * Filter, which jabatan to fetch.
+     */
+    where: jabatanWhereUniqueInput
+  }
+
+  /**
+   * jabatan findFirst
+   */
+  export type jabatanFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * Filter, which jabatan to fetch.
+     */
+    where?: jabatanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jabatans to fetch.
+     */
+    orderBy?: jabatanOrderByWithRelationInput | jabatanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for jabatans.
+     */
+    cursor?: jabatanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jabatans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jabatans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of jabatans.
+     */
+    distinct?: JabatanScalarFieldEnum | JabatanScalarFieldEnum[]
+  }
+
+  /**
+   * jabatan findFirstOrThrow
+   */
+  export type jabatanFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * Filter, which jabatan to fetch.
+     */
+    where?: jabatanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jabatans to fetch.
+     */
+    orderBy?: jabatanOrderByWithRelationInput | jabatanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for jabatans.
+     */
+    cursor?: jabatanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jabatans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jabatans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of jabatans.
+     */
+    distinct?: JabatanScalarFieldEnum | JabatanScalarFieldEnum[]
+  }
+
+  /**
+   * jabatan findMany
+   */
+  export type jabatanFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * Filter, which jabatans to fetch.
+     */
+    where?: jabatanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jabatans to fetch.
+     */
+    orderBy?: jabatanOrderByWithRelationInput | jabatanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing jabatans.
+     */
+    cursor?: jabatanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jabatans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jabatans.
+     */
+    skip?: number
+    distinct?: JabatanScalarFieldEnum | JabatanScalarFieldEnum[]
+  }
+
+  /**
+   * jabatan create
+   */
+  export type jabatanCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * The data needed to create a jabatan.
+     */
+    data: XOR<jabatanCreateInput, jabatanUncheckedCreateInput>
+  }
+
+  /**
+   * jabatan createMany
+   */
+  export type jabatanCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many jabatans.
+     */
+    data: jabatanCreateManyInput | jabatanCreateManyInput[]
+  }
+
+  /**
+   * jabatan update
+   */
+  export type jabatanUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * The data needed to update a jabatan.
+     */
+    data: XOR<jabatanUpdateInput, jabatanUncheckedUpdateInput>
+    /**
+     * Choose, which jabatan to update.
+     */
+    where: jabatanWhereUniqueInput
+  }
+
+  /**
+   * jabatan updateMany
+   */
+  export type jabatanUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update jabatans.
+     */
+    data: XOR<jabatanUpdateManyMutationInput, jabatanUncheckedUpdateManyInput>
+    /**
+     * Filter which jabatans to update
+     */
+    where?: jabatanWhereInput
+    /**
+     * Limit how many jabatans to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * jabatan upsert
+   */
+  export type jabatanUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * The filter to search for the jabatan to update in case it exists.
+     */
+    where: jabatanWhereUniqueInput
+    /**
+     * In case the jabatan found by the `where` argument doesn't exist, create a new jabatan with this data.
+     */
+    create: XOR<jabatanCreateInput, jabatanUncheckedCreateInput>
+    /**
+     * In case the jabatan was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<jabatanUpdateInput, jabatanUncheckedUpdateInput>
+  }
+
+  /**
+   * jabatan delete
+   */
+  export type jabatanDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+    /**
+     * Filter which jabatan to delete.
+     */
+    where: jabatanWhereUniqueInput
+  }
+
+  /**
+   * jabatan deleteMany
+   */
+  export type jabatanDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which jabatans to delete
+     */
+    where?: jabatanWhereInput
+    /**
+     * Limit how many jabatans to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * jabatan without action
+   */
+  export type jabatanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jabatan
+     */
+    select?: jabatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jabatan
+     */
+    omit?: jabatanOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6005,10 +7091,29 @@ export namespace Prisma {
     updatedBy: 'updatedBy',
     isDeleted: 'isDeleted',
     deletedAt: 'deletedAt',
-    deletedBy: 'deletedBy'
+    deletedBy: 'deletedBy',
+    jabatan: 'jabatan'
   };
 
   export type ChartMemberScalarFieldEnum = (typeof ChartMemberScalarFieldEnum)[keyof typeof ChartMemberScalarFieldEnum]
+
+
+  export const JabatanScalarFieldEnum: {
+    jabatanId: 'jabatanId',
+    jabatanName: 'jabatanName',
+    jabatanLevel: 'jabatanLevel',
+    jabatanDesc: 'jabatanDesc',
+    jabatanIsActive: 'jabatanIsActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type JabatanScalarFieldEnum = (typeof JabatanScalarFieldEnum)[keyof typeof JabatanScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6445,6 +7550,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"ChartMember"> | boolean
     deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
     deletedBy?: StringNullableFilter<"ChartMember"> | string | null
+    jabatan?: StringNullableFilter<"ChartMember"> | string | null
     node?: XOR<ChartScalarRelationFilter, ChartWhereInput>
   }
 
@@ -6459,6 +7565,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
     node?: ChartOrderByWithRelationInput
   }
 
@@ -6476,6 +7583,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"ChartMember"> | boolean
     deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
     deletedBy?: StringNullableFilter<"ChartMember"> | string | null
+    jabatan?: StringNullableFilter<"ChartMember"> | string | null
     node?: XOR<ChartScalarRelationFilter, ChartWhereInput>
   }, "memberChartId">
 
@@ -6490,6 +7598,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
     _count?: ChartMemberCountOrderByAggregateInput
     _avg?: ChartMemberAvgOrderByAggregateInput
     _max?: ChartMemberMaxOrderByAggregateInput
@@ -6511,6 +7620,96 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"ChartMember"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ChartMember"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"ChartMember"> | string | null
+    jabatan?: StringNullableWithAggregatesFilter<"ChartMember"> | string | null
+  }
+
+  export type jabatanWhereInput = {
+    AND?: jabatanWhereInput | jabatanWhereInput[]
+    OR?: jabatanWhereInput[]
+    NOT?: jabatanWhereInput | jabatanWhereInput[]
+    jabatanId?: StringFilter<"jabatan"> | string
+    jabatanName?: StringFilter<"jabatan"> | string
+    jabatanLevel?: IntFilter<"jabatan"> | number
+    jabatanDesc?: StringNullableFilter<"jabatan"> | string | null
+    jabatanIsActive?: BoolFilter<"jabatan"> | boolean
+    createdAt?: DateTimeFilter<"jabatan"> | Date | string
+    createdBy?: StringNullableFilter<"jabatan"> | string | null
+    updatedAt?: DateTimeFilter<"jabatan"> | Date | string
+    updatedBy?: StringNullableFilter<"jabatan"> | string | null
+    isDeleted?: BoolFilter<"jabatan"> | boolean
+    deletedAt?: DateTimeNullableFilter<"jabatan"> | Date | string | null
+    deletedBy?: StringNullableFilter<"jabatan"> | string | null
+  }
+
+  export type jabatanOrderByWithRelationInput = {
+    jabatanId?: SortOrder
+    jabatanName?: SortOrder
+    jabatanLevel?: SortOrder
+    jabatanDesc?: SortOrderInput | SortOrder
+    jabatanIsActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+  }
+
+  export type jabatanWhereUniqueInput = Prisma.AtLeast<{
+    jabatanId?: string
+    AND?: jabatanWhereInput | jabatanWhereInput[]
+    OR?: jabatanWhereInput[]
+    NOT?: jabatanWhereInput | jabatanWhereInput[]
+    jabatanName?: StringFilter<"jabatan"> | string
+    jabatanLevel?: IntFilter<"jabatan"> | number
+    jabatanDesc?: StringNullableFilter<"jabatan"> | string | null
+    jabatanIsActive?: BoolFilter<"jabatan"> | boolean
+    createdAt?: DateTimeFilter<"jabatan"> | Date | string
+    createdBy?: StringNullableFilter<"jabatan"> | string | null
+    updatedAt?: DateTimeFilter<"jabatan"> | Date | string
+    updatedBy?: StringNullableFilter<"jabatan"> | string | null
+    isDeleted?: BoolFilter<"jabatan"> | boolean
+    deletedAt?: DateTimeNullableFilter<"jabatan"> | Date | string | null
+    deletedBy?: StringNullableFilter<"jabatan"> | string | null
+  }, "jabatanId">
+
+  export type jabatanOrderByWithAggregationInput = {
+    jabatanId?: SortOrder
+    jabatanName?: SortOrder
+    jabatanLevel?: SortOrder
+    jabatanDesc?: SortOrderInput | SortOrder
+    jabatanIsActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: jabatanCountOrderByAggregateInput
+    _avg?: jabatanAvgOrderByAggregateInput
+    _max?: jabatanMaxOrderByAggregateInput
+    _min?: jabatanMinOrderByAggregateInput
+    _sum?: jabatanSumOrderByAggregateInput
+  }
+
+  export type jabatanScalarWhereWithAggregatesInput = {
+    AND?: jabatanScalarWhereWithAggregatesInput | jabatanScalarWhereWithAggregatesInput[]
+    OR?: jabatanScalarWhereWithAggregatesInput[]
+    NOT?: jabatanScalarWhereWithAggregatesInput | jabatanScalarWhereWithAggregatesInput[]
+    jabatanId?: StringWithAggregatesFilter<"jabatan"> | string
+    jabatanName?: StringWithAggregatesFilter<"jabatan"> | string
+    jabatanLevel?: IntWithAggregatesFilter<"jabatan"> | number
+    jabatanDesc?: StringNullableWithAggregatesFilter<"jabatan"> | string | null
+    jabatanIsActive?: BoolWithAggregatesFilter<"jabatan"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"jabatan"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"jabatan"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"jabatan"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"jabatan"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"jabatan"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"jabatan"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"jabatan"> | string | null
   }
 
   export type RoleCreateInput = {
@@ -6929,6 +8128,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jabatan?: string | null
     node: ChartCreateNestedOneWithoutMembersInput
   }
 
@@ -6943,6 +8143,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jabatan?: string | null
   }
 
   export type ChartMemberUpdateInput = {
@@ -6955,6 +8156,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
     node?: ChartUpdateOneRequiredWithoutMembersNestedInput
   }
 
@@ -6969,6 +8171,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartMemberCreateManyInput = {
@@ -6982,6 +8185,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jabatan?: string | null
   }
 
   export type ChartMemberUpdateManyMutationInput = {
@@ -6994,12 +8198,119 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartMemberUncheckedUpdateManyInput = {
     memberChartId?: StringFieldUpdateOperationsInput | string
     chartId?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type jabatanCreateInput = {
+    jabatanId: string
+    jabatanName: string
+    jabatanLevel: number
+    jabatanDesc?: string | null
+    jabatanIsActive: boolean
+    createdAt: Date | string
+    createdBy?: string | null
+    updatedAt: Date | string
+    updatedBy?: string | null
+    isDeleted: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type jabatanUncheckedCreateInput = {
+    jabatanId: string
+    jabatanName: string
+    jabatanLevel: number
+    jabatanDesc?: string | null
+    jabatanIsActive: boolean
+    createdAt: Date | string
+    createdBy?: string | null
+    updatedAt: Date | string
+    updatedBy?: string | null
+    isDeleted: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type jabatanUpdateInput = {
+    jabatanId?: StringFieldUpdateOperationsInput | string
+    jabatanName?: StringFieldUpdateOperationsInput | string
+    jabatanLevel?: IntFieldUpdateOperationsInput | number
+    jabatanDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatanIsActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type jabatanUncheckedUpdateInput = {
+    jabatanId?: StringFieldUpdateOperationsInput | string
+    jabatanName?: StringFieldUpdateOperationsInput | string
+    jabatanLevel?: IntFieldUpdateOperationsInput | number
+    jabatanDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatanIsActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type jabatanCreateManyInput = {
+    jabatanId: string
+    jabatanName: string
+    jabatanLevel: number
+    jabatanDesc?: string | null
+    jabatanIsActive: boolean
+    createdAt: Date | string
+    createdBy?: string | null
+    updatedAt: Date | string
+    updatedBy?: string | null
+    isDeleted: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type jabatanUpdateManyMutationInput = {
+    jabatanId?: StringFieldUpdateOperationsInput | string
+    jabatanName?: StringFieldUpdateOperationsInput | string
+    jabatanLevel?: IntFieldUpdateOperationsInput | number
+    jabatanDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatanIsActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type jabatanUncheckedUpdateManyInput = {
+    jabatanId?: StringFieldUpdateOperationsInput | string
+    jabatanName?: StringFieldUpdateOperationsInput | string
+    jabatanLevel?: IntFieldUpdateOperationsInput | number
+    jabatanDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatanIsActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7434,6 +8745,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type ChartMemberAvgOrderByAggregateInput = {
@@ -7451,6 +8763,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type ChartMemberMinOrderByAggregateInput = {
@@ -7464,6 +8777,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type ChartMemberSumOrderByAggregateInput = {
@@ -7484,6 +8798,59 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type jabatanCountOrderByAggregateInput = {
+    jabatanId?: SortOrder
+    jabatanName?: SortOrder
+    jabatanLevel?: SortOrder
+    jabatanDesc?: SortOrder
+    jabatanIsActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type jabatanAvgOrderByAggregateInput = {
+    jabatanLevel?: SortOrder
+  }
+
+  export type jabatanMaxOrderByAggregateInput = {
+    jabatanId?: SortOrder
+    jabatanName?: SortOrder
+    jabatanLevel?: SortOrder
+    jabatanDesc?: SortOrder
+    jabatanIsActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type jabatanMinOrderByAggregateInput = {
+    jabatanId?: SortOrder
+    jabatanName?: SortOrder
+    jabatanLevel?: SortOrder
+    jabatanDesc?: SortOrder
+    jabatanIsActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type jabatanSumOrderByAggregateInput = {
+    jabatanLevel?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutCreatedRolesInput = {
@@ -9623,6 +10990,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jabatan?: string | null
   }
 
   export type ChartMemberUncheckedCreateWithoutNodeInput = {
@@ -9635,6 +11003,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jabatan?: string | null
   }
 
   export type ChartMemberCreateOrConnectWithoutNodeInput = {
@@ -9765,6 +11134,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"ChartMember"> | boolean
     deletedAt?: DateTimeNullableFilter<"ChartMember"> | Date | string | null
     deletedBy?: StringNullableFilter<"ChartMember"> | string | null
+    jabatan?: StringNullableFilter<"ChartMember"> | string | null
   }
 
   export type ChartCreateWithoutMembersInput = {
@@ -10417,6 +11787,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    jabatan?: string | null
   }
 
   export type ChartUpdateWithoutParentInput = {
@@ -10487,6 +11858,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartMemberUncheckedUpdateWithoutNodeInput = {
@@ -10499,6 +11871,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChartMemberUncheckedUpdateManyWithoutNodeInput = {
@@ -10511,6 +11884,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

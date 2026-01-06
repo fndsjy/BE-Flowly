@@ -664,6 +664,7 @@ model em_pilar {
   description String?   @employee.NVarChar(255)
   pic         Int?
   jobDesc     String?   @employee.NVarChar(500)
+  jabatan     String?   @employee.NVarChar(50)
 }
 
 model em_profesi {
@@ -740,6 +741,7 @@ model em_sbu {
   description String?   @employee.NVarChar(255)
   pic         Int?
   jobDesc     String?   @employee.NVarChar(500)
+  jabatan     String?   @employee.NVarChar(50)
 
   @@id([id, sbu_code], map: "PK_em_sbu")
 }
@@ -764,6 +766,7 @@ model em_sbu_sub {
   description  String?   @employee.NVarChar(255)
   pic          Int?
   jobDesc      String?   @employee.NVarChar(500)
+  jabatan      String?   @employee.NVarChar(50)
 }
 
 model em_schedule1 {
@@ -1056,24 +1059,6 @@ model menu {
   link      String? @employee.VarChar(200)
   visible   Boolean
   role      String? @employee.VarChar(50)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model oms_roles {
-  roleId       String    @employee.NVarChar(20)
-  roleName     String    @employee.NVarChar(50)
-  roleLevel    Int
-  roleDesc     String?   @employee.NVarChar(255)
-  roleIsActive Boolean
-  createdAt    DateTime
-  createdBy    String?   @employee.NVarChar(20)
-  updatedAt    DateTime
-  updatedBy    String?   @employee.NVarChar(20)
-  isDeleted    Boolean
-  deletedAt    DateTime?
-  deletedBy    String?   @employee.NVarChar(20)
-
-  @@ignore
 }
 
 model scores {

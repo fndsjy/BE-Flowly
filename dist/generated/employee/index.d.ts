@@ -54078,6 +54078,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
   }
 
   export type Em_pilarMaxAggregateOutputType = {
@@ -54097,6 +54098,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
   }
 
   export type Em_pilarCountAggregateOutputType = {
@@ -54116,6 +54118,7 @@ export namespace Prisma {
     description: number
     pic: number
     jobDesc: number
+    jabatan: number
     _all: number
   }
 
@@ -54147,6 +54150,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
   }
 
   export type Em_pilarMaxAggregateInputType = {
@@ -54166,6 +54170,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
   }
 
   export type Em_pilarCountAggregateInputType = {
@@ -54185,6 +54190,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
     _all?: true
   }
 
@@ -54291,6 +54297,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
     _count: Em_pilarCountAggregateOutputType | null
     _avg: Em_pilarAvgAggregateOutputType | null
     _sum: Em_pilarSumAggregateOutputType | null
@@ -54329,6 +54336,7 @@ export namespace Prisma {
     description?: boolean
     pic?: boolean
     jobDesc?: boolean
+    jabatan?: boolean
   }, ExtArgs["result"]["em_pilar"]>
 
 
@@ -54350,9 +54358,10 @@ export namespace Prisma {
     description?: boolean
     pic?: boolean
     jobDesc?: boolean
+    jabatan?: boolean
   }
 
-  export type em_pilarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pilar_name" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic" | "jobDesc", ExtArgs["result"]["em_pilar"]>
+  export type em_pilarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pilar_name" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic" | "jobDesc" | "jabatan", ExtArgs["result"]["em_pilar"]>
 
   export type $em_pilarPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_pilar"
@@ -54374,6 +54383,7 @@ export namespace Prisma {
       description: string | null
       pic: number | null
       jobDesc: string | null
+      jabatan: string | null
     }, ExtArgs["result"]["em_pilar"]>
     composites: {}
   }
@@ -54759,6 +54769,7 @@ export namespace Prisma {
     readonly description: FieldRef<"em_pilar", 'String'>
     readonly pic: FieldRef<"em_pilar", 'Int'>
     readonly jobDesc: FieldRef<"em_pilar", 'String'>
+    readonly jabatan: FieldRef<"em_pilar", 'String'>
   }
     
 
@@ -59959,6 +59970,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
   }
 
   export type Em_sbuMaxAggregateOutputType = {
@@ -59980,6 +59992,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
   }
 
   export type Em_sbuCountAggregateOutputType = {
@@ -60001,6 +60014,7 @@ export namespace Prisma {
     description: number
     pic: number
     jobDesc: number
+    jabatan: number
     _all: number
   }
 
@@ -60036,6 +60050,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
   }
 
   export type Em_sbuMaxAggregateInputType = {
@@ -60057,6 +60072,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
   }
 
   export type Em_sbuCountAggregateInputType = {
@@ -60078,6 +60094,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
     _all?: true
   }
 
@@ -60186,6 +60203,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
     _count: Em_sbuCountAggregateOutputType | null
     _avg: Em_sbuAvgAggregateOutputType | null
     _sum: Em_sbuSumAggregateOutputType | null
@@ -60226,6 +60244,7 @@ export namespace Prisma {
     description?: boolean
     pic?: boolean
     jobDesc?: boolean
+    jabatan?: boolean
   }, ExtArgs["result"]["em_sbu"]>
 
 
@@ -60249,9 +60268,10 @@ export namespace Prisma {
     description?: boolean
     pic?: boolean
     jobDesc?: boolean
+    jabatan?: boolean
   }
 
-  export type em_sbuOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_code" | "sbu_name" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic" | "jobDesc", ExtArgs["result"]["em_sbu"]>
+  export type em_sbuOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_code" | "sbu_name" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic" | "jobDesc" | "jabatan", ExtArgs["result"]["em_sbu"]>
 
   export type $em_sbuPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_sbu"
@@ -60275,6 +60295,7 @@ export namespace Prisma {
       description: string | null
       pic: number | null
       jobDesc: string | null
+      jabatan: string | null
     }, ExtArgs["result"]["em_sbu"]>
     composites: {}
   }
@@ -60662,6 +60683,7 @@ export namespace Prisma {
     readonly description: FieldRef<"em_sbu", 'String'>
     readonly pic: FieldRef<"em_sbu", 'Int'>
     readonly jobDesc: FieldRef<"em_sbu", 'String'>
+    readonly jabatan: FieldRef<"em_sbu", 'String'>
   }
     
 
@@ -61028,6 +61050,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
   }
 
   export type Em_sbu_subMaxAggregateOutputType = {
@@ -61050,6 +61073,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
   }
 
   export type Em_sbu_subCountAggregateOutputType = {
@@ -61072,6 +61096,7 @@ export namespace Prisma {
     description: number
     pic: number
     jobDesc: number
+    jabatan: number
     _all: number
   }
 
@@ -61110,6 +61135,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
   }
 
   export type Em_sbu_subMaxAggregateInputType = {
@@ -61132,6 +61158,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
   }
 
   export type Em_sbu_subCountAggregateInputType = {
@@ -61154,6 +61181,7 @@ export namespace Prisma {
     description?: true
     pic?: true
     jobDesc?: true
+    jabatan?: true
     _all?: true
   }
 
@@ -61263,6 +61291,7 @@ export namespace Prisma {
     description: string | null
     pic: number | null
     jobDesc: string | null
+    jabatan: string | null
     _count: Em_sbu_subCountAggregateOutputType | null
     _avg: Em_sbu_subAvgAggregateOutputType | null
     _sum: Em_sbu_subSumAggregateOutputType | null
@@ -61304,6 +61333,7 @@ export namespace Prisma {
     description?: boolean
     pic?: boolean
     jobDesc?: boolean
+    jabatan?: boolean
   }, ExtArgs["result"]["em_sbu_sub"]>
 
 
@@ -61328,9 +61358,10 @@ export namespace Prisma {
     description?: boolean
     pic?: boolean
     jobDesc?: boolean
+    jabatan?: boolean
   }
 
-  export type em_sbu_subOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_sub_code" | "sbu_sub_name" | "sbu_id" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic" | "jobDesc", ExtArgs["result"]["em_sbu_sub"]>
+  export type em_sbu_subOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sbu_sub_code" | "sbu_sub_name" | "sbu_id" | "sbu_pilar" | "status" | "add_by" | "created_at" | "lastupdate" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "description" | "pic" | "jobDesc" | "jabatan", ExtArgs["result"]["em_sbu_sub"]>
 
   export type $em_sbu_subPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "em_sbu_sub"
@@ -61355,6 +61386,7 @@ export namespace Prisma {
       description: string | null
       pic: number | null
       jobDesc: string | null
+      jabatan: string | null
     }, ExtArgs["result"]["em_sbu_sub"]>
     composites: {}
   }
@@ -61743,6 +61775,7 @@ export namespace Prisma {
     readonly description: FieldRef<"em_sbu_sub", 'String'>
     readonly pic: FieldRef<"em_sbu_sub", 'Int'>
     readonly jobDesc: FieldRef<"em_sbu_sub", 'String'>
+    readonly jabatan: FieldRef<"em_sbu_sub", 'String'>
   }
     
 
@@ -86574,7 +86607,8 @@ export namespace Prisma {
     deletedBy: 'deletedBy',
     description: 'description',
     pic: 'pic',
-    jobDesc: 'jobDesc'
+    jobDesc: 'jobDesc',
+    jabatan: 'jabatan'
   };
 
   export type Em_pilarScalarFieldEnum = (typeof Em_pilarScalarFieldEnum)[keyof typeof Em_pilarScalarFieldEnum]
@@ -86663,7 +86697,8 @@ export namespace Prisma {
     deletedBy: 'deletedBy',
     description: 'description',
     pic: 'pic',
-    jobDesc: 'jobDesc'
+    jobDesc: 'jobDesc',
+    jabatan: 'jabatan'
   };
 
   export type Em_sbuScalarFieldEnum = (typeof Em_sbuScalarFieldEnum)[keyof typeof Em_sbuScalarFieldEnum]
@@ -86688,7 +86723,8 @@ export namespace Prisma {
     deletedBy: 'deletedBy',
     description: 'description',
     pic: 'pic',
-    jobDesc: 'jobDesc'
+    jobDesc: 'jobDesc',
+    jabatan: 'jabatan'
   };
 
   export type Em_sbu_subScalarFieldEnum = (typeof Em_sbu_subScalarFieldEnum)[keyof typeof Em_sbu_subScalarFieldEnum]
@@ -90747,6 +90783,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"em_pilar"> | string | null
     pic?: IntNullableFilter<"em_pilar"> | number | null
     jobDesc?: StringNullableFilter<"em_pilar"> | string | null
+    jabatan?: StringNullableFilter<"em_pilar"> | string | null
   }
 
   export type em_pilarOrderByWithRelationInput = {
@@ -90766,6 +90803,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     pic?: SortOrderInput | SortOrder
     jobDesc?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
   }
 
   export type em_pilarWhereUniqueInput = Prisma.AtLeast<{
@@ -90788,6 +90826,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"em_pilar"> | string | null
     pic?: IntNullableFilter<"em_pilar"> | number | null
     jobDesc?: StringNullableFilter<"em_pilar"> | string | null
+    jabatan?: StringNullableFilter<"em_pilar"> | string | null
   }, "id">
 
   export type em_pilarOrderByWithAggregationInput = {
@@ -90807,6 +90846,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     pic?: SortOrderInput | SortOrder
     jobDesc?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
     _count?: em_pilarCountOrderByAggregateInput
     _avg?: em_pilarAvgOrderByAggregateInput
     _max?: em_pilarMaxOrderByAggregateInput
@@ -90834,6 +90874,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"em_pilar"> | string | null
     pic?: IntNullableWithAggregatesFilter<"em_pilar"> | number | null
     jobDesc?: StringNullableWithAggregatesFilter<"em_pilar"> | string | null
+    jabatan?: StringNullableWithAggregatesFilter<"em_pilar"> | string | null
   }
 
   export type em_profesiWhereInput = {
@@ -91185,6 +91226,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"em_sbu"> | string | null
     pic?: IntNullableFilter<"em_sbu"> | number | null
     jobDesc?: StringNullableFilter<"em_sbu"> | string | null
+    jabatan?: StringNullableFilter<"em_sbu"> | string | null
   }
 
   export type em_sbuOrderByWithRelationInput = {
@@ -91206,6 +91248,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     pic?: SortOrderInput | SortOrder
     jobDesc?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
   }
 
   export type em_sbuWhereUniqueInput = Prisma.AtLeast<{
@@ -91231,6 +91274,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"em_sbu"> | string | null
     pic?: IntNullableFilter<"em_sbu"> | number | null
     jobDesc?: StringNullableFilter<"em_sbu"> | string | null
+    jabatan?: StringNullableFilter<"em_sbu"> | string | null
   }, "id_sbu_code">
 
   export type em_sbuOrderByWithAggregationInput = {
@@ -91252,6 +91296,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     pic?: SortOrderInput | SortOrder
     jobDesc?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
     _count?: em_sbuCountOrderByAggregateInput
     _avg?: em_sbuAvgOrderByAggregateInput
     _max?: em_sbuMaxOrderByAggregateInput
@@ -91281,6 +91326,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
     pic?: IntNullableWithAggregatesFilter<"em_sbu"> | number | null
     jobDesc?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
+    jabatan?: StringNullableWithAggregatesFilter<"em_sbu"> | string | null
   }
 
   export type em_sbu_subWhereInput = {
@@ -91306,6 +91352,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"em_sbu_sub"> | string | null
     pic?: IntNullableFilter<"em_sbu_sub"> | number | null
     jobDesc?: StringNullableFilter<"em_sbu_sub"> | string | null
+    jabatan?: StringNullableFilter<"em_sbu_sub"> | string | null
   }
 
   export type em_sbu_subOrderByWithRelationInput = {
@@ -91328,6 +91375,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     pic?: SortOrderInput | SortOrder
     jobDesc?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
   }
 
   export type em_sbu_subWhereUniqueInput = Prisma.AtLeast<{
@@ -91353,6 +91401,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"em_sbu_sub"> | string | null
     pic?: IntNullableFilter<"em_sbu_sub"> | number | null
     jobDesc?: StringNullableFilter<"em_sbu_sub"> | string | null
+    jabatan?: StringNullableFilter<"em_sbu_sub"> | string | null
   }, "id">
 
   export type em_sbu_subOrderByWithAggregationInput = {
@@ -91375,6 +91424,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     pic?: SortOrderInput | SortOrder
     jobDesc?: SortOrderInput | SortOrder
+    jabatan?: SortOrderInput | SortOrder
     _count?: em_sbu_subCountOrderByAggregateInput
     _avg?: em_sbu_subAvgOrderByAggregateInput
     _max?: em_sbu_subMaxOrderByAggregateInput
@@ -91405,6 +91455,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
     pic?: IntNullableWithAggregatesFilter<"em_sbu_sub"> | number | null
     jobDesc?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
+    jabatan?: StringNullableWithAggregatesFilter<"em_sbu_sub"> | string | null
   }
 
   export type em_schedule1WhereInput = {
@@ -97050,6 +97101,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_pilarUncheckedCreateInput = {
@@ -97069,6 +97121,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_pilarUpdateInput = {
@@ -97087,6 +97140,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_pilarUncheckedUpdateInput = {
@@ -97106,6 +97160,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_pilarCreateManyInput = {
@@ -97124,6 +97179,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_pilarUpdateManyMutationInput = {
@@ -97142,6 +97198,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_pilarUncheckedUpdateManyInput = {
@@ -97161,6 +97218,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_profesiCreateInput = {
@@ -97518,6 +97576,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_sbuUncheckedCreateInput = {
@@ -97539,6 +97598,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_sbuUpdateInput = {
@@ -97560,6 +97620,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbuUncheckedUpdateInput = {
@@ -97581,6 +97642,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbuCreateManyInput = {
@@ -97601,6 +97663,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_sbuUpdateManyMutationInput = {
@@ -97622,6 +97685,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbuUncheckedUpdateManyInput = {
@@ -97643,6 +97707,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbu_subCreateInput = {
@@ -97664,6 +97729,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_sbu_subUncheckedCreateInput = {
@@ -97686,6 +97752,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_sbu_subUpdateInput = {
@@ -97707,6 +97774,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbu_subUncheckedUpdateInput = {
@@ -97729,6 +97797,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbu_subCreateManyInput = {
@@ -97750,6 +97819,7 @@ export namespace Prisma {
     description?: string | null
     pic?: number | null
     jobDesc?: string | null
+    jabatan?: string | null
   }
 
   export type em_sbu_subUpdateManyMutationInput = {
@@ -97771,6 +97841,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_sbu_subUncheckedUpdateManyInput = {
@@ -97793,6 +97864,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pic?: NullableIntFieldUpdateOperationsInput | number | null
     jobDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type em_schedule1CreateInput = {
@@ -102394,6 +102466,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_pilarAvgOrderByAggregateInput = {
@@ -102418,6 +102491,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_pilarMinOrderByAggregateInput = {
@@ -102437,6 +102511,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_pilarSumOrderByAggregateInput = {
@@ -102695,6 +102770,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_sbuAvgOrderByAggregateInput = {
@@ -102722,6 +102798,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_sbuMinOrderByAggregateInput = {
@@ -102743,6 +102820,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_sbuSumOrderByAggregateInput = {
@@ -102771,6 +102849,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_sbu_subAvgOrderByAggregateInput = {
@@ -102800,6 +102879,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_sbu_subMinOrderByAggregateInput = {
@@ -102822,6 +102902,7 @@ export namespace Prisma {
     description?: SortOrder
     pic?: SortOrder
     jobDesc?: SortOrder
+    jabatan?: SortOrder
   }
 
   export type em_sbu_subSumOrderByAggregateInput = {
