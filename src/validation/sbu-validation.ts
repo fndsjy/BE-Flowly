@@ -7,6 +7,7 @@ export class SbuValidation {
     sbuPilar: z.number().min(1),
     description: z.string().optional().nullable(),
     jobDesc: z.string().max(500).nullable().optional(),
+    jabatan: z.string().max(50).optional().nullable(),
     pic: z.number().nullable().optional().nullable(),
   });
 
@@ -17,6 +18,7 @@ export class SbuValidation {
     sbuPilar: z.number().optional(),
     description: z.string().optional().nullable(),
     jobDesc: z.string().max(500).nullable().optional(),
+    jabatan: z.string().max(50).optional().nullable(),
     pic: z.number().nullable().optional().nullable(),
     status: z.string().optional(),
   });

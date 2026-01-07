@@ -41,6 +41,23 @@ export class PilarService {
       }
     }
 
+    const normalizedJabatan = request.jabatan?.trim();
+    const jabatanId = normalizedJabatan ? normalizedJabatan : null;
+
+    if (jabatanId) {
+      const jabatan = await prismaFlowly.jabatan.findFirst({
+        where: {
+          jabatanId,
+          isDeleted: false,
+          jabatanIsActive: true
+        }
+      });
+
+      if (!jabatan) {
+        throw new ResponseError(400, "Invalid jabatan");
+      }
+    }
+
     // const structureId = await generateOrgStructureId();
 
     const pilar = await prismaEmployee.em_pilar.create({
@@ -48,6 +65,7 @@ export class PilarService {
         pilar_name: request.pilarName,
         description: request.description ?? null,
         jobDesc: request.jobDesc ?? null,
+        jabatan: jabatanId,
         status: "A",
         pic: request.pic ?? null,
         isDeleted: false,
@@ -95,6 +113,27 @@ export class PilarService {
     }
 
     const finalJobDesc = request.jobDesc === undefined ? exists.jobDesc : request.jobDesc;
+    const normalizedJabatanInput = request.jabatan === undefined
+      ? undefined
+      : request.jabatan?.trim() || null;
+
+    if (normalizedJabatanInput) {
+      const jabatan = await prismaFlowly.jabatan.findFirst({
+        where: {
+          jabatanId: normalizedJabatanInput,
+          isDeleted: false,
+          jabatanIsActive: true
+        }
+      });
+
+      if (!jabatan) {
+        throw new ResponseError(400, "Invalid jabatan");
+      }
+    }
+
+    const finalJabatan = normalizedJabatanInput === undefined
+      ? exists.jabatan ?? null
+      : normalizedJabatanInput;
 
     const updated = await prismaEmployee.em_pilar.update({
       where: { id: request.id },
@@ -102,6 +141,7 @@ export class PilarService {
         pilar_name: request.pilarName ?? exists.pilar_name,
         description: request.description ?? exists.description,
         jobDesc: finalJobDesc,
+        jabatan: finalJabatan,
         status: request.status ?? exists.status,
         pic: request.pic ?? exists.pic,
         lastupdate: new Date(),

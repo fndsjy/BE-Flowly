@@ -1,4 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
+import type {
+  CreateSbuRequest,
+  UpdateSbuRequest,
+  DeleteSbuRequest
+} from "../model/sbu-model.js";
 import { verifyToken } from "../utils/auth.js";
 import { ResponseError } from "../error/response-error.js";
 import { SbuService } from "../service/sbu-service.js";
@@ -11,7 +16,7 @@ export class SbuController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await SbuService.create(payload.userId, req.body);
+      const response = await SbuService.create(payload.userId, req.body as CreateSbuRequest);
 
       res.status(201).json({ response });
     } catch (err) {
@@ -25,7 +30,7 @@ export class SbuController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await SbuService.update(payload.userId, req.body);
+      const response = await SbuService.update(payload.userId, req.body as UpdateSbuRequest);
 
       res.status(200).json({ response });
     } catch (err) {
@@ -39,7 +44,7 @@ export class SbuController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await SbuService.softDelete(payload.userId, req.body);
+      const response = await SbuService.softDelete(payload.userId, req.body as DeleteSbuRequest);
 
       res.status(200).json({ response });
     } catch (err) {

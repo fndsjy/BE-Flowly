@@ -20,7 +20,7 @@ export class ChartService {
   static async create(requesterUserId: string, request: CreateChartRequest) {
     const validated = Validation.validate(ChartValidation.CREATE, request);
 
-    const { position, capacity, jobDesc } = validated;
+    const { position, capacity, jobDesc, jabatan } = validated;
     let { parentId, pilarId, sbuId, sbuSubId } = validated;
 
 
@@ -147,6 +147,7 @@ export class ChartService {
           memberChartId,
           chartId: chart.chartId,
           userId: null,
+          jabatan: jabatan ?? null,
           createdBy: requesterUserId,
           updatedBy: requesterUserId, // ✅ opsional, tapi konsisten
         },
@@ -164,7 +165,8 @@ export class ChartService {
       position: inputPosition,
       capacity: inputCapacity,
       orderIndex: inputOrderIndex,
-      jobDesc: inputJobDesc
+      jobDesc: inputJobDesc,
+      jabatan: inputJabatan
     } = validated;
 
     // 1. CEK NODE
@@ -177,6 +179,12 @@ export class ChartService {
     const finalCapacity = inputCapacity ?? existing.capacity;
     const finalOrderIndex = inputOrderIndex ?? existing.orderIndex;
     const finalJobDesc = inputJobDesc === undefined ? existing.jobDesc : inputJobDesc;
+    const finalJabatan =
+      inputJabatan === undefined
+        ? undefined
+        : typeof inputJabatan === "string" && inputJabatan.trim().length === 0
+          ? null
+          : inputJabatan;
 
     // 2. CEK ADMIN
     const requester = await prismaFlowly.user.findUnique({
@@ -193,6 +201,10 @@ export class ChartService {
       orderBy: { createdAt: "asc" }, // PENTING agar slice konsisten
     });
 
+    const existingJabatan =
+      currentSlots.find((slot) => slot.jabatan)?.jabatan ?? null;
+    const slotJabatan = finalJabatan !== undefined ? finalJabatan : existingJabatan;
+
     const diff = finalCapacity - currentSlots.length;
 
     // 4. CAPACITY NAIK → TAMBAH SLOT (SATU-PER-SATU agar ID unik)
@@ -207,6 +219,7 @@ export class ChartService {
             memberChartId,
             chartId,
             userId: null,
+            jabatan: slotJabatan,
             createdBy: requesterUserId,
             updatedBy: requesterUserId,
           },
@@ -267,6 +280,18 @@ export class ChartService {
           },
         });
       }
+    }
+
+    // 5.b UPDATE JABATAN SLOT (JIKA DIKIRIM)
+    if (finalJabatan !== undefined) {
+      await prismaFlowly.chartMember.updateMany({
+        where: { chartId, isDeleted: false },
+        data: {
+          jabatan: finalJabatan,
+          updatedBy: requesterUserId,
+          updatedAt: new Date(),
+        },
+      });
     }
 
     // 6. UPDATE CHART (INI YANG TADI HILANG)

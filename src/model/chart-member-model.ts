@@ -2,6 +2,7 @@ export type ChartMemberResponse = {
     memberChartId: string;
     chartId: string;
     userId: number | null;
+    jabatan: string | null;
 };
 
 
@@ -27,5 +28,6 @@ export function toChartMemberResponse(m: any): ChartMemberResponse {
         memberChartId: m.memberChartId,
         chartId: m.chartId,
         userId: m.userId,
+        jabatan: m.jabatan ?? null,
     };
 }

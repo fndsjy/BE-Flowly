@@ -19,6 +19,7 @@ export type CreateChartRequest = {
     capacity: number;
     orderIndex?: number;
     jobDesc?: string | null;
+    jabatan?: string | null;
 };
 export type UpdateChartRequest = {
     chartId: string;
@@ -26,6 +27,7 @@ export type UpdateChartRequest = {
     capacity?: number;
     orderIndex?: number;
     jobDesc?: string | null;
+    jabatan?: string | null;
 };
 export type DeleteChartRequest = {
     chartId: string;

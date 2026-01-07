@@ -44,6 +44,20 @@ export class SbuSubService {
             if (!picExists)
                 throw new ResponseError(400, "PIC not found");
         }
+        const normalizedJabatan = req.jabatan?.trim();
+        const jabatanId = normalizedJabatan ? normalizedJabatan : null;
+        if (jabatanId) {
+            const jabatan = await prismaFlowly.jabatan.findFirst({
+                where: {
+                    jabatanId,
+                    isDeleted: false,
+                    jabatanIsActive: true
+                }
+            });
+            if (!jabatan) {
+                throw new ResponseError(400, "Invalid jabatan");
+            }
+        }
         // Cek duplicate code
         const duplicate = await prismaEmployee.em_sbu_sub.findFirst({
             where: {
@@ -61,6 +75,7 @@ export class SbuSubService {
                 sbu_pilar: pilarId,
                 description: req.description ?? null,
                 jobDesc: req.jobDesc ?? null,
+                jabatan: jabatanId,
                 pic: req.pic ?? null,
                 status: "A",
                 isDeleted: false,
@@ -105,6 +120,21 @@ export class SbuSubService {
             if (!picExists)
                 throw new ResponseError(400, "PIC not found");
         }
+        const normalizedJabatanInput = req.jabatan === undefined
+            ? undefined
+            : req.jabatan?.trim() || null;
+        if (normalizedJabatanInput) {
+            const jabatan = await prismaFlowly.jabatan.findFirst({
+                where: {
+                    jabatanId: normalizedJabatanInput,
+                    isDeleted: false,
+                    jabatanIsActive: true
+                }
+            });
+            if (!jabatan) {
+                throw new ResponseError(400, "Invalid jabatan");
+            }
+        }
         // if (!req.sbuPilar) {
         //   throw new ResponseError(400, "sbuPilar is required");
         // }
@@ -140,6 +170,9 @@ export class SbuSubService {
                 throw new ResponseError(400, "SBU SUB Code already exists");
         }
         const finalJobDesc = req.jobDesc === undefined ? exists.jobDesc : req.jobDesc;
+        const finalJabatan = normalizedJabatanInput === undefined
+            ? exists.jabatan ?? null
+            : normalizedJabatanInput;
         const updated = await prismaEmployee.em_sbu_sub.update({
             where: { id: req.id },
             data: {
@@ -149,6 +182,7 @@ export class SbuSubService {
                 sbu_pilar: req.sbuPilar ?? exists.sbu_pilar,
                 description: req.description ?? exists.description,
                 jobDesc: finalJobDesc,
+                jabatan: finalJabatan,
                 pic: req.pic ?? exists.pic,
                 status: req.status ?? exists.status,
                 updatedAt: new Date(),

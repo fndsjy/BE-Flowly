@@ -1,5 +1,10 @@
 // sbu-sub-controller.ts
 import type { Request, Response, NextFunction } from "express";
+import type {
+  CreateSbuSubRequest,
+  UpdateSbuSubRequest,
+  DeleteSbuSubRequest
+} from "../model/sbu-sub-model.js";
 import { verifyToken } from "../utils/auth.js";
 import { ResponseError } from "../error/response-error.js";
 import { SbuSubService } from "../service/sbu-sub-service.js";
@@ -12,7 +17,7 @@ export class SbuSubController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await SbuSubService.create(payload.userId, req.body);
+      const response = await SbuSubService.create(payload.userId, req.body as CreateSbuSubRequest);
 
       res.status(201).json({ response });
     } catch (err) {
@@ -26,7 +31,7 @@ export class SbuSubController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await SbuSubService.update(payload.userId, req.body);
+      const response = await SbuSubService.update(payload.userId, req.body as UpdateSbuSubRequest);
 
       res.status(200).json({ response });
     } catch (err) {
@@ -40,7 +45,7 @@ export class SbuSubController {
       if (!token) throw new ResponseError(401, "Unauthorized");
 
       const payload = verifyToken(token);
-      const response = await SbuSubService.softDelete(payload.userId, req.body);
+      const response = await SbuSubService.softDelete(payload.userId, req.body as DeleteSbuSubRequest);
 
       res.status(200).json({ response });
     } catch (err) {
