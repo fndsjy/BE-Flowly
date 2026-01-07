@@ -11,6 +11,7 @@ export class ChartValidation {
     capacity: z.number().int().min(1, "Capacity must be at least 1"),
     orderIndex: z.number().optional(),
     jobDesc: z.string().max(500).nullable().optional(),
+    jabatan: z.string().max(50).nullable().optional(),
   });
 
   static readonly UPDATE: ZodType = z.object({
@@ -19,6 +20,7 @@ export class ChartValidation {
     capacity: z.number().int().min(1).optional(),
     orderIndex: z.number().optional(),
     jobDesc: z.string().max(500).nullable().optional(),
+    jabatan: z.string().max(50).nullable().optional(),
   });
 
   static readonly DELETE: ZodType = z.object({

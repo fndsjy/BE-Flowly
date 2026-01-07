@@ -6,6 +6,7 @@ export type SbuResponse = {
   sbuPilar: number;
   description: string | null;
   jobDesc: string | null;
+  jabatan: string | null;
   pic: number | null;
   status: string;
   isDeleted: boolean;
@@ -23,6 +24,7 @@ export type CreateSbuRequest = {
   sbuPilar: number;
   description?: string | null;
   jobDesc?: string | null;
+  jabatan?: string | null;
   pic?: number | null;
 };
 
@@ -33,6 +35,7 @@ export type UpdateSbuRequest = {
   sbuPilar?: number;
   description?: string | null;
   jobDesc?: string | null;
+  jabatan?: string | null;
   pic?: number | null;
   status?: string;
 };
@@ -50,6 +53,7 @@ export function toSbuResponse(s: any): SbuResponse {
     sbuPilar: s.sbu_pilar,
     description: s.description ?? null,
     jobDesc: s.jobDesc ?? null,
+    jabatan: s.jabatan ?? null,
     pic: s.pic ?? null,
     status: s.status,
     isDeleted: s.isDeleted ?? false,

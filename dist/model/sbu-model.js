@@ -7,6 +7,7 @@ export function toSbuResponse(s) {
         sbuPilar: s.sbu_pilar,
         description: s.description ?? null,
         jobDesc: s.jobDesc ?? null,
+        jabatan: s.jabatan ?? null,
         pic: s.pic ?? null,
         status: s.status,
         isDeleted: s.isDeleted ?? false,

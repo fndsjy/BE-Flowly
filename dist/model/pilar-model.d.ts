@@ -3,6 +3,7 @@ export type PilarResponse = {
     pilarName: string;
     description: string | null;
     jobDesc: string | null;
+    jabatan: string | null;
     pic: number | null;
     status: string;
     isDeleted: boolean;
@@ -14,6 +15,7 @@ export type PilarListResponse = {
     pilarName: string;
     description: string | null;
     jobDesc: string | null;
+    jabatan: string | null;
     pic: number | null;
     status: string;
     isDeleted: boolean;
@@ -24,6 +26,7 @@ export type CreatePilarRequest = {
     pilarName: string;
     description?: string | null;
     jobDesc?: string | null;
+    jabatan?: string | null;
     pic?: number | null;
 };
 export type UpdatePilarRequest = {
@@ -31,6 +34,7 @@ export type UpdatePilarRequest = {
     pilarName?: string;
     description?: string | null;
     jobDesc?: string | null;
+    jabatan?: string | null;
     pic?: number | null;
     status?: string;
 };

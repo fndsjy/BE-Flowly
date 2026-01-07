@@ -2,6 +2,7 @@ export type ChartMemberResponse = {
     memberChartId: string;
     chartId: string;
     userId: number | null;
+    jabatan: string | null;
 };
 export type CreateChartMemberRequest = {
     chartId: string;

@@ -63,13 +63,33 @@ export class JabatanService {
             const targetLevel = req.jabatanLevel;
             const currentLevel = existing.jabatanLevel;
             const updated = await prismaFlowly.$transaction(async (tx) => {
-                const lastLevel = await tx.jabatan.findFirst({
+                const levels = await tx.jabatan.findMany({
                     where: { isDeleted: false },
-                    orderBy: { jabatanLevel: "desc" },
-                    select: { jabatanLevel: true }
+                    orderBy: { jabatanLevel: "asc" },
+                    select: { jabatanId: true, jabatanLevel: true }
                 });
-                if (!lastLevel || targetLevel > lastLevel.jabatanLevel) {
-                    throw new ResponseError(400, "Jabatan level cannot exceed last level");
+                const totalLevels = levels.length;
+                if (totalLevels === 0) {
+                    throw new ResponseError(400, "Jabatan levels not found");
+                }
+                const levelSet = new Set();
+                let minLevel = Number.POSITIVE_INFINITY;
+                let maxLevel = Number.NEGATIVE_INFINITY;
+                for (const level of levels) {
+                    if (levelSet.has(level.jabatanLevel)) {
+                        throw new ResponseError(400, "Duplicate jabatan level detected");
+                    }
+                    levelSet.add(level.jabatanLevel);
+                    if (level.jabatanLevel < minLevel)
+                        minLevel = level.jabatanLevel;
+                    if (level.jabatanLevel > maxLevel)
+                        maxLevel = level.jabatanLevel;
+                }
+                if (minLevel !== 1 || maxLevel !== totalLevels) {
+                    throw new ResponseError(400, "Jabatan levels must be sequential");
+                }
+                if (targetLevel < 1 || targetLevel > totalLevels) {
+                    throw new ResponseError(400, "Jabatan level is out of range");
                 }
                 const now = new Date();
                 if (targetLevel < currentLevel) {

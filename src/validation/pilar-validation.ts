@@ -6,6 +6,7 @@ export class PilarValidation {
     pilarName: z.string().min(1, "Pilar name is required"),
     description: z.string().optional().nullable(),
     jobDesc: z.string().max(500).nullable().optional(),
+    jabatan: z.string().max(50).optional().nullable(),
     pic: z.number().optional().nullable(), 
   });
 
@@ -14,6 +15,7 @@ export class PilarValidation {
     pilarName: z.string().optional(),
     description: z.string().optional().nullable(),
     jobDesc: z.string().max(500).nullable().optional(),
+    jabatan: z.string().max(50).optional().nullable(),
     pic: z.number().optional().nullable(), 
     status: z.string().optional(),  // "0" / "1"
   });

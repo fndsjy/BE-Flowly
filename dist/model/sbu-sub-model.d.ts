@@ -6,6 +6,7 @@ export type SbuSubResponse = {
     sbuPilar: number | null;
     description: string | null;
     jobDesc: string | null;
+    jabatan: string | null;
     pic: number | null;
     status: string;
     isDeleted: boolean;
@@ -20,6 +21,7 @@ export type CreateSbuSubRequest = {
     sbuPilar?: number | null;
     description?: string | null;
     jobDesc?: string | null;
+    jabatan?: string | null;
     pic?: number | null;
 };
 export type UpdateSbuSubRequest = {
@@ -30,6 +32,7 @@ export type UpdateSbuSubRequest = {
     sbuPilar?: number | null;
     description?: string | null;
     jobDesc?: string | null;
+    jabatan?: string | null;
     pic?: number | null;
     status?: string;
 };

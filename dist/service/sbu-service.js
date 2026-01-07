@@ -21,6 +21,20 @@ export class SbuService {
             if (!picExists)
                 throw new ResponseError(400, "PIC not found");
         }
+        const normalizedJabatan = req.jabatan?.trim();
+        const jabatanId = normalizedJabatan ? normalizedJabatan : null;
+        if (jabatanId) {
+            const jabatan = await prismaFlowly.jabatan.findFirst({
+                where: {
+                    jabatanId,
+                    isDeleted: false,
+                    jabatanIsActive: true
+                }
+            });
+            if (!jabatan) {
+                throw new ResponseError(400, "Invalid jabatan");
+            }
+        }
         // Cek Pilar
         const pilar = await prismaEmployee.em_pilar.findUnique({
             where: { id: req.sbuPilar, OR: [{ isDeleted: false }, { isDeleted: null }] }
@@ -44,6 +58,7 @@ export class SbuService {
                 sbu_pilar: req.sbuPilar,
                 description: req.description ?? null,
                 jobDesc: req.jobDesc ?? null,
+                jabatan: jabatanId,
                 pic: req.pic ?? null,
                 status: "A",
                 isDeleted: false,
@@ -79,6 +94,21 @@ export class SbuService {
             if (!picExists)
                 throw new ResponseError(400, "PIC not found");
         }
+        const normalizedJabatanInput = req.jabatan === undefined
+            ? undefined
+            : req.jabatan?.trim() || null;
+        if (normalizedJabatanInput) {
+            const jabatan = await prismaFlowly.jabatan.findFirst({
+                where: {
+                    jabatanId: normalizedJabatanInput,
+                    isDeleted: false,
+                    jabatanIsActive: true
+                }
+            });
+            if (!jabatan) {
+                throw new ResponseError(400, "Invalid jabatan");
+            }
+        }
         if (req.sbuPilar && req.sbuPilar !== exists.sbu_pilar) {
             throw new ResponseError(400, "Cannot change pilar of SBU");
         }
@@ -95,6 +125,9 @@ export class SbuService {
                 throw new ResponseError(400, "SBU Code already exists");
             }
         }
+        const finalJabatan = normalizedJabatanInput === undefined
+            ? exists.jabatan ?? null
+            : normalizedJabatanInput;
         const updated = await prismaEmployee.em_sbu.update({
             where: { id_sbu_code: { id: req.id, sbu_code: exists.sbu_code } },
             data: {
@@ -103,6 +136,7 @@ export class SbuService {
                 sbu_pilar: req.sbuPilar ?? exists.sbu_pilar,
                 description: req.description ?? exists.description,
                 jobDesc: req.jobDesc ?? exists.jobDesc,
+                jabatan: finalJabatan,
                 pic: req.pic ?? exists.pic,
                 status: req.status ?? exists.status,
                 updatedAt: new Date(),
