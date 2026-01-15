@@ -5,8 +5,8 @@ export declare class SbuSubService {
     static softDelete(requesterId: string, reqBody: DeleteSbuSubRequest): Promise<{
         message: string;
     }>;
-    static list(): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
-    static getBySbu(sbuId: number): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
-    static getByPilar(pilarId: number): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
+    static list(requesterId: string): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
+    static getBySbu(requesterId: string, sbuId: number): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
+    static getByPilar(requesterId: string, pilarId: number): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
 }
 //# sourceMappingURL=sbu-sub-service.d.ts.map

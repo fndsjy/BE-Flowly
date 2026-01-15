@@ -2,6 +2,7 @@ import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { SbuValidation } from "../validation/sbu-validation.js";
 import { ResponseError } from "../error/response-error.js";
+import { getAccessContext, canCrud } from "../utils/access-scope.js";
 
 import {
   type CreateSbuRequest,
@@ -17,12 +18,8 @@ export class SbuService {
   static async create(requesterId: string, reqBody: CreateSbuRequest) {
     const req = Validation.validate(SbuValidation.CREATE, reqBody);
 
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
+    const accessContext = await getAccessContext(requesterId);
+    if (!accessContext.isAdmin && !canCrud(accessContext.pilar, req.sbuPilar)) {
       throw new ResponseError(403, "Only admin can create SBU");
     }
 
@@ -96,20 +93,16 @@ export class SbuService {
   static async update(requesterId: string, reqBody: UpdateSbuRequest) {
     const req = Validation.validate(SbuValidation.UPDATE, reqBody);
 
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can update SBU");
-    }
+    const accessContext = await getAccessContext(requesterId);
 
     const exists = await prismaEmployee.em_sbu.findFirst({
       where: { id: req.id }
     });
 
     if (!exists) throw new ResponseError(404, "SBU not found");
+    if (!accessContext.isAdmin && !canCrud(accessContext.sbu, exists.id)) {
+      throw new ResponseError(403, "Only admin can update SBU");
+    }
 
     if (req.pic) {
       const picExists = await prismaEmployee.em_employee.findUnique({
@@ -183,20 +176,16 @@ export class SbuService {
   static async softDelete(requesterId: string, reqBody: DeleteSbuRequest) {
     const req = Validation.validate(SbuValidation.DELETE, reqBody);
 
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can delete SBU");
-    }
+    const accessContext = await getAccessContext(requesterId);
 
     const exists = await prismaEmployee.em_sbu.findFirst({
       where: { id: req.id, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
 
     if (!exists) throw new ResponseError(404, "SBU not found");
+    if (!accessContext.isAdmin && !canCrud(accessContext.sbu, exists.id)) {
+      throw new ResponseError(403, "Only admin can delete SBU");
+    }
 
     await prismaEmployee.em_sbu.update({
       where: { id_sbu_code: { id: req.id, sbu_code: exists.sbu_code } },
@@ -211,9 +200,20 @@ export class SbuService {
   }
 
   /* ---------- LIST ---------- */
-  static async list() {
+  static async list(requesterId: string) {
+    const accessContext = await getAccessContext(requesterId);
+    if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
+      return [];
+    }
+
     const list = await prismaEmployee.em_sbu.findMany({
-      where: { OR: [{ isDeleted: false }, { isDeleted: null }], status: "A" },
+      where: {
+        OR: [{ isDeleted: false }, { isDeleted: null }],
+        status: "A",
+        ...(accessContext.isAdmin
+          ? {}
+          : { id: { in: Array.from(accessContext.sbu.read) } })
+      },
       orderBy: { createdAt: "desc" }
     });
 
@@ -221,7 +221,12 @@ export class SbuService {
   }
 
     /* ---------- GET BY PILAR ---------- */
-    static async getByPilar(pilarId: number) {
+    static async getByPilar(requesterId: string, pilarId: number) {
+      const accessContext = await getAccessContext(requesterId);
+      if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
+        return [];
+      }
+
       // Cek apakah pilar masih aktif
       const pilar = await prismaEmployee.em_pilar.findUnique({
         where: { id: pilarId },
@@ -239,11 +244,14 @@ export class SbuService {
         if (!exists) throw new ResponseError(404, "Pilar not found");
 
         const list = await prismaEmployee.em_sbu.findMany({
-            where: {
+          where: {
             sbu_pilar: pilarId,
-            OR: [{ isDeleted: false }, { isDeleted: null }]
-            },
-            orderBy: { createdAt: "desc" }
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+            ...(accessContext.isAdmin
+              ? {}
+              : { id: { in: Array.from(accessContext.sbu.read) } })
+          },
+          orderBy: { createdAt: "desc" }
         });
 
         return list.map(toSbuListResponse);

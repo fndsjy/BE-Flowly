@@ -205,6 +205,42 @@ exports.Prisma.JabatanScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.AccessRoleScalarFieldEnum = {
+  accessId: 'accessId',
+  subjectType: 'subjectType',
+  subjectId: 'subjectId',
+  resourceType: 'resourceType',
+  masAccessId: 'masAccessId',
+  resourceKey: 'resourceKey',
+  accessLevel: 'accessLevel',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.MasterAccessRoleScalarFieldEnum = {
+  masAccessId: 'masAccessId',
+  resourceType: 'resourceType',
+  resourceKey: 'resourceKey',
+  displayName: 'displayName',
+  route: 'route',
+  parentKey: 'parentKey',
+  orderIndex: 'orderIndex',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -221,7 +257,9 @@ exports.Prisma.ModelName = {
   User: 'User',
   Chart: 'Chart',
   ChartMember: 'ChartMember',
-  jabatan: 'jabatan'
+  jabatan: 'jabatan',
+  AccessRole: 'AccessRole',
+  MasterAccessRole: 'MasterAccessRole'
 };
 
 /**

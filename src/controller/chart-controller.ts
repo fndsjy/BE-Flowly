@@ -56,6 +56,10 @@ export class ChartController {
 
   static async listBySbuSub(req: Request, res: Response, next: NextFunction) {
     try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+      const payload = verifyToken(token);
+
       const { pilarId, sbuId, sbuSubId } = req.query;
 
       if (!sbuSubId) {
@@ -63,6 +67,7 @@ export class ChartController {
       }
 
       const result = await ChartService.listBySbuSub(
+        payload.userId,
         pilarId ? Number(pilarId) : undefined,
         sbuId ? Number(sbuId) : undefined,
         Number(sbuSubId)

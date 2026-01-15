@@ -3,6 +3,11 @@ generator client {
   output   = "../dist/generated/flowly"
 }
 
+generator clientSrc {
+  provider = "prisma-client-js"
+  output   = "../src/generated/flowly"
+}
+
 datasource db {
   provider = "sqlserver"
   url      = env("FLOWLY_DATABASE_URL")
@@ -151,4 +156,51 @@ model jabatan {
 
   @@index([jabatanId])
   @@map("jabatan")
+}
+
+/// Access rules for per-user or role permissions
+model AccessRole {
+  accessId     String    @id @db.NVarChar(20)
+  subjectType  String    @db.NVarChar(10)
+  subjectId    String    @db.NVarChar(20)
+  resourceType String    @db.NVarChar(20)
+  masAccessId  String?   @db.NVarChar(20)
+  resourceKey  String?   @db.NVarChar(50)
+  accessLevel  String    @db.NVarChar(10)
+  isActive     Boolean   @default(true)
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  createdBy    String?   @db.NVarChar(20)
+  updatedAt    DateTime  @updatedAt
+  updatedBy    String?   @db.NVarChar(20)
+  deletedAt    DateTime?
+  deletedBy    String?   @db.NVarChar(20)
+
+  @@unique([subjectType, subjectId, resourceType, masAccessId, resourceKey])
+  @@index([subjectType, subjectId])
+  @@index([resourceType, masAccessId])
+  @@map("access_role")
+}
+
+/// Resource catalog for menu/module definitions
+model MasterAccessRole {
+  masAccessId  String    @id @db.NVarChar(20)
+  resourceType String    @db.NVarChar(20)
+  resourceKey  String    @db.NVarChar(50)
+  displayName  String    @db.NVarChar(100)
+  route        String?   @db.NVarChar(200)
+  parentKey    String?   @db.NVarChar(50)
+  orderIndex   Int       @default(0)
+  isActive     Boolean   @default(true)
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  createdBy    String?   @db.NVarChar(20)
+  updatedAt    DateTime  @updatedAt
+  updatedBy    String?   @db.NVarChar(20)
+  deletedAt    DateTime?
+  deletedBy    String?   @db.NVarChar(20)
+
+  @@unique([resourceType, resourceKey])
+  @@index([parentKey])
+  @@map("master_access_role")
 }

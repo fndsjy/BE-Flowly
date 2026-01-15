@@ -3,6 +3,7 @@ import { Validation } from "../validation/validation.js";
 import { ChartValidation } from "../validation/chart-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
+import { getAccessContext, canRead } from "../utils/access-scope.js";
 
 import type {
   CreateChartRequest,
@@ -423,6 +424,7 @@ export class ChartService {
   // 📋 LIST BY SBU / SUB
   // ================================
   static async listBySbuSub(
+    requesterId: string,
     pilarId?: number,
     sbuId?: number,
     sbuSubId?: number
@@ -430,6 +432,8 @@ export class ChartService {
     if (sbuSubId === undefined) {
       return [];
     }
+
+    const accessContext = await getAccessContext(requesterId);
      // Cek apakah SBU_SUB masih aktif
     const sub = await prismaEmployee.em_sbu_sub.findUnique({
       where: { id: sbuSubId },
@@ -438,6 +442,18 @@ export class ChartService {
     // Jika SBU_SUB tidak ada atau isDeleted true → return [] langsung
     if (!sub || sub.isDeleted === true) {
       return [];
+    }
+
+    if (!accessContext.isAdmin) {
+      const hasPilarAccess = sub.sbu_pilar !== null && sub.sbu_pilar !== undefined
+        && canRead(accessContext.pilar, sub.sbu_pilar);
+      const hasSbuAccess = sub.sbu_id !== null && sub.sbu_id !== undefined
+        && canRead(accessContext.sbu, sub.sbu_id);
+      const hasSbuSubAccess = canRead(accessContext.sbuSub, sbuSubId);
+
+      if (!hasPilarAccess && !hasSbuAccess && !hasSbuSubAccess) {
+        return [];
+      }
     }
 
     const whereClause: any = {

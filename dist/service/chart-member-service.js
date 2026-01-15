@@ -2,6 +2,7 @@ import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { ChartMemberValidation } from "../validation/chart-member-validation.js";
 import { ResponseError } from "../error/response-error.js";
+import { getAccessContext, canRead } from "../utils/access-scope.js";
 import { toChartMemberResponse } from "../model/chart-member-model.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
 export class ChartMemberService {
@@ -109,7 +110,23 @@ export class ChartMemberService {
         });
         return { message: "Member Chart deleted" };
     }
-    static async listByChart(chartId) {
+    static async listByChart(requesterUserId, chartId) {
+        const chart = await prismaFlowly.chart.findUnique({
+            where: { chartId },
+            select: { chartId: true, isDeleted: true, pilarId: true, sbuId: true, sbuSubId: true }
+        });
+        if (!chart || chart.isDeleted) {
+            return [];
+        }
+        const accessContext = await getAccessContext(requesterUserId);
+        if (!accessContext.isAdmin) {
+            const hasPilarAccess = canRead(accessContext.pilar, chart.pilarId);
+            const hasSbuAccess = canRead(accessContext.sbu, chart.sbuId);
+            const hasSbuSubAccess = canRead(accessContext.sbuSub, chart.sbuSubId);
+            if (!hasPilarAccess && !hasSbuAccess && !hasSbuSubAccess) {
+                return [];
+            }
+        }
         const members = await prismaFlowly.chartMember.findMany({
             where: { chartId, isDeleted: false },
         });

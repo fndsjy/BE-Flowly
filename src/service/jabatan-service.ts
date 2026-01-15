@@ -202,14 +202,31 @@ export class JabatanService {
       throw new ResponseError(404, "Jabatan not found");
     }
 
-    await prismaFlowly.jabatan.update({
-      where: { jabatanId: req.jabatanId },
-      data: {
-        isDeleted: true,
-        jabatanIsActive: false,
-        deletedAt: new Date(),
-        deletedBy: requesterId
-      }
+    const now = new Date();
+    await prismaFlowly.$transaction(async (tx) => {
+      await tx.jabatan.update({
+        where: { jabatanId: req.jabatanId },
+        data: {
+          isDeleted: true,
+          jabatanIsActive: false,
+          deletedAt: now,
+          deletedBy: requesterId,
+          updatedAt: now,
+          updatedBy: requesterId
+        }
+      });
+
+      await tx.jabatan.updateMany({
+        where: {
+          isDeleted: false,
+          jabatanLevel: { gt: existing.jabatanLevel }
+        },
+        data: {
+          jabatanLevel: { decrement: 1 },
+          updatedAt: now,
+          updatedBy: requesterId
+        }
+      });
     });
 
     return { message: "Jabatan deleted" };

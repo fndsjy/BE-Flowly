@@ -43,7 +43,11 @@ export class PilarController {
     }
     static async list(req, res, next) {
         try {
-            const response = await PilarService.list();
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await PilarService.list(payload.userId);
             res.status(200).json({ response });
         }
         catch (err) {

@@ -43,7 +43,11 @@ export class SbuSubController {
     }
     static async list(req, res, next) {
         try {
-            const response = await SbuSubService.list();
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await SbuSubService.list(payload.userId);
             res.status(200).json({ response });
         }
         catch (err) {
@@ -52,10 +56,14 @@ export class SbuSubController {
     }
     static async getBySbu(req, res, next) {
         try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
             const sbuId = Number(req.query.sbuId);
             if (isNaN(sbuId))
                 throw new ResponseError(400, "Invalid sbuId");
-            const data = await SbuSubService.getBySbu(sbuId);
+            const data = await SbuSubService.getBySbu(payload.userId, sbuId);
             res.status(200).json({ success: true, message: "Success", data });
         }
         catch (err) {
@@ -64,10 +72,14 @@ export class SbuSubController {
     }
     static async getByPilar(req, res, next) {
         try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
             const pilarId = Number(req.query.pilarId);
             if (isNaN(pilarId))
                 throw new ResponseError(400, "Invalid pilarId");
-            const data = await SbuSubService.getByPilar(pilarId);
+            const data = await SbuSubService.getByPilar(payload.userId, pilarId);
             res.status(200).json({ success: true, message: "Success", data });
         }
         catch (err) {
