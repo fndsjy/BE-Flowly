@@ -5,6 +5,6 @@ export declare class PilarService {
     static softDelete(requesterId: string, reqBody: DeletePilarRequest): Promise<{
         message: string;
     }>;
-    static list(): Promise<import("../model/pilar-model.js").PilarListResponse[]>;
+    static list(requesterId: string): Promise<import("../model/pilar-model.js").PilarListResponse[]>;
 }
 //# sourceMappingURL=pilar-service.d.ts.map

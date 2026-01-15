@@ -3,16 +3,14 @@ import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { SbuSubValidation } from "../validation/sbu-sub-validation.js";
 import { ResponseError } from "../error/response-error.js";
+import { getAccessContext, canCrud } from "../utils/access-scope.js";
 import { toSbuSubResponse, toSbuSubListResponse } from "../model/sbu-sub-model.js";
 export class SbuSubService {
     /* ---------- CREATE ---------- */
     static async create(requesterId, reqBody) {
         const req = Validation.validate(SbuSubValidation.CREATE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && !canCrud(accessContext.sbu, req.sbuId)) {
             throw new ResponseError(403, "Only admin can create SBU SUB");
         }
         // Cek Pilar
@@ -92,18 +90,15 @@ export class SbuSubService {
     /* ---------- UPDATE ---------- */
     static async update(requesterId, reqBody) {
         const req = Validation.validate(SbuSubValidation.UPDATE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can update SBU SUB");
-        }
+        const accessContext = await getAccessContext(requesterId);
         const exists = await prismaEmployee.em_sbu_sub.findUnique({
             where: { id: req.id }
         });
         if (!exists)
             throw new ResponseError(404, "SBU SUB not found");
+        if (!accessContext.isAdmin && !canCrud(accessContext.sbuSub, exists.id)) {
+            throw new ResponseError(403, "Only admin can update SBU SUB");
+        }
         // ❗ Tidak boleh update SBU parent
         if (req.sbuId && req.sbuId !== exists.sbu_id) {
             throw new ResponseError(400, "Cannot change SBU parent of SBU SUB");
@@ -195,18 +190,15 @@ export class SbuSubService {
     /* ---------- DELETE ---------- */
     static async softDelete(requesterId, reqBody) {
         const req = Validation.validate(SbuSubValidation.DELETE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can delete SBU SUB");
-        }
+        const accessContext = await getAccessContext(requesterId);
         const exists = await prismaEmployee.em_sbu_sub.findFirst({
             where: { id: req.id, OR: [{ isDeleted: false }, { isDeleted: null }] }
         });
         if (!exists)
             throw new ResponseError(404, "SBU SUB not found");
+        if (!accessContext.isAdmin && !canCrud(accessContext.sbuSub, exists.id)) {
+            throw new ResponseError(403, "Only admin can delete SBU SUB");
+        }
         await prismaEmployee.em_sbu_sub.update({
             where: { id: req.id },
             data: {
@@ -218,15 +210,29 @@ export class SbuSubService {
         return { message: "SBU SUB deleted" };
     }
     /* ---------- LIST ALL ---------- */
-    static async list() {
+    static async list(requesterId) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && accessContext.sbuSub.read.size === 0) {
+            return [];
+        }
         const list = await prismaEmployee.em_sbu_sub.findMany({
-            where: { OR: [{ isDeleted: false }, { isDeleted: null }], status: "A" },
+            where: {
+                OR: [{ isDeleted: false }, { isDeleted: null }],
+                status: "A",
+                ...(accessContext.isAdmin
+                    ? {}
+                    : { id: { in: Array.from(accessContext.sbuSub.read) } })
+            },
             orderBy: { createdAt: "desc" }
         });
         return list.map(toSbuSubListResponse);
     }
     /* ---------- GET BY SBU ---------- */
-    static async getBySbu(sbuId) {
+    static async getBySbu(requesterId, sbuId) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && accessContext.sbuSub.read.size === 0) {
+            return [];
+        }
         // Cek apakah sbu masih aktif
         const sbu = await prismaEmployee.em_sbu.findFirst({
             where: { id: sbuId },
@@ -243,14 +249,21 @@ export class SbuSubService {
         const list = await prismaEmployee.em_sbu_sub.findMany({
             where: {
                 sbu_id: sbuId,
-                OR: [{ isDeleted: false }, { isDeleted: null }]
+                OR: [{ isDeleted: false }, { isDeleted: null }],
+                ...(accessContext.isAdmin
+                    ? {}
+                    : { id: { in: Array.from(accessContext.sbuSub.read) } })
             },
             orderBy: { createdAt: "desc" }
         });
         return list.map(toSbuSubListResponse);
     }
     /* ---------- GET BY PILAR ---------- */
-    static async getByPilar(pilarId) {
+    static async getByPilar(requesterId, pilarId) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && accessContext.sbuSub.read.size === 0) {
+            return [];
+        }
         // Cek apakah pilar masih aktif
         const pilar = await prismaEmployee.em_pilar.findUnique({
             where: { id: pilarId },
@@ -267,7 +280,10 @@ export class SbuSubService {
         const list = await prismaEmployee.em_sbu_sub.findMany({
             where: {
                 sbu_pilar: pilarId,
-                OR: [{ isDeleted: false }, { isDeleted: null }]
+                OR: [{ isDeleted: false }, { isDeleted: null }],
+                ...(accessContext.isAdmin
+                    ? {}
+                    : { id: { in: Array.from(accessContext.sbuSub.read) } })
             },
             orderBy: { createdAt: "desc" }
         });

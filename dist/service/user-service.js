@@ -154,9 +154,40 @@ export class UserService {
             where: { userId, isDeleted: false },
             include: { role: { select: { roleName: true, roleLevel: true } } }
         });
-        if (!user)
+        if (user) {
+            return toUserProfileResponse(user);
+        }
+        const employeeId = Number(userId);
+        if (Number.isNaN(employeeId)) {
             throw new ResponseError(404, "User not found");
-        return toUserProfileResponse(user);
+        }
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: { UserId: employeeId },
+            select: {
+                UserId: true,
+                Name: true,
+                BadgeNum: true,
+                roleId: true
+            }
+        });
+        if (!employee)
+            throw new ResponseError(404, "User not found");
+        const badgeNumber = employee.BadgeNum ?? null;
+        const username = badgeNumber ?? String(employee.UserId);
+        const name = employee.Name ?? username;
+        const roleId = employee.roleId !== null && employee.roleId !== undefined
+            ? String(employee.roleId)
+            : "EMPLOYEE";
+        return {
+            userId: String(employee.UserId),
+            username,
+            name,
+            badgeNumber,
+            department: null,
+            roleId,
+            roleName: "Employee",
+            roleLevel: 4
+        };
     }
     // ✅ List Users — no change needed
     static async listUsers(requesterUserId) {

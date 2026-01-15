@@ -3,6 +3,7 @@ import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { PilarValidation } from "../validation/pilar-validation.js";
 import { ResponseError } from "../error/response-error.js";
+import { getAccessContext, canCrud } from "../utils/access-scope.js";
 // import { generateOrgStructureId } from "../utils/id-generator.js";
 import { toPilarResponse, toPilarListResponse } from "../model/pilar-model.js";
 export class PilarService {
@@ -11,12 +12,8 @@ export class PilarService {
      * ------------------------------------------ */
     static async create(requesterId, reqBody) {
         const request = Validation.validate(PilarValidation.CREATE, reqBody);
-        // Role check (only admin)
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin) {
             throw new ResponseError(403, "Only admin can create structure");
         }
         if (request.pic) {
@@ -66,11 +63,8 @@ export class PilarService {
      * ------------------------------------------ */
     static async update(requesterId, reqBody) {
         const request = Validation.validate(PilarValidation.UPDATE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && !canCrud(accessContext.pilar, request.id)) {
             throw new ResponseError(403, "Only admin can update structure");
         }
         const exists = await prismaEmployee.em_pilar.findUnique({
@@ -126,11 +120,8 @@ export class PilarService {
      * ------------------------------------------ */
     static async softDelete(requesterId, reqBody) {
         const request = Validation.validate(PilarValidation.DELETE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && !canCrud(accessContext.pilar, request.id)) {
             throw new ResponseError(403, "Only admin can delete pilar");
         }
         const exists = await prismaEmployee.em_pilar.findUnique({
@@ -164,12 +155,21 @@ export class PilarService {
     /* ------------------------------------------
      * LIST ALL ACTIVE STRUCTURES
      * ------------------------------------------ */
-    static async list() {
+    static async list(requesterId) {
+        const accessContext = await getAccessContext(requesterId);
+        if (!accessContext.isAdmin && accessContext.pilar.read.size === 0) {
+            return [];
+        }
         const pilars = await prismaEmployee.em_pilar.findMany({
             where: { OR: [
                     { isDeleted: false },
                     { isDeleted: null }
-                ], status: "A" },
+                ],
+                status: "A",
+                ...(accessContext.isAdmin
+                    ? {}
+                    : { id: { in: Array.from(accessContext.pilar.read) } })
+            },
             orderBy: { createdAt: "desc" },
         });
         return pilars.map(toPilarListResponse);

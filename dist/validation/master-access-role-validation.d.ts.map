@@ -1,0 +1,1 @@
+{"version":3,"file":"master-access-role-validation.d.ts","sourceRoot":"","sources":["../../src/validation/master-access-role-validation.ts"],"names":[],"mappings":"AAAA,OAAO,EAAK,OAAO,EAAE,MAAM,KAAK,CAAC;AAEjC,qBAAa,0BAA0B;IACrC,MAAM,CAAC,QAAQ,CAAC,MAAM,EAAE,OAAO,CAQ5B;IAEH,MAAM,CAAC,QAAQ,CAAC,MAAM,EAAE,OAAO,CAS5B;IAEH,MAAM,CAAC,QAAQ,CAAC,MAAM,EAAE,OAAO,CAE5B;CACJ"}

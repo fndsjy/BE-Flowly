@@ -6,6 +6,6 @@ export declare class ChartService {
         message: string;
     }>;
     static listTree(): Promise<import("../model/chart-model.js").ChartListResponse[]>;
-    static listBySbuSub(pilarId?: number, sbuId?: number, sbuSubId?: number): Promise<import("../model/chart-model.js").ChartListResponse[]>;
+    static listBySbuSub(requesterId: string, pilarId?: number, sbuId?: number, sbuSubId?: number): Promise<import("../model/chart-model.js").ChartListResponse[]>;
 }
 //# sourceMappingURL=chart-service.d.ts.map

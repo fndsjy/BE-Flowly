@@ -8,6 +8,8 @@ import { SbuController } from "../controller/sbu-controller.js";
 import { SbuSubController } from "../controller/sbu-sub-controller.js";
 import { ChartMemberController } from "../controller/chart-member-controller.js";
 import { JabatanController } from "../controller/jabatan-controller.js";
+import { MasterAccessRoleController } from "../controller/master-access-role-controller.js";
+import { AccessRoleController } from "../controller/access-role-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -21,6 +23,17 @@ v1.patch("/password", UserController.changePassword);
 v1.patch("/role", UserController.changeRole);           // 🔐 role 1 only
 v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
+
+v1.post("/master-access-role", MasterAccessRoleController.create);
+v1.put("/master-access-role", MasterAccessRoleController.update);
+v1.delete("/master-access-role", MasterAccessRoleController.softDelete);
+v1.get("/master-access-role", MasterAccessRoleController.list);
+
+v1.post("/access-role", AccessRoleController.create);
+v1.put("/access-role", AccessRoleController.update);
+v1.delete("/access-role", AccessRoleController.softDelete);
+v1.get("/access-role", AccessRoleController.list);
+v1.get("/access-role/me", AccessRoleController.getSummary);
 
 v1.get("/employee", EmployeeController.listForPIC);
 v1.patch("/employee/job-desc", EmployeeController.updateJobDesc);

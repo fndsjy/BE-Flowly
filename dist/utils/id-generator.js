@@ -92,4 +92,34 @@ export async function generateJabatanId() {
     }
     return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
 }
+export async function generateAcessRoleId() {
+    const today = getDDMMYY();
+    const prefix = `ACR${today}`;
+    const existing = await prisma.accessRole.findFirst({
+        where: { accessId: { startsWith: prefix } },
+        select: { accessId: true },
+        orderBy: { accessId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.accessId) {
+        const currentSeq = extractSeqFromId(existing.accessId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}
+export async function generatemasAccessId() {
+    const today = getDDMMYY();
+    const prefix = `MAR${today}`;
+    const existing = await prisma.masterAccessRole.findFirst({
+        where: { masAccessId: { startsWith: prefix } },
+        select: { masAccessId: true },
+        orderBy: { masAccessId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.masAccessId) {
+        const currentSeq = extractSeqFromId(existing.masAccessId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+}
 //# sourceMappingURL=id-generator.js.map

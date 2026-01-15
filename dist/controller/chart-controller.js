@@ -53,11 +53,15 @@ export class ChartController {
     }
     static async listBySbuSub(req, res, next) {
         try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
             const { pilarId, sbuId, sbuSubId } = req.query;
             if (!sbuSubId) {
                 return res.status(400).json({ error: "sbuSubId is required" });
             }
-            const result = await ChartService.listBySbuSub(pilarId ? Number(pilarId) : undefined, sbuId ? Number(sbuId) : undefined, Number(sbuSubId));
+            const result = await ChartService.listBySbuSub(payload.userId, pilarId ? Number(pilarId) : undefined, sbuId ? Number(sbuId) : undefined, Number(sbuSubId));
             res.status(200).json({ response: result });
         }
         catch (err) {

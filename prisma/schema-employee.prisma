@@ -3,6 +3,11 @@ generator employeeClient {
   output   = "../dist/generated/employee"
 }
 
+generator employeeClientSrc {
+  provider = "prisma-client-js"
+  output   = "../src/generated/employee"
+}
+
 datasource employee {
   provider = "sqlserver"
   url      = env("EMPLOYEE_DATABASE_URL")
@@ -720,6 +725,53 @@ model em_regulations {
   userid     String?   @employee.VarChar(5)
   createDate DateTime? @employee.Date
   lastUpdate DateTime? @employee.DateTime
+}
+
+model em_sbu {
+  id          Int       @default(autoincrement())
+  sbu_code    String    @employee.NVarChar(50)
+  sbu_name    String    @employee.NVarChar(255)
+  sbu_pilar   Int?
+  status      String    @employee.NVarChar(1)
+  add_by      String?   @employee.VarChar(5)
+  created_at  DateTime? @employee.Date
+  lastupdate  DateTime? @employee.DateTime
+  createdAt   DateTime?
+  createdBy   String?   @employee.NVarChar(20)
+  updatedAt   DateTime?
+  updatedBy   String?   @employee.NVarChar(20)
+  isDeleted   Boolean?
+  deletedAt   DateTime?
+  deletedBy   String?   @employee.NVarChar(20)
+  description String?   @employee.NVarChar(255)
+  pic         Int?
+  jobDesc     String?   @employee.NVarChar(500)
+  jabatan     String?   @employee.NVarChar(50)
+
+  @@id([id, sbu_code], map: "PK_em_sbu")
+}
+
+model em_sbu_sub {
+  id           Int       @id(map: "PK__em_sbu_s__3213E83F381656E4") @default(autoincrement())
+  sbu_sub_code String    @employee.NVarChar(50)
+  sbu_sub_name String    @employee.NVarChar(255)
+  sbu_id       Int?
+  sbu_pilar    Int?
+  status       String    @employee.NVarChar(1)
+  add_by       String?   @employee.VarChar(5)
+  created_at   DateTime? @employee.Date
+  lastupdate   DateTime? @employee.DateTime
+  createdAt    DateTime?
+  createdBy    String?   @employee.NVarChar(20)
+  updatedAt    DateTime?
+  updatedBy    String?   @employee.NVarChar(20)
+  isDeleted    Boolean?
+  deletedAt    DateTime?
+  deletedBy    String?   @employee.NVarChar(20)
+  description  String?   @employee.NVarChar(255)
+  pic          Int?
+  jobDesc      String?   @employee.NVarChar(500)
+  jabatan      String?   @employee.NVarChar(50)
 }
 
 model em_schedule1 {
