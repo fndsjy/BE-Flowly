@@ -2,7 +2,12 @@ import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { SbuValidation } from "../validation/sbu-validation.js";
 import { ResponseError } from "../error/response-error.js";
-import { getAccessContext, canCrud } from "../utils/access-scope.js";
+import {
+  getAccessContext,
+  getModuleAccessMap,
+  canReadModule,
+  canCrudModule
+} from "../utils/access-scope.js";
 
 import {
   type CreateSbuRequest,
@@ -12,6 +17,67 @@ import {
   toSbuListResponse
 } from "../model/sbu-model.js";
 
+type ExplicitAccessLevel = "READ" | "CRUD" | "NONE" | null;
+
+const normalizeAccessLevel = (value: string): "READ" | "CRUD" | null => {
+  const upper = value.trim().toUpperCase();
+  if (upper === "FULL") {
+    return "CRUD";
+  }
+  if (upper === "READ" || upper === "CRUD") {
+    return upper;
+  }
+  return null;
+};
+
+const resolveExplicitSbuAccess = async (
+  requesterId: string,
+  sbuId: number
+): Promise<ExplicitAccessLevel> => {
+  const user = await prismaFlowly.user.findUnique({
+    where: { userId: requesterId },
+    select: { roleId: true }
+  });
+
+  const filters = [{ subjectType: "USER", subjectId: requesterId }];
+  if (user?.roleId) {
+    filters.unshift({ subjectType: "ROLE", subjectId: user.roleId });
+  }
+
+  const accessRoles = await prismaFlowly.accessRole.findMany({
+    where: {
+      isDeleted: false,
+      resourceType: "SBU",
+      resourceKey: String(sbuId),
+      OR: filters
+    },
+    select: {
+      subjectType: true,
+      accessLevel: true,
+      isActive: true
+    }
+  });
+
+  const userEntry = accessRoles.find((entry) => entry.subjectType === "USER");
+  if (userEntry) {
+    if (!userEntry.isActive) {
+      return "NONE";
+    }
+    return normalizeAccessLevel(userEntry.accessLevel);
+  }
+
+  const roleEntries = accessRoles.filter(
+    (entry) => entry.subjectType === "ROLE" && entry.isActive
+  );
+  if (roleEntries.some((entry) => normalizeAccessLevel(entry.accessLevel) === "CRUD")) {
+    return "CRUD";
+  }
+  if (roleEntries.some((entry) => normalizeAccessLevel(entry.accessLevel) === "READ")) {
+    return "READ";
+  }
+  return null;
+};
+
 export class SbuService {
 
   /* ---------- CREATE ---------- */
@@ -19,8 +85,9 @@ export class SbuService {
     const req = Validation.validate(SbuValidation.CREATE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
-    if (!accessContext.isAdmin && !canCrud(accessContext.pilar, req.sbuPilar)) {
-      throw new ResponseError(403, "Only admin can create SBU");
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
+      throw new ResponseError(403, "Module SBU access required");
     }
 
     if (req.pic) {
@@ -94,14 +161,21 @@ export class SbuService {
     const req = Validation.validate(SbuValidation.UPDATE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
 
     const exists = await prismaEmployee.em_sbu.findFirst({
       where: { id: req.id }
     });
 
     if (!exists) throw new ResponseError(404, "SBU not found");
-    if (!accessContext.isAdmin && !canCrud(accessContext.sbu, exists.id)) {
-      throw new ResponseError(403, "Only admin can update SBU");
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
+      throw new ResponseError(403, "Module SBU access required");
+    }
+    if (!accessContext.isAdmin) {
+      const explicitAccess = await resolveExplicitSbuAccess(requesterId, exists.id);
+      if (explicitAccess === "READ" || explicitAccess === "NONE") {
+        throw new ResponseError(403, "SBU is read-only");
+      }
     }
 
     if (req.pic) {
@@ -177,14 +251,21 @@ export class SbuService {
     const req = Validation.validate(SbuValidation.DELETE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
 
     const exists = await prismaEmployee.em_sbu.findFirst({
       where: { id: req.id, OR: [{ isDeleted: false }, { isDeleted: null }] }
     });
 
     if (!exists) throw new ResponseError(404, "SBU not found");
-    if (!accessContext.isAdmin && !canCrud(accessContext.sbu, exists.id)) {
-      throw new ResponseError(403, "Only admin can delete SBU");
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
+      throw new ResponseError(403, "Module SBU access required");
+    }
+    if (!accessContext.isAdmin) {
+      const explicitAccess = await resolveExplicitSbuAccess(requesterId, exists.id);
+      if (explicitAccess === "READ" || explicitAccess === "NONE") {
+        throw new ResponseError(403, "SBU is read-only");
+      }
     }
 
     await prismaEmployee.em_sbu.update({
@@ -202,6 +283,10 @@ export class SbuService {
   /* ---------- LIST ---------- */
   static async list(requesterId: string) {
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "SBU")) {
+      throw new ResponseError(403, "Module SBU access required");
+    }
     if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
       return [];
     }
@@ -223,6 +308,10 @@ export class SbuService {
     /* ---------- GET BY PILAR ---------- */
     static async getByPilar(requesterId: string, pilarId: number) {
       const accessContext = await getAccessContext(requesterId);
+      const moduleAccessMap = await getModuleAccessMap(requesterId);
+      if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "SBU")) {
+        throw new ResponseError(403, "Module SBU access required");
+      }
       if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
         return [];
       }

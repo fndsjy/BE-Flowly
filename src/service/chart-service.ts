@@ -3,7 +3,14 @@ import { Validation } from "../validation/validation.js";
 import { ChartValidation } from "../validation/chart-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
-import { getAccessContext, canRead } from "../utils/access-scope.js";
+import {
+  getAccessContext,
+  getModuleAccessMap,
+  canReadModule,
+  canCrudModule,
+  canRead,
+  canCrud
+} from "../utils/access-scope.js";
 
 import type {
   CreateChartRequest,
@@ -25,13 +32,10 @@ export class ChartService {
     let { parentId, pilarId, sbuId, sbuSubId } = validated;
 
 
-    // Cek role requester
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterUserId },
-      include: { role: true }
-    });
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can create chart");
+    const accessContext = await getAccessContext(requesterUserId);
+    const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "CHART")) {
+      throw new ResponseError(403, "Module CHART CRUD access required");
     }
 
     // --- VALIDASI MASTER: pilar / sbu / sbuSub ---
@@ -102,6 +106,15 @@ export class ChartService {
       // Jika root → pastikan semua ID ada
       if (!pilarId || !sbuId || !sbuSubId) {
         throw new ResponseError(400, "pilarId, sbuId, sbuSubId required for root chart");
+      }
+    }
+
+    if (!accessContext.isAdmin) {
+      const hasPilarCrud = canCrud(accessContext.pilar, finalPilarId);
+      const hasSbuCrud = canCrud(accessContext.sbu, finalSbuId);
+      const hasSbuSubCrud = canCrud(accessContext.sbuSub, finalSbuSubId);
+      if (!hasPilarCrud && !hasSbuCrud && !hasSbuSubCrud) {
+        throw new ResponseError(403, "SBU SUB CRUD access required");
       }
     }
 
@@ -187,13 +200,18 @@ export class ChartService {
           ? null
           : inputJabatan;
 
-    // 2. CEK ADMIN
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterUserId },
-      include: { role: true },
-    });
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can update chart");
+    const accessContext = await getAccessContext(requesterUserId);
+    const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "CHART")) {
+      throw new ResponseError(403, "Module CHART CRUD access required");
+    }
+    if (!accessContext.isAdmin) {
+      const hasPilarCrud = canCrud(accessContext.pilar, existing.pilarId);
+      const hasSbuCrud = canCrud(accessContext.sbu, existing.sbuId);
+      const hasSbuSubCrud = canCrud(accessContext.sbuSub, existing.sbuSubId);
+      if (!hasPilarCrud && !hasSbuCrud && !hasSbuSubCrud) {
+        throw new ResponseError(403, "SBU SUB CRUD access required");
+      }
     }
 
     // 3. AMBIL SLOT SEKARANG
@@ -318,13 +336,10 @@ export class ChartService {
     const validated = Validation.validate(ChartValidation.DELETE, request);
     const { chartId } = validated;
 
-    // 1. CHECK ADMIN
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterUserId },
-      include: { role: true }
-    });
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can delete chart");
+    const accessContext = await getAccessContext(requesterUserId);
+    const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "CHART")) {
+      throw new ResponseError(403, "Module CHART CRUD access required");
     }
 
     // 2. CHECK NODE EXISTS
@@ -332,6 +347,15 @@ export class ChartService {
       where: { chartId, isDeleted: false },
     });
     if (!node) throw new ResponseError(404, "Chart ID not found");
+
+    if (!accessContext.isAdmin) {
+      const hasPilarCrud = canCrud(accessContext.pilar, node.pilarId);
+      const hasSbuCrud = canCrud(accessContext.sbu, node.sbuId);
+      const hasSbuSubCrud = canCrud(accessContext.sbuSub, node.sbuSubId);
+      if (!hasPilarCrud && !hasSbuCrud && !hasSbuSubCrud) {
+        throw new ResponseError(403, "SBU SUB CRUD access required");
+      }
+    }
 
     // 3. CHECK CHILDREN
     const child = await prismaFlowly.chart.findFirst({
@@ -434,6 +458,10 @@ export class ChartService {
     }
 
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "CHART")) {
+      throw new ResponseError(403, "Module CHART access required");
+    }
      // Cek apakah SBU_SUB masih aktif
     const sub = await prismaEmployee.em_sbu_sub.findUnique({
       where: { id: sbuSubId },
