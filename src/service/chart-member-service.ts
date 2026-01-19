@@ -2,7 +2,14 @@ import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { ChartMemberValidation } from "../validation/chart-member-validation.js";
 import { ResponseError } from "../error/response-error.js";
-import { getAccessContext, canRead } from "../utils/access-scope.js";
+import {
+  getAccessContext,
+  getModuleAccessMap,
+  canReadModule,
+  canCrudModule,
+  canRead,
+  canCrud
+} from "../utils/access-scope.js";
 import { toChartMemberResponse } from "../model/chart-member-model.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
 
@@ -44,21 +51,32 @@ export class ChartMemberService {
     const validated = Validation.validate(ChartMemberValidation.UPDATE, request);
     const { memberChartId, userId: inputUserId } = validated;
 
-    // 🔐 Cek role
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterUserId },
-      include: { role: true },
-    });
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can update member chart");
-    }
-
     // 📌 Cari member yang akan di-update
     const existing = await prismaFlowly.chartMember.findUnique({
       where: { memberChartId, isDeleted: false },
       select: { chartId: true, userId: true }
     });
     if (!existing) throw new ResponseError(404, "Member Chart not found");
+
+    const chart = await prismaFlowly.chart.findUnique({
+      where: { chartId: existing.chartId, isDeleted: false },
+      select: { chartId: true, pilarId: true, sbuId: true, sbuSubId: true }
+    });
+    if (!chart) throw new ResponseError(404, "Chart not found");
+
+    const accessContext = await getAccessContext(requesterUserId);
+    const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "CHART_MEMBER")) {
+      throw new ResponseError(403, "Module CHART_MEMBER CRUD access required");
+    }
+    if (!accessContext.isAdmin) {
+      const hasPilarCrud = canCrud(accessContext.pilar, chart.pilarId);
+      const hasSbuCrud = canCrud(accessContext.sbu, chart.sbuId);
+      const hasSbuSubCrud = canCrud(accessContext.sbuSub, chart.sbuSubId);
+      if (!hasPilarCrud && !hasSbuCrud && !hasSbuSubCrud) {
+        throw new ResponseError(403, "SBU SUB CRUD access required");
+      }
+    }
 
     // 📌 Ambil semua slot aktif di chart yang sama (kecuali diri sendiri)
     const otherMembersInSameChart = await prismaFlowly.chartMember.findMany({
@@ -108,17 +126,30 @@ export class ChartMemberService {
     const validated = Validation.validate(ChartMemberValidation.DELETE, request);
     const { memberChartId } = validated;
 
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterUserId },
-      include: { role: true },
-    });
-    if (!requester || requester.role.roleLevel !== 1)
-      throw new ResponseError(403, "Only admin can delete member chart");
-
     const existing = await prismaFlowly.chartMember.findUnique({
       where: { memberChartId, isDeleted: false },
     });
     if (!existing) throw new ResponseError(404, "Member Chart not found");
+
+    const chart = await prismaFlowly.chart.findUnique({
+      where: { chartId: existing.chartId, isDeleted: false },
+      select: { chartId: true, pilarId: true, sbuId: true, sbuSubId: true }
+    });
+    if (!chart) throw new ResponseError(404, "Chart not found");
+
+    const accessContext = await getAccessContext(requesterUserId);
+    const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "CHART_MEMBER")) {
+      throw new ResponseError(403, "Module CHART_MEMBER CRUD access required");
+    }
+    if (!accessContext.isAdmin) {
+      const hasPilarCrud = canCrud(accessContext.pilar, chart.pilarId);
+      const hasSbuCrud = canCrud(accessContext.sbu, chart.sbuId);
+      const hasSbuSubCrud = canCrud(accessContext.sbuSub, chart.sbuSubId);
+      if (!hasPilarCrud && !hasSbuCrud && !hasSbuSubCrud) {
+        throw new ResponseError(403, "SBU SUB CRUD access required");
+      }
+    }
 
     await prismaFlowly.chartMember.update({
       where: { memberChartId },
@@ -143,6 +174,10 @@ export class ChartMemberService {
     }
 
     const accessContext = await getAccessContext(requesterUserId);
+    const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "CHART_MEMBER")) {
+      throw new ResponseError(403, "Module CHART_MEMBER access required");
+    }
     if (!accessContext.isAdmin) {
       const hasPilarAccess = canRead(accessContext.pilar, chart.pilarId);
       const hasSbuAccess = canRead(accessContext.sbu, chart.sbuId);
@@ -159,3 +194,5 @@ export class ChartMemberService {
     return members.map(toChartMemberResponse);
   }
 }
+
+

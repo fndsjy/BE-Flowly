@@ -3,7 +3,13 @@ import { prismaFlowly, prismaEmployee } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { PilarValidation } from "../validation/pilar-validation.js";
 import { ResponseError } from "../error/response-error.js";
-import { getAccessContext, canCrud } from "../utils/access-scope.js";
+import {
+  getAccessContext,
+  getModuleAccessMap,
+  canReadModule,
+  canCrudModule,
+  canCrud
+} from "../utils/access-scope.js";
 // import { generateOrgStructureId } from "../utils/id-generator.js";
 
 import {
@@ -23,8 +29,9 @@ export class PilarService {
     const request = Validation.validate(PilarValidation.CREATE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
-    if (!accessContext.isAdmin) {
-      throw new ResponseError(403, "Only admin can create structure");
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "PILAR")) {
+      throw new ResponseError(403, "Module PILAR access required");
     }
 
     if (request.pic) {
@@ -84,8 +91,12 @@ export class PilarService {
     const request = Validation.validate(PilarValidation.UPDATE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "PILAR")) {
+      throw new ResponseError(403, "Module PILAR access required");
+    }
     if (!accessContext.isAdmin && !canCrud(accessContext.pilar, request.id)) {
-      throw new ResponseError(403, "Only admin can update structure");
+      throw new ResponseError(403, "Pilar CRUD access required");
     }
 
     const exists = await prismaEmployee.em_pilar.findUnique({
@@ -152,8 +163,12 @@ export class PilarService {
     const request = Validation.validate(PilarValidation.DELETE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "PILAR")) {
+      throw new ResponseError(403, "Module PILAR access required");
+    }
     if (!accessContext.isAdmin && !canCrud(accessContext.pilar, request.id)) {
-      throw new ResponseError(403, "Only admin can delete pilar");
+      throw new ResponseError(403, "Pilar CRUD access required");
     }
 
     const exists = await prismaEmployee.em_pilar.findUnique({
@@ -194,6 +209,10 @@ export class PilarService {
    * ------------------------------------------ */
   static async list(requesterId: string) {
     const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "PILAR")) {
+      throw new ResponseError(403, "Module PILAR access required");
+    }
     if (!accessContext.isAdmin && accessContext.pilar.read.size === 0) {
       return [];
     }
