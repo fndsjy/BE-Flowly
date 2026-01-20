@@ -112,7 +112,7 @@ export class PilarService {
                 jobDesc: finalJobDesc,
                 jabatan: finalJabatan,
                 status: request.status ?? exists.status,
-                pic: request.pic ?? exists.pic,
+                pic: request.pic === undefined ? exists.pic : request.pic,
                 lastupdate: new Date(),
                 updatedAt: new Date(),
                 updatedBy: requesterId
