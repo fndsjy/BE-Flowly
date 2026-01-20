@@ -345,9 +345,12 @@ export class AccessRoleService {
         });
         let isAdmin = false;
         let requesterRoleId = null;
+        let isEmployeeUser = false;
+        let shouldCheckEmployee = false;
         if (requester) {
             isAdmin = requester.role.roleLevel === 1;
             requesterRoleId = requester.roleId;
+            shouldCheckEmployee = !isAdmin;
         }
         else {
             const employeeId = Number(requesterId);
@@ -360,6 +363,19 @@ export class AccessRoleService {
             });
             if (!employee) {
                 throw new ResponseError(401, "Unauthorized");
+            }
+            isEmployeeUser = true;
+        }
+        if (shouldCheckEmployee) {
+            const employeeId = Number(requesterId);
+            if (!Number.isNaN(employeeId)) {
+                const employee = await prismaEmployee.em_employee.findUnique({
+                    where: { UserId: employeeId },
+                    select: { UserId: true }
+                });
+                if (employee) {
+                    isEmployeeUser = true;
+                }
             }
         }
         const accessContext = await getAccessContext(requesterId);
@@ -397,6 +413,39 @@ export class AccessRoleService {
                 sbuSubRead: Array.from(accessContext.sbuSub.read),
                 sbuSubCrud: Array.from(accessContext.sbuSub.crud)
             };
+        if (!isAdmin && isEmployeeUser) {
+            const menuAccess = [];
+            const moduleAccess = [];
+            const applyEmployeeRead = (resourceType, resourceKey) => {
+                moduleAccess.push({ resourceType, resourceKey, accessLevel: "READ" });
+            };
+            const applyEmployeeMenuRead = (resourceKey) => {
+                menuAccess.push({ resourceType: "MENU", resourceKey, accessLevel: "READ" });
+            };
+            if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+                applyEmployeeMenuRead("ORGANISASI");
+            }
+            if (orgScope.pilarRead || orgScope.pilarCrud) {
+                applyEmployeeRead("MODULE", "PILAR");
+            }
+            if (orgScope.sbuRead || orgScope.sbuCrud) {
+                applyEmployeeRead("MODULE", "SBU");
+            }
+            if (orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+                applyEmployeeRead("MODULE", "SBU_SUB");
+            }
+            if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+                applyEmployeeRead("MODULE", "CHART");
+                applyEmployeeRead("MODULE", "CHART_MEMBER");
+            }
+            return {
+                isAdmin,
+                menuAccess,
+                moduleAccess,
+                orgScope,
+                orgAccess
+            };
+        }
         const subjectFilters = [
             { subjectType: "USER", subjectId: requesterId }
         ];
@@ -430,6 +479,7 @@ export class AccessRoleService {
             : [];
         const masterAccessMap = new Map(masterAccessRoles.map((role) => [role.masAccessId, role]));
         const accessMap = new Map();
+        const deniedAccessKeys = new Set();
         const applyAccess = (resourceType, resourceKey, accessLevel, override) => {
             const normalizedLevel = normalizeAccessLevel(accessLevel);
             if (!allowedAccessLevels.has(normalizedLevel)) {
@@ -480,9 +530,35 @@ export class AccessRoleService {
             const key = `${resolved.resourceType}:${resolved.resourceKey}`;
             if (!access.isActive) {
                 accessMap.delete(key);
+                deniedAccessKeys.add(key);
                 continue;
             }
             applyAccess(resolved.resourceType, resolved.resourceKey, access.accessLevel, true);
+        }
+        if (!isAdmin && isEmployeeUser) {
+            const applyEmployeeRead = (resourceType, resourceKey) => {
+                const key = `${resourceType}:${resourceKey}`;
+                if (deniedAccessKeys.has(key)) {
+                    return;
+                }
+                applyAccess(resourceType, resourceKey, "READ", false);
+            };
+            if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+                applyEmployeeRead("MENU", "ORGANISASI");
+            }
+            if (orgScope.pilarRead || orgScope.pilarCrud) {
+                applyEmployeeRead("MODULE", "PILAR");
+            }
+            if (orgScope.sbuRead || orgScope.sbuCrud) {
+                applyEmployeeRead("MODULE", "SBU");
+            }
+            if (orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+                applyEmployeeRead("MODULE", "SBU_SUB");
+            }
+            if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+                applyEmployeeRead("MODULE", "CHART");
+                applyEmployeeRead("MODULE", "CHART_MEMBER");
+            }
         }
         const menuAccess = [];
         const moduleAccess = [];

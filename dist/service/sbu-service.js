@@ -61,7 +61,7 @@ export class SbuService {
         if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
             throw new ResponseError(403, "Module SBU access required");
         }
-        if (req.pic) {
+        if (req.pic !== undefined && req.pic !== null) {
             const picExists = await prismaEmployee.em_employee.findUnique({
                 where: { UserId: req.pic }
             });
@@ -138,7 +138,7 @@ export class SbuService {
                 throw new ResponseError(403, "SBU is read-only");
             }
         }
-        if (req.pic) {
+        if (req.pic !== undefined && req.pic !== null) {
             const picExists = await prismaEmployee.em_employee.findUnique({
                 where: { UserId: req.pic }
             });
@@ -188,7 +188,7 @@ export class SbuService {
                 description: req.description ?? exists.description,
                 jobDesc: req.jobDesc ?? exists.jobDesc,
                 jabatan: finalJabatan,
-                pic: req.pic ?? exists.pic,
+                pic: req.pic === undefined ? exists.pic : req.pic,
                 status: req.status ?? exists.status,
                 updatedAt: new Date(),
                 lastupdate: new Date(),

@@ -62,9 +62,12 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
   const sbuCrud = new Set<number>();
   const pilarRead = new Set<number>();
   const pilarCrud = new Set<number>();
+  const pilarPicIds = new Set<number>();
+  const sbuPicIds = new Set<number>();
 
   const userIdNumber = Number(userId);
-  if (!Number.isNaN(userIdNumber)) {
+  const isEmployeeUser = !Number.isNaN(userIdNumber);
+  if (isEmployeeUser) {
     const chartMembers = await prismaFlowly.chartMember.findMany({
       where: {
         userId: userIdNumber,
@@ -83,6 +86,12 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
 
     for (const member of chartMembers) {
       sbuSubRead.add(member.node.sbuSubId);
+      if (member.node.sbuId !== null && member.node.sbuId !== undefined) {
+        sbuRead.add(member.node.sbuId);
+      }
+      if (member.node.pilarId !== null && member.node.pilarId !== undefined) {
+        pilarRead.add(member.node.pilarId);
+      }
     }
 
     const [pilarPics, sbuPics, sbuSubPics] = await Promise.all([
@@ -114,10 +123,12 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
 
     for (const pilar of pilarPics) {
       pilarRead.add(pilar.id);
+      pilarPicIds.add(pilar.id);
     }
 
     for (const sbu of sbuPics) {
       sbuRead.add(sbu.id);
+      sbuPicIds.add(sbu.id);
       if (sbu.sbu_pilar !== null && sbu.sbu_pilar !== undefined) {
         pilarRead.add(sbu.sbu_pilar);
       }
@@ -133,6 +144,75 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
       }
     }
 
+    if (pilarPicIds.size > 0) {
+      const pilarIds = Array.from(pilarPicIds);
+      const [sbus, sbuSubsByPilar] = await Promise.all([
+        prismaEmployee.em_sbu.findMany({
+          where: {
+            sbu_pilar: { in: pilarIds },
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }]
+          },
+          select: { id: true }
+        }),
+        prismaEmployee.em_sbu_sub.findMany({
+          where: {
+            sbu_pilar: { in: pilarIds },
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }]
+          },
+          select: { id: true }
+        })
+      ]);
+
+      const sbuIds = sbus.map((sbu) => sbu.id);
+      const sbuSubsBySbu = sbuIds.length > 0
+        ? await prismaEmployee.em_sbu_sub.findMany({
+            where: {
+              sbu_id: { in: sbuIds },
+              status: "A",
+              OR: [{ isDeleted: false }, { isDeleted: null }]
+            },
+            select: { id: true }
+          })
+        : [];
+
+      for (const sbu of sbus) {
+        sbuRead.add(sbu.id);
+      }
+      for (const sbuSub of sbuSubsByPilar) {
+        sbuSubRead.add(sbuSub.id);
+      }
+      for (const sbuSub of sbuSubsBySbu) {
+        sbuSubRead.add(sbuSub.id);
+      }
+    }
+
+    if (sbuPicIds.size > 0) {
+      const sbuIds = Array.from(sbuPicIds);
+      const sbuSubs = await prismaEmployee.em_sbu_sub.findMany({
+        where: {
+          sbu_id: { in: sbuIds },
+          status: "A",
+          OR: [{ isDeleted: false }, { isDeleted: null }]
+        },
+        select: { id: true }
+      });
+
+      for (const sbuSub of sbuSubs) {
+        sbuSubRead.add(sbuSub.id);
+      }
+    }
+
+  }
+
+  if (isEmployeeUser) {
+    return {
+      isAdmin: false,
+      pilar: buildScope(pilarRead, pilarCrud),
+      sbu: buildScope(sbuRead, sbuCrud),
+      sbuSub: buildScope(sbuSubRead, sbuSubCrud)
+    };
   }
 
   const accessRoleFilters = [
@@ -382,10 +462,13 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
 
   let isAdmin = false;
   let roleId: string | null = null;
+  let isEmployeeUser = false;
+  let shouldCheckEmployee = false;
 
   if (flowlyUser) {
     isAdmin = flowlyUser.role?.roleLevel === 1;
     roleId = flowlyUser.roleId;
+    shouldCheckEmployee = !isAdmin;
   } else {
     const employeeId = Number(userId);
     if (Number.isNaN(employeeId)) {
@@ -400,10 +483,57 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
     if (!employee) {
       throw new ResponseError(401, "Unauthorized");
     }
+    isEmployeeUser = true;
+  }
+
+  if (shouldCheckEmployee) {
+    const employeeId = Number(userId);
+    if (!Number.isNaN(employeeId)) {
+      const employee = await prismaEmployee.em_employee.findUnique({
+        where: { UserId: employeeId },
+        select: { UserId: true }
+      });
+      if (employee) {
+        isEmployeeUser = true;
+      }
+    }
   }
 
   if (isAdmin) {
     return new Map();
+  }
+
+  if (isEmployeeUser) {
+    const accessContext = await getAccessContext(userId);
+    const hasPilarRead = accessContext.pilar.read.size > 0 || accessContext.pilar.crud.size > 0;
+    const hasSbuRead = accessContext.sbu.read.size > 0 || accessContext.sbu.crud.size > 0;
+    const hasSbuSubRead = accessContext.sbuSub.read.size > 0 || accessContext.sbuSub.crud.size > 0;
+    const canReadChart = hasPilarRead || hasSbuRead || hasSbuSubRead;
+
+    const accessMap: ModuleAccessMap = new Map();
+    const applyEmployeeRead = (resourceKey: string) => {
+      const normalizedKey = normalizeUpper(resourceKey);
+      if (!normalizedKey) {
+        return;
+      }
+      accessMap.set(normalizedKey, "READ");
+    };
+
+    if (hasPilarRead) {
+      applyEmployeeRead("PILAR");
+    }
+    if (hasSbuRead) {
+      applyEmployeeRead("SBU");
+    }
+    if (hasSbuSubRead) {
+      applyEmployeeRead("SBU_SUB");
+    }
+    if (canReadChart) {
+      applyEmployeeRead("CHART");
+      applyEmployeeRead("CHART_MEMBER");
+    }
+
+    return accessMap;
   }
 
   const subjectFilters = [{ subjectType: "USER", subjectId: userId }];
@@ -442,6 +572,7 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
   );
 
   const accessMap: ModuleAccessMap = new Map();
+  const deniedKeys = new Set<string>();
 
   const applyAccess = (resourceKey: string, accessLevel: string, override: boolean) => {
     const normalizedLevel = normalizeAccessLevel(accessLevel);
@@ -504,6 +635,7 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
 
     if (!access.isActive) {
       accessMap.delete(resourceKey);
+      deniedKeys.add(resourceKey);
       continue;
     }
 

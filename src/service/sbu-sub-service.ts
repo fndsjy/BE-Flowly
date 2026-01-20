@@ -118,7 +118,7 @@ export class SbuSubService {
     if (!pilar) throw new ResponseError(400, "Pilar pada SBU tidak ditemukan");
 
     // Cek PIC
-    if (req.pic) {
+    if (req.pic !== undefined && req.pic !== null) {
       const picExists = await prismaEmployee.em_employee.findUnique({
         where: { UserId: req.pic }
       });
@@ -207,7 +207,7 @@ export class SbuSubService {
     }
 
     // Cek PIC
-    if (req.pic) {
+    if (req.pic !== undefined && req.pic !== null) {
       const picExists = await prismaEmployee.em_employee.findUnique({
         where: { UserId: req.pic }
       });
@@ -283,7 +283,7 @@ export class SbuSubService {
         description: req.description ?? exists.description,
         jobDesc: finalJobDesc,
         jabatan: finalJabatan,
-        pic: req.pic ?? exists.pic,
+        pic: req.pic === undefined ? exists.pic : req.pic,
         status: req.status ?? exists.status,
         updatedAt: new Date(),
         lastupdate: new Date(),

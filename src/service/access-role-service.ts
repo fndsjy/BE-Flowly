@@ -421,10 +421,13 @@ export class AccessRoleService {
 
     let isAdmin = false;
     let requesterRoleId: string | null = null;
+    let isEmployeeUser = false;
+    let shouldCheckEmployee = false;
 
     if (requester) {
       isAdmin = requester.role.roleLevel === 1;
       requesterRoleId = requester.roleId;
+      shouldCheckEmployee = !isAdmin;
     } else {
       const employeeId = Number(requesterId);
       if (Number.isNaN(employeeId)) {
@@ -438,6 +441,20 @@ export class AccessRoleService {
 
       if (!employee) {
         throw new ResponseError(401, "Unauthorized");
+      }
+      isEmployeeUser = true;
+    }
+
+    if (shouldCheckEmployee) {
+      const employeeId = Number(requesterId);
+      if (!Number.isNaN(employeeId)) {
+        const employee = await prismaEmployee.em_employee.findUnique({
+          where: { UserId: employeeId },
+          select: { UserId: true }
+        });
+        if (employee) {
+          isEmployeeUser = true;
+        }
       }
     }
 
@@ -478,6 +495,44 @@ export class AccessRoleService {
           sbuSubRead: Array.from(accessContext.sbuSub.read),
           sbuSubCrud: Array.from(accessContext.sbuSub.crud)
         };
+
+    if (!isAdmin && isEmployeeUser) {
+      const menuAccess: AccessRoleSummaryResponse["menuAccess"] = [];
+      const moduleAccess: AccessRoleSummaryResponse["moduleAccess"] = [];
+
+      const applyEmployeeRead = (resourceType: string, resourceKey: string) => {
+        moduleAccess.push({ resourceType, resourceKey, accessLevel: "READ" });
+      };
+
+      const applyEmployeeMenuRead = (resourceKey: string) => {
+        menuAccess.push({ resourceType: "MENU", resourceKey, accessLevel: "READ" });
+      };
+
+      if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+        applyEmployeeMenuRead("ORGANISASI");
+      }
+      if (orgScope.pilarRead || orgScope.pilarCrud) {
+        applyEmployeeRead("MODULE", "PILAR");
+      }
+      if (orgScope.sbuRead || orgScope.sbuCrud) {
+        applyEmployeeRead("MODULE", "SBU");
+      }
+      if (orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+        applyEmployeeRead("MODULE", "SBU_SUB");
+      }
+      if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+        applyEmployeeRead("MODULE", "CHART");
+        applyEmployeeRead("MODULE", "CHART_MEMBER");
+      }
+
+      return {
+        isAdmin,
+        menuAccess,
+        moduleAccess,
+        orgScope,
+        orgAccess
+      };
+    }
 
     const subjectFilters = [
       { subjectType: "USER", subjectId: requesterId }
@@ -520,6 +575,7 @@ export class AccessRoleService {
     );
 
     const accessMap = new Map<string, { resourceType: string; resourceKey: string; accessLevel: string }>();
+    const deniedAccessKeys = new Set<string>();
 
     const applyAccess = (
       resourceType: string,
@@ -590,10 +646,38 @@ export class AccessRoleService {
       const key = `${resolved.resourceType}:${resolved.resourceKey}`;
       if (!access.isActive) {
         accessMap.delete(key);
+        deniedAccessKeys.add(key);
         continue;
       }
 
       applyAccess(resolved.resourceType, resolved.resourceKey, access.accessLevel, true);
+    }
+
+    if (!isAdmin && isEmployeeUser) {
+      const applyEmployeeRead = (resourceType: string, resourceKey: string) => {
+        const key = `${resourceType}:${resourceKey}`;
+        if (deniedAccessKeys.has(key)) {
+          return;
+        }
+        applyAccess(resourceType, resourceKey, "READ", false);
+      };
+
+      if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+        applyEmployeeRead("MENU", "ORGANISASI");
+      }
+      if (orgScope.pilarRead || orgScope.pilarCrud) {
+        applyEmployeeRead("MODULE", "PILAR");
+      }
+      if (orgScope.sbuRead || orgScope.sbuCrud) {
+        applyEmployeeRead("MODULE", "SBU");
+      }
+      if (orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+        applyEmployeeRead("MODULE", "SBU_SUB");
+      }
+      if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
+        applyEmployeeRead("MODULE", "CHART");
+        applyEmployeeRead("MODULE", "CHART_MEMBER");
+      }
     }
 
     const menuAccess = [];
