@@ -54,7 +54,7 @@ const users = [
 
 const masAccessItems = [
   { resourceType: "MENU", resourceKey: "ORGANISASI", displayName: "Organisasi", route: "/pilar", parentKey: null, orderIndex: 10 },
-  { resourceType: "MENU", resourceKey: "SOP", displayName: "SOP", route: "/sop", parentKey: null, orderIndex: 20 },
+  { resourceType: "MENU", resourceKey: "PROSEDUR", displayName: "Prosedur", route: "/prosedur", parentKey: null, orderIndex: 20 },
   { resourceType: "MENU", resourceKey: "A3", displayName: "A3", route: "/a3", parentKey: null, orderIndex: 30 },
   { resourceType: "MENU", resourceKey: "ABSENSI", displayName: "Absensi", route: "/absensi", parentKey: null, orderIndex: 40 },
   { resourceType: "MENU", resourceKey: "ADMIN", displayName: "Administrator", route: "/administrator", parentKey: null, orderIndex: 50 },
@@ -66,6 +66,7 @@ const masAccessItems = [
   { resourceType: "MODULE", resourceKey: "ADMIN_USERS", displayName: "Users", route: "/administrator/users", parentKey: "ADMIN", orderIndex: 10 },
   { resourceType: "MODULE", resourceKey: "ADMIN_JABATAN", displayName: "Jabatan", route: "/administrator/jabatan", parentKey: "ADMIN", orderIndex: 20 },
   { resourceType: "MODULE", resourceKey: "ADMIN_ACCESS_ROLE", displayName: "Hak Akses", route: "/administrator/access-role", parentKey: "ADMIN", orderIndex: 30 },
+  { resourceType: "MODULE", resourceKey: "ADMIN_AUDIT_LOG", displayName: "Audit Log", route: "/administrator/audit-log", parentKey: "ADMIN", orderIndex: 40 },
 ];
 
 type accessRoleseed = {

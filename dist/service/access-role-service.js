@@ -143,6 +143,87 @@ const ensureOrgResourceExists = async (resourceType, resourceKey) => {
             throw new ResponseError(400, "SBU SUB not found");
     }
 };
+const resolveEmployeeIdForFocus = async (requesterId, requester) => {
+    const numericId = Number(requesterId);
+    if (!Number.isNaN(numericId)) {
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: { UserId: numericId },
+            select: { UserId: true }
+        });
+        if (employee) {
+            return employee.UserId;
+        }
+    }
+    const badgeNumber = requester?.badgeNumber?.trim();
+    if (!badgeNumber) {
+        return null;
+    }
+    const employee = await prismaEmployee.em_employee.findFirst({
+        where: { BadgeNum: badgeNumber },
+        select: { UserId: true }
+    });
+    return employee?.UserId ?? null;
+};
+const resolveFocusPilarIds = async (requesterId, requester) => {
+    const employeeId = await resolveEmployeeIdForFocus(requesterId, requester);
+    if (!employeeId) {
+        return [];
+    }
+    const focus = new Set();
+    const [chartMembers, pilarPics, sbuPics, sbuSubPics] = await Promise.all([
+        prismaFlowly.chartMember.findMany({
+            where: {
+                userId: employeeId,
+                isDeleted: false,
+                node: { isDeleted: false }
+            },
+            select: { node: { select: { pilarId: true } } }
+        }),
+        prismaEmployee.em_pilar.findMany({
+            where: {
+                pic: employeeId,
+                status: "A",
+                OR: [{ isDeleted: false }, { isDeleted: null }]
+            },
+            select: { id: true }
+        }),
+        prismaEmployee.em_sbu.findMany({
+            where: {
+                pic: employeeId,
+                status: "A",
+                OR: [{ isDeleted: false }, { isDeleted: null }]
+            },
+            select: { sbu_pilar: true }
+        }),
+        prismaEmployee.em_sbu_sub.findMany({
+            where: {
+                pic: employeeId,
+                status: "A",
+                OR: [{ isDeleted: false }, { isDeleted: null }]
+            },
+            select: { sbu_pilar: true }
+        })
+    ]);
+    for (const member of chartMembers) {
+        if (member.node?.pilarId) {
+            focus.add(member.node.pilarId);
+        }
+    }
+    for (const pilar of pilarPics) {
+        focus.add(pilar.id);
+    }
+    for (const sbu of sbuPics) {
+        if (sbu.sbu_pilar !== null && sbu.sbu_pilar !== undefined) {
+            focus.add(sbu.sbu_pilar);
+        }
+    }
+    for (const sbuSub of sbuSubPics) {
+        if (sbuSub.sbu_pilar !== null && sbuSub.sbu_pilar !== undefined) {
+            focus.add(sbuSub.sbu_pilar);
+        }
+    }
+    return Array.from(focus);
+};
 export class AccessRoleService {
     static async create(requesterId, reqBody) {
         const req = Validation.validate(AccessRoleValidation.CREATE, reqBody);
@@ -413,6 +494,7 @@ export class AccessRoleService {
                 sbuSubRead: Array.from(accessContext.sbuSub.read),
                 sbuSubCrud: Array.from(accessContext.sbuSub.crud)
             };
+        const focusPilarIds = await resolveFocusPilarIds(requesterId, requester);
         if (!isAdmin && isEmployeeUser) {
             const menuAccess = [];
             const moduleAccess = [];
@@ -442,6 +524,7 @@ export class AccessRoleService {
                 isAdmin,
                 menuAccess,
                 moduleAccess,
+                focusPilarIds,
                 orgScope,
                 orgAccess
             };
@@ -574,6 +657,7 @@ export class AccessRoleService {
             isAdmin,
             menuAccess,
             moduleAccess,
+            focusPilarIds,
             orgScope,
             orgAccess
         };

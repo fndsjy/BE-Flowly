@@ -54,5 +54,18 @@ export class PilarController {
             next(err);
         }
     }
+    static async listPublic(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await PilarService.listPublic(payload.userId);
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
 }
 //# sourceMappingURL=pilar-controller.js.map

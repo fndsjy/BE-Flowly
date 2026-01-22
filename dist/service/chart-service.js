@@ -4,7 +4,21 @@ import { ChartValidation } from "../validation/chart-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
 import { getAccessContext, getModuleAccessMap, canReadModule, canCrudModule, canRead, canCrud } from "../utils/access-scope.js";
+import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog } from "../utils/audit-log.js";
 import { toChartResponse, toChartListResponse } from "../model/chart-model.js";
+const CHART_AUDIT_FIELDS = [
+    "chartId",
+    "parentId",
+    "pilarId",
+    "sbuId",
+    "sbuSubId",
+    "position",
+    "capacity",
+    "orderIndex",
+    "jobDesc",
+    "isDeleted",
+];
+const getChartSnapshot = (record) => pickSnapshot(record, CHART_AUDIT_FIELDS);
 export class ChartService {
     // 📌 CREATE
     static async create(requesterUserId, request) {
@@ -127,7 +141,18 @@ export class ChartService {
                 },
             });
         }
-        return toChartResponse(chart);
+        const response = toChartResponse(chart);
+        await writeAuditLog({
+            module: "CHART",
+            entity: "CHART",
+            entityId: response.chartId,
+            action: "CREATE",
+            actorId: requesterUserId,
+            actorType: resolveActorType(requesterUserId),
+            snapshot: getChartSnapshot(response),
+            meta: { memberSlotsCreated: capacity },
+        });
+        return response;
     }
     // UPDATE
     static async update(requesterUserId, request) {
@@ -251,7 +276,29 @@ export class ChartService {
                 updatedAt: new Date(),
             },
         });
-        return toChartResponse(updated);
+        const response = toChartResponse(updated);
+        const before = toChartResponse(existing);
+        const changes = buildChanges(before, response, CHART_AUDIT_FIELDS);
+        if (changes.length > 0 || diff !== 0 || finalJabatan !== undefined) {
+            const meta = diff !== 0 || finalJabatan !== undefined
+                ? {
+                    memberSlotsAdded: diff > 0 ? diff : 0,
+                    memberSlotsRemoved: diff < 0 ? Math.abs(diff) : 0,
+                    jabatanUpdated: finalJabatan !== undefined,
+                }
+                : undefined;
+            const payload = {
+                module: "CHART",
+                entity: "CHART",
+                entityId: response.chartId,
+                action: "UPDATE",
+                actorId: requesterUserId,
+                actorType: resolveActorType(requesterUserId),
+                changes,
+            };
+            await writeAuditLog(meta ? { ...payload, meta } : payload);
+        }
+        return response;
     }
     // ================================
     // 🗑️ SOFT DELETE
@@ -337,6 +384,17 @@ export class ChartService {
         //     deletedBy: requesterUserId,
         //   },
         // });
+        const snapshot = toChartResponse(node);
+        await writeAuditLog({
+            module: "CHART",
+            entity: "CHART",
+            entityId: snapshot.chartId,
+            action: "DELETE",
+            actorId: requesterUserId,
+            actorType: resolveActorType(requesterUserId),
+            snapshot: getChartSnapshot(snapshot),
+            meta: { memberSlotsDeleted: deletedMembersCount },
+        });
         return { message: "Chart deleted successfully" };
     }
     // ================================

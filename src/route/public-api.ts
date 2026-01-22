@@ -10,6 +10,9 @@ import { ChartMemberController } from "../controller/chart-member-controller.js"
 import { JabatanController } from "../controller/jabatan-controller.js";
 import { MasterAccessRoleController } from "../controller/master-access-role-controller.js";
 import { AccessRoleController } from "../controller/access-role-controller.js";
+import { ProcedureSopController } from "../controller/procedure-sop-controller.js";
+import { ProcedureIkController } from "../controller/procedure-ik-controller.js";
+import { AuditLogController } from "../controller/audit-log-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -42,19 +45,34 @@ v1.post("/pilar", PilarController.create);
 v1.put("/pilar", PilarController.update);
 v1.delete("/pilar", PilarController.softDelete);
 v1.get("/pilar", PilarController.list);
+v1.get("/pilar-public", PilarController.listPublic);
 
 v1.post("/sbu", SbuController.create);
 v1.put("/sbu", SbuController.update);
 v1.delete("/sbu", SbuController.softDelete);
 v1.get("/sbu", SbuController.list);
+v1.get("/sbu-public", SbuController.listPublic);
 v1.get("/sbu-by-pilar", SbuController.getByPilar);
 
 v1.post("/sbu-sub", SbuSubController.create);
 v1.put("/sbu-sub", SbuSubController.update);
 v1.delete("/sbu-sub", SbuSubController.softDelete);
 v1.get("/sbu-sub", SbuSubController.list);
+v1.get("/sbu-sub-public", SbuSubController.listPublic);
 v1.get("/sbu-sub-by-sbu", SbuSubController.getBySbu);
 v1.get("/sbu-sub-by-pilar", SbuSubController.getByPilar);
+
+v1.post("/procedure-sop", ProcedureSopController.create);
+v1.put("/procedure-sop", ProcedureSopController.update);
+v1.delete("/procedure-sop", ProcedureSopController.softDelete);
+v1.get("/procedure-sop", ProcedureSopController.list);
+
+v1.post("/procedure-ik", ProcedureIkController.create);
+v1.put("/procedure-ik", ProcedureIkController.update);
+v1.delete("/procedure-ik", ProcedureIkController.softDelete);
+v1.get("/procedure-ik", ProcedureIkController.list);
+
+v1.get("/audit-log", AuditLogController.list);
 
 v1.post("/jabatan", JabatanController.create);
 v1.put("/jabatan", JabatanController.update);

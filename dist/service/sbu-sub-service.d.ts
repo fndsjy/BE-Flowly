@@ -6,6 +6,7 @@ export declare class SbuSubService {
         message: string;
     }>;
     static list(requesterId: string): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
+    static listPublic(_requesterId: string): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
     static getBySbu(requesterId: string, sbuId: number): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
     static getByPilar(requesterId: string, pilarId: number): Promise<import("../model/sbu-sub-model.js").SbuSubResponse[]>;
 }

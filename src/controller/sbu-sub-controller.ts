@@ -66,6 +66,19 @@ export class SbuSubController {
     }
   }
 
+  static async listPublic(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await SbuSubService.listPublic(payload.userId);
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async getBySbu(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.cookies.access_token;

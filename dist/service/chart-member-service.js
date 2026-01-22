@@ -5,6 +5,14 @@ import { ResponseError } from "../error/response-error.js";
 import { getAccessContext, getModuleAccessMap, canReadModule, canCrudModule, canRead, canCrud } from "../utils/access-scope.js";
 import { toChartMemberResponse } from "../model/chart-member-model.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
+import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog } from "../utils/audit-log.js";
+const CHART_MEMBER_AUDIT_FIELDS = [
+    "memberChartId",
+    "chartId",
+    "userId",
+    "jabatan",
+];
+const getChartMemberSnapshot = (record) => pickSnapshot(record, CHART_MEMBER_AUDIT_FIELDS);
 export class ChartMemberService {
     // static async create(requesterUserId: string, request: any) {
     //   const validated = Validation.validate(ChartMemberValidation.CREATE, request);
@@ -38,7 +46,7 @@ export class ChartMemberService {
         // 📌 Cari member yang akan di-update
         const existing = await prismaFlowly.chartMember.findUnique({
             where: { memberChartId, isDeleted: false },
-            select: { chartId: true, userId: true }
+            select: { memberChartId: true, chartId: true, userId: true, jabatan: true }
         });
         if (!existing)
             throw new ResponseError(404, "Member Chart not found");
@@ -95,7 +103,22 @@ export class ChartMemberService {
                 updatedAt: new Date(),
             },
         });
-        return toChartMemberResponse(updated);
+        const response = toChartMemberResponse(updated);
+        const before = toChartMemberResponse(existing);
+        const changes = buildChanges(before, response, CHART_MEMBER_AUDIT_FIELDS);
+        if (changes.length > 0) {
+            await writeAuditLog({
+                module: "CHART_MEMBER",
+                entity: "CHART_MEMBER",
+                entityId: response.memberChartId,
+                action: "UPDATE",
+                actorId: requesterUserId,
+                actorType: resolveActorType(requesterUserId),
+                changes,
+                meta: { chartId: response.chartId },
+            });
+        }
+        return response;
     }
     static async softDelete(requesterUserId, request) {
         const validated = Validation.validate(ChartMemberValidation.DELETE, request);
@@ -131,6 +154,17 @@ export class ChartMemberService {
                 deletedAt: new Date(),
                 deletedBy: requesterUserId,
             },
+        });
+        const snapshot = toChartMemberResponse(existing);
+        await writeAuditLog({
+            module: "CHART_MEMBER",
+            entity: "CHART_MEMBER",
+            entityId: snapshot.memberChartId,
+            action: "DELETE",
+            actorId: requesterUserId,
+            actorType: resolveActorType(requesterUserId),
+            snapshot: getChartMemberSnapshot(snapshot),
+            meta: { chartId: snapshot.chartId },
         });
         return { message: "Member Chart deleted" };
     }

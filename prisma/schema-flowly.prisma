@@ -139,6 +139,59 @@ model ChartMember {
   @@map("chart_member")
 }
 
+/// SOP master within Prosedur
+model ProcedureSop {
+  sopId         String        @id @db.NVarChar(20)
+  sbuSubId      Int
+  sbuId         Int?
+  pilarId       Int?
+  sopName       String        @db.NVarChar(150)
+  sopNumber     String        @db.NVarChar(50)
+  effectiveDate DateTime
+  filePath      String        @db.NVarChar(500)
+  fileName      String        @db.NVarChar(255)
+  fileMime      String?       @db.NVarChar(100)
+  fileSize      Int?
+  isActive      Boolean       @default(true)
+  isDeleted     Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  createdBy     String?       @db.NVarChar(20)
+  updatedAt     DateTime      @updatedAt
+  updatedBy     String?       @db.NVarChar(20)
+  deletedAt     DateTime?
+  deletedBy     String?       @db.NVarChar(20)
+  iks           ProcedureIk[]
+
+  @@index([sbuSubId, isActive, isDeleted])
+  @@index([sbuId])
+  @@index([pilarId])
+  @@index([sopNumber])
+  @@map("procedure_sop")
+}
+
+/// IK detail linked to SOP
+model ProcedureIk {
+  ikId          String       @id @db.NVarChar(20)
+  sopId         String       @db.NVarChar(20)
+  ikName        String       @db.NVarChar(150)
+  ikNumber      String       @db.NVarChar(50)
+  effectiveDate DateTime
+  ikContent     String?      @db.NVarChar(Max)
+  isActive      Boolean      @default(true)
+  isDeleted     Boolean      @default(false)
+  createdAt     DateTime     @default(now())
+  createdBy     String?      @db.NVarChar(20)
+  updatedAt     DateTime     @updatedAt
+  updatedBy     String?      @db.NVarChar(20)
+  deletedAt     DateTime?
+  deletedBy     String?      @db.NVarChar(20)
+  sop           ProcedureSop @relation(fields: [sopId], references: [sopId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([sopId, isActive, isDeleted])
+  @@index([ikNumber])
+  @@map("procedure_ik")
+}
+
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model jabatan {
   jabatanId       String    @id @db.NVarChar(20)
@@ -203,4 +256,26 @@ model MasterAccessRole {
   @@unique([resourceType, resourceKey])
   @@index([parentKey])
   @@map("master_access_role")
+}
+
+/// Audit log for tracking CRUD and revision actions
+model AuditLog {
+  logId     Int      @id @default(autoincrement())
+  module    String   @db.NVarChar(50)
+  entity    String   @db.NVarChar(50)
+  entityId  String   @db.NVarChar(50)
+  action    String   @db.NVarChar(20)
+  actorId   String?  @db.NVarChar(20)
+  actorType String?  @db.NVarChar(20)
+  changes   String?  @db.NVarChar(Max)
+  snapshot  String?  @db.NVarChar(Max)
+  meta      String?  @db.NVarChar(Max)
+  createdAt DateTime @default(now())
+
+  @@index([module])
+  @@index([entity])
+  @@index([entityId])
+  @@index([actorId])
+  @@index([createdAt])
+  @@map("audit_log")
 }

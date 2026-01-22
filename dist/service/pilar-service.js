@@ -4,8 +4,20 @@ import { Validation } from "../validation/validation.js";
 import { PilarValidation } from "../validation/pilar-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { getAccessContext, getModuleAccessMap, canReadModule, canCrudModule, canCrud } from "../utils/access-scope.js";
+import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog } from "../utils/audit-log.js";
 // import { generateOrgStructureId } from "../utils/id-generator.js";
 import { toPilarResponse, toPilarListResponse } from "../model/pilar-model.js";
+const PILAR_AUDIT_FIELDS = [
+    "id",
+    "pilarName",
+    "description",
+    "jobDesc",
+    "jabatan",
+    "pic",
+    "status",
+    "isDeleted",
+];
+const getPilarSnapshot = (record) => pickSnapshot(record, PILAR_AUDIT_FIELDS);
 export class PilarService {
     /* ------------------------------------------
      * CREATE
@@ -57,7 +69,17 @@ export class PilarService {
                 updatedBy: requesterId,
             }
         });
-        return toPilarResponse(pilar);
+        const response = toPilarResponse(pilar);
+        await writeAuditLog({
+            module: "PILAR",
+            entity: "PILAR",
+            entityId: String(response.id),
+            action: "CREATE",
+            actorId: requesterId,
+            actorType: resolveActorType(requesterId),
+            snapshot: getPilarSnapshot(response),
+        });
+        return response;
     }
     /* ------------------------------------------
      * UPDATE
@@ -118,7 +140,21 @@ export class PilarService {
                 updatedBy: requesterId
             }
         });
-        return toPilarResponse(updated);
+        const response = toPilarResponse(updated);
+        const before = toPilarResponse(exists);
+        const changes = buildChanges(before, response, PILAR_AUDIT_FIELDS);
+        if (changes.length > 0) {
+            await writeAuditLog({
+                module: "PILAR",
+                entity: "PILAR",
+                entityId: String(response.id),
+                action: "UPDATE",
+                actorId: requesterId,
+                actorType: resolveActorType(requesterId),
+                changes,
+            });
+        }
+        return response;
     }
     /* ------------------------------------------
      * SOFT DELETE
@@ -159,6 +195,16 @@ export class PilarService {
                 deletedBy: requesterId
             }
         });
+        const snapshot = toPilarResponse(exists);
+        await writeAuditLog({
+            module: "PILAR",
+            entity: "PILAR",
+            entityId: String(snapshot.id),
+            action: "DELETE",
+            actorId: requesterId,
+            actorType: resolveActorType(requesterId),
+            snapshot: getPilarSnapshot(snapshot),
+        });
         return { message: "Pilar deleted" };
     }
     /* ------------------------------------------
@@ -184,6 +230,19 @@ export class PilarService {
                     : { id: { in: Array.from(accessContext.pilar.read) } })
             },
             orderBy: { createdAt: "desc" },
+        });
+        return pilars.map(toPilarListResponse);
+    }
+    /* ------------------------------------------
+     * LIST ALL ACTIVE STRUCTURES (PUBLIC READ)
+     * ------------------------------------------ */
+    static async listPublic(_requesterId) {
+        const pilars = await prismaEmployee.em_pilar.findMany({
+            where: {
+                OR: [{ isDeleted: false }, { isDeleted: null }],
+                status: "A"
+            },
+            orderBy: { pilar_name: "asc" },
         });
         return pilars.map(toPilarListResponse);
     }

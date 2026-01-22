@@ -3,7 +3,21 @@ import { Validation } from "../validation/validation.js";
 import { SbuValidation } from "../validation/sbu-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { getAccessContext, getModuleAccessMap, canReadModule, canCrudModule } from "../utils/access-scope.js";
+import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog } from "../utils/audit-log.js";
 import { toSbuResponse, toSbuListResponse } from "../model/sbu-model.js";
+const SBU_AUDIT_FIELDS = [
+    "id",
+    "sbuCode",
+    "sbuName",
+    "sbuPilar",
+    "description",
+    "jobDesc",
+    "jabatan",
+    "pic",
+    "status",
+    "isDeleted",
+];
+const getSbuSnapshot = (record) => pickSnapshot(record, SBU_AUDIT_FIELDS);
 const normalizeAccessLevel = (value) => {
     const upper = value.trim().toUpperCase();
     if (upper === "FULL") {
@@ -117,7 +131,17 @@ export class SbuService {
                 updatedBy: requesterId,
             }
         });
-        return toSbuResponse(sbu);
+        const response = toSbuResponse(sbu);
+        await writeAuditLog({
+            module: "SBU",
+            entity: "SBU",
+            entityId: String(response.id),
+            action: "CREATE",
+            actorId: requesterId,
+            actorType: resolveActorType(requesterId),
+            snapshot: getSbuSnapshot(response),
+        });
+        return response;
     }
     /* ---------- UPDATE ---------- */
     static async update(requesterId, reqBody) {
@@ -195,7 +219,21 @@ export class SbuService {
                 updatedBy: requesterId
             }
         });
-        return toSbuResponse(updated);
+        const response = toSbuResponse(updated);
+        const before = toSbuResponse(exists);
+        const changes = buildChanges(before, response, SBU_AUDIT_FIELDS);
+        if (changes.length > 0) {
+            await writeAuditLog({
+                module: "SBU",
+                entity: "SBU",
+                entityId: String(response.id),
+                action: "UPDATE",
+                actorId: requesterId,
+                actorType: resolveActorType(requesterId),
+                changes,
+            });
+        }
+        return response;
     }
     /* ---------- DELETE ---------- */
     static async softDelete(requesterId, reqBody) {
@@ -224,6 +262,16 @@ export class SbuService {
                 deletedBy: requesterId
             }
         });
+        const snapshot = toSbuResponse(exists);
+        await writeAuditLog({
+            module: "SBU",
+            entity: "SBU",
+            entityId: String(snapshot.id),
+            action: "DELETE",
+            actorId: requesterId,
+            actorType: resolveActorType(requesterId),
+            snapshot: getSbuSnapshot(snapshot),
+        });
         return { message: "SBU deleted" };
     }
     /* ---------- LIST ---------- */
@@ -245,6 +293,17 @@ export class SbuService {
                     : { id: { in: Array.from(accessContext.sbu.read) } })
             },
             orderBy: { createdAt: "desc" }
+        });
+        return list.map(toSbuListResponse);
+    }
+    /* ---------- LIST (PUBLIC READ) ---------- */
+    static async listPublic(_requesterId) {
+        const list = await prismaEmployee.em_sbu.findMany({
+            where: {
+                OR: [{ isDeleted: false }, { isDeleted: null }],
+                status: "A",
+            },
+            orderBy: { sbu_name: "asc" }
         });
         return list.map(toSbuListResponse);
     }

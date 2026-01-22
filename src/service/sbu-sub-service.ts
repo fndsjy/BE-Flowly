@@ -9,6 +9,12 @@ import {
   canReadModule,
   canCrudModule
 } from "../utils/access-scope.js";
+import {
+  buildChanges,
+  pickSnapshot,
+  resolveActorType,
+  writeAuditLog
+} from "../utils/audit-log.js";
 
 import {
   type CreateSbuSubRequest,
@@ -17,6 +23,23 @@ import {
   toSbuSubResponse,
   toSbuSubListResponse
 } from "../model/sbu-sub-model.js";
+
+const SBU_SUB_AUDIT_FIELDS = [
+  "id",
+  "sbuSubCode",
+  "sbuSubName",
+  "sbuId",
+  "sbuPilar",
+  "description",
+  "jobDesc",
+  "jabatan",
+  "pic",
+  "status",
+  "isDeleted",
+] as const;
+
+const getSbuSubSnapshot = (record: Record<string, unknown>) =>
+  pickSnapshot(record, SBU_SUB_AUDIT_FIELDS as unknown as string[]);
 
 type ExplicitAccessLevel = "READ" | "CRUD" | "NONE" | null;
 
@@ -172,7 +195,18 @@ export class SbuSubService {
       }
     });
 
-    return toSbuSubResponse(created);
+    const response = toSbuSubResponse(created);
+    await writeAuditLog({
+      module: "SBU_SUB",
+      entity: "SBU_SUB",
+      entityId: String(response.id),
+      action: "CREATE",
+      actorId: requesterId,
+      actorType: resolveActorType(requesterId),
+      snapshot: getSbuSubSnapshot(response as unknown as Record<string, unknown>),
+    });
+
+    return response;
   }
 
   /* ---------- UPDATE ---------- */
@@ -291,7 +325,26 @@ export class SbuSubService {
       }
     });
 
-    return toSbuSubResponse(updated);
+    const response = toSbuSubResponse(updated);
+    const before = toSbuSubResponse(exists);
+    const changes = buildChanges(
+      before as unknown as Record<string, unknown>,
+      response as unknown as Record<string, unknown>,
+      SBU_SUB_AUDIT_FIELDS as unknown as string[]
+    );
+    if (changes.length > 0) {
+      await writeAuditLog({
+        module: "SBU_SUB",
+        entity: "SBU_SUB",
+        entityId: String(response.id),
+        action: "UPDATE",
+        actorId: requesterId,
+        actorType: resolveActorType(requesterId),
+        changes,
+      });
+    }
+
+    return response;
   }
 
   /* ---------- DELETE ---------- */
@@ -325,6 +378,17 @@ export class SbuSubService {
       }
     });
 
+    const snapshot = toSbuSubResponse(exists);
+    await writeAuditLog({
+      module: "SBU_SUB",
+      entity: "SBU_SUB",
+      entityId: String(snapshot.id),
+      action: "DELETE",
+      actorId: requesterId,
+      actorType: resolveActorType(requesterId),
+      snapshot: getSbuSubSnapshot(snapshot as unknown as Record<string, unknown>),
+    });
+
     return { message: "SBU SUB deleted" };
   }
 
@@ -348,6 +412,18 @@ export class SbuSubService {
           : { id: { in: Array.from(accessContext.sbuSub.read) } })
       },
       orderBy: { createdAt: "desc" }
+    });
+    return list.map(toSbuSubListResponse);
+  }
+
+  /* ---------- LIST ALL (PUBLIC READ) ---------- */
+  static async listPublic(_requesterId: string) {
+    const list = await prismaEmployee.em_sbu_sub.findMany({
+      where: {
+        OR: [{ isDeleted: false }, { isDeleted: null }],
+        status: "A",
+      },
+      orderBy: { sbu_sub_name: "asc" }
     });
     return list.map(toSbuSubListResponse);
   }

@@ -53,6 +53,7 @@ export type AccessRoleSummaryResponse = {
     isAdmin: boolean;
     menuAccess: AccessRoleSummaryItem[];
     moduleAccess: AccessRoleSummaryItem[];
+    focusPilarIds?: number[];
     orgScope: {
         pilarRead: boolean;
         pilarCrud: boolean;

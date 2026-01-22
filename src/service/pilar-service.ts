@@ -10,6 +10,12 @@ import {
   canCrudModule,
   canCrud
 } from "../utils/access-scope.js";
+import {
+  buildChanges,
+  pickSnapshot,
+  resolveActorType,
+  writeAuditLog
+} from "../utils/audit-log.js";
 // import { generateOrgStructureId } from "../utils/id-generator.js";
 
 import {
@@ -19,6 +25,20 @@ import {
   toPilarResponse,
   toPilarListResponse
 } from "../model/pilar-model.js";
+
+const PILAR_AUDIT_FIELDS = [
+  "id",
+  "pilarName",
+  "description",
+  "jobDesc",
+  "jabatan",
+  "pic",
+  "status",
+  "isDeleted",
+] as const;
+
+const getPilarSnapshot = (record: Record<string, unknown>) =>
+  pickSnapshot(record, PILAR_AUDIT_FIELDS as unknown as string[]);
 
 export class PilarService {
 
@@ -81,7 +101,18 @@ export class PilarService {
       }
     });
 
-    return toPilarResponse(pilar);
+    const response = toPilarResponse(pilar);
+    await writeAuditLog({
+      module: "PILAR",
+      entity: "PILAR",
+      entityId: String(response.id),
+      action: "CREATE",
+      actorId: requesterId,
+      actorType: resolveActorType(requesterId),
+      snapshot: getPilarSnapshot(response as unknown as Record<string, unknown>),
+    });
+
+    return response;
   }
 
   /* ------------------------------------------
@@ -153,7 +184,26 @@ export class PilarService {
       }
     });
 
-    return toPilarResponse(updated);
+    const response = toPilarResponse(updated);
+    const before = toPilarResponse(exists);
+    const changes = buildChanges(
+      before as unknown as Record<string, unknown>,
+      response as unknown as Record<string, unknown>,
+      PILAR_AUDIT_FIELDS as unknown as string[]
+    );
+    if (changes.length > 0) {
+      await writeAuditLog({
+        module: "PILAR",
+        entity: "PILAR",
+        entityId: String(response.id),
+        action: "UPDATE",
+        actorId: requesterId,
+        actorType: resolveActorType(requesterId),
+        changes,
+      });
+    }
+
+    return response;
   }
 
   /* ------------------------------------------
@@ -201,6 +251,17 @@ export class PilarService {
       }
     });
 
+    const snapshot = toPilarResponse(exists);
+    await writeAuditLog({
+      module: "PILAR",
+      entity: "PILAR",
+      entityId: String(snapshot.id),
+      action: "DELETE",
+      actorId: requesterId,
+      actorType: resolveActorType(requesterId),
+      snapshot: getPilarSnapshot(snapshot as unknown as Record<string, unknown>),
+    });
+
     return { message: "Pilar deleted" };
   }
 
@@ -228,6 +289,21 @@ export class PilarService {
         : { id: { in: Array.from(accessContext.pilar.read) } })
       },
       orderBy: { createdAt: "desc" },
+    });
+
+    return pilars.map(toPilarListResponse);
+  }
+
+  /* ------------------------------------------
+   * LIST ALL ACTIVE STRUCTURES (PUBLIC READ)
+   * ------------------------------------------ */
+  static async listPublic(_requesterId: string) {
+    const pilars = await prismaEmployee.em_pilar.findMany({
+      where: {
+        OR: [{ isDeleted: false }, { isDeleted: null }],
+        status: "A"
+      },
+      orderBy: { pilar_name: "asc" },
     });
 
     return pilars.map(toPilarListResponse);
