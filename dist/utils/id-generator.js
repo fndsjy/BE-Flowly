@@ -122,4 +122,34 @@ export async function generatemasAccessId() {
     }
     return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
 }
+export async function generateProcedureSopId() {
+    const today = getDDMMYY();
+    const prefix = `SOP${today}`;
+    const existing = await prisma.procedureSop.findFirst({
+        where: { sopId: { startsWith: prefix } },
+        select: { sopId: true },
+        orderBy: { sopId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.sopId) {
+        const currentSeq = extractSeqFromId(existing.sopId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}
+export async function generateProcedureIkId() {
+    const today = getDDMMYY();
+    const prefix = `IK${today}`;
+    const existing = await prisma.procedureIk.findFirst({
+        where: { ikId: { startsWith: prefix } },
+        select: { ikId: true },
+        orderBy: { ikId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.ikId) {
+        const currentSeq = extractSeqFromId(existing.ikId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}
 //# sourceMappingURL=id-generator.js.map

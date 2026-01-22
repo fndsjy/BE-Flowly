@@ -54,6 +54,19 @@ export class SbuController {
             next(err);
         }
     }
+    static async listPublic(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await SbuService.listPublic(payload.userId);
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
     static async getByPilar(req, res, next) {
         try {
             const token = req.cookies.access_token;

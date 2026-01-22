@@ -11,6 +11,12 @@ import {
   canRead,
   canCrud
 } from "../utils/access-scope.js";
+import {
+  buildChanges,
+  pickSnapshot,
+  resolveActorType,
+  writeAuditLog
+} from "../utils/audit-log.js";
 
 import type {
   CreateChartRequest,
@@ -22,6 +28,22 @@ import {
   toChartResponse,
   toChartListResponse
 } from "../model/chart-model.js";
+
+const CHART_AUDIT_FIELDS = [
+  "chartId",
+  "parentId",
+  "pilarId",
+  "sbuId",
+  "sbuSubId",
+  "position",
+  "capacity",
+  "orderIndex",
+  "jobDesc",
+  "isDeleted",
+] as const;
+
+const getChartSnapshot = (record: Record<string, unknown>) =>
+  pickSnapshot(record, CHART_AUDIT_FIELDS as unknown as string[]);
 
 export class ChartService {
   // 📌 CREATE
@@ -168,7 +190,19 @@ export class ChartService {
       });
     }
 
-    return toChartResponse(chart);
+    const response = toChartResponse(chart);
+    await writeAuditLog({
+      module: "CHART",
+      entity: "CHART",
+      entityId: response.chartId,
+      action: "CREATE",
+      actorId: requesterUserId,
+      actorType: resolveActorType(requesterUserId),
+      snapshot: getChartSnapshot(response as unknown as Record<string, unknown>),
+      meta: { memberSlotsCreated: capacity },
+    });
+
+    return response;
   }
 
   // UPDATE
@@ -326,7 +360,38 @@ export class ChartService {
       },
     });
 
-    return toChartResponse(updated);
+    const response = toChartResponse(updated);
+    const before = toChartResponse(existing);
+    const changes = buildChanges(
+      before as unknown as Record<string, unknown>,
+      response as unknown as Record<string, unknown>,
+      CHART_AUDIT_FIELDS as unknown as string[]
+    );
+
+    if (changes.length > 0 || diff !== 0 || finalJabatan !== undefined) {
+      const meta =
+        diff !== 0 || finalJabatan !== undefined
+          ? {
+              memberSlotsAdded: diff > 0 ? diff : 0,
+              memberSlotsRemoved: diff < 0 ? Math.abs(diff) : 0,
+              jabatanUpdated: finalJabatan !== undefined,
+            }
+          : undefined;
+
+      const payload = {
+        module: "CHART",
+        entity: "CHART",
+        entityId: response.chartId,
+        action: "UPDATE",
+        actorId: requesterUserId,
+        actorType: resolveActorType(requesterUserId),
+        changes,
+      } as const;
+
+      await writeAuditLog(meta ? { ...payload, meta } : payload);
+    }
+
+    return response;
   }
 
   // ================================
@@ -428,6 +493,18 @@ export class ChartService {
     //     deletedBy: requesterUserId,
     //   },
     // });
+
+    const snapshot = toChartResponse(node);
+    await writeAuditLog({
+      module: "CHART",
+      entity: "CHART",
+      entityId: snapshot.chartId,
+      action: "DELETE",
+      actorId: requesterUserId,
+      actorType: resolveActorType(requesterUserId),
+      snapshot: getChartSnapshot(snapshot as unknown as Record<string, unknown>),
+      meta: { memberSlotsDeleted: deletedMembersCount },
+    });
 
     return { message: "Chart deleted successfully" };
   }

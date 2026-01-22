@@ -190,6 +190,45 @@ exports.Prisma.ChartMemberScalarFieldEnum = {
   jabatan: 'jabatan'
 };
 
+exports.Prisma.ProcedureSopScalarFieldEnum = {
+  sopId: 'sopId',
+  sbuSubId: 'sbuSubId',
+  sbuId: 'sbuId',
+  pilarId: 'pilarId',
+  sopName: 'sopName',
+  sopNumber: 'sopNumber',
+  effectiveDate: 'effectiveDate',
+  filePath: 'filePath',
+  fileName: 'fileName',
+  fileMime: 'fileMime',
+  fileSize: 'fileSize',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.ProcedureIkScalarFieldEnum = {
+  ikId: 'ikId',
+  sopId: 'sopId',
+  ikName: 'ikName',
+  ikNumber: 'ikNumber',
+  effectiveDate: 'effectiveDate',
+  ikContent: 'ikContent',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.JabatanScalarFieldEnum = {
   jabatanId: 'jabatanId',
   jabatanName: 'jabatanName',
@@ -241,6 +280,20 @@ exports.Prisma.MasterAccessRoleScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.AuditLogScalarFieldEnum = {
+  logId: 'logId',
+  module: 'module',
+  entity: 'entity',
+  entityId: 'entityId',
+  action: 'action',
+  actorId: 'actorId',
+  actorType: 'actorType',
+  changes: 'changes',
+  snapshot: 'snapshot',
+  meta: 'meta',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -257,9 +310,12 @@ exports.Prisma.ModelName = {
   User: 'User',
   Chart: 'Chart',
   ChartMember: 'ChartMember',
+  ProcedureSop: 'ProcedureSop',
+  ProcedureIk: 'ProcedureIk',
   jabatan: 'jabatan',
   AccessRole: 'AccessRole',
-  MasterAccessRole: 'MasterAccessRole'
+  MasterAccessRole: 'MasterAccessRole',
+  AuditLog: 'AuditLog'
 };
 
 /**

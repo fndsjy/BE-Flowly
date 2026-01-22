@@ -1,0 +1,1 @@
+{"version":3,"file":"procedure-access.d.ts","sourceRoot":"","sources":["../../src/utils/procedure-access.ts"],"names":[],"mappings":"AAGA,MAAM,MAAM,eAAe,GAAG;IAC5B,SAAS,EAAE,QAAQ,GAAG,UAAU,CAAC;IACjC,SAAS,CAAC,EAAE,MAAM,CAAC;IACnB,OAAO,EAAE,OAAO,CAAC;CAClB,CAAC;AAEF,eAAO,MAAM,kBAAkB,GAAU,aAAa,MAAM,KAAG,OAAO,CAAC,eAAe,CAiCrF,CAAC;AAEF,eAAO,MAAM,mBAAmB,GAAI,QAAQ,eAAe,SAI1D,CAAC"}

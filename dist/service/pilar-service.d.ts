@@ -6,5 +6,6 @@ export declare class PilarService {
         message: string;
     }>;
     static list(requesterId: string): Promise<import("../model/pilar-model.js").PilarListResponse[]>;
+    static listPublic(_requesterId: string): Promise<import("../model/pilar-model.js").PilarListResponse[]>;
 }
 //# sourceMappingURL=pilar-service.d.ts.map

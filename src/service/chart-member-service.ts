@@ -12,6 +12,22 @@ import {
 } from "../utils/access-scope.js";
 import { toChartMemberResponse } from "../model/chart-member-model.js";
 import { generateChartId, generateChartMemberId } from "../utils/id-generator.js";
+import {
+  buildChanges,
+  pickSnapshot,
+  resolveActorType,
+  writeAuditLog
+} from "../utils/audit-log.js";
+
+const CHART_MEMBER_AUDIT_FIELDS = [
+  "memberChartId",
+  "chartId",
+  "userId",
+  "jabatan",
+] as const;
+
+const getChartMemberSnapshot = (record: Record<string, unknown>) =>
+  pickSnapshot(record, CHART_MEMBER_AUDIT_FIELDS as unknown as string[]);
 
 export class ChartMemberService {
   // static async create(requesterUserId: string, request: any) {
@@ -54,7 +70,7 @@ export class ChartMemberService {
     // 📌 Cari member yang akan di-update
     const existing = await prismaFlowly.chartMember.findUnique({
       where: { memberChartId, isDeleted: false },
-      select: { chartId: true, userId: true }
+      select: { memberChartId: true, chartId: true, userId: true, jabatan: true }
     });
     if (!existing) throw new ResponseError(404, "Member Chart not found");
 
@@ -119,7 +135,27 @@ export class ChartMemberService {
       },
     });
 
-    return toChartMemberResponse(updated);
+    const response = toChartMemberResponse(updated);
+    const before = toChartMemberResponse(existing);
+    const changes = buildChanges(
+      before as unknown as Record<string, unknown>,
+      response as unknown as Record<string, unknown>,
+      CHART_MEMBER_AUDIT_FIELDS as unknown as string[]
+    );
+    if (changes.length > 0) {
+      await writeAuditLog({
+        module: "CHART_MEMBER",
+        entity: "CHART_MEMBER",
+        entityId: response.memberChartId,
+        action: "UPDATE",
+        actorId: requesterUserId,
+        actorType: resolveActorType(requesterUserId),
+        changes,
+        meta: { chartId: response.chartId },
+      });
+    }
+
+    return response;
   }
 
   static async softDelete(requesterUserId: string, request: any) {
@@ -158,6 +194,18 @@ export class ChartMemberService {
         deletedAt: new Date(),
         deletedBy: requesterUserId,
       },
+    });
+
+    const snapshot = toChartMemberResponse(existing);
+    await writeAuditLog({
+      module: "CHART_MEMBER",
+      entity: "CHART_MEMBER",
+      entityId: snapshot.memberChartId,
+      action: "DELETE",
+      actorId: requesterUserId,
+      actorType: resolveActorType(requesterUserId),
+      snapshot: getChartMemberSnapshot(snapshot as unknown as Record<string, unknown>),
+      meta: { chartId: snapshot.chartId },
     });
 
     return { message: "Member Chart deleted" };
