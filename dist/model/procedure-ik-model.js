@@ -1,16 +1,2 @@
-export function toProcedureIkResponse(ik) {
-    return {
-        ikId: ik.ikId,
-        sopId: ik.sopId,
-        ikName: ik.ikName,
-        ikNumber: ik.ikNumber,
-        effectiveDate: ik.effectiveDate,
-        ikContent: ik.ikContent ?? null,
-        isActive: ik.isActive,
-        isDeleted: ik.isDeleted,
-        createdAt: ik.createdAt,
-        updatedAt: ik.updatedAt,
-    };
-}
-export const toProcedureIkListResponse = toProcedureIkResponse;
+export { toMasterIkResponse as toProcedureIkResponse, toMasterIkListResponse as toProcedureIkListResponse, } from "./master-ik-model.js";
 //# sourceMappingURL=procedure-ik-model.js.map

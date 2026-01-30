@@ -141,26 +141,26 @@ model ChartMember {
 
 /// SOP master within Prosedur
 model ProcedureSop {
-  sopId         String        @id @db.NVarChar(20)
+  sopId         String           @id @db.NVarChar(20)
   sbuSubId      Int
   sbuId         Int?
   pilarId       Int?
-  sopName       String        @db.NVarChar(150)
-  sopNumber     String        @db.NVarChar(50)
+  sopName       String           @db.NVarChar(150)
+  sopNumber     String           @db.NVarChar(50)
   effectiveDate DateTime
-  filePath      String        @db.NVarChar(500)
-  fileName      String        @db.NVarChar(255)
-  fileMime      String?       @db.NVarChar(100)
+  filePath      String           @db.NVarChar(500)
+  fileName      String           @db.NVarChar(255)
+  fileMime      String?          @db.NVarChar(100)
   fileSize      Int?
-  isActive      Boolean       @default(true)
-  isDeleted     Boolean       @default(false)
-  createdAt     DateTime      @default(now())
-  createdBy     String?       @db.NVarChar(20)
-  updatedAt     DateTime      @updatedAt
-  updatedBy     String?       @db.NVarChar(20)
+  isActive      Boolean          @default(true)
+  isDeleted     Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+  createdBy     String?          @db.NVarChar(20)
+  updatedAt     DateTime         @updatedAt
+  updatedBy     String?          @db.NVarChar(20)
   deletedAt     DateTime?
-  deletedBy     String?       @db.NVarChar(20)
-  iks           ProcedureIk[]
+  deletedBy     String?          @db.NVarChar(20)
+  masterIKs     ProcedureSopIK[]
 
   @@index([sbuSubId, isActive, isDeleted])
   @@index([sbuId])
@@ -169,27 +169,46 @@ model ProcedureSop {
   @@map("procedure_sop")
 }
 
-/// IK detail linked to SOP
-model ProcedureIk {
-  ikId          String       @id @db.NVarChar(20)
-  sopId         String       @db.NVarChar(20)
-  ikName        String       @db.NVarChar(150)
-  ikNumber      String       @db.NVarChar(50)
+/// Master IK shared across SOPs
+model MasterIK {
+  ikId          String           @id @db.NVarChar(20)
+  ikName        String           @db.NVarChar(150)
+  ikNumber      String           @db.NVarChar(50)
   effectiveDate DateTime
-  ikContent     String?      @db.NVarChar(Max)
-  isActive      Boolean      @default(true)
-  isDeleted     Boolean      @default(false)
-  createdAt     DateTime     @default(now())
-  createdBy     String?      @db.NVarChar(20)
-  updatedAt     DateTime     @updatedAt
-  updatedBy     String?      @db.NVarChar(20)
+  ikContent     String?          @db.NVarChar(Max)
+  isActive      Boolean          @default(true)
+  isDeleted     Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+  createdBy     String?          @db.NVarChar(20)
+  updatedAt     DateTime         @updatedAt
+  updatedBy     String?          @db.NVarChar(20)
   deletedAt     DateTime?
-  deletedBy     String?      @db.NVarChar(20)
-  sop           ProcedureSop @relation(fields: [sopId], references: [sopId], onDelete: NoAction, onUpdate: NoAction)
+  deletedBy     String?          @db.NVarChar(20)
+  sops          ProcedureSopIK[]
+
+  @@index([ikNumber])
+  @@map("master_ik")
+}
+
+/// SOP to Master IK join table
+model ProcedureSopIK {
+  sopIkId   String       @id @db.NVarChar(20)
+  sopId     String       @db.NVarChar(20)
+  ikId      String       @db.NVarChar(20)
+  isActive  Boolean      @default(true)
+  isDeleted Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  createdBy String?      @db.NVarChar(20)
+  updatedAt DateTime     @updatedAt
+  updatedBy String?      @db.NVarChar(20)
+  deletedAt DateTime?
+  deletedBy String?      @db.NVarChar(20)
+  sop       ProcedureSop @relation(fields: [sopId], references: [sopId], onDelete: NoAction, onUpdate: NoAction)
+  masterIK  MasterIK     @relation(fields: [ikId], references: [ikId], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([sopId, isActive, isDeleted])
-  @@index([ikNumber])
-  @@map("procedure_ik")
+  @@index([ikId, isActive, isDeleted])
+  @@map("procedure_sop_ik")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
