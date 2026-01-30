@@ -40,10 +40,15 @@ export type ChartMember = $Result.DefaultSelection<Prisma.$ChartMemberPayload>
  */
 export type ProcedureSop = $Result.DefaultSelection<Prisma.$ProcedureSopPayload>
 /**
- * Model ProcedureIk
- * IK detail linked to SOP
+ * Model MasterIK
+ * Master IK shared across SOPs
  */
-export type ProcedureIk = $Result.DefaultSelection<Prisma.$ProcedureIkPayload>
+export type MasterIK = $Result.DefaultSelection<Prisma.$MasterIKPayload>
+/**
+ * Model ProcedureSopIK
+ * SOP to Master IK join table
+ */
+export type ProcedureSopIK = $Result.DefaultSelection<Prisma.$ProcedureSopIKPayload>
 /**
  * Model jabatan
  * The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -234,14 +239,24 @@ export class PrismaClient<
   get procedureSop(): Prisma.ProcedureSopDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.procedureIk`: Exposes CRUD operations for the **ProcedureIk** model.
+   * `prisma.masterIK`: Exposes CRUD operations for the **MasterIK** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more ProcedureIks
-    * const procedureIks = await prisma.procedureIk.findMany()
+    * // Fetch zero or more MasterIKS
+    * const masterIKS = await prisma.masterIK.findMany()
     * ```
     */
-  get procedureIk(): Prisma.ProcedureIkDelegate<ExtArgs, ClientOptions>;
+  get masterIK(): Prisma.MasterIKDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.procedureSopIK`: Exposes CRUD operations for the **ProcedureSopIK** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProcedureSopIKS
+    * const procedureSopIKS = await prisma.procedureSopIK.findMany()
+    * ```
+    */
+  get procedureSopIK(): Prisma.ProcedureSopIKDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.jabatan`: Exposes CRUD operations for the **jabatan** model.
@@ -728,7 +743,8 @@ export namespace Prisma {
     Chart: 'Chart',
     ChartMember: 'ChartMember',
     ProcedureSop: 'ProcedureSop',
-    ProcedureIk: 'ProcedureIk',
+    MasterIK: 'MasterIK',
+    ProcedureSopIK: 'ProcedureSopIK',
     jabatan: 'jabatan',
     AccessRole: 'AccessRole',
     MasterAccessRole: 'MasterAccessRole',
@@ -751,7 +767,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "procedureIk" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1085,69 +1101,135 @@ export namespace Prisma {
           }
         }
       }
-      ProcedureIk: {
-        payload: Prisma.$ProcedureIkPayload<ExtArgs>
-        fields: Prisma.ProcedureIkFieldRefs
+      MasterIK: {
+        payload: Prisma.$MasterIKPayload<ExtArgs>
+        fields: Prisma.MasterIKFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ProcedureIkFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload> | null
+            args: Prisma.MasterIKFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ProcedureIkFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>
+            args: Prisma.MasterIKFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>
           }
           findFirst: {
-            args: Prisma.ProcedureIkFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload> | null
+            args: Prisma.MasterIKFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ProcedureIkFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>
+            args: Prisma.MasterIKFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>
           }
           findMany: {
-            args: Prisma.ProcedureIkFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>[]
+            args: Prisma.MasterIKFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>[]
           }
           create: {
-            args: Prisma.ProcedureIkCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>
+            args: Prisma.MasterIKCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>
           }
           createMany: {
-            args: Prisma.ProcedureIkCreateManyArgs<ExtArgs>
+            args: Prisma.MasterIKCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.ProcedureIkDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>
+            args: Prisma.MasterIKDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>
           }
           update: {
-            args: Prisma.ProcedureIkUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>
+            args: Prisma.MasterIKUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>
           }
           deleteMany: {
-            args: Prisma.ProcedureIkDeleteManyArgs<ExtArgs>
+            args: Prisma.MasterIKDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ProcedureIkUpdateManyArgs<ExtArgs>
+            args: Prisma.MasterIKUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.ProcedureIkUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProcedureIkPayload>
+            args: Prisma.MasterIKUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterIKPayload>
           }
           aggregate: {
-            args: Prisma.ProcedureIkAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateProcedureIk>
+            args: Prisma.MasterIKAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMasterIK>
           }
           groupBy: {
-            args: Prisma.ProcedureIkGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ProcedureIkGroupByOutputType>[]
+            args: Prisma.MasterIKGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MasterIKGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ProcedureIkCountArgs<ExtArgs>
-            result: $Utils.Optional<ProcedureIkCountAggregateOutputType> | number
+            args: Prisma.MasterIKCountArgs<ExtArgs>
+            result: $Utils.Optional<MasterIKCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProcedureSopIK: {
+        payload: Prisma.$ProcedureSopIKPayload<ExtArgs>
+        fields: Prisma.ProcedureSopIKFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProcedureSopIKFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProcedureSopIKFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>
+          }
+          findFirst: {
+            args: Prisma.ProcedureSopIKFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProcedureSopIKFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>
+          }
+          findMany: {
+            args: Prisma.ProcedureSopIKFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>[]
+          }
+          create: {
+            args: Prisma.ProcedureSopIKCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>
+          }
+          createMany: {
+            args: Prisma.ProcedureSopIKCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.ProcedureSopIKDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>
+          }
+          update: {
+            args: Prisma.ProcedureSopIKUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProcedureSopIKDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProcedureSopIKUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ProcedureSopIKUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProcedureSopIKPayload>
+          }
+          aggregate: {
+            args: Prisma.ProcedureSopIKAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProcedureSopIK>
+          }
+          groupBy: {
+            args: Prisma.ProcedureSopIKGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProcedureSopIKGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProcedureSopIKCountArgs<ExtArgs>
+            result: $Utils.Optional<ProcedureSopIKCountAggregateOutputType> | number
           }
         }
       }
@@ -1516,7 +1598,8 @@ export namespace Prisma {
     chart?: ChartOmit
     chartMember?: ChartMemberOmit
     procedureSop?: ProcedureSopOmit
-    procedureIk?: ProcedureIkOmit
+    masterIK?: MasterIKOmit
+    procedureSopIK?: ProcedureSopIKOmit
     jabatan?: jabatanOmit
     accessRole?: AccessRoleOmit
     masterAccessRole?: MasterAccessRoleOmit
@@ -1748,11 +1831,11 @@ export namespace Prisma {
    */
 
   export type ProcedureSopCountOutputType = {
-    iks: number
+    masterIKs: number
   }
 
   export type ProcedureSopCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    iks?: boolean | ProcedureSopCountOutputTypeCountIksArgs
+    masterIKs?: boolean | ProcedureSopCountOutputTypeCountMasterIKsArgs
   }
 
   // Custom InputTypes
@@ -1769,8 +1852,39 @@ export namespace Prisma {
   /**
    * ProcedureSopCountOutputType without action
    */
-  export type ProcedureSopCountOutputTypeCountIksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProcedureIkWhereInput
+  export type ProcedureSopCountOutputTypeCountMasterIKsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProcedureSopIKWhereInput
+  }
+
+
+  /**
+   * Count Type MasterIKCountOutputType
+   */
+
+  export type MasterIKCountOutputType = {
+    sops: number
+  }
+
+  export type MasterIKCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sops?: boolean | MasterIKCountOutputTypeCountSopsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MasterIKCountOutputType without action
+   */
+  export type MasterIKCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterIKCountOutputType
+     */
+    select?: MasterIKCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MasterIKCountOutputType without action
+   */
+  export type MasterIKCountOutputTypeCountSopsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProcedureSopIKWhereInput
   }
 
 
@@ -6779,7 +6893,7 @@ export namespace Prisma {
     updatedBy?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
-    iks?: boolean | ProcedureSop$iksArgs<ExtArgs>
+    masterIKs?: boolean | ProcedureSop$masterIKsArgs<ExtArgs>
     _count?: boolean | ProcedureSopCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["procedureSop"]>
 
@@ -6809,14 +6923,14 @@ export namespace Prisma {
 
   export type ProcedureSopOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"sopId" | "sbuSubId" | "sbuId" | "pilarId" | "sopName" | "sopNumber" | "effectiveDate" | "filePath" | "fileName" | "fileMime" | "fileSize" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["procedureSop"]>
   export type ProcedureSopInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    iks?: boolean | ProcedureSop$iksArgs<ExtArgs>
+    masterIKs?: boolean | ProcedureSop$masterIKsArgs<ExtArgs>
     _count?: boolean | ProcedureSopCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $ProcedureSopPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProcedureSop"
     objects: {
-      iks: Prisma.$ProcedureIkPayload<ExtArgs>[]
+      masterIKs: Prisma.$ProcedureSopIKPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       sopId: string
@@ -7178,7 +7292,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProcedureSopClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    iks<T extends ProcedureSop$iksArgs<ExtArgs> = {}>(args?: Subset<T, ProcedureSop$iksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    masterIKs<T extends ProcedureSop$masterIKsArgs<ExtArgs> = {}>(args?: Subset<T, ProcedureSop$masterIKsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7569,27 +7683,27 @@ export namespace Prisma {
   }
 
   /**
-   * ProcedureSop.iks
+   * ProcedureSop.masterIKs
    */
-  export type ProcedureSop$iksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProcedureSop$masterIKsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the ProcedureSopIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: ProcedureSopIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the ProcedureSopIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
-    where?: ProcedureIkWhereInput
-    orderBy?: ProcedureIkOrderByWithRelationInput | ProcedureIkOrderByWithRelationInput[]
-    cursor?: ProcedureIkWhereUniqueInput
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    where?: ProcedureSopIKWhereInput
+    orderBy?: ProcedureSopIKOrderByWithRelationInput | ProcedureSopIKOrderByWithRelationInput[]
+    cursor?: ProcedureSopIKWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ProcedureIkScalarFieldEnum | ProcedureIkScalarFieldEnum[]
+    distinct?: ProcedureSopIKScalarFieldEnum | ProcedureSopIKScalarFieldEnum[]
   }
 
   /**
@@ -7612,18 +7726,17 @@ export namespace Prisma {
 
 
   /**
-   * Model ProcedureIk
+   * Model MasterIK
    */
 
-  export type AggregateProcedureIk = {
-    _count: ProcedureIkCountAggregateOutputType | null
-    _min: ProcedureIkMinAggregateOutputType | null
-    _max: ProcedureIkMaxAggregateOutputType | null
+  export type AggregateMasterIK = {
+    _count: MasterIKCountAggregateOutputType | null
+    _min: MasterIKMinAggregateOutputType | null
+    _max: MasterIKMaxAggregateOutputType | null
   }
 
-  export type ProcedureIkMinAggregateOutputType = {
+  export type MasterIKMinAggregateOutputType = {
     ikId: string | null
-    sopId: string | null
     ikName: string | null
     ikNumber: string | null
     effectiveDate: Date | null
@@ -7638,9 +7751,8 @@ export namespace Prisma {
     deletedBy: string | null
   }
 
-  export type ProcedureIkMaxAggregateOutputType = {
+  export type MasterIKMaxAggregateOutputType = {
     ikId: string | null
-    sopId: string | null
     ikName: string | null
     ikNumber: string | null
     effectiveDate: Date | null
@@ -7655,9 +7767,8 @@ export namespace Prisma {
     deletedBy: string | null
   }
 
-  export type ProcedureIkCountAggregateOutputType = {
+  export type MasterIKCountAggregateOutputType = {
     ikId: number
-    sopId: number
     ikName: number
     ikNumber: number
     effectiveDate: number
@@ -7674,9 +7785,8 @@ export namespace Prisma {
   }
 
 
-  export type ProcedureIkMinAggregateInputType = {
+  export type MasterIKMinAggregateInputType = {
     ikId?: true
-    sopId?: true
     ikName?: true
     ikNumber?: true
     effectiveDate?: true
@@ -7691,9 +7801,8 @@ export namespace Prisma {
     deletedBy?: true
   }
 
-  export type ProcedureIkMaxAggregateInputType = {
+  export type MasterIKMaxAggregateInputType = {
     ikId?: true
-    sopId?: true
     ikName?: true
     ikNumber?: true
     effectiveDate?: true
@@ -7708,9 +7817,8 @@ export namespace Prisma {
     deletedBy?: true
   }
 
-  export type ProcedureIkCountAggregateInputType = {
+  export type MasterIKCountAggregateInputType = {
     ikId?: true
-    sopId?: true
     ikName?: true
     ikNumber?: true
     effectiveDate?: true
@@ -7726,81 +7834,80 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type ProcedureIkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which ProcedureIk to aggregate.
+     * Filter which MasterIK to aggregate.
      */
-    where?: ProcedureIkWhereInput
+    where?: MasterIKWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProcedureIks to fetch.
+     * Determine the order of MasterIKS to fetch.
      */
-    orderBy?: ProcedureIkOrderByWithRelationInput | ProcedureIkOrderByWithRelationInput[]
+    orderBy?: MasterIKOrderByWithRelationInput | MasterIKOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ProcedureIkWhereUniqueInput
+    cursor?: MasterIKWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProcedureIks from the position of the cursor.
+     * Take `±n` MasterIKS from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProcedureIks.
+     * Skip the first `n` MasterIKS.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned ProcedureIks
+     * Count returned MasterIKS
     **/
-    _count?: true | ProcedureIkCountAggregateInputType
+    _count?: true | MasterIKCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ProcedureIkMinAggregateInputType
+    _min?: MasterIKMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ProcedureIkMaxAggregateInputType
+    _max?: MasterIKMaxAggregateInputType
   }
 
-  export type GetProcedureIkAggregateType<T extends ProcedureIkAggregateArgs> = {
-        [P in keyof T & keyof AggregateProcedureIk]: P extends '_count' | 'count'
+  export type GetMasterIKAggregateType<T extends MasterIKAggregateArgs> = {
+        [P in keyof T & keyof AggregateMasterIK]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateProcedureIk[P]>
-      : GetScalarType<T[P], AggregateProcedureIk[P]>
+        : GetScalarType<T[P], AggregateMasterIK[P]>
+      : GetScalarType<T[P], AggregateMasterIK[P]>
   }
 
 
 
 
-  export type ProcedureIkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProcedureIkWhereInput
-    orderBy?: ProcedureIkOrderByWithAggregationInput | ProcedureIkOrderByWithAggregationInput[]
-    by: ProcedureIkScalarFieldEnum[] | ProcedureIkScalarFieldEnum
-    having?: ProcedureIkScalarWhereWithAggregatesInput
+  export type MasterIKGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MasterIKWhereInput
+    orderBy?: MasterIKOrderByWithAggregationInput | MasterIKOrderByWithAggregationInput[]
+    by: MasterIKScalarFieldEnum[] | MasterIKScalarFieldEnum
+    having?: MasterIKScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ProcedureIkCountAggregateInputType | true
-    _min?: ProcedureIkMinAggregateInputType
-    _max?: ProcedureIkMaxAggregateInputType
+    _count?: MasterIKCountAggregateInputType | true
+    _min?: MasterIKMinAggregateInputType
+    _max?: MasterIKMaxAggregateInputType
   }
 
-  export type ProcedureIkGroupByOutputType = {
+  export type MasterIKGroupByOutputType = {
     ikId: string
-    sopId: string
     ikName: string
     ikNumber: string
     effectiveDate: Date
@@ -7813,28 +7920,27 @@ export namespace Prisma {
     updatedBy: string | null
     deletedAt: Date | null
     deletedBy: string | null
-    _count: ProcedureIkCountAggregateOutputType | null
-    _min: ProcedureIkMinAggregateOutputType | null
-    _max: ProcedureIkMaxAggregateOutputType | null
+    _count: MasterIKCountAggregateOutputType | null
+    _min: MasterIKMinAggregateOutputType | null
+    _max: MasterIKMaxAggregateOutputType | null
   }
 
-  type GetProcedureIkGroupByPayload<T extends ProcedureIkGroupByArgs> = Prisma.PrismaPromise<
+  type GetMasterIKGroupByPayload<T extends MasterIKGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ProcedureIkGroupByOutputType, T['by']> &
+      PickEnumerable<MasterIKGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ProcedureIkGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof MasterIKGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ProcedureIkGroupByOutputType[P]>
-            : GetScalarType<T[P], ProcedureIkGroupByOutputType[P]>
+              : GetScalarType<T[P], MasterIKGroupByOutputType[P]>
+            : GetScalarType<T[P], MasterIKGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ProcedureIkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type MasterIKSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ikId?: boolean
-    sopId?: boolean
     ikName?: boolean
     ikNumber?: boolean
     effectiveDate?: boolean
@@ -7847,14 +7953,14 @@ export namespace Prisma {
     updatedBy?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
-    sop?: boolean | ProcedureSopDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["procedureIk"]>
+    sops?: boolean | MasterIK$sopsArgs<ExtArgs>
+    _count?: boolean | MasterIKCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["masterIK"]>
 
 
 
-  export type ProcedureIkSelectScalar = {
+  export type MasterIKSelectScalar = {
     ikId?: boolean
-    sopId?: boolean
     ikName?: boolean
     ikNumber?: boolean
     effectiveDate?: boolean
@@ -7869,19 +7975,19 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type ProcedureIkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ikId" | "sopId" | "ikName" | "ikNumber" | "effectiveDate" | "ikContent" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["procedureIk"]>
-  export type ProcedureIkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sop?: boolean | ProcedureSopDefaultArgs<ExtArgs>
+  export type MasterIKOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ikId" | "ikName" | "ikNumber" | "effectiveDate" | "ikContent" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterIK"]>
+  export type MasterIKInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sops?: boolean | MasterIK$sopsArgs<ExtArgs>
+    _count?: boolean | MasterIKCountOutputTypeDefaultArgs<ExtArgs>
   }
 
-  export type $ProcedureIkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ProcedureIk"
+  export type $MasterIKPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MasterIK"
     objects: {
-      sop: Prisma.$ProcedureSopPayload<ExtArgs>
+      sops: Prisma.$ProcedureSopIKPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       ikId: string
-      sopId: string
       ikName: string
       ikNumber: string
       effectiveDate: Date
@@ -7894,143 +8000,143 @@ export namespace Prisma {
       updatedBy: string | null
       deletedAt: Date | null
       deletedBy: string | null
-    }, ExtArgs["result"]["procedureIk"]>
+    }, ExtArgs["result"]["masterIK"]>
     composites: {}
   }
 
-  type ProcedureIkGetPayload<S extends boolean | null | undefined | ProcedureIkDefaultArgs> = $Result.GetResult<Prisma.$ProcedureIkPayload, S>
+  type MasterIKGetPayload<S extends boolean | null | undefined | MasterIKDefaultArgs> = $Result.GetResult<Prisma.$MasterIKPayload, S>
 
-  type ProcedureIkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ProcedureIkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ProcedureIkCountAggregateInputType | true
+  type MasterIKCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MasterIKFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MasterIKCountAggregateInputType | true
     }
 
-  export interface ProcedureIkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProcedureIk'], meta: { name: 'ProcedureIk' } }
+  export interface MasterIKDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MasterIK'], meta: { name: 'MasterIK' } }
     /**
-     * Find zero or one ProcedureIk that matches the filter.
-     * @param {ProcedureIkFindUniqueArgs} args - Arguments to find a ProcedureIk
+     * Find zero or one MasterIK that matches the filter.
+     * @param {MasterIKFindUniqueArgs} args - Arguments to find a MasterIK
      * @example
-     * // Get one ProcedureIk
-     * const procedureIk = await prisma.procedureIk.findUnique({
+     * // Get one MasterIK
+     * const masterIK = await prisma.masterIK.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ProcedureIkFindUniqueArgs>(args: SelectSubset<T, ProcedureIkFindUniqueArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends MasterIKFindUniqueArgs>(args: SelectSubset<T, MasterIKFindUniqueArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one ProcedureIk that matches the filter or throw an error with `error.code='P2025'`
+     * Find one MasterIK that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ProcedureIkFindUniqueOrThrowArgs} args - Arguments to find a ProcedureIk
+     * @param {MasterIKFindUniqueOrThrowArgs} args - Arguments to find a MasterIK
      * @example
-     * // Get one ProcedureIk
-     * const procedureIk = await prisma.procedureIk.findUniqueOrThrow({
+     * // Get one MasterIK
+     * const masterIK = await prisma.masterIK.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ProcedureIkFindUniqueOrThrowArgs>(args: SelectSubset<T, ProcedureIkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends MasterIKFindUniqueOrThrowArgs>(args: SelectSubset<T, MasterIKFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ProcedureIk that matches the filter.
+     * Find the first MasterIK that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkFindFirstArgs} args - Arguments to find a ProcedureIk
+     * @param {MasterIKFindFirstArgs} args - Arguments to find a MasterIK
      * @example
-     * // Get one ProcedureIk
-     * const procedureIk = await prisma.procedureIk.findFirst({
+     * // Get one MasterIK
+     * const masterIK = await prisma.masterIK.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ProcedureIkFindFirstArgs>(args?: SelectSubset<T, ProcedureIkFindFirstArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends MasterIKFindFirstArgs>(args?: SelectSubset<T, MasterIKFindFirstArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ProcedureIk that matches the filter or
+     * Find the first MasterIK that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkFindFirstOrThrowArgs} args - Arguments to find a ProcedureIk
+     * @param {MasterIKFindFirstOrThrowArgs} args - Arguments to find a MasterIK
      * @example
-     * // Get one ProcedureIk
-     * const procedureIk = await prisma.procedureIk.findFirstOrThrow({
+     * // Get one MasterIK
+     * const masterIK = await prisma.masterIK.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ProcedureIkFindFirstOrThrowArgs>(args?: SelectSubset<T, ProcedureIkFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends MasterIKFindFirstOrThrowArgs>(args?: SelectSubset<T, MasterIKFindFirstOrThrowArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more ProcedureIks that matches the filter.
+     * Find zero or more MasterIKS that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {MasterIKFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all ProcedureIks
-     * const procedureIks = await prisma.procedureIk.findMany()
+     * // Get all MasterIKS
+     * const masterIKS = await prisma.masterIK.findMany()
      * 
-     * // Get first 10 ProcedureIks
-     * const procedureIks = await prisma.procedureIk.findMany({ take: 10 })
+     * // Get first 10 MasterIKS
+     * const masterIKS = await prisma.masterIK.findMany({ take: 10 })
      * 
      * // Only select the `ikId`
-     * const procedureIkWithIkIdOnly = await prisma.procedureIk.findMany({ select: { ikId: true } })
+     * const masterIKWithIkIdOnly = await prisma.masterIK.findMany({ select: { ikId: true } })
      * 
      */
-    findMany<T extends ProcedureIkFindManyArgs>(args?: SelectSubset<T, ProcedureIkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends MasterIKFindManyArgs>(args?: SelectSubset<T, MasterIKFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a ProcedureIk.
-     * @param {ProcedureIkCreateArgs} args - Arguments to create a ProcedureIk.
+     * Create a MasterIK.
+     * @param {MasterIKCreateArgs} args - Arguments to create a MasterIK.
      * @example
-     * // Create one ProcedureIk
-     * const ProcedureIk = await prisma.procedureIk.create({
+     * // Create one MasterIK
+     * const MasterIK = await prisma.masterIK.create({
      *   data: {
-     *     // ... data to create a ProcedureIk
+     *     // ... data to create a MasterIK
      *   }
      * })
      * 
      */
-    create<T extends ProcedureIkCreateArgs>(args: SelectSubset<T, ProcedureIkCreateArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends MasterIKCreateArgs>(args: SelectSubset<T, MasterIKCreateArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many ProcedureIks.
-     * @param {ProcedureIkCreateManyArgs} args - Arguments to create many ProcedureIks.
+     * Create many MasterIKS.
+     * @param {MasterIKCreateManyArgs} args - Arguments to create many MasterIKS.
      * @example
-     * // Create many ProcedureIks
-     * const procedureIk = await prisma.procedureIk.createMany({
+     * // Create many MasterIKS
+     * const masterIK = await prisma.masterIK.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ProcedureIkCreateManyArgs>(args?: SelectSubset<T, ProcedureIkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends MasterIKCreateManyArgs>(args?: SelectSubset<T, MasterIKCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a ProcedureIk.
-     * @param {ProcedureIkDeleteArgs} args - Arguments to delete one ProcedureIk.
+     * Delete a MasterIK.
+     * @param {MasterIKDeleteArgs} args - Arguments to delete one MasterIK.
      * @example
-     * // Delete one ProcedureIk
-     * const ProcedureIk = await prisma.procedureIk.delete({
+     * // Delete one MasterIK
+     * const MasterIK = await prisma.masterIK.delete({
      *   where: {
-     *     // ... filter to delete one ProcedureIk
+     *     // ... filter to delete one MasterIK
      *   }
      * })
      * 
      */
-    delete<T extends ProcedureIkDeleteArgs>(args: SelectSubset<T, ProcedureIkDeleteArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends MasterIKDeleteArgs>(args: SelectSubset<T, MasterIKDeleteArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one ProcedureIk.
-     * @param {ProcedureIkUpdateArgs} args - Arguments to update one ProcedureIk.
+     * Update one MasterIK.
+     * @param {MasterIKUpdateArgs} args - Arguments to update one MasterIK.
      * @example
-     * // Update one ProcedureIk
-     * const procedureIk = await prisma.procedureIk.update({
+     * // Update one MasterIK
+     * const masterIK = await prisma.masterIK.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8040,30 +8146,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ProcedureIkUpdateArgs>(args: SelectSubset<T, ProcedureIkUpdateArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends MasterIKUpdateArgs>(args: SelectSubset<T, MasterIKUpdateArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more ProcedureIks.
-     * @param {ProcedureIkDeleteManyArgs} args - Arguments to filter ProcedureIks to delete.
+     * Delete zero or more MasterIKS.
+     * @param {MasterIKDeleteManyArgs} args - Arguments to filter MasterIKS to delete.
      * @example
-     * // Delete a few ProcedureIks
-     * const { count } = await prisma.procedureIk.deleteMany({
+     * // Delete a few MasterIKS
+     * const { count } = await prisma.masterIK.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ProcedureIkDeleteManyArgs>(args?: SelectSubset<T, ProcedureIkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends MasterIKDeleteManyArgs>(args?: SelectSubset<T, MasterIKDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ProcedureIks.
+     * Update zero or more MasterIKS.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {MasterIKUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many ProcedureIks
-     * const procedureIk = await prisma.procedureIk.updateMany({
+     * // Update many MasterIKS
+     * const masterIK = await prisma.masterIK.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8073,56 +8179,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ProcedureIkUpdateManyArgs>(args: SelectSubset<T, ProcedureIkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends MasterIKUpdateManyArgs>(args: SelectSubset<T, MasterIKUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one ProcedureIk.
-     * @param {ProcedureIkUpsertArgs} args - Arguments to update or create a ProcedureIk.
+     * Create or update one MasterIK.
+     * @param {MasterIKUpsertArgs} args - Arguments to update or create a MasterIK.
      * @example
-     * // Update or create a ProcedureIk
-     * const procedureIk = await prisma.procedureIk.upsert({
+     * // Update or create a MasterIK
+     * const masterIK = await prisma.masterIK.upsert({
      *   create: {
-     *     // ... data to create a ProcedureIk
+     *     // ... data to create a MasterIK
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the ProcedureIk we want to update
+     *     // ... the filter for the MasterIK we want to update
      *   }
      * })
      */
-    upsert<T extends ProcedureIkUpsertArgs>(args: SelectSubset<T, ProcedureIkUpsertArgs<ExtArgs>>): Prisma__ProcedureIkClient<$Result.GetResult<Prisma.$ProcedureIkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends MasterIKUpsertArgs>(args: SelectSubset<T, MasterIKUpsertArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of ProcedureIks.
+     * Count the number of MasterIKS.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkCountArgs} args - Arguments to filter ProcedureIks to count.
+     * @param {MasterIKCountArgs} args - Arguments to filter MasterIKS to count.
      * @example
-     * // Count the number of ProcedureIks
-     * const count = await prisma.procedureIk.count({
+     * // Count the number of MasterIKS
+     * const count = await prisma.masterIK.count({
      *   where: {
-     *     // ... the filter for the ProcedureIks we want to count
+     *     // ... the filter for the MasterIKS we want to count
      *   }
      * })
     **/
-    count<T extends ProcedureIkCountArgs>(
-      args?: Subset<T, ProcedureIkCountArgs>,
+    count<T extends MasterIKCountArgs>(
+      args?: Subset<T, MasterIKCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ProcedureIkCountAggregateOutputType>
+          : GetScalarType<T['select'], MasterIKCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a ProcedureIk.
+     * Allows you to perform aggregations operations on a MasterIK.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {MasterIKAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -8142,13 +8248,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ProcedureIkAggregateArgs>(args: Subset<T, ProcedureIkAggregateArgs>): Prisma.PrismaPromise<GetProcedureIkAggregateType<T>>
+    aggregate<T extends MasterIKAggregateArgs>(args: Subset<T, MasterIKAggregateArgs>): Prisma.PrismaPromise<GetMasterIKAggregateType<T>>
 
     /**
-     * Group by ProcedureIk.
+     * Group by MasterIK.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProcedureIkGroupByArgs} args - Group by arguments.
+     * @param {MasterIKGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -8163,14 +8269,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ProcedureIkGroupByArgs,
+      T extends MasterIKGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ProcedureIkGroupByArgs['orderBy'] }
-        : { orderBy?: ProcedureIkGroupByArgs['orderBy'] },
+        ? { orderBy: MasterIKGroupByArgs['orderBy'] }
+        : { orderBy?: MasterIKGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -8219,22 +8325,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ProcedureIkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProcedureIkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, MasterIKGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMasterIKGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the ProcedureIk model
+   * Fields of the MasterIK model
    */
-  readonly fields: ProcedureIkFieldRefs;
+  readonly fields: MasterIKFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for ProcedureIk.
+   * The delegate class that acts as a "Promise-like" for MasterIK.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ProcedureIkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__MasterIKClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sop<T extends ProcedureSopDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProcedureSopDefaultArgs<ExtArgs>>): Prisma__ProcedureSopClient<$Result.GetResult<Prisma.$ProcedureSopPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sops<T extends MasterIK$sopsArgs<ExtArgs> = {}>(args?: Subset<T, MasterIK$sopsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8261,380 +8367,1401 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the ProcedureIk model
+   * Fields of the MasterIK model
    */
-  interface ProcedureIkFieldRefs {
-    readonly ikId: FieldRef<"ProcedureIk", 'String'>
-    readonly sopId: FieldRef<"ProcedureIk", 'String'>
-    readonly ikName: FieldRef<"ProcedureIk", 'String'>
-    readonly ikNumber: FieldRef<"ProcedureIk", 'String'>
-    readonly effectiveDate: FieldRef<"ProcedureIk", 'DateTime'>
-    readonly ikContent: FieldRef<"ProcedureIk", 'String'>
-    readonly isActive: FieldRef<"ProcedureIk", 'Boolean'>
-    readonly isDeleted: FieldRef<"ProcedureIk", 'Boolean'>
-    readonly createdAt: FieldRef<"ProcedureIk", 'DateTime'>
-    readonly createdBy: FieldRef<"ProcedureIk", 'String'>
-    readonly updatedAt: FieldRef<"ProcedureIk", 'DateTime'>
-    readonly updatedBy: FieldRef<"ProcedureIk", 'String'>
-    readonly deletedAt: FieldRef<"ProcedureIk", 'DateTime'>
-    readonly deletedBy: FieldRef<"ProcedureIk", 'String'>
+  interface MasterIKFieldRefs {
+    readonly ikId: FieldRef<"MasterIK", 'String'>
+    readonly ikName: FieldRef<"MasterIK", 'String'>
+    readonly ikNumber: FieldRef<"MasterIK", 'String'>
+    readonly effectiveDate: FieldRef<"MasterIK", 'DateTime'>
+    readonly ikContent: FieldRef<"MasterIK", 'String'>
+    readonly isActive: FieldRef<"MasterIK", 'Boolean'>
+    readonly isDeleted: FieldRef<"MasterIK", 'Boolean'>
+    readonly createdAt: FieldRef<"MasterIK", 'DateTime'>
+    readonly createdBy: FieldRef<"MasterIK", 'String'>
+    readonly updatedAt: FieldRef<"MasterIK", 'DateTime'>
+    readonly updatedBy: FieldRef<"MasterIK", 'String'>
+    readonly deletedAt: FieldRef<"MasterIK", 'DateTime'>
+    readonly deletedBy: FieldRef<"MasterIK", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * ProcedureIk findUnique
+   * MasterIK findUnique
    */
-  export type ProcedureIkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * Filter, which ProcedureIk to fetch.
+     * Filter, which MasterIK to fetch.
      */
-    where: ProcedureIkWhereUniqueInput
+    where: MasterIKWhereUniqueInput
   }
 
   /**
-   * ProcedureIk findUniqueOrThrow
+   * MasterIK findUniqueOrThrow
    */
-  export type ProcedureIkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * Filter, which ProcedureIk to fetch.
+     * Filter, which MasterIK to fetch.
      */
-    where: ProcedureIkWhereUniqueInput
+    where: MasterIKWhereUniqueInput
   }
 
   /**
-   * ProcedureIk findFirst
+   * MasterIK findFirst
    */
-  export type ProcedureIkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * Filter, which ProcedureIk to fetch.
+     * Filter, which MasterIK to fetch.
      */
-    where?: ProcedureIkWhereInput
+    where?: MasterIKWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProcedureIks to fetch.
+     * Determine the order of MasterIKS to fetch.
      */
-    orderBy?: ProcedureIkOrderByWithRelationInput | ProcedureIkOrderByWithRelationInput[]
+    orderBy?: MasterIKOrderByWithRelationInput | MasterIKOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ProcedureIks.
+     * Sets the position for searching for MasterIKS.
      */
-    cursor?: ProcedureIkWhereUniqueInput
+    cursor?: MasterIKWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProcedureIks from the position of the cursor.
+     * Take `±n` MasterIKS from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProcedureIks.
+     * Skip the first `n` MasterIKS.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ProcedureIks.
+     * Filter by unique combinations of MasterIKS.
      */
-    distinct?: ProcedureIkScalarFieldEnum | ProcedureIkScalarFieldEnum[]
+    distinct?: MasterIKScalarFieldEnum | MasterIKScalarFieldEnum[]
   }
 
   /**
-   * ProcedureIk findFirstOrThrow
+   * MasterIK findFirstOrThrow
    */
-  export type ProcedureIkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * Filter, which ProcedureIk to fetch.
+     * Filter, which MasterIK to fetch.
      */
-    where?: ProcedureIkWhereInput
+    where?: MasterIKWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProcedureIks to fetch.
+     * Determine the order of MasterIKS to fetch.
      */
-    orderBy?: ProcedureIkOrderByWithRelationInput | ProcedureIkOrderByWithRelationInput[]
+    orderBy?: MasterIKOrderByWithRelationInput | MasterIKOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ProcedureIks.
+     * Sets the position for searching for MasterIKS.
      */
-    cursor?: ProcedureIkWhereUniqueInput
+    cursor?: MasterIKWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProcedureIks from the position of the cursor.
+     * Take `±n` MasterIKS from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProcedureIks.
+     * Skip the first `n` MasterIKS.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ProcedureIks.
+     * Filter by unique combinations of MasterIKS.
      */
-    distinct?: ProcedureIkScalarFieldEnum | ProcedureIkScalarFieldEnum[]
+    distinct?: MasterIKScalarFieldEnum | MasterIKScalarFieldEnum[]
   }
 
   /**
-   * ProcedureIk findMany
+   * MasterIK findMany
    */
-  export type ProcedureIkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * Filter, which ProcedureIks to fetch.
+     * Filter, which MasterIKS to fetch.
      */
-    where?: ProcedureIkWhereInput
+    where?: MasterIKWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProcedureIks to fetch.
+     * Determine the order of MasterIKS to fetch.
      */
-    orderBy?: ProcedureIkOrderByWithRelationInput | ProcedureIkOrderByWithRelationInput[]
+    orderBy?: MasterIKOrderByWithRelationInput | MasterIKOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing ProcedureIks.
+     * Sets the position for listing MasterIKS.
      */
-    cursor?: ProcedureIkWhereUniqueInput
+    cursor?: MasterIKWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProcedureIks from the position of the cursor.
+     * Take `±n` MasterIKS from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProcedureIks.
+     * Skip the first `n` MasterIKS.
      */
     skip?: number
-    distinct?: ProcedureIkScalarFieldEnum | ProcedureIkScalarFieldEnum[]
+    distinct?: MasterIKScalarFieldEnum | MasterIKScalarFieldEnum[]
   }
 
   /**
-   * ProcedureIk create
+   * MasterIK create
    */
-  export type ProcedureIkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * The data needed to create a ProcedureIk.
+     * The data needed to create a MasterIK.
      */
-    data: XOR<ProcedureIkCreateInput, ProcedureIkUncheckedCreateInput>
+    data: XOR<MasterIKCreateInput, MasterIKUncheckedCreateInput>
   }
 
   /**
-   * ProcedureIk createMany
+   * MasterIK createMany
    */
-  export type ProcedureIkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many ProcedureIks.
+     * The data used to create many MasterIKS.
      */
-    data: ProcedureIkCreateManyInput | ProcedureIkCreateManyInput[]
+    data: MasterIKCreateManyInput | MasterIKCreateManyInput[]
   }
 
   /**
-   * ProcedureIk update
+   * MasterIK update
    */
-  export type ProcedureIkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * The data needed to update a ProcedureIk.
+     * The data needed to update a MasterIK.
      */
-    data: XOR<ProcedureIkUpdateInput, ProcedureIkUncheckedUpdateInput>
+    data: XOR<MasterIKUpdateInput, MasterIKUncheckedUpdateInput>
     /**
-     * Choose, which ProcedureIk to update.
+     * Choose, which MasterIK to update.
      */
-    where: ProcedureIkWhereUniqueInput
+    where: MasterIKWhereUniqueInput
   }
 
   /**
-   * ProcedureIk updateMany
+   * MasterIK updateMany
    */
-  export type ProcedureIkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update ProcedureIks.
+     * The data used to update MasterIKS.
      */
-    data: XOR<ProcedureIkUpdateManyMutationInput, ProcedureIkUncheckedUpdateManyInput>
+    data: XOR<MasterIKUpdateManyMutationInput, MasterIKUncheckedUpdateManyInput>
     /**
-     * Filter which ProcedureIks to update
+     * Filter which MasterIKS to update
      */
-    where?: ProcedureIkWhereInput
+    where?: MasterIKWhereInput
     /**
-     * Limit how many ProcedureIks to update.
+     * Limit how many MasterIKS to update.
      */
     limit?: number
   }
 
   /**
-   * ProcedureIk upsert
+   * MasterIK upsert
    */
-  export type ProcedureIkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * The filter to search for the ProcedureIk to update in case it exists.
+     * The filter to search for the MasterIK to update in case it exists.
      */
-    where: ProcedureIkWhereUniqueInput
+    where: MasterIKWhereUniqueInput
     /**
-     * In case the ProcedureIk found by the `where` argument doesn't exist, create a new ProcedureIk with this data.
+     * In case the MasterIK found by the `where` argument doesn't exist, create a new MasterIK with this data.
      */
-    create: XOR<ProcedureIkCreateInput, ProcedureIkUncheckedCreateInput>
+    create: XOR<MasterIKCreateInput, MasterIKUncheckedCreateInput>
     /**
-     * In case the ProcedureIk was found with the provided `where` argument, update it with this data.
+     * In case the MasterIK was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<ProcedureIkUpdateInput, ProcedureIkUncheckedUpdateInput>
+    update: XOR<MasterIKUpdateInput, MasterIKUncheckedUpdateInput>
   }
 
   /**
-   * ProcedureIk delete
+   * MasterIK delete
    */
-  export type ProcedureIkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the MasterIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: MasterIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the MasterIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: MasterIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: MasterIKInclude<ExtArgs> | null
     /**
-     * Filter which ProcedureIk to delete.
+     * Filter which MasterIK to delete.
      */
-    where: ProcedureIkWhereUniqueInput
+    where: MasterIKWhereUniqueInput
   }
 
   /**
-   * ProcedureIk deleteMany
+   * MasterIK deleteMany
    */
-  export type ProcedureIkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIKDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which ProcedureIks to delete
+     * Filter which MasterIKS to delete
      */
-    where?: ProcedureIkWhereInput
+    where?: MasterIKWhereInput
     /**
-     * Limit how many ProcedureIks to delete.
+     * Limit how many MasterIKS to delete.
      */
     limit?: number
   }
 
   /**
-   * ProcedureIk without action
+   * MasterIK.sops
    */
-  export type ProcedureIkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MasterIK$sopsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProcedureIk
+     * Select specific fields to fetch from the ProcedureSopIK
      */
-    select?: ProcedureIkSelect<ExtArgs> | null
+    select?: ProcedureSopIKSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProcedureIk
+     * Omit specific fields from the ProcedureSopIK
      */
-    omit?: ProcedureIkOmit<ExtArgs> | null
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProcedureIkInclude<ExtArgs> | null
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    where?: ProcedureSopIKWhereInput
+    orderBy?: ProcedureSopIKOrderByWithRelationInput | ProcedureSopIKOrderByWithRelationInput[]
+    cursor?: ProcedureSopIKWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProcedureSopIKScalarFieldEnum | ProcedureSopIKScalarFieldEnum[]
+  }
+
+  /**
+   * MasterIK without action
+   */
+  export type MasterIKDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterIK
+     */
+    select?: MasterIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterIK
+     */
+    omit?: MasterIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterIKInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProcedureSopIK
+   */
+
+  export type AggregateProcedureSopIK = {
+    _count: ProcedureSopIKCountAggregateOutputType | null
+    _min: ProcedureSopIKMinAggregateOutputType | null
+    _max: ProcedureSopIKMaxAggregateOutputType | null
+  }
+
+  export type ProcedureSopIKMinAggregateOutputType = {
+    sopIkId: string | null
+    sopId: string | null
+    ikId: string | null
+    isActive: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type ProcedureSopIKMaxAggregateOutputType = {
+    sopIkId: string | null
+    sopId: string | null
+    ikId: string | null
+    isActive: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type ProcedureSopIKCountAggregateOutputType = {
+    sopIkId: number
+    sopId: number
+    ikId: number
+    isActive: number
+    isDeleted: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type ProcedureSopIKMinAggregateInputType = {
+    sopIkId?: true
+    sopId?: true
+    ikId?: true
+    isActive?: true
+    isDeleted?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type ProcedureSopIKMaxAggregateInputType = {
+    sopIkId?: true
+    sopId?: true
+    ikId?: true
+    isActive?: true
+    isDeleted?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type ProcedureSopIKCountAggregateInputType = {
+    sopIkId?: true
+    sopId?: true
+    ikId?: true
+    isActive?: true
+    isDeleted?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type ProcedureSopIKAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProcedureSopIK to aggregate.
+     */
+    where?: ProcedureSopIKWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcedureSopIKS to fetch.
+     */
+    orderBy?: ProcedureSopIKOrderByWithRelationInput | ProcedureSopIKOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProcedureSopIKWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcedureSopIKS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcedureSopIKS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProcedureSopIKS
+    **/
+    _count?: true | ProcedureSopIKCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProcedureSopIKMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProcedureSopIKMaxAggregateInputType
+  }
+
+  export type GetProcedureSopIKAggregateType<T extends ProcedureSopIKAggregateArgs> = {
+        [P in keyof T & keyof AggregateProcedureSopIK]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProcedureSopIK[P]>
+      : GetScalarType<T[P], AggregateProcedureSopIK[P]>
+  }
+
+
+
+
+  export type ProcedureSopIKGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProcedureSopIKWhereInput
+    orderBy?: ProcedureSopIKOrderByWithAggregationInput | ProcedureSopIKOrderByWithAggregationInput[]
+    by: ProcedureSopIKScalarFieldEnum[] | ProcedureSopIKScalarFieldEnum
+    having?: ProcedureSopIKScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProcedureSopIKCountAggregateInputType | true
+    _min?: ProcedureSopIKMinAggregateInputType
+    _max?: ProcedureSopIKMaxAggregateInputType
+  }
+
+  export type ProcedureSopIKGroupByOutputType = {
+    sopIkId: string
+    sopId: string
+    ikId: string
+    isActive: boolean
+    isDeleted: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: ProcedureSopIKCountAggregateOutputType | null
+    _min: ProcedureSopIKMinAggregateOutputType | null
+    _max: ProcedureSopIKMaxAggregateOutputType | null
+  }
+
+  type GetProcedureSopIKGroupByPayload<T extends ProcedureSopIKGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProcedureSopIKGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProcedureSopIKGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProcedureSopIKGroupByOutputType[P]>
+            : GetScalarType<T[P], ProcedureSopIKGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProcedureSopIKSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    sopIkId?: boolean
+    sopId?: boolean
+    ikId?: boolean
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    sop?: boolean | ProcedureSopDefaultArgs<ExtArgs>
+    masterIK?: boolean | MasterIKDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["procedureSopIK"]>
+
+
+
+  export type ProcedureSopIKSelectScalar = {
+    sopIkId?: boolean
+    sopId?: boolean
+    ikId?: boolean
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type ProcedureSopIKOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"sopIkId" | "sopId" | "ikId" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["procedureSopIK"]>
+  export type ProcedureSopIKInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sop?: boolean | ProcedureSopDefaultArgs<ExtArgs>
+    masterIK?: boolean | MasterIKDefaultArgs<ExtArgs>
+  }
+
+  export type $ProcedureSopIKPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProcedureSopIK"
+    objects: {
+      sop: Prisma.$ProcedureSopPayload<ExtArgs>
+      masterIK: Prisma.$MasterIKPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      sopIkId: string
+      sopId: string
+      ikId: string
+      isActive: boolean
+      isDeleted: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["procedureSopIK"]>
+    composites: {}
+  }
+
+  type ProcedureSopIKGetPayload<S extends boolean | null | undefined | ProcedureSopIKDefaultArgs> = $Result.GetResult<Prisma.$ProcedureSopIKPayload, S>
+
+  type ProcedureSopIKCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProcedureSopIKFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProcedureSopIKCountAggregateInputType | true
+    }
+
+  export interface ProcedureSopIKDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProcedureSopIK'], meta: { name: 'ProcedureSopIK' } }
+    /**
+     * Find zero or one ProcedureSopIK that matches the filter.
+     * @param {ProcedureSopIKFindUniqueArgs} args - Arguments to find a ProcedureSopIK
+     * @example
+     * // Get one ProcedureSopIK
+     * const procedureSopIK = await prisma.procedureSopIK.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProcedureSopIKFindUniqueArgs>(args: SelectSubset<T, ProcedureSopIKFindUniqueArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProcedureSopIK that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProcedureSopIKFindUniqueOrThrowArgs} args - Arguments to find a ProcedureSopIK
+     * @example
+     * // Get one ProcedureSopIK
+     * const procedureSopIK = await prisma.procedureSopIK.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProcedureSopIKFindUniqueOrThrowArgs>(args: SelectSubset<T, ProcedureSopIKFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProcedureSopIK that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKFindFirstArgs} args - Arguments to find a ProcedureSopIK
+     * @example
+     * // Get one ProcedureSopIK
+     * const procedureSopIK = await prisma.procedureSopIK.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProcedureSopIKFindFirstArgs>(args?: SelectSubset<T, ProcedureSopIKFindFirstArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProcedureSopIK that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKFindFirstOrThrowArgs} args - Arguments to find a ProcedureSopIK
+     * @example
+     * // Get one ProcedureSopIK
+     * const procedureSopIK = await prisma.procedureSopIK.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProcedureSopIKFindFirstOrThrowArgs>(args?: SelectSubset<T, ProcedureSopIKFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProcedureSopIKS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProcedureSopIKS
+     * const procedureSopIKS = await prisma.procedureSopIK.findMany()
+     * 
+     * // Get first 10 ProcedureSopIKS
+     * const procedureSopIKS = await prisma.procedureSopIK.findMany({ take: 10 })
+     * 
+     * // Only select the `sopIkId`
+     * const procedureSopIKWithSopIkIdOnly = await prisma.procedureSopIK.findMany({ select: { sopIkId: true } })
+     * 
+     */
+    findMany<T extends ProcedureSopIKFindManyArgs>(args?: SelectSubset<T, ProcedureSopIKFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProcedureSopIK.
+     * @param {ProcedureSopIKCreateArgs} args - Arguments to create a ProcedureSopIK.
+     * @example
+     * // Create one ProcedureSopIK
+     * const ProcedureSopIK = await prisma.procedureSopIK.create({
+     *   data: {
+     *     // ... data to create a ProcedureSopIK
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProcedureSopIKCreateArgs>(args: SelectSubset<T, ProcedureSopIKCreateArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProcedureSopIKS.
+     * @param {ProcedureSopIKCreateManyArgs} args - Arguments to create many ProcedureSopIKS.
+     * @example
+     * // Create many ProcedureSopIKS
+     * const procedureSopIK = await prisma.procedureSopIK.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProcedureSopIKCreateManyArgs>(args?: SelectSubset<T, ProcedureSopIKCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ProcedureSopIK.
+     * @param {ProcedureSopIKDeleteArgs} args - Arguments to delete one ProcedureSopIK.
+     * @example
+     * // Delete one ProcedureSopIK
+     * const ProcedureSopIK = await prisma.procedureSopIK.delete({
+     *   where: {
+     *     // ... filter to delete one ProcedureSopIK
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProcedureSopIKDeleteArgs>(args: SelectSubset<T, ProcedureSopIKDeleteArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProcedureSopIK.
+     * @param {ProcedureSopIKUpdateArgs} args - Arguments to update one ProcedureSopIK.
+     * @example
+     * // Update one ProcedureSopIK
+     * const procedureSopIK = await prisma.procedureSopIK.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProcedureSopIKUpdateArgs>(args: SelectSubset<T, ProcedureSopIKUpdateArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProcedureSopIKS.
+     * @param {ProcedureSopIKDeleteManyArgs} args - Arguments to filter ProcedureSopIKS to delete.
+     * @example
+     * // Delete a few ProcedureSopIKS
+     * const { count } = await prisma.procedureSopIK.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProcedureSopIKDeleteManyArgs>(args?: SelectSubset<T, ProcedureSopIKDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProcedureSopIKS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProcedureSopIKS
+     * const procedureSopIK = await prisma.procedureSopIK.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProcedureSopIKUpdateManyArgs>(args: SelectSubset<T, ProcedureSopIKUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ProcedureSopIK.
+     * @param {ProcedureSopIKUpsertArgs} args - Arguments to update or create a ProcedureSopIK.
+     * @example
+     * // Update or create a ProcedureSopIK
+     * const procedureSopIK = await prisma.procedureSopIK.upsert({
+     *   create: {
+     *     // ... data to create a ProcedureSopIK
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProcedureSopIK we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProcedureSopIKUpsertArgs>(args: SelectSubset<T, ProcedureSopIKUpsertArgs<ExtArgs>>): Prisma__ProcedureSopIKClient<$Result.GetResult<Prisma.$ProcedureSopIKPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProcedureSopIKS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKCountArgs} args - Arguments to filter ProcedureSopIKS to count.
+     * @example
+     * // Count the number of ProcedureSopIKS
+     * const count = await prisma.procedureSopIK.count({
+     *   where: {
+     *     // ... the filter for the ProcedureSopIKS we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProcedureSopIKCountArgs>(
+      args?: Subset<T, ProcedureSopIKCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProcedureSopIKCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProcedureSopIK.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProcedureSopIKAggregateArgs>(args: Subset<T, ProcedureSopIKAggregateArgs>): Prisma.PrismaPromise<GetProcedureSopIKAggregateType<T>>
+
+    /**
+     * Group by ProcedureSopIK.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcedureSopIKGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProcedureSopIKGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProcedureSopIKGroupByArgs['orderBy'] }
+        : { orderBy?: ProcedureSopIKGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProcedureSopIKGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProcedureSopIKGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProcedureSopIK model
+   */
+  readonly fields: ProcedureSopIKFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProcedureSopIK.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProcedureSopIKClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sop<T extends ProcedureSopDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProcedureSopDefaultArgs<ExtArgs>>): Prisma__ProcedureSopClient<$Result.GetResult<Prisma.$ProcedureSopPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    masterIK<T extends MasterIKDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MasterIKDefaultArgs<ExtArgs>>): Prisma__MasterIKClient<$Result.GetResult<Prisma.$MasterIKPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProcedureSopIK model
+   */
+  interface ProcedureSopIKFieldRefs {
+    readonly sopIkId: FieldRef<"ProcedureSopIK", 'String'>
+    readonly sopId: FieldRef<"ProcedureSopIK", 'String'>
+    readonly ikId: FieldRef<"ProcedureSopIK", 'String'>
+    readonly isActive: FieldRef<"ProcedureSopIK", 'Boolean'>
+    readonly isDeleted: FieldRef<"ProcedureSopIK", 'Boolean'>
+    readonly createdAt: FieldRef<"ProcedureSopIK", 'DateTime'>
+    readonly createdBy: FieldRef<"ProcedureSopIK", 'String'>
+    readonly updatedAt: FieldRef<"ProcedureSopIK", 'DateTime'>
+    readonly updatedBy: FieldRef<"ProcedureSopIK", 'String'>
+    readonly deletedAt: FieldRef<"ProcedureSopIK", 'DateTime'>
+    readonly deletedBy: FieldRef<"ProcedureSopIK", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProcedureSopIK findUnique
+   */
+  export type ProcedureSopIKFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * Filter, which ProcedureSopIK to fetch.
+     */
+    where: ProcedureSopIKWhereUniqueInput
+  }
+
+  /**
+   * ProcedureSopIK findUniqueOrThrow
+   */
+  export type ProcedureSopIKFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * Filter, which ProcedureSopIK to fetch.
+     */
+    where: ProcedureSopIKWhereUniqueInput
+  }
+
+  /**
+   * ProcedureSopIK findFirst
+   */
+  export type ProcedureSopIKFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * Filter, which ProcedureSopIK to fetch.
+     */
+    where?: ProcedureSopIKWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcedureSopIKS to fetch.
+     */
+    orderBy?: ProcedureSopIKOrderByWithRelationInput | ProcedureSopIKOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProcedureSopIKS.
+     */
+    cursor?: ProcedureSopIKWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcedureSopIKS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcedureSopIKS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProcedureSopIKS.
+     */
+    distinct?: ProcedureSopIKScalarFieldEnum | ProcedureSopIKScalarFieldEnum[]
+  }
+
+  /**
+   * ProcedureSopIK findFirstOrThrow
+   */
+  export type ProcedureSopIKFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * Filter, which ProcedureSopIK to fetch.
+     */
+    where?: ProcedureSopIKWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcedureSopIKS to fetch.
+     */
+    orderBy?: ProcedureSopIKOrderByWithRelationInput | ProcedureSopIKOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProcedureSopIKS.
+     */
+    cursor?: ProcedureSopIKWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcedureSopIKS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcedureSopIKS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProcedureSopIKS.
+     */
+    distinct?: ProcedureSopIKScalarFieldEnum | ProcedureSopIKScalarFieldEnum[]
+  }
+
+  /**
+   * ProcedureSopIK findMany
+   */
+  export type ProcedureSopIKFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * Filter, which ProcedureSopIKS to fetch.
+     */
+    where?: ProcedureSopIKWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcedureSopIKS to fetch.
+     */
+    orderBy?: ProcedureSopIKOrderByWithRelationInput | ProcedureSopIKOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProcedureSopIKS.
+     */
+    cursor?: ProcedureSopIKWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcedureSopIKS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcedureSopIKS.
+     */
+    skip?: number
+    distinct?: ProcedureSopIKScalarFieldEnum | ProcedureSopIKScalarFieldEnum[]
+  }
+
+  /**
+   * ProcedureSopIK create
+   */
+  export type ProcedureSopIKCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProcedureSopIK.
+     */
+    data: XOR<ProcedureSopIKCreateInput, ProcedureSopIKUncheckedCreateInput>
+  }
+
+  /**
+   * ProcedureSopIK createMany
+   */
+  export type ProcedureSopIKCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProcedureSopIKS.
+     */
+    data: ProcedureSopIKCreateManyInput | ProcedureSopIKCreateManyInput[]
+  }
+
+  /**
+   * ProcedureSopIK update
+   */
+  export type ProcedureSopIKUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProcedureSopIK.
+     */
+    data: XOR<ProcedureSopIKUpdateInput, ProcedureSopIKUncheckedUpdateInput>
+    /**
+     * Choose, which ProcedureSopIK to update.
+     */
+    where: ProcedureSopIKWhereUniqueInput
+  }
+
+  /**
+   * ProcedureSopIK updateMany
+   */
+  export type ProcedureSopIKUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProcedureSopIKS.
+     */
+    data: XOR<ProcedureSopIKUpdateManyMutationInput, ProcedureSopIKUncheckedUpdateManyInput>
+    /**
+     * Filter which ProcedureSopIKS to update
+     */
+    where?: ProcedureSopIKWhereInput
+    /**
+     * Limit how many ProcedureSopIKS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProcedureSopIK upsert
+   */
+  export type ProcedureSopIKUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProcedureSopIK to update in case it exists.
+     */
+    where: ProcedureSopIKWhereUniqueInput
+    /**
+     * In case the ProcedureSopIK found by the `where` argument doesn't exist, create a new ProcedureSopIK with this data.
+     */
+    create: XOR<ProcedureSopIKCreateInput, ProcedureSopIKUncheckedCreateInput>
+    /**
+     * In case the ProcedureSopIK was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProcedureSopIKUpdateInput, ProcedureSopIKUncheckedUpdateInput>
+  }
+
+  /**
+   * ProcedureSopIK delete
+   */
+  export type ProcedureSopIKDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
+    /**
+     * Filter which ProcedureSopIK to delete.
+     */
+    where: ProcedureSopIKWhereUniqueInput
+  }
+
+  /**
+   * ProcedureSopIK deleteMany
+   */
+  export type ProcedureSopIKDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProcedureSopIKS to delete
+     */
+    where?: ProcedureSopIKWhereInput
+    /**
+     * Limit how many ProcedureSopIKS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProcedureSopIK without action
+   */
+  export type ProcedureSopIKDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProcedureSopIK
+     */
+    select?: ProcedureSopIKSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProcedureSopIK
+     */
+    omit?: ProcedureSopIKOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProcedureSopIKInclude<ExtArgs> | null
   }
 
 
@@ -12747,9 +13874,8 @@ export namespace Prisma {
   export type ProcedureSopScalarFieldEnum = (typeof ProcedureSopScalarFieldEnum)[keyof typeof ProcedureSopScalarFieldEnum]
 
 
-  export const ProcedureIkScalarFieldEnum: {
+  export const MasterIKScalarFieldEnum: {
     ikId: 'ikId',
-    sopId: 'sopId',
     ikName: 'ikName',
     ikNumber: 'ikNumber',
     effectiveDate: 'effectiveDate',
@@ -12764,7 +13890,24 @@ export namespace Prisma {
     deletedBy: 'deletedBy'
   };
 
-  export type ProcedureIkScalarFieldEnum = (typeof ProcedureIkScalarFieldEnum)[keyof typeof ProcedureIkScalarFieldEnum]
+  export type MasterIKScalarFieldEnum = (typeof MasterIKScalarFieldEnum)[keyof typeof MasterIKScalarFieldEnum]
+
+
+  export const ProcedureSopIKScalarFieldEnum: {
+    sopIkId: 'sopIkId',
+    sopId: 'sopId',
+    ikId: 'ikId',
+    isActive: 'isActive',
+    isDeleted: 'isDeleted',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type ProcedureSopIKScalarFieldEnum = (typeof ProcedureSopIKScalarFieldEnum)[keyof typeof ProcedureSopIKScalarFieldEnum]
 
 
   export const JabatanScalarFieldEnum: {
@@ -13374,7 +14517,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"ProcedureSop"> | string | null
     deletedAt?: DateTimeNullableFilter<"ProcedureSop"> | Date | string | null
     deletedBy?: StringNullableFilter<"ProcedureSop"> | string | null
-    iks?: ProcedureIkListRelationFilter
+    masterIKs?: ProcedureSopIKListRelationFilter
   }
 
   export type ProcedureSopOrderByWithRelationInput = {
@@ -13397,7 +14540,7 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
-    iks?: ProcedureIkOrderByRelationAggregateInput
+    masterIKs?: ProcedureSopIKOrderByRelationAggregateInput
   }
 
   export type ProcedureSopWhereUniqueInput = Prisma.AtLeast<{
@@ -13423,7 +14566,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"ProcedureSop"> | string | null
     deletedAt?: DateTimeNullableFilter<"ProcedureSop"> | Date | string | null
     deletedBy?: StringNullableFilter<"ProcedureSop"> | string | null
-    iks?: ProcedureIkListRelationFilter
+    masterIKs?: ProcedureSopIKListRelationFilter
   }, "sopId">
 
   export type ProcedureSopOrderByWithAggregationInput = {
@@ -13478,34 +14621,124 @@ export namespace Prisma {
     deletedBy?: StringNullableWithAggregatesFilter<"ProcedureSop"> | string | null
   }
 
-  export type ProcedureIkWhereInput = {
-    AND?: ProcedureIkWhereInput | ProcedureIkWhereInput[]
-    OR?: ProcedureIkWhereInput[]
-    NOT?: ProcedureIkWhereInput | ProcedureIkWhereInput[]
-    ikId?: StringFilter<"ProcedureIk"> | string
-    sopId?: StringFilter<"ProcedureIk"> | string
-    ikName?: StringFilter<"ProcedureIk"> | string
-    ikNumber?: StringFilter<"ProcedureIk"> | string
-    effectiveDate?: DateTimeFilter<"ProcedureIk"> | Date | string
-    ikContent?: StringNullableFilter<"ProcedureIk"> | string | null
-    isActive?: BoolFilter<"ProcedureIk"> | boolean
-    isDeleted?: BoolFilter<"ProcedureIk"> | boolean
-    createdAt?: DateTimeFilter<"ProcedureIk"> | Date | string
-    createdBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    updatedAt?: DateTimeFilter<"ProcedureIk"> | Date | string
-    updatedBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    deletedAt?: DateTimeNullableFilter<"ProcedureIk"> | Date | string | null
-    deletedBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    sop?: XOR<ProcedureSopScalarRelationFilter, ProcedureSopWhereInput>
+  export type MasterIKWhereInput = {
+    AND?: MasterIKWhereInput | MasterIKWhereInput[]
+    OR?: MasterIKWhereInput[]
+    NOT?: MasterIKWhereInput | MasterIKWhereInput[]
+    ikId?: StringFilter<"MasterIK"> | string
+    ikName?: StringFilter<"MasterIK"> | string
+    ikNumber?: StringFilter<"MasterIK"> | string
+    effectiveDate?: DateTimeFilter<"MasterIK"> | Date | string
+    ikContent?: StringNullableFilter<"MasterIK"> | string | null
+    isActive?: BoolFilter<"MasterIK"> | boolean
+    isDeleted?: BoolFilter<"MasterIK"> | boolean
+    createdAt?: DateTimeFilter<"MasterIK"> | Date | string
+    createdBy?: StringNullableFilter<"MasterIK"> | string | null
+    updatedAt?: DateTimeFilter<"MasterIK"> | Date | string
+    updatedBy?: StringNullableFilter<"MasterIK"> | string | null
+    deletedAt?: DateTimeNullableFilter<"MasterIK"> | Date | string | null
+    deletedBy?: StringNullableFilter<"MasterIK"> | string | null
+    sops?: ProcedureSopIKListRelationFilter
   }
 
-  export type ProcedureIkOrderByWithRelationInput = {
+  export type MasterIKOrderByWithRelationInput = {
     ikId?: SortOrder
-    sopId?: SortOrder
     ikName?: SortOrder
     ikNumber?: SortOrder
     effectiveDate?: SortOrder
     ikContent?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    sops?: ProcedureSopIKOrderByRelationAggregateInput
+  }
+
+  export type MasterIKWhereUniqueInput = Prisma.AtLeast<{
+    ikId?: string
+    AND?: MasterIKWhereInput | MasterIKWhereInput[]
+    OR?: MasterIKWhereInput[]
+    NOT?: MasterIKWhereInput | MasterIKWhereInput[]
+    ikName?: StringFilter<"MasterIK"> | string
+    ikNumber?: StringFilter<"MasterIK"> | string
+    effectiveDate?: DateTimeFilter<"MasterIK"> | Date | string
+    ikContent?: StringNullableFilter<"MasterIK"> | string | null
+    isActive?: BoolFilter<"MasterIK"> | boolean
+    isDeleted?: BoolFilter<"MasterIK"> | boolean
+    createdAt?: DateTimeFilter<"MasterIK"> | Date | string
+    createdBy?: StringNullableFilter<"MasterIK"> | string | null
+    updatedAt?: DateTimeFilter<"MasterIK"> | Date | string
+    updatedBy?: StringNullableFilter<"MasterIK"> | string | null
+    deletedAt?: DateTimeNullableFilter<"MasterIK"> | Date | string | null
+    deletedBy?: StringNullableFilter<"MasterIK"> | string | null
+    sops?: ProcedureSopIKListRelationFilter
+  }, "ikId">
+
+  export type MasterIKOrderByWithAggregationInput = {
+    ikId?: SortOrder
+    ikName?: SortOrder
+    ikNumber?: SortOrder
+    effectiveDate?: SortOrder
+    ikContent?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: MasterIKCountOrderByAggregateInput
+    _max?: MasterIKMaxOrderByAggregateInput
+    _min?: MasterIKMinOrderByAggregateInput
+  }
+
+  export type MasterIKScalarWhereWithAggregatesInput = {
+    AND?: MasterIKScalarWhereWithAggregatesInput | MasterIKScalarWhereWithAggregatesInput[]
+    OR?: MasterIKScalarWhereWithAggregatesInput[]
+    NOT?: MasterIKScalarWhereWithAggregatesInput | MasterIKScalarWhereWithAggregatesInput[]
+    ikId?: StringWithAggregatesFilter<"MasterIK"> | string
+    ikName?: StringWithAggregatesFilter<"MasterIK"> | string
+    ikNumber?: StringWithAggregatesFilter<"MasterIK"> | string
+    effectiveDate?: DateTimeWithAggregatesFilter<"MasterIK"> | Date | string
+    ikContent?: StringNullableWithAggregatesFilter<"MasterIK"> | string | null
+    isActive?: BoolWithAggregatesFilter<"MasterIK"> | boolean
+    isDeleted?: BoolWithAggregatesFilter<"MasterIK"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"MasterIK"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"MasterIK"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"MasterIK"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"MasterIK"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"MasterIK"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"MasterIK"> | string | null
+  }
+
+  export type ProcedureSopIKWhereInput = {
+    AND?: ProcedureSopIKWhereInput | ProcedureSopIKWhereInput[]
+    OR?: ProcedureSopIKWhereInput[]
+    NOT?: ProcedureSopIKWhereInput | ProcedureSopIKWhereInput[]
+    sopIkId?: StringFilter<"ProcedureSopIK"> | string
+    sopId?: StringFilter<"ProcedureSopIK"> | string
+    ikId?: StringFilter<"ProcedureSopIK"> | string
+    isActive?: BoolFilter<"ProcedureSopIK"> | boolean
+    isDeleted?: BoolFilter<"ProcedureSopIK"> | boolean
+    createdAt?: DateTimeFilter<"ProcedureSopIK"> | Date | string
+    createdBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    updatedAt?: DateTimeFilter<"ProcedureSopIK"> | Date | string
+    updatedBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    deletedAt?: DateTimeNullableFilter<"ProcedureSopIK"> | Date | string | null
+    deletedBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    sop?: XOR<ProcedureSopScalarRelationFilter, ProcedureSopWhereInput>
+    masterIK?: XOR<MasterIKScalarRelationFilter, MasterIKWhereInput>
+  }
+
+  export type ProcedureSopIKOrderByWithRelationInput = {
+    sopIkId?: SortOrder
+    sopId?: SortOrder
+    ikId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -13515,36 +14748,32 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     sop?: ProcedureSopOrderByWithRelationInput
+    masterIK?: MasterIKOrderByWithRelationInput
   }
 
-  export type ProcedureIkWhereUniqueInput = Prisma.AtLeast<{
-    ikId?: string
-    AND?: ProcedureIkWhereInput | ProcedureIkWhereInput[]
-    OR?: ProcedureIkWhereInput[]
-    NOT?: ProcedureIkWhereInput | ProcedureIkWhereInput[]
-    sopId?: StringFilter<"ProcedureIk"> | string
-    ikName?: StringFilter<"ProcedureIk"> | string
-    ikNumber?: StringFilter<"ProcedureIk"> | string
-    effectiveDate?: DateTimeFilter<"ProcedureIk"> | Date | string
-    ikContent?: StringNullableFilter<"ProcedureIk"> | string | null
-    isActive?: BoolFilter<"ProcedureIk"> | boolean
-    isDeleted?: BoolFilter<"ProcedureIk"> | boolean
-    createdAt?: DateTimeFilter<"ProcedureIk"> | Date | string
-    createdBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    updatedAt?: DateTimeFilter<"ProcedureIk"> | Date | string
-    updatedBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    deletedAt?: DateTimeNullableFilter<"ProcedureIk"> | Date | string | null
-    deletedBy?: StringNullableFilter<"ProcedureIk"> | string | null
+  export type ProcedureSopIKWhereUniqueInput = Prisma.AtLeast<{
+    sopIkId?: string
+    AND?: ProcedureSopIKWhereInput | ProcedureSopIKWhereInput[]
+    OR?: ProcedureSopIKWhereInput[]
+    NOT?: ProcedureSopIKWhereInput | ProcedureSopIKWhereInput[]
+    sopId?: StringFilter<"ProcedureSopIK"> | string
+    ikId?: StringFilter<"ProcedureSopIK"> | string
+    isActive?: BoolFilter<"ProcedureSopIK"> | boolean
+    isDeleted?: BoolFilter<"ProcedureSopIK"> | boolean
+    createdAt?: DateTimeFilter<"ProcedureSopIK"> | Date | string
+    createdBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    updatedAt?: DateTimeFilter<"ProcedureSopIK"> | Date | string
+    updatedBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    deletedAt?: DateTimeNullableFilter<"ProcedureSopIK"> | Date | string | null
+    deletedBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
     sop?: XOR<ProcedureSopScalarRelationFilter, ProcedureSopWhereInput>
-  }, "ikId">
+    masterIK?: XOR<MasterIKScalarRelationFilter, MasterIKWhereInput>
+  }, "sopIkId">
 
-  export type ProcedureIkOrderByWithAggregationInput = {
-    ikId?: SortOrder
+  export type ProcedureSopIKOrderByWithAggregationInput = {
+    sopIkId?: SortOrder
     sopId?: SortOrder
-    ikName?: SortOrder
-    ikNumber?: SortOrder
-    effectiveDate?: SortOrder
-    ikContent?: SortOrderInput | SortOrder
+    ikId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -13553,29 +14782,26 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
-    _count?: ProcedureIkCountOrderByAggregateInput
-    _max?: ProcedureIkMaxOrderByAggregateInput
-    _min?: ProcedureIkMinOrderByAggregateInput
+    _count?: ProcedureSopIKCountOrderByAggregateInput
+    _max?: ProcedureSopIKMaxOrderByAggregateInput
+    _min?: ProcedureSopIKMinOrderByAggregateInput
   }
 
-  export type ProcedureIkScalarWhereWithAggregatesInput = {
-    AND?: ProcedureIkScalarWhereWithAggregatesInput | ProcedureIkScalarWhereWithAggregatesInput[]
-    OR?: ProcedureIkScalarWhereWithAggregatesInput[]
-    NOT?: ProcedureIkScalarWhereWithAggregatesInput | ProcedureIkScalarWhereWithAggregatesInput[]
-    ikId?: StringWithAggregatesFilter<"ProcedureIk"> | string
-    sopId?: StringWithAggregatesFilter<"ProcedureIk"> | string
-    ikName?: StringWithAggregatesFilter<"ProcedureIk"> | string
-    ikNumber?: StringWithAggregatesFilter<"ProcedureIk"> | string
-    effectiveDate?: DateTimeWithAggregatesFilter<"ProcedureIk"> | Date | string
-    ikContent?: StringNullableWithAggregatesFilter<"ProcedureIk"> | string | null
-    isActive?: BoolWithAggregatesFilter<"ProcedureIk"> | boolean
-    isDeleted?: BoolWithAggregatesFilter<"ProcedureIk"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"ProcedureIk"> | Date | string
-    createdBy?: StringNullableWithAggregatesFilter<"ProcedureIk"> | string | null
-    updatedAt?: DateTimeWithAggregatesFilter<"ProcedureIk"> | Date | string
-    updatedBy?: StringNullableWithAggregatesFilter<"ProcedureIk"> | string | null
-    deletedAt?: DateTimeNullableWithAggregatesFilter<"ProcedureIk"> | Date | string | null
-    deletedBy?: StringNullableWithAggregatesFilter<"ProcedureIk"> | string | null
+  export type ProcedureSopIKScalarWhereWithAggregatesInput = {
+    AND?: ProcedureSopIKScalarWhereWithAggregatesInput | ProcedureSopIKScalarWhereWithAggregatesInput[]
+    OR?: ProcedureSopIKScalarWhereWithAggregatesInput[]
+    NOT?: ProcedureSopIKScalarWhereWithAggregatesInput | ProcedureSopIKScalarWhereWithAggregatesInput[]
+    sopIkId?: StringWithAggregatesFilter<"ProcedureSopIK"> | string
+    sopId?: StringWithAggregatesFilter<"ProcedureSopIK"> | string
+    ikId?: StringWithAggregatesFilter<"ProcedureSopIK"> | string
+    isActive?: BoolWithAggregatesFilter<"ProcedureSopIK"> | boolean
+    isDeleted?: BoolWithAggregatesFilter<"ProcedureSopIK"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"ProcedureSopIK"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"ProcedureSopIK"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"ProcedureSopIK"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"ProcedureSopIK"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"ProcedureSopIK"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"ProcedureSopIK"> | string | null
   }
 
   export type jabatanWhereInput = {
@@ -14482,7 +15708,7 @@ export namespace Prisma {
     updatedBy?: string | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    iks?: ProcedureIkCreateNestedManyWithoutSopInput
+    masterIKs?: ProcedureSopIKCreateNestedManyWithoutSopInput
   }
 
   export type ProcedureSopUncheckedCreateInput = {
@@ -14505,7 +15731,7 @@ export namespace Prisma {
     updatedBy?: string | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    iks?: ProcedureIkUncheckedCreateNestedManyWithoutSopInput
+    masterIKs?: ProcedureSopIKUncheckedCreateNestedManyWithoutSopInput
   }
 
   export type ProcedureSopUpdateInput = {
@@ -14528,7 +15754,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    iks?: ProcedureIkUpdateManyWithoutSopNestedInput
+    masterIKs?: ProcedureSopIKUpdateManyWithoutSopNestedInput
   }
 
   export type ProcedureSopUncheckedUpdateInput = {
@@ -14551,7 +15777,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    iks?: ProcedureIkUncheckedUpdateManyWithoutSopNestedInput
+    masterIKs?: ProcedureSopIKUncheckedUpdateManyWithoutSopNestedInput
   }
 
   export type ProcedureSopCreateManyInput = {
@@ -14620,7 +15846,7 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ProcedureIkCreateInput = {
+  export type MasterIKCreateInput = {
     ikId: string
     ikName: string
     ikNumber: string
@@ -14634,67 +15860,126 @@ export namespace Prisma {
     updatedBy?: string | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
-    sop: ProcedureSopCreateNestedOneWithoutIksInput
+    sops?: ProcedureSopIKCreateNestedManyWithoutMasterIKInput
   }
 
-  export type ProcedureIkUncheckedCreateInput = {
+  export type MasterIKUncheckedCreateInput = {
     ikId: string
+    ikName: string
+    ikNumber: string
+    effectiveDate: Date | string
+    ikContent?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    sops?: ProcedureSopIKUncheckedCreateNestedManyWithoutMasterIKInput
+  }
+
+  export type MasterIKUpdateInput = {
+    ikId?: StringFieldUpdateOperationsInput | string
+    ikName?: StringFieldUpdateOperationsInput | string
+    ikNumber?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    sops?: ProcedureSopIKUpdateManyWithoutMasterIKNestedInput
+  }
+
+  export type MasterIKUncheckedUpdateInput = {
+    ikId?: StringFieldUpdateOperationsInput | string
+    ikName?: StringFieldUpdateOperationsInput | string
+    ikNumber?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    sops?: ProcedureSopIKUncheckedUpdateManyWithoutMasterIKNestedInput
+  }
+
+  export type MasterIKCreateManyInput = {
+    ikId: string
+    ikName: string
+    ikNumber: string
+    effectiveDate: Date | string
+    ikContent?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type MasterIKUpdateManyMutationInput = {
+    ikId?: StringFieldUpdateOperationsInput | string
+    ikName?: StringFieldUpdateOperationsInput | string
+    ikNumber?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MasterIKUncheckedUpdateManyInput = {
+    ikId?: StringFieldUpdateOperationsInput | string
+    ikName?: StringFieldUpdateOperationsInput | string
+    ikNumber?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcedureSopIKCreateInput = {
+    sopIkId: string
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    sop: ProcedureSopCreateNestedOneWithoutMasterIKsInput
+    masterIK: MasterIKCreateNestedOneWithoutSopsInput
+  }
+
+  export type ProcedureSopIKUncheckedCreateInput = {
+    sopIkId: string
     sopId: string
-    ikName: string
-    ikNumber: string
-    effectiveDate: Date | string
-    ikContent?: string | null
-    isActive?: boolean
-    isDeleted?: boolean
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-  }
-
-  export type ProcedureIkUpdateInput = {
-    ikId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    sop?: ProcedureSopUpdateOneRequiredWithoutIksNestedInput
-  }
-
-  export type ProcedureIkUncheckedUpdateInput = {
-    ikId?: StringFieldUpdateOperationsInput | string
-    sopId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type ProcedureIkCreateManyInput = {
     ikId: string
-    sopId: string
-    ikName: string
-    ikNumber: string
-    effectiveDate: Date | string
-    ikContent?: string | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -14705,12 +15990,24 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type ProcedureIkUpdateManyMutationInput = {
+  export type ProcedureSopIKUpdateInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    sop?: ProcedureSopUpdateOneRequiredWithoutMasterIKsNestedInput
+    masterIK?: MasterIKUpdateOneRequiredWithoutSopsNestedInput
+  }
+
+  export type ProcedureSopIKUncheckedUpdateInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    sopId?: StringFieldUpdateOperationsInput | string
     ikId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14721,13 +16018,36 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ProcedureIkUncheckedUpdateManyInput = {
-    ikId?: StringFieldUpdateOperationsInput | string
+  export type ProcedureSopIKCreateManyInput = {
+    sopIkId: string
+    sopId: string
+    ikId: string
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type ProcedureSopIKUpdateManyMutationInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcedureSopIKUncheckedUpdateManyInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
     sopId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    ikId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15669,13 +16989,13 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type ProcedureIkListRelationFilter = {
-    every?: ProcedureIkWhereInput
-    some?: ProcedureIkWhereInput
-    none?: ProcedureIkWhereInput
+  export type ProcedureSopIKListRelationFilter = {
+    every?: ProcedureSopIKWhereInput
+    some?: ProcedureSopIKWhereInput
+    none?: ProcedureSopIKWhereInput
   }
 
-  export type ProcedureIkOrderByRelationAggregateInput = {
+  export type ProcedureSopIKOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15759,18 +17079,68 @@ export namespace Prisma {
     fileSize?: SortOrder
   }
 
+  export type MasterIKCountOrderByAggregateInput = {
+    ikId?: SortOrder
+    ikName?: SortOrder
+    ikNumber?: SortOrder
+    effectiveDate?: SortOrder
+    ikContent?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type MasterIKMaxOrderByAggregateInput = {
+    ikId?: SortOrder
+    ikName?: SortOrder
+    ikNumber?: SortOrder
+    effectiveDate?: SortOrder
+    ikContent?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type MasterIKMinOrderByAggregateInput = {
+    ikId?: SortOrder
+    ikName?: SortOrder
+    ikNumber?: SortOrder
+    effectiveDate?: SortOrder
+    ikContent?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
   export type ProcedureSopScalarRelationFilter = {
     is?: ProcedureSopWhereInput
     isNot?: ProcedureSopWhereInput
   }
 
-  export type ProcedureIkCountOrderByAggregateInput = {
-    ikId?: SortOrder
+  export type MasterIKScalarRelationFilter = {
+    is?: MasterIKWhereInput
+    isNot?: MasterIKWhereInput
+  }
+
+  export type ProcedureSopIKCountOrderByAggregateInput = {
+    sopIkId?: SortOrder
     sopId?: SortOrder
-    ikName?: SortOrder
-    ikNumber?: SortOrder
-    effectiveDate?: SortOrder
-    ikContent?: SortOrder
+    ikId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -15781,13 +17151,10 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type ProcedureIkMaxOrderByAggregateInput = {
-    ikId?: SortOrder
+  export type ProcedureSopIKMaxOrderByAggregateInput = {
+    sopIkId?: SortOrder
     sopId?: SortOrder
-    ikName?: SortOrder
-    ikNumber?: SortOrder
-    effectiveDate?: SortOrder
-    ikContent?: SortOrder
+    ikId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -15798,13 +17165,10 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type ProcedureIkMinOrderByAggregateInput = {
-    ikId?: SortOrder
+  export type ProcedureSopIKMinOrderByAggregateInput = {
+    sopIkId?: SortOrder
     sopId?: SortOrder
-    ikName?: SortOrder
-    ikNumber?: SortOrder
-    effectiveDate?: SortOrder
-    ikContent?: SortOrder
+    ikId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -16601,60 +17965,116 @@ export namespace Prisma {
     update?: XOR<XOR<ChartUpdateToOneWithWhereWithoutMembersInput, ChartUpdateWithoutMembersInput>, ChartUncheckedUpdateWithoutMembersInput>
   }
 
-  export type ProcedureIkCreateNestedManyWithoutSopInput = {
-    create?: XOR<ProcedureIkCreateWithoutSopInput, ProcedureIkUncheckedCreateWithoutSopInput> | ProcedureIkCreateWithoutSopInput[] | ProcedureIkUncheckedCreateWithoutSopInput[]
-    connectOrCreate?: ProcedureIkCreateOrConnectWithoutSopInput | ProcedureIkCreateOrConnectWithoutSopInput[]
-    createMany?: ProcedureIkCreateManySopInputEnvelope
-    connect?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
+  export type ProcedureSopIKCreateNestedManyWithoutSopInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutSopInput, ProcedureSopIKUncheckedCreateWithoutSopInput> | ProcedureSopIKCreateWithoutSopInput[] | ProcedureSopIKUncheckedCreateWithoutSopInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutSopInput | ProcedureSopIKCreateOrConnectWithoutSopInput[]
+    createMany?: ProcedureSopIKCreateManySopInputEnvelope
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
   }
 
-  export type ProcedureIkUncheckedCreateNestedManyWithoutSopInput = {
-    create?: XOR<ProcedureIkCreateWithoutSopInput, ProcedureIkUncheckedCreateWithoutSopInput> | ProcedureIkCreateWithoutSopInput[] | ProcedureIkUncheckedCreateWithoutSopInput[]
-    connectOrCreate?: ProcedureIkCreateOrConnectWithoutSopInput | ProcedureIkCreateOrConnectWithoutSopInput[]
-    createMany?: ProcedureIkCreateManySopInputEnvelope
-    connect?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
+  export type ProcedureSopIKUncheckedCreateNestedManyWithoutSopInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutSopInput, ProcedureSopIKUncheckedCreateWithoutSopInput> | ProcedureSopIKCreateWithoutSopInput[] | ProcedureSopIKUncheckedCreateWithoutSopInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutSopInput | ProcedureSopIKCreateOrConnectWithoutSopInput[]
+    createMany?: ProcedureSopIKCreateManySopInputEnvelope
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
   }
 
-  export type ProcedureIkUpdateManyWithoutSopNestedInput = {
-    create?: XOR<ProcedureIkCreateWithoutSopInput, ProcedureIkUncheckedCreateWithoutSopInput> | ProcedureIkCreateWithoutSopInput[] | ProcedureIkUncheckedCreateWithoutSopInput[]
-    connectOrCreate?: ProcedureIkCreateOrConnectWithoutSopInput | ProcedureIkCreateOrConnectWithoutSopInput[]
-    upsert?: ProcedureIkUpsertWithWhereUniqueWithoutSopInput | ProcedureIkUpsertWithWhereUniqueWithoutSopInput[]
-    createMany?: ProcedureIkCreateManySopInputEnvelope
-    set?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    disconnect?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    delete?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    connect?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    update?: ProcedureIkUpdateWithWhereUniqueWithoutSopInput | ProcedureIkUpdateWithWhereUniqueWithoutSopInput[]
-    updateMany?: ProcedureIkUpdateManyWithWhereWithoutSopInput | ProcedureIkUpdateManyWithWhereWithoutSopInput[]
-    deleteMany?: ProcedureIkScalarWhereInput | ProcedureIkScalarWhereInput[]
+  export type ProcedureSopIKUpdateManyWithoutSopNestedInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutSopInput, ProcedureSopIKUncheckedCreateWithoutSopInput> | ProcedureSopIKCreateWithoutSopInput[] | ProcedureSopIKUncheckedCreateWithoutSopInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutSopInput | ProcedureSopIKCreateOrConnectWithoutSopInput[]
+    upsert?: ProcedureSopIKUpsertWithWhereUniqueWithoutSopInput | ProcedureSopIKUpsertWithWhereUniqueWithoutSopInput[]
+    createMany?: ProcedureSopIKCreateManySopInputEnvelope
+    set?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    disconnect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    delete?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    update?: ProcedureSopIKUpdateWithWhereUniqueWithoutSopInput | ProcedureSopIKUpdateWithWhereUniqueWithoutSopInput[]
+    updateMany?: ProcedureSopIKUpdateManyWithWhereWithoutSopInput | ProcedureSopIKUpdateManyWithWhereWithoutSopInput[]
+    deleteMany?: ProcedureSopIKScalarWhereInput | ProcedureSopIKScalarWhereInput[]
   }
 
-  export type ProcedureIkUncheckedUpdateManyWithoutSopNestedInput = {
-    create?: XOR<ProcedureIkCreateWithoutSopInput, ProcedureIkUncheckedCreateWithoutSopInput> | ProcedureIkCreateWithoutSopInput[] | ProcedureIkUncheckedCreateWithoutSopInput[]
-    connectOrCreate?: ProcedureIkCreateOrConnectWithoutSopInput | ProcedureIkCreateOrConnectWithoutSopInput[]
-    upsert?: ProcedureIkUpsertWithWhereUniqueWithoutSopInput | ProcedureIkUpsertWithWhereUniqueWithoutSopInput[]
-    createMany?: ProcedureIkCreateManySopInputEnvelope
-    set?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    disconnect?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    delete?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    connect?: ProcedureIkWhereUniqueInput | ProcedureIkWhereUniqueInput[]
-    update?: ProcedureIkUpdateWithWhereUniqueWithoutSopInput | ProcedureIkUpdateWithWhereUniqueWithoutSopInput[]
-    updateMany?: ProcedureIkUpdateManyWithWhereWithoutSopInput | ProcedureIkUpdateManyWithWhereWithoutSopInput[]
-    deleteMany?: ProcedureIkScalarWhereInput | ProcedureIkScalarWhereInput[]
+  export type ProcedureSopIKUncheckedUpdateManyWithoutSopNestedInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutSopInput, ProcedureSopIKUncheckedCreateWithoutSopInput> | ProcedureSopIKCreateWithoutSopInput[] | ProcedureSopIKUncheckedCreateWithoutSopInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutSopInput | ProcedureSopIKCreateOrConnectWithoutSopInput[]
+    upsert?: ProcedureSopIKUpsertWithWhereUniqueWithoutSopInput | ProcedureSopIKUpsertWithWhereUniqueWithoutSopInput[]
+    createMany?: ProcedureSopIKCreateManySopInputEnvelope
+    set?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    disconnect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    delete?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    update?: ProcedureSopIKUpdateWithWhereUniqueWithoutSopInput | ProcedureSopIKUpdateWithWhereUniqueWithoutSopInput[]
+    updateMany?: ProcedureSopIKUpdateManyWithWhereWithoutSopInput | ProcedureSopIKUpdateManyWithWhereWithoutSopInput[]
+    deleteMany?: ProcedureSopIKScalarWhereInput | ProcedureSopIKScalarWhereInput[]
   }
 
-  export type ProcedureSopCreateNestedOneWithoutIksInput = {
-    create?: XOR<ProcedureSopCreateWithoutIksInput, ProcedureSopUncheckedCreateWithoutIksInput>
-    connectOrCreate?: ProcedureSopCreateOrConnectWithoutIksInput
+  export type ProcedureSopIKCreateNestedManyWithoutMasterIKInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutMasterIKInput, ProcedureSopIKUncheckedCreateWithoutMasterIKInput> | ProcedureSopIKCreateWithoutMasterIKInput[] | ProcedureSopIKUncheckedCreateWithoutMasterIKInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutMasterIKInput | ProcedureSopIKCreateOrConnectWithoutMasterIKInput[]
+    createMany?: ProcedureSopIKCreateManyMasterIKInputEnvelope
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+  }
+
+  export type ProcedureSopIKUncheckedCreateNestedManyWithoutMasterIKInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutMasterIKInput, ProcedureSopIKUncheckedCreateWithoutMasterIKInput> | ProcedureSopIKCreateWithoutMasterIKInput[] | ProcedureSopIKUncheckedCreateWithoutMasterIKInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutMasterIKInput | ProcedureSopIKCreateOrConnectWithoutMasterIKInput[]
+    createMany?: ProcedureSopIKCreateManyMasterIKInputEnvelope
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+  }
+
+  export type ProcedureSopIKUpdateManyWithoutMasterIKNestedInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutMasterIKInput, ProcedureSopIKUncheckedCreateWithoutMasterIKInput> | ProcedureSopIKCreateWithoutMasterIKInput[] | ProcedureSopIKUncheckedCreateWithoutMasterIKInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutMasterIKInput | ProcedureSopIKCreateOrConnectWithoutMasterIKInput[]
+    upsert?: ProcedureSopIKUpsertWithWhereUniqueWithoutMasterIKInput | ProcedureSopIKUpsertWithWhereUniqueWithoutMasterIKInput[]
+    createMany?: ProcedureSopIKCreateManyMasterIKInputEnvelope
+    set?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    disconnect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    delete?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    update?: ProcedureSopIKUpdateWithWhereUniqueWithoutMasterIKInput | ProcedureSopIKUpdateWithWhereUniqueWithoutMasterIKInput[]
+    updateMany?: ProcedureSopIKUpdateManyWithWhereWithoutMasterIKInput | ProcedureSopIKUpdateManyWithWhereWithoutMasterIKInput[]
+    deleteMany?: ProcedureSopIKScalarWhereInput | ProcedureSopIKScalarWhereInput[]
+  }
+
+  export type ProcedureSopIKUncheckedUpdateManyWithoutMasterIKNestedInput = {
+    create?: XOR<ProcedureSopIKCreateWithoutMasterIKInput, ProcedureSopIKUncheckedCreateWithoutMasterIKInput> | ProcedureSopIKCreateWithoutMasterIKInput[] | ProcedureSopIKUncheckedCreateWithoutMasterIKInput[]
+    connectOrCreate?: ProcedureSopIKCreateOrConnectWithoutMasterIKInput | ProcedureSopIKCreateOrConnectWithoutMasterIKInput[]
+    upsert?: ProcedureSopIKUpsertWithWhereUniqueWithoutMasterIKInput | ProcedureSopIKUpsertWithWhereUniqueWithoutMasterIKInput[]
+    createMany?: ProcedureSopIKCreateManyMasterIKInputEnvelope
+    set?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    disconnect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    delete?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    connect?: ProcedureSopIKWhereUniqueInput | ProcedureSopIKWhereUniqueInput[]
+    update?: ProcedureSopIKUpdateWithWhereUniqueWithoutMasterIKInput | ProcedureSopIKUpdateWithWhereUniqueWithoutMasterIKInput[]
+    updateMany?: ProcedureSopIKUpdateManyWithWhereWithoutMasterIKInput | ProcedureSopIKUpdateManyWithWhereWithoutMasterIKInput[]
+    deleteMany?: ProcedureSopIKScalarWhereInput | ProcedureSopIKScalarWhereInput[]
+  }
+
+  export type ProcedureSopCreateNestedOneWithoutMasterIKsInput = {
+    create?: XOR<ProcedureSopCreateWithoutMasterIKsInput, ProcedureSopUncheckedCreateWithoutMasterIKsInput>
+    connectOrCreate?: ProcedureSopCreateOrConnectWithoutMasterIKsInput
     connect?: ProcedureSopWhereUniqueInput
   }
 
-  export type ProcedureSopUpdateOneRequiredWithoutIksNestedInput = {
-    create?: XOR<ProcedureSopCreateWithoutIksInput, ProcedureSopUncheckedCreateWithoutIksInput>
-    connectOrCreate?: ProcedureSopCreateOrConnectWithoutIksInput
-    upsert?: ProcedureSopUpsertWithoutIksInput
+  export type MasterIKCreateNestedOneWithoutSopsInput = {
+    create?: XOR<MasterIKCreateWithoutSopsInput, MasterIKUncheckedCreateWithoutSopsInput>
+    connectOrCreate?: MasterIKCreateOrConnectWithoutSopsInput
+    connect?: MasterIKWhereUniqueInput
+  }
+
+  export type ProcedureSopUpdateOneRequiredWithoutMasterIKsNestedInput = {
+    create?: XOR<ProcedureSopCreateWithoutMasterIKsInput, ProcedureSopUncheckedCreateWithoutMasterIKsInput>
+    connectOrCreate?: ProcedureSopCreateOrConnectWithoutMasterIKsInput
+    upsert?: ProcedureSopUpsertWithoutMasterIKsInput
     connect?: ProcedureSopWhereUniqueInput
-    update?: XOR<XOR<ProcedureSopUpdateToOneWithWhereWithoutIksInput, ProcedureSopUpdateWithoutIksInput>, ProcedureSopUncheckedUpdateWithoutIksInput>
+    update?: XOR<XOR<ProcedureSopUpdateToOneWithWhereWithoutMasterIKsInput, ProcedureSopUpdateWithoutMasterIKsInput>, ProcedureSopUncheckedUpdateWithoutMasterIKsInput>
+  }
+
+  export type MasterIKUpdateOneRequiredWithoutSopsNestedInput = {
+    create?: XOR<MasterIKCreateWithoutSopsInput, MasterIKUncheckedCreateWithoutSopsInput>
+    connectOrCreate?: MasterIKCreateOrConnectWithoutSopsInput
+    upsert?: MasterIKUpsertWithoutSopsInput
+    connect?: MasterIKWhereUniqueInput
+    update?: XOR<XOR<MasterIKUpdateToOneWithWhereWithoutSopsInput, MasterIKUpdateWithoutSopsInput>, MasterIKUncheckedUpdateWithoutSopsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -18483,12 +19903,22 @@ export namespace Prisma {
     children?: ChartUncheckedUpdateManyWithoutParentNestedInput
   }
 
-  export type ProcedureIkCreateWithoutSopInput = {
+  export type ProcedureSopIKCreateWithoutSopInput = {
+    sopIkId: string
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    masterIK: MasterIKCreateNestedOneWithoutSopsInput
+  }
+
+  export type ProcedureSopIKUncheckedCreateWithoutSopInput = {
+    sopIkId: string
     ikId: string
-    ikName: string
-    ikNumber: string
-    effectiveDate: Date | string
-    ikContent?: string | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -18499,12 +19929,64 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type ProcedureIkUncheckedCreateWithoutSopInput = {
-    ikId: string
-    ikName: string
-    ikNumber: string
-    effectiveDate: Date | string
-    ikContent?: string | null
+  export type ProcedureSopIKCreateOrConnectWithoutSopInput = {
+    where: ProcedureSopIKWhereUniqueInput
+    create: XOR<ProcedureSopIKCreateWithoutSopInput, ProcedureSopIKUncheckedCreateWithoutSopInput>
+  }
+
+  export type ProcedureSopIKCreateManySopInputEnvelope = {
+    data: ProcedureSopIKCreateManySopInput | ProcedureSopIKCreateManySopInput[]
+  }
+
+  export type ProcedureSopIKUpsertWithWhereUniqueWithoutSopInput = {
+    where: ProcedureSopIKWhereUniqueInput
+    update: XOR<ProcedureSopIKUpdateWithoutSopInput, ProcedureSopIKUncheckedUpdateWithoutSopInput>
+    create: XOR<ProcedureSopIKCreateWithoutSopInput, ProcedureSopIKUncheckedCreateWithoutSopInput>
+  }
+
+  export type ProcedureSopIKUpdateWithWhereUniqueWithoutSopInput = {
+    where: ProcedureSopIKWhereUniqueInput
+    data: XOR<ProcedureSopIKUpdateWithoutSopInput, ProcedureSopIKUncheckedUpdateWithoutSopInput>
+  }
+
+  export type ProcedureSopIKUpdateManyWithWhereWithoutSopInput = {
+    where: ProcedureSopIKScalarWhereInput
+    data: XOR<ProcedureSopIKUpdateManyMutationInput, ProcedureSopIKUncheckedUpdateManyWithoutSopInput>
+  }
+
+  export type ProcedureSopIKScalarWhereInput = {
+    AND?: ProcedureSopIKScalarWhereInput | ProcedureSopIKScalarWhereInput[]
+    OR?: ProcedureSopIKScalarWhereInput[]
+    NOT?: ProcedureSopIKScalarWhereInput | ProcedureSopIKScalarWhereInput[]
+    sopIkId?: StringFilter<"ProcedureSopIK"> | string
+    sopId?: StringFilter<"ProcedureSopIK"> | string
+    ikId?: StringFilter<"ProcedureSopIK"> | string
+    isActive?: BoolFilter<"ProcedureSopIK"> | boolean
+    isDeleted?: BoolFilter<"ProcedureSopIK"> | boolean
+    createdAt?: DateTimeFilter<"ProcedureSopIK"> | Date | string
+    createdBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    updatedAt?: DateTimeFilter<"ProcedureSopIK"> | Date | string
+    updatedBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+    deletedAt?: DateTimeNullableFilter<"ProcedureSopIK"> | Date | string | null
+    deletedBy?: StringNullableFilter<"ProcedureSopIK"> | string | null
+  }
+
+  export type ProcedureSopIKCreateWithoutMasterIKInput = {
+    sopIkId: string
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    sop: ProcedureSopCreateNestedOneWithoutMasterIKsInput
+  }
+
+  export type ProcedureSopIKUncheckedCreateWithoutMasterIKInput = {
+    sopIkId: string
+    sopId: string
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -18515,52 +19997,32 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type ProcedureIkCreateOrConnectWithoutSopInput = {
-    where: ProcedureIkWhereUniqueInput
-    create: XOR<ProcedureIkCreateWithoutSopInput, ProcedureIkUncheckedCreateWithoutSopInput>
+  export type ProcedureSopIKCreateOrConnectWithoutMasterIKInput = {
+    where: ProcedureSopIKWhereUniqueInput
+    create: XOR<ProcedureSopIKCreateWithoutMasterIKInput, ProcedureSopIKUncheckedCreateWithoutMasterIKInput>
   }
 
-  export type ProcedureIkCreateManySopInputEnvelope = {
-    data: ProcedureIkCreateManySopInput | ProcedureIkCreateManySopInput[]
+  export type ProcedureSopIKCreateManyMasterIKInputEnvelope = {
+    data: ProcedureSopIKCreateManyMasterIKInput | ProcedureSopIKCreateManyMasterIKInput[]
   }
 
-  export type ProcedureIkUpsertWithWhereUniqueWithoutSopInput = {
-    where: ProcedureIkWhereUniqueInput
-    update: XOR<ProcedureIkUpdateWithoutSopInput, ProcedureIkUncheckedUpdateWithoutSopInput>
-    create: XOR<ProcedureIkCreateWithoutSopInput, ProcedureIkUncheckedCreateWithoutSopInput>
+  export type ProcedureSopIKUpsertWithWhereUniqueWithoutMasterIKInput = {
+    where: ProcedureSopIKWhereUniqueInput
+    update: XOR<ProcedureSopIKUpdateWithoutMasterIKInput, ProcedureSopIKUncheckedUpdateWithoutMasterIKInput>
+    create: XOR<ProcedureSopIKCreateWithoutMasterIKInput, ProcedureSopIKUncheckedCreateWithoutMasterIKInput>
   }
 
-  export type ProcedureIkUpdateWithWhereUniqueWithoutSopInput = {
-    where: ProcedureIkWhereUniqueInput
-    data: XOR<ProcedureIkUpdateWithoutSopInput, ProcedureIkUncheckedUpdateWithoutSopInput>
+  export type ProcedureSopIKUpdateWithWhereUniqueWithoutMasterIKInput = {
+    where: ProcedureSopIKWhereUniqueInput
+    data: XOR<ProcedureSopIKUpdateWithoutMasterIKInput, ProcedureSopIKUncheckedUpdateWithoutMasterIKInput>
   }
 
-  export type ProcedureIkUpdateManyWithWhereWithoutSopInput = {
-    where: ProcedureIkScalarWhereInput
-    data: XOR<ProcedureIkUpdateManyMutationInput, ProcedureIkUncheckedUpdateManyWithoutSopInput>
+  export type ProcedureSopIKUpdateManyWithWhereWithoutMasterIKInput = {
+    where: ProcedureSopIKScalarWhereInput
+    data: XOR<ProcedureSopIKUpdateManyMutationInput, ProcedureSopIKUncheckedUpdateManyWithoutMasterIKInput>
   }
 
-  export type ProcedureIkScalarWhereInput = {
-    AND?: ProcedureIkScalarWhereInput | ProcedureIkScalarWhereInput[]
-    OR?: ProcedureIkScalarWhereInput[]
-    NOT?: ProcedureIkScalarWhereInput | ProcedureIkScalarWhereInput[]
-    ikId?: StringFilter<"ProcedureIk"> | string
-    sopId?: StringFilter<"ProcedureIk"> | string
-    ikName?: StringFilter<"ProcedureIk"> | string
-    ikNumber?: StringFilter<"ProcedureIk"> | string
-    effectiveDate?: DateTimeFilter<"ProcedureIk"> | Date | string
-    ikContent?: StringNullableFilter<"ProcedureIk"> | string | null
-    isActive?: BoolFilter<"ProcedureIk"> | boolean
-    isDeleted?: BoolFilter<"ProcedureIk"> | boolean
-    createdAt?: DateTimeFilter<"ProcedureIk"> | Date | string
-    createdBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    updatedAt?: DateTimeFilter<"ProcedureIk"> | Date | string
-    updatedBy?: StringNullableFilter<"ProcedureIk"> | string | null
-    deletedAt?: DateTimeNullableFilter<"ProcedureIk"> | Date | string | null
-    deletedBy?: StringNullableFilter<"ProcedureIk"> | string | null
-  }
-
-  export type ProcedureSopCreateWithoutIksInput = {
+  export type ProcedureSopCreateWithoutMasterIKsInput = {
     sopId: string
     sbuSubId: number
     sbuId?: number | null
@@ -18582,7 +20044,7 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type ProcedureSopUncheckedCreateWithoutIksInput = {
+  export type ProcedureSopUncheckedCreateWithoutMasterIKsInput = {
     sopId: string
     sbuSubId: number
     sbuId?: number | null
@@ -18604,23 +20066,60 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type ProcedureSopCreateOrConnectWithoutIksInput = {
+  export type ProcedureSopCreateOrConnectWithoutMasterIKsInput = {
     where: ProcedureSopWhereUniqueInput
-    create: XOR<ProcedureSopCreateWithoutIksInput, ProcedureSopUncheckedCreateWithoutIksInput>
+    create: XOR<ProcedureSopCreateWithoutMasterIKsInput, ProcedureSopUncheckedCreateWithoutMasterIKsInput>
   }
 
-  export type ProcedureSopUpsertWithoutIksInput = {
-    update: XOR<ProcedureSopUpdateWithoutIksInput, ProcedureSopUncheckedUpdateWithoutIksInput>
-    create: XOR<ProcedureSopCreateWithoutIksInput, ProcedureSopUncheckedCreateWithoutIksInput>
+  export type MasterIKCreateWithoutSopsInput = {
+    ikId: string
+    ikName: string
+    ikNumber: string
+    effectiveDate: Date | string
+    ikContent?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type MasterIKUncheckedCreateWithoutSopsInput = {
+    ikId: string
+    ikName: string
+    ikNumber: string
+    effectiveDate: Date | string
+    ikContent?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type MasterIKCreateOrConnectWithoutSopsInput = {
+    where: MasterIKWhereUniqueInput
+    create: XOR<MasterIKCreateWithoutSopsInput, MasterIKUncheckedCreateWithoutSopsInput>
+  }
+
+  export type ProcedureSopUpsertWithoutMasterIKsInput = {
+    update: XOR<ProcedureSopUpdateWithoutMasterIKsInput, ProcedureSopUncheckedUpdateWithoutMasterIKsInput>
+    create: XOR<ProcedureSopCreateWithoutMasterIKsInput, ProcedureSopUncheckedCreateWithoutMasterIKsInput>
     where?: ProcedureSopWhereInput
   }
 
-  export type ProcedureSopUpdateToOneWithWhereWithoutIksInput = {
+  export type ProcedureSopUpdateToOneWithWhereWithoutMasterIKsInput = {
     where?: ProcedureSopWhereInput
-    data: XOR<ProcedureSopUpdateWithoutIksInput, ProcedureSopUncheckedUpdateWithoutIksInput>
+    data: XOR<ProcedureSopUpdateWithoutMasterIKsInput, ProcedureSopUncheckedUpdateWithoutMasterIKsInput>
   }
 
-  export type ProcedureSopUpdateWithoutIksInput = {
+  export type ProcedureSopUpdateWithoutMasterIKsInput = {
     sopId?: StringFieldUpdateOperationsInput | string
     sbuSubId?: IntFieldUpdateOperationsInput | number
     sbuId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18642,7 +20141,7 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ProcedureSopUncheckedUpdateWithoutIksInput = {
+  export type ProcedureSopUncheckedUpdateWithoutMasterIKsInput = {
     sopId?: StringFieldUpdateOperationsInput | string
     sbuSubId?: IntFieldUpdateOperationsInput | number
     sbuId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18654,6 +20153,49 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileMime?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MasterIKUpsertWithoutSopsInput = {
+    update: XOR<MasterIKUpdateWithoutSopsInput, MasterIKUncheckedUpdateWithoutSopsInput>
+    create: XOR<MasterIKCreateWithoutSopsInput, MasterIKUncheckedCreateWithoutSopsInput>
+    where?: MasterIKWhereInput
+  }
+
+  export type MasterIKUpdateToOneWithWhereWithoutSopsInput = {
+    where?: MasterIKWhereInput
+    data: XOR<MasterIKUpdateWithoutSopsInput, MasterIKUncheckedUpdateWithoutSopsInput>
+  }
+
+  export type MasterIKUpdateWithoutSopsInput = {
+    ikId?: StringFieldUpdateOperationsInput | string
+    ikName?: StringFieldUpdateOperationsInput | string
+    ikNumber?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MasterIKUncheckedUpdateWithoutSopsInput = {
+    ikId?: StringFieldUpdateOperationsInput | string
+    ikName?: StringFieldUpdateOperationsInput | string
+    ikNumber?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19318,12 +20860,9 @@ export namespace Prisma {
     jabatan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ProcedureIkCreateManySopInput = {
+  export type ProcedureSopIKCreateManySopInput = {
+    sopIkId: string
     ikId: string
-    ikName: string
-    ikNumber: string
-    effectiveDate: Date | string
-    ikContent?: string | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -19334,12 +20873,22 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
-  export type ProcedureIkUpdateWithoutSopInput = {
+  export type ProcedureSopIKUpdateWithoutSopInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    masterIK?: MasterIKUpdateOneRequiredWithoutSopsNestedInput
+  }
+
+  export type ProcedureSopIKUncheckedUpdateWithoutSopInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
     ikId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19350,12 +20899,9 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ProcedureIkUncheckedUpdateWithoutSopInput = {
+  export type ProcedureSopIKUncheckedUpdateManyWithoutSopInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
     ikId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19366,12 +20912,48 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ProcedureIkUncheckedUpdateManyWithoutSopInput = {
-    ikId?: StringFieldUpdateOperationsInput | string
-    ikName?: StringFieldUpdateOperationsInput | string
-    ikNumber?: StringFieldUpdateOperationsInput | string
-    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ProcedureSopIKCreateManyMasterIKInput = {
+    sopIkId: string
+    sopId: string
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type ProcedureSopIKUpdateWithoutMasterIKInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    sop?: ProcedureSopUpdateOneRequiredWithoutMasterIKsNestedInput
+  }
+
+  export type ProcedureSopIKUncheckedUpdateWithoutMasterIKInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    sopId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcedureSopIKUncheckedUpdateManyWithoutMasterIKInput = {
+    sopIkId?: StringFieldUpdateOperationsInput | string
+    sopId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+import path from "path";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { Validation } from "../validation/validation.js";
 import { ProcedureSopValidation } from "../validation/procedure-sop-validation.js";
@@ -33,6 +35,41 @@ const SOP_AUDIT_FIELDS = [
 const getSopAuditSnapshot = (record: Record<string, unknown>) =>
   pickSnapshot(record, SOP_AUDIT_FIELDS as unknown as string[]);
 
+const SOP_UPLOAD_DIR = path.resolve(process.cwd(), "public", "assets", "sop");
+
+const sanitizeFilePart = (value: string) => {
+  const sanitized = value.trim().replace(/[^a-zA-Z0-9]+/g, "_");
+  return sanitized.replace(/^_+|_+$/g, "") || "SOP";
+};
+
+const normalizeSopNumber = (value: string) => value.trim().replace(/\//g, "-");
+
+const formatTimestamp = (timestamp: Date) => {
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${timestamp.getFullYear()}${pad(timestamp.getMonth() + 1)}${pad(timestamp.getDate())}_${pad(timestamp.getHours())}${pad(timestamp.getMinutes())}${pad(timestamp.getSeconds())}`;
+};
+
+const buildSopFileName = (sopNumber: string, timestamp: Date) => {
+  const base = sanitizeFilePart(sopNumber).slice(0, 100);
+  const dateStamp = formatTimestamp(timestamp);
+  return `${base}_${dateStamp}.pdf`;
+};
+
+const buildDeletedFileName = (originalFileName: string, timestamp: Date) => {
+  const parsed = path.parse(originalFileName);
+  const base = parsed.name || "SOP";
+  const ext = parsed.ext || ".pdf";
+  const dateStamp = formatTimestamp(timestamp);
+  return `${base}_Deleted_${dateStamp}${ext}`;
+};
+
+const parseFileData = (fileData: string) => {
+  const match = fileData.match(/^data:(.+);base64,(.*)$/);
+  const base64 = match?.[2] ?? fileData;
+  const mime = match?.[1] ?? "application/pdf";
+  return { mime, base64 };
+};
+
 export class ProcedureSopService {
   static async create(requesterId: string, reqBody: CreateProcedureSopRequest) {
     const request = Validation.validate(ProcedureSopValidation.CREATE, reqBody);
@@ -54,7 +91,17 @@ export class ProcedureSopService {
 
     const sbuId = sbuSub.sbu_id ?? null;
     const pilarId = sbuSub.sbu_pilar ?? null;
-    const baseNumber = getBaseNumber(request.sopNumber);
+    const normalizedSopNumber = normalizeSopNumber(request.sopNumber);
+    const baseNumber = getBaseNumber(normalizedSopNumber);
+    const { base64 } = parseFileData(request.fileData);
+    const fileBuffer = Buffer.from(base64, "base64");
+    if (!fileBuffer.length) {
+      throw new ResponseError(400, "File SOP tidak valid");
+    }
+    const header = fileBuffer.subarray(0, 5).toString("utf8");
+    if (header !== "%PDF-") {
+      throw new ResponseError(400, "File harus PDF");
+    }
 
     const activeExisting = await prismaFlowly.procedureSop.findFirst({
       where: {
@@ -72,9 +119,20 @@ export class ProcedureSopService {
 
     const sopId = await generateProcedureSopId();
     const now = new Date();
+    const fileName = buildSopFileName(request.sopName, now);
+    const filePath = `/assets/sop/${fileName}`;
+    const fileMime = "application/pdf";
+    const fileSize = fileBuffer.length;
+    const fileFullPath = path.join(SOP_UPLOAD_DIR, fileName);
 
-    const { created, deactivatedIds, deactivatedIkCount } =
-      await prismaFlowly.$transaction(async (tx) => {
+    await fs.mkdir(SOP_UPLOAD_DIR, { recursive: true });
+    await fs.writeFile(fileFullPath, fileBuffer);
+
+    let createdRecord;
+    let deactivatedIds: string[] = [];
+    let deactivatedIkCount = 0;
+    try {
+      const result = await prismaFlowly.$transaction(async (tx) => {
         const toDeactivate = await tx.procedureSop.findMany({
           where: {
             sbuSubId: request.sbuSubId,
@@ -97,7 +155,7 @@ export class ProcedureSopService {
             },
           });
 
-          const ikResult = await tx.procedureIk.updateMany({
+          const ikResult = await tx.procedureSopIK.updateMany({
             where: {
               sopId: { in: ids },
               isDeleted: false,
@@ -119,12 +177,12 @@ export class ProcedureSopService {
             sbuId,
             pilarId,
             sopName: request.sopName,
-            sopNumber: request.sopNumber.trim(),
+            sopNumber: normalizedSopNumber,
             effectiveDate: request.effectiveDate,
-            filePath: request.filePath,
-            fileName: request.fileName,
-            fileMime: request.fileMime ?? null,
-            fileSize: request.fileSize ?? null,
+            filePath,
+            fileName,
+            fileMime,
+            fileSize,
             isActive: true,
             isDeleted: false,
             createdBy: requesterId,
@@ -134,12 +192,22 @@ export class ProcedureSopService {
 
         return { created, deactivatedIds: ids, deactivatedIkCount: ikCount };
       });
+      createdRecord = result.created;
+      deactivatedIds = result.deactivatedIds;
+      deactivatedIkCount = result.deactivatedIkCount;
+    } catch (err) {
+      await fs.unlink(fileFullPath).catch(() => undefined);
+      throw err;
+    }
+    if (!createdRecord) {
+      throw new ResponseError(500, "Failed to create SOP");
+    }
 
     if (deactivatedIds.length > 0) {
       await writeAuditLog({
         module: "PROCEDURE",
         entity: "SOP",
-        entityId: created.sopId,
+        entityId: createdRecord.sopId,
         action: "AUTO_DEACTIVATE",
         actorId: requesterId,
         actorType: access.actorType,
@@ -153,14 +221,14 @@ export class ProcedureSopService {
     await writeAuditLog({
       module: "PROCEDURE",
       entity: "SOP",
-      entityId: created.sopId,
+      entityId: createdRecord.sopId,
       action: "CREATE",
       actorId: requesterId,
       actorType: access.actorType,
-      snapshot: getSopAuditSnapshot(created as unknown as Record<string, unknown>),
+      snapshot: getSopAuditSnapshot(createdRecord as unknown as Record<string, unknown>),
     });
 
-    return toProcedureSopResponse(created);
+    return toProcedureSopResponse(createdRecord);
   }
 
   static async update(requesterId: string, reqBody: UpdateProcedureSopRequest) {
@@ -181,16 +249,12 @@ export class ProcedureSopService {
       throw new ResponseError(400, "Use create to add new effective date");
     }
 
-    if (
-      request.filePath ||
-      request.fileName ||
-      request.fileMime !== undefined ||
-      request.fileSize !== undefined
-    ) {
-      throw new ResponseError(400, "Use create to upload a new file");
-    }
-
-    const nextSopNumber = request.sopNumber?.trim();
+    const normalizedNextSopNumber =
+      request.sopNumber !== undefined ? normalizeSopNumber(request.sopNumber) : undefined;
+    const nextSopNumber =
+      normalizedNextSopNumber && normalizedNextSopNumber.length > 0
+        ? normalizedNextSopNumber
+        : undefined;
 
     if (nextSopNumber && nextSopNumber !== existing.sopNumber) {
       if (isRevisionNumber(nextSopNumber, existing.sopNumber)) {
@@ -214,38 +278,102 @@ export class ProcedureSopService {
     }
 
     if (request.isActive === true && existing.isActive === false) {
-      const baseNumber = getBaseNumber(existing.sopNumber);
-      const activeOther = await prismaFlowly.procedureSop.findFirst({
+      const targetNumber = nextSopNumber ?? existing.sopNumber;
+      const baseNumber = getBaseNumber(targetNumber);
+      const otherWithSameBase = await prismaFlowly.procedureSop.findFirst({
         where: {
           sopId: { not: existing.sopId },
           sbuSubId: existing.sbuSubId,
           isDeleted: false,
-          isActive: true,
           ...buildRevisionWhere("sopNumber", baseNumber),
         },
+        select: { sopId: true },
       });
 
-      if (activeOther) {
-        throw new ResponseError(400, "Deactivate other SOP revisions first");
+      if (otherWithSameBase) {
+        throw new ResponseError(
+          400,
+          "Cannot activate SOP while another revision with the same base number exists. Change SOP number first"
+        );
+      }
+    }
+
+    const now = new Date();
+    let filePayload:
+      | {
+          filePath: string;
+          fileName: string;
+          fileMime: string;
+          fileSize: number;
+        }
+      | undefined;
+    let newFileFullPath: string | undefined;
+    let oldFileFullPath: string | undefined;
+    let oldFileRenamedPath: string | undefined;
+
+    if (request.fileData !== undefined) {
+      const { base64 } = parseFileData(request.fileData);
+      const fileBuffer = Buffer.from(base64, "base64");
+      if (!fileBuffer.length) {
+        throw new ResponseError(400, "File SOP tidak valid");
+      }
+      const header = fileBuffer.subarray(0, 5).toString("utf8");
+      if (header !== "%PDF-") {
+        throw new ResponseError(400, "File harus PDF");
+      }
+
+      const nameForFile = request.sopName ?? existing.sopName;
+      const fileName = buildSopFileName(nameForFile, now);
+      const filePath = `/assets/sop/${fileName}`;
+      const fileMime = "application/pdf";
+      const fileSize = fileBuffer.length;
+      newFileFullPath = path.join(SOP_UPLOAD_DIR, fileName);
+
+      await fs.mkdir(SOP_UPLOAD_DIR, { recursive: true });
+      await fs.writeFile(newFileFullPath, fileBuffer);
+
+      filePayload = { filePath, fileName, fileMime, fileSize };
+      if (existing.fileName) {
+        oldFileFullPath = path.join(SOP_UPLOAD_DIR, existing.fileName);
+        const deletedFileName = buildDeletedFileName(existing.fileName, now);
+        oldFileRenamedPath = path.join(SOP_UPLOAD_DIR, deletedFileName);
       }
     }
 
     const before = { ...existing } as Record<string, unknown>;
 
-    const updated = await prismaFlowly.procedureSop.update({
-      where: { sopId: request.sopId },
-      data: {
-        sopName: request.sopName ?? existing.sopName,
-        sopNumber: nextSopNumber ?? existing.sopNumber,
-        isActive: request.isActive ?? existing.isActive,
-        updatedAt: new Date(),
-        updatedBy: requesterId,
-      },
-    });
+    let updated: NonNullable<typeof existing>;
+    try {
+      updated = await prismaFlowly.procedureSop.update({
+        where: { sopId: request.sopId },
+        data: {
+          sopName: request.sopName ?? existing.sopName,
+          sopNumber: nextSopNumber ?? existing.sopNumber,
+          isActive: request.isActive ?? existing.isActive,
+          ...(filePayload ?? {}),
+          updatedAt: now,
+          updatedBy: requesterId,
+        },
+      });
+    } catch (err) {
+      if (newFileFullPath) {
+        await fs.unlink(newFileFullPath).catch(() => undefined);
+      }
+      throw err;
+    }
+
+    if (oldFileFullPath && oldFileRenamedPath) {
+      try {
+        await fs.access(oldFileFullPath);
+        await fs.rename(oldFileFullPath, oldFileRenamedPath);
+      } catch {
+        // Best-effort: keep old file if rename fails.
+      }
+    }
 
     let deactivatedIkCount = 0;
     if (request.isActive === false && existing.isActive) {
-      const ikResult = await prismaFlowly.procedureIk.updateMany({
+      const ikResult = await prismaFlowly.procedureSopIK.updateMany({
         where: {
           sopId: existing.sopId,
           isDeleted: false,
@@ -300,7 +428,7 @@ export class ProcedureSopService {
     const now = new Date();
 
     const { ikDeletedCount } = await prismaFlowly.$transaction(async (tx) => {
-      const ikResult = await tx.procedureIk.updateMany({
+      const ikResult = await tx.procedureSopIK.updateMany({
         where: { sopId: request.sopId, isDeleted: false },
         data: {
           isDeleted: true,
@@ -347,7 +475,7 @@ export class ProcedureSopService {
       sopNumber?: string;
     }
   ) {
-    await getProcedureAccess(requesterId);
+    const access = await getProcedureAccess(requesterId);
 
     if (filters?.sbuSubId) {
       const sub = await prismaEmployee.em_sbu_sub.findFirst({
@@ -362,7 +490,7 @@ export class ProcedureSopService {
 
     const whereClause: any = {
       isDeleted: false,
-      isActive: true,
+      ...(access.canCrud ? {} : { isActive: true }),
     };
 
     if (filters?.sbuSubId !== undefined) {
@@ -384,5 +512,33 @@ export class ProcedureSopService {
     });
 
     return list.map(toProcedureSopListResponse);
+  }
+
+  static async getFile(requesterId: string, sopId: string) {
+    const access = await getProcedureAccess(requesterId);
+
+    const sop = await prismaFlowly.procedureSop.findUnique({
+      where: { sopId },
+    });
+
+    if (!sop || sop.isDeleted) {
+      throw new ResponseError(404, "SOP not found");
+    }
+
+    if (!access.canCrud && !sop.isActive) {
+      throw new ResponseError(404, "SOP not found");
+    }
+
+    const fileName = sop.fileName;
+    const fileMime = sop.fileMime ?? "application/pdf";
+    const fullPath = path.join(SOP_UPLOAD_DIR, fileName);
+
+    try {
+      await fs.access(fullPath);
+    } catch {
+      throw new ResponseError(404, "File not found");
+    }
+
+    return { fullPath, fileName, fileMime };
   }
 }

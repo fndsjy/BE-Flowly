@@ -11,7 +11,7 @@ import { JabatanController } from "../controller/jabatan-controller.js";
 import { MasterAccessRoleController } from "../controller/master-access-role-controller.js";
 import { AccessRoleController } from "../controller/access-role-controller.js";
 import { ProcedureSopController } from "../controller/procedure-sop-controller.js";
-import { ProcedureIkController } from "../controller/procedure-ik-controller.js";
+import { MasterIkController } from "../controller/master-ik-controller.js";
 import { AuditLogController } from "../controller/audit-log-controller.js";
 
 export const publicRouter = express.Router();
@@ -66,11 +66,18 @@ v1.post("/procedure-sop", ProcedureSopController.create);
 v1.put("/procedure-sop", ProcedureSopController.update);
 v1.delete("/procedure-sop", ProcedureSopController.softDelete);
 v1.get("/procedure-sop", ProcedureSopController.list);
+v1.get("/procedure-sop/file/:sopId", ProcedureSopController.download);
 
-v1.post("/procedure-ik", ProcedureIkController.create);
-v1.put("/procedure-ik", ProcedureIkController.update);
-v1.delete("/procedure-ik", ProcedureIkController.softDelete);
-v1.get("/procedure-ik", ProcedureIkController.list);
+v1.post("/master-ik", MasterIkController.create);
+v1.put("/master-ik", MasterIkController.update);
+v1.delete("/master-ik", MasterIkController.softDelete);
+v1.get("/master-ik", MasterIkController.list);
+
+// Backward-compatible alias
+v1.post("/procedure-ik", MasterIkController.create);
+v1.put("/procedure-ik", MasterIkController.update);
+v1.delete("/procedure-ik", MasterIkController.softDelete);
+v1.get("/procedure-ik", MasterIkController.list);
 
 v1.get("/audit-log", AuditLogController.list);
 

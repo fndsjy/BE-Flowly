@@ -1,35 +1,3 @@
-import type { ProcedureIk } from "../generated/flowly/client.js";
-export type ProcedureIkResponse = {
-    ikId: string;
-    sopId: string;
-    ikName: string;
-    ikNumber: string;
-    effectiveDate: Date;
-    ikContent: string | null;
-    isActive: boolean;
-    isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-};
-export type ProcedureIkListResponse = ProcedureIkResponse;
-export type CreateProcedureIkRequest = {
-    sopId: string;
-    ikName: string;
-    ikNumber: string;
-    effectiveDate: Date | string;
-    ikContent?: string | null;
-};
-export type UpdateProcedureIkRequest = {
-    ikId: string;
-    ikName?: string;
-    ikNumber?: string;
-    effectiveDate?: Date | string;
-    ikContent?: string | null;
-    isActive?: boolean;
-};
-export type DeleteProcedureIkRequest = {
-    ikId: string;
-};
-export declare function toProcedureIkResponse(ik: ProcedureIk): ProcedureIkResponse;
-export declare const toProcedureIkListResponse: typeof toProcedureIkResponse;
+export type { MasterIkResponse as ProcedureIkResponse, MasterIkListResponse as ProcedureIkListResponse, CreateMasterIkRequest as CreateProcedureIkRequest, UpdateMasterIkRequest as UpdateProcedureIkRequest, DeleteMasterIkRequest as DeleteProcedureIkRequest, } from "./master-ik-model.js";
+export { toMasterIkResponse as toProcedureIkResponse, toMasterIkListResponse as toProcedureIkListResponse, } from "./master-ik-model.js";
 //# sourceMappingURL=procedure-ik-model.d.ts.map

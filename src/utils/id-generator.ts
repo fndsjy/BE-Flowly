@@ -173,11 +173,11 @@ export async function generateProcedureSopId(): Promise<string> {
   return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
 }
 
-export async function generateProcedureIkId(): Promise<string> {
+export async function generateMasterIkId(): Promise<string> {
   const today = getDDMMYY();
   const prefix = `IK${today}`;
 
-  const existing = await prisma.procedureIk.findFirst({
+  const existing = await prisma.masterIK.findFirst({
     where: { ikId: { startsWith: prefix } },
     select: { ikId: true },
     orderBy: { ikId: "desc" },
@@ -190,4 +190,8 @@ export async function generateProcedureIkId(): Promise<string> {
   }
 
   return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}
+
+export async function generateProcedureIkId(): Promise<string> {
+  return generateMasterIkId();
 }

@@ -11,5 +11,10 @@ export declare class ProcedureSopService {
         pilarId?: number;
         sopNumber?: string;
     }): Promise<import("../model/procedure-sop-model.js").ProcedureSopResponse[]>;
+    static getFile(requesterId: string, sopId: string): Promise<{
+        fullPath: string;
+        fileName: string;
+        fileMime: string;
+    }>;
 }
 //# sourceMappingURL=procedure-sop-service.d.ts.map

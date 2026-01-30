@@ -22,21 +22,17 @@ export type CreateProcedureSopRequest = {
     sopName: string;
     sopNumber: string;
     effectiveDate: Date | string;
-    filePath: string;
-    fileName: string;
-    fileMime?: string | null;
-    fileSize?: number | null;
+    fileData: string;
+    fileOriginalName?: string;
 };
 export type UpdateProcedureSopRequest = {
     sopId: string;
     sopName?: string;
     sopNumber?: string;
     effectiveDate?: Date | string;
-    filePath?: string;
-    fileName?: string;
-    fileMime?: string | null;
-    fileSize?: number | null;
     isActive?: boolean;
+    fileData?: string;
+    fileOriginalName?: string;
 };
 export type DeleteProcedureSopRequest = {
     sopId: string;

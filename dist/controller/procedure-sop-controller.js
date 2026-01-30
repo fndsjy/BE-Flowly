@@ -77,5 +77,24 @@ export class ProcedureSopController {
             next(err);
         }
     }
+    static async download(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const sopId = req.params.sopId ? String(req.params.sopId) : "";
+            if (!sopId) {
+                throw new ResponseError(400, "sopId is required");
+            }
+            const file = await ProcedureSopService.getFile(payload.userId, sopId);
+            res.setHeader("Content-Type", file.fileMime);
+            res.setHeader("Content-Disposition", `inline; filename="${file.fileName}"`);
+            res.sendFile(file.fullPath);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
 }
 //# sourceMappingURL=procedure-sop-controller.js.map

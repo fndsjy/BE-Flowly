@@ -212,13 +212,26 @@ exports.Prisma.ProcedureSopScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
-exports.Prisma.ProcedureIkScalarFieldEnum = {
+exports.Prisma.MasterIKScalarFieldEnum = {
   ikId: 'ikId',
-  sopId: 'sopId',
   ikName: 'ikName',
   ikNumber: 'ikNumber',
   effectiveDate: 'effectiveDate',
   ikContent: 'ikContent',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.ProcedureSopIKScalarFieldEnum = {
+  sopIkId: 'sopIkId',
+  sopId: 'sopId',
+  ikId: 'ikId',
   isActive: 'isActive',
   isDeleted: 'isDeleted',
   createdAt: 'createdAt',
@@ -311,7 +324,8 @@ exports.Prisma.ModelName = {
   Chart: 'Chart',
   ChartMember: 'ChartMember',
   ProcedureSop: 'ProcedureSop',
-  ProcedureIk: 'ProcedureIk',
+  MasterIK: 'MasterIK',
+  ProcedureSopIK: 'ProcedureSopIK',
   jabatan: 'jabatan',
   AccessRole: 'AccessRole',
   MasterAccessRole: 'MasterAccessRole',

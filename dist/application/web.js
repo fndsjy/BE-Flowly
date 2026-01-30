@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { requestLogger } from "../middleware/reqlog-middleware.js";
@@ -17,7 +18,7 @@ const corsOptions = {
 };
 web.use(cors(corsOptions));
 web.use(requestLogger);
-web.use(express.json());
+web.use(express.json({ limit: "25mb" }));
 web.use(cookieParser());
 web.use(publicRouter);
 web.use(errorMiddleware);

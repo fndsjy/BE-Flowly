@@ -35,7 +35,7 @@ export class ChartMemberController {
       const token = req.cookies.access_token;
       if (!token) throw new ResponseError(401, "Unauthorized");
       const payload = verifyToken(token);
-
+``
       await ChartMemberService.softDelete(payload.userId, req.body);
       res.status(200).json({ message: "Member deleted" });
     } catch (err) {
