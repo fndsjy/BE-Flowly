@@ -12,6 +12,7 @@ import { MasterAccessRoleController } from "../controller/master-access-role-con
 import { AccessRoleController } from "../controller/access-role-controller.js";
 import { ProcedureSopController } from "../controller/procedure-sop-controller.js";
 import { MasterIkController } from "../controller/master-ik-controller.js";
+import { ProcedureSopIkController } from "../controller/procedure-sop-ik-controller.js";
 import { AuditLogController } from "../controller/audit-log-controller.js";
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -62,6 +63,10 @@ v1.post("/master-ik", MasterIkController.create);
 v1.put("/master-ik", MasterIkController.update);
 v1.delete("/master-ik", MasterIkController.softDelete);
 v1.get("/master-ik", MasterIkController.list);
+v1.post("/procedure-sop-ik", ProcedureSopIkController.create);
+v1.put("/procedure-sop-ik", ProcedureSopIkController.update);
+v1.delete("/procedure-sop-ik", ProcedureSopIkController.softDelete);
+v1.get("/procedure-sop-ik", ProcedureSopIkController.list);
 // Backward-compatible alias
 v1.post("/procedure-ik", MasterIkController.create);
 v1.put("/procedure-ik", MasterIkController.update);

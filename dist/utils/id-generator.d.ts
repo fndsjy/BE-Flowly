@@ -7,5 +7,6 @@ export declare function generateAcessRoleId(): Promise<string>;
 export declare function generatemasAccessId(): Promise<() => string>;
 export declare function generateProcedureSopId(): Promise<string>;
 export declare function generateMasterIkId(): Promise<string>;
+export declare function generateProcedureSopIkId(): Promise<() => string>;
 export declare function generateProcedureIkId(): Promise<string>;
 //# sourceMappingURL=id-generator.d.ts.map
