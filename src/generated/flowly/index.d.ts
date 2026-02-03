@@ -7731,8 +7731,22 @@ export namespace Prisma {
 
   export type AggregateMasterIK = {
     _count: MasterIKCountAggregateOutputType | null
+    _avg: MasterIKAvgAggregateOutputType | null
+    _sum: MasterIKSumAggregateOutputType | null
     _min: MasterIKMinAggregateOutputType | null
     _max: MasterIKMaxAggregateOutputType | null
+  }
+
+  export type MasterIKAvgAggregateOutputType = {
+    dibuatOleh: number | null
+    diketahuiOleh: number | null
+    disetujuiOleh: number | null
+  }
+
+  export type MasterIKSumAggregateOutputType = {
+    dibuatOleh: number | null
+    diketahuiOleh: number | null
+    disetujuiOleh: number | null
   }
 
   export type MasterIKMinAggregateOutputType = {
@@ -7741,6 +7755,9 @@ export namespace Prisma {
     ikNumber: string | null
     effectiveDate: Date | null
     ikContent: string | null
+    dibuatOleh: number | null
+    diketahuiOleh: number | null
+    disetujuiOleh: number | null
     isActive: boolean | null
     isDeleted: boolean | null
     createdAt: Date | null
@@ -7757,6 +7774,9 @@ export namespace Prisma {
     ikNumber: string | null
     effectiveDate: Date | null
     ikContent: string | null
+    dibuatOleh: number | null
+    diketahuiOleh: number | null
+    disetujuiOleh: number | null
     isActive: boolean | null
     isDeleted: boolean | null
     createdAt: Date | null
@@ -7773,6 +7793,9 @@ export namespace Prisma {
     ikNumber: number
     effectiveDate: number
     ikContent: number
+    dibuatOleh: number
+    diketahuiOleh: number
+    disetujuiOleh: number
     isActive: number
     isDeleted: number
     createdAt: number
@@ -7785,12 +7808,27 @@ export namespace Prisma {
   }
 
 
+  export type MasterIKAvgAggregateInputType = {
+    dibuatOleh?: true
+    diketahuiOleh?: true
+    disetujuiOleh?: true
+  }
+
+  export type MasterIKSumAggregateInputType = {
+    dibuatOleh?: true
+    diketahuiOleh?: true
+    disetujuiOleh?: true
+  }
+
   export type MasterIKMinAggregateInputType = {
     ikId?: true
     ikName?: true
     ikNumber?: true
     effectiveDate?: true
     ikContent?: true
+    dibuatOleh?: true
+    diketahuiOleh?: true
+    disetujuiOleh?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -7807,6 +7845,9 @@ export namespace Prisma {
     ikNumber?: true
     effectiveDate?: true
     ikContent?: true
+    dibuatOleh?: true
+    diketahuiOleh?: true
+    disetujuiOleh?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -7823,6 +7864,9 @@ export namespace Prisma {
     ikNumber?: true
     effectiveDate?: true
     ikContent?: true
+    dibuatOleh?: true
+    diketahuiOleh?: true
+    disetujuiOleh?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -7872,6 +7916,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: MasterIKAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MasterIKSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MasterIKMinAggregateInputType
@@ -7902,6 +7958,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: MasterIKCountAggregateInputType | true
+    _avg?: MasterIKAvgAggregateInputType
+    _sum?: MasterIKSumAggregateInputType
     _min?: MasterIKMinAggregateInputType
     _max?: MasterIKMaxAggregateInputType
   }
@@ -7912,6 +7970,9 @@ export namespace Prisma {
     ikNumber: string
     effectiveDate: Date
     ikContent: string | null
+    dibuatOleh: number | null
+    diketahuiOleh: number | null
+    disetujuiOleh: number | null
     isActive: boolean
     isDeleted: boolean
     createdAt: Date
@@ -7921,6 +7982,8 @@ export namespace Prisma {
     deletedAt: Date | null
     deletedBy: string | null
     _count: MasterIKCountAggregateOutputType | null
+    _avg: MasterIKAvgAggregateOutputType | null
+    _sum: MasterIKSumAggregateOutputType | null
     _min: MasterIKMinAggregateOutputType | null
     _max: MasterIKMaxAggregateOutputType | null
   }
@@ -7945,6 +8008,9 @@ export namespace Prisma {
     ikNumber?: boolean
     effectiveDate?: boolean
     ikContent?: boolean
+    dibuatOleh?: boolean
+    diketahuiOleh?: boolean
+    disetujuiOleh?: boolean
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: boolean
@@ -7965,6 +8031,9 @@ export namespace Prisma {
     ikNumber?: boolean
     effectiveDate?: boolean
     ikContent?: boolean
+    dibuatOleh?: boolean
+    diketahuiOleh?: boolean
+    disetujuiOleh?: boolean
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: boolean
@@ -7975,7 +8044,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type MasterIKOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ikId" | "ikName" | "ikNumber" | "effectiveDate" | "ikContent" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterIK"]>
+  export type MasterIKOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ikId" | "ikName" | "ikNumber" | "effectiveDate" | "ikContent" | "dibuatOleh" | "diketahuiOleh" | "disetujuiOleh" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterIK"]>
   export type MasterIKInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sops?: boolean | MasterIK$sopsArgs<ExtArgs>
     _count?: boolean | MasterIKCountOutputTypeDefaultArgs<ExtArgs>
@@ -7992,6 +8061,9 @@ export namespace Prisma {
       ikNumber: string
       effectiveDate: Date
       ikContent: string | null
+      dibuatOleh: number | null
+      diketahuiOleh: number | null
+      disetujuiOleh: number | null
       isActive: boolean
       isDeleted: boolean
       createdAt: Date
@@ -8375,6 +8447,9 @@ export namespace Prisma {
     readonly ikNumber: FieldRef<"MasterIK", 'String'>
     readonly effectiveDate: FieldRef<"MasterIK", 'DateTime'>
     readonly ikContent: FieldRef<"MasterIK", 'String'>
+    readonly dibuatOleh: FieldRef<"MasterIK", 'Int'>
+    readonly diketahuiOleh: FieldRef<"MasterIK", 'Int'>
+    readonly disetujuiOleh: FieldRef<"MasterIK", 'Int'>
     readonly isActive: FieldRef<"MasterIK", 'Boolean'>
     readonly isDeleted: FieldRef<"MasterIK", 'Boolean'>
     readonly createdAt: FieldRef<"MasterIK", 'DateTime'>
@@ -13880,6 +13955,9 @@ export namespace Prisma {
     ikNumber: 'ikNumber',
     effectiveDate: 'effectiveDate',
     ikContent: 'ikContent',
+    dibuatOleh: 'dibuatOleh',
+    diketahuiOleh: 'diketahuiOleh',
+    disetujuiOleh: 'disetujuiOleh',
     isActive: 'isActive',
     isDeleted: 'isDeleted',
     createdAt: 'createdAt',
@@ -14630,6 +14708,9 @@ export namespace Prisma {
     ikNumber?: StringFilter<"MasterIK"> | string
     effectiveDate?: DateTimeFilter<"MasterIK"> | Date | string
     ikContent?: StringNullableFilter<"MasterIK"> | string | null
+    dibuatOleh?: IntNullableFilter<"MasterIK"> | number | null
+    diketahuiOleh?: IntNullableFilter<"MasterIK"> | number | null
+    disetujuiOleh?: IntNullableFilter<"MasterIK"> | number | null
     isActive?: BoolFilter<"MasterIK"> | boolean
     isDeleted?: BoolFilter<"MasterIK"> | boolean
     createdAt?: DateTimeFilter<"MasterIK"> | Date | string
@@ -14647,6 +14728,9 @@ export namespace Prisma {
     ikNumber?: SortOrder
     effectiveDate?: SortOrder
     ikContent?: SortOrderInput | SortOrder
+    dibuatOleh?: SortOrderInput | SortOrder
+    diketahuiOleh?: SortOrderInput | SortOrder
+    disetujuiOleh?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -14667,6 +14751,9 @@ export namespace Prisma {
     ikNumber?: StringFilter<"MasterIK"> | string
     effectiveDate?: DateTimeFilter<"MasterIK"> | Date | string
     ikContent?: StringNullableFilter<"MasterIK"> | string | null
+    dibuatOleh?: IntNullableFilter<"MasterIK"> | number | null
+    diketahuiOleh?: IntNullableFilter<"MasterIK"> | number | null
+    disetujuiOleh?: IntNullableFilter<"MasterIK"> | number | null
     isActive?: BoolFilter<"MasterIK"> | boolean
     isDeleted?: BoolFilter<"MasterIK"> | boolean
     createdAt?: DateTimeFilter<"MasterIK"> | Date | string
@@ -14684,6 +14771,9 @@ export namespace Prisma {
     ikNumber?: SortOrder
     effectiveDate?: SortOrder
     ikContent?: SortOrderInput | SortOrder
+    dibuatOleh?: SortOrderInput | SortOrder
+    diketahuiOleh?: SortOrderInput | SortOrder
+    disetujuiOleh?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -14693,8 +14783,10 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     _count?: MasterIKCountOrderByAggregateInput
+    _avg?: MasterIKAvgOrderByAggregateInput
     _max?: MasterIKMaxOrderByAggregateInput
     _min?: MasterIKMinOrderByAggregateInput
+    _sum?: MasterIKSumOrderByAggregateInput
   }
 
   export type MasterIKScalarWhereWithAggregatesInput = {
@@ -14706,6 +14798,9 @@ export namespace Prisma {
     ikNumber?: StringWithAggregatesFilter<"MasterIK"> | string
     effectiveDate?: DateTimeWithAggregatesFilter<"MasterIK"> | Date | string
     ikContent?: StringNullableWithAggregatesFilter<"MasterIK"> | string | null
+    dibuatOleh?: IntNullableWithAggregatesFilter<"MasterIK"> | number | null
+    diketahuiOleh?: IntNullableWithAggregatesFilter<"MasterIK"> | number | null
+    disetujuiOleh?: IntNullableWithAggregatesFilter<"MasterIK"> | number | null
     isActive?: BoolWithAggregatesFilter<"MasterIK"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"MasterIK"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"MasterIK"> | Date | string
@@ -15852,6 +15947,9 @@ export namespace Prisma {
     ikNumber: string
     effectiveDate: Date | string
     ikContent?: string | null
+    dibuatOleh?: number | null
+    diketahuiOleh?: number | null
+    disetujuiOleh?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -15869,6 +15967,9 @@ export namespace Prisma {
     ikNumber: string
     effectiveDate: Date | string
     ikContent?: string | null
+    dibuatOleh?: number | null
+    diketahuiOleh?: number | null
+    disetujuiOleh?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -15886,6 +15987,9 @@ export namespace Prisma {
     ikNumber?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    dibuatOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    diketahuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    disetujuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15903,6 +16007,9 @@ export namespace Prisma {
     ikNumber?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    dibuatOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    diketahuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    disetujuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15920,6 +16027,9 @@ export namespace Prisma {
     ikNumber: string
     effectiveDate: Date | string
     ikContent?: string | null
+    dibuatOleh?: number | null
+    diketahuiOleh?: number | null
+    disetujuiOleh?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -15936,6 +16046,9 @@ export namespace Prisma {
     ikNumber?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    dibuatOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    diketahuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    disetujuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15952,6 +16065,9 @@ export namespace Prisma {
     ikNumber?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    dibuatOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    diketahuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    disetujuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17085,6 +17201,9 @@ export namespace Prisma {
     ikNumber?: SortOrder
     effectiveDate?: SortOrder
     ikContent?: SortOrder
+    dibuatOleh?: SortOrder
+    diketahuiOleh?: SortOrder
+    disetujuiOleh?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -17095,12 +17214,21 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
+  export type MasterIKAvgOrderByAggregateInput = {
+    dibuatOleh?: SortOrder
+    diketahuiOleh?: SortOrder
+    disetujuiOleh?: SortOrder
+  }
+
   export type MasterIKMaxOrderByAggregateInput = {
     ikId?: SortOrder
     ikName?: SortOrder
     ikNumber?: SortOrder
     effectiveDate?: SortOrder
     ikContent?: SortOrder
+    dibuatOleh?: SortOrder
+    diketahuiOleh?: SortOrder
+    disetujuiOleh?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -17117,6 +17245,9 @@ export namespace Prisma {
     ikNumber?: SortOrder
     effectiveDate?: SortOrder
     ikContent?: SortOrder
+    dibuatOleh?: SortOrder
+    diketahuiOleh?: SortOrder
+    disetujuiOleh?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -17125,6 +17256,12 @@ export namespace Prisma {
     updatedBy?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+  }
+
+  export type MasterIKSumOrderByAggregateInput = {
+    dibuatOleh?: SortOrder
+    diketahuiOleh?: SortOrder
+    disetujuiOleh?: SortOrder
   }
 
   export type ProcedureSopScalarRelationFilter = {
@@ -20077,6 +20214,9 @@ export namespace Prisma {
     ikNumber: string
     effectiveDate: Date | string
     ikContent?: string | null
+    dibuatOleh?: number | null
+    diketahuiOleh?: number | null
+    disetujuiOleh?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -20093,6 +20233,9 @@ export namespace Prisma {
     ikNumber: string
     effectiveDate: Date | string
     ikContent?: string | null
+    dibuatOleh?: number | null
+    diketahuiOleh?: number | null
+    disetujuiOleh?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -20180,6 +20323,9 @@ export namespace Prisma {
     ikNumber?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    dibuatOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    diketahuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    disetujuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20196,6 +20342,9 @@ export namespace Prisma {
     ikNumber?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     ikContent?: NullableStringFieldUpdateOperationsInput | string | null
+    dibuatOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    diketahuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
+    disetujuiOleh?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

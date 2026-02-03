@@ -152,6 +152,21 @@ export async function generateMasterIkId() {
     }
     return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
 }
+export async function generateProcedureSopIkId() {
+    const today = getDDMMYY();
+    const prefix = `SIK${today}`;
+    const existing = await prisma.procedureSopIK.findFirst({
+        where: { sopIkId: { startsWith: prefix } },
+        select: { sopIkId: true },
+        orderBy: { sopIkId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.sopIkId) {
+        const currentSeq = extractSeqFromId(existing.sopIkId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+}
 export async function generateProcedureIkId() {
     return generateMasterIkId();
 }

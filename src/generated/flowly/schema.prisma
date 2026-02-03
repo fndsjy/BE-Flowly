@@ -176,6 +176,9 @@ model MasterIK {
   ikNumber      String           @db.NVarChar(50)
   effectiveDate DateTime
   ikContent     String?          @db.NVarChar(Max)
+  dibuatOleh    Int?
+  diketahuiOleh Int?
+  disetujuiOleh Int?
   isActive      Boolean          @default(true)
   isDeleted     Boolean          @default(false)
   createdAt     DateTime         @default(now())
