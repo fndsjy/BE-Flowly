@@ -14,6 +14,10 @@ import { ProcedureSopController } from "../controller/procedure-sop-controller.j
 import { MasterIkController } from "../controller/master-ik-controller.js";
 import { ProcedureSopIkController } from "../controller/procedure-sop-ik-controller.js";
 import { AuditLogController } from "../controller/audit-log-controller.js";
+import { FishboneController } from "../controller/fishbone-controller.js";
+import { FishboneCauseController } from "../controller/fishbone-cause-controller.js";
+import { FishboneItemController } from "../controller/fishbone-item-controller.js";
+import { FishboneCategoryController } from "../controller/fishbone-category-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -73,6 +77,26 @@ v1.post("/master-ik", MasterIkController.create);
 v1.put("/master-ik", MasterIkController.update);
 v1.delete("/master-ik", MasterIkController.softDelete);
 v1.get("/master-ik", MasterIkController.list);
+
+v1.post("/fishbone", FishboneController.create);
+v1.put("/fishbone", FishboneController.update);
+v1.delete("/fishbone", FishboneController.softDelete);
+v1.get("/fishbone", FishboneController.list);
+
+v1.post("/fishbone-category", FishboneCategoryController.create);
+v1.put("/fishbone-category", FishboneCategoryController.update);
+v1.delete("/fishbone-category", FishboneCategoryController.softDelete);
+v1.get("/fishbone-category", FishboneCategoryController.list);
+
+v1.post("/fishbone-cause", FishboneCauseController.create);
+v1.put("/fishbone-cause", FishboneCauseController.update);
+v1.delete("/fishbone-cause", FishboneCauseController.softDelete);
+v1.get("/fishbone-cause", FishboneCauseController.list);
+
+v1.post("/fishbone-item", FishboneItemController.create);
+v1.put("/fishbone-item", FishboneItemController.update);
+v1.delete("/fishbone-item", FishboneItemController.softDelete);
+v1.get("/fishbone-item", FishboneItemController.list);
 
 v1.post("/procedure-sop-ik", ProcedureSopIkController.create);
 v1.put("/procedure-sop-ik", ProcedureSopIkController.update);

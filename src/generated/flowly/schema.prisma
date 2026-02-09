@@ -214,6 +214,115 @@ model ProcedureSopIK {
   @@map("procedure_sop_ik")
 }
 
+/// Fishbone header
+model MasterFishbone {
+  fishboneId   String          @id @db.NVarChar(20)
+  sbuSubId     Int
+  fishboneName String          @db.NVarChar(150)
+  fishboneDesc String?         @db.NVarChar(1000)
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  createdBy    String?         @db.NVarChar(20)
+  updatedAt    DateTime        @updatedAt
+  updatedBy    String?         @db.NVarChar(20)
+  isDeleted    Boolean         @default(false)
+  deletedAt    DateTime?
+  deletedBy    String?         @db.NVarChar(20)
+  causes       FishboneCause[]
+  items        FishboneItem[]
+
+  @@index([sbuSubId, isActive, isDeleted])
+  @@map("master_fishbone")
+}
+
+/// Fishbone category master (6M, etc.)
+model FishboneCategory {
+  fishboneCategoryId String         @id @db.NVarChar(20)
+  categoryCode       String         @unique @db.NVarChar(20)
+  categoryName       String         @db.NVarChar(100)
+  categoryDesc       String?        @db.NVarChar(255)
+  isActive           Boolean        @default(true)
+  createdAt          DateTime       @default(now())
+  createdBy          String?        @db.NVarChar(20)
+  updatedAt          DateTime       @updatedAt
+  updatedBy          String?        @db.NVarChar(20)
+  isDeleted          Boolean        @default(false)
+  deletedAt          DateTime?
+  deletedBy          String?        @db.NVarChar(20)
+  items              FishboneItem[]
+
+  @@index([isActive, isDeleted])
+  @@map("fishbone_category")
+}
+
+/// Fishbone root causes
+model FishboneCause {
+  fishboneCauseId String              @id @db.NVarChar(20)
+  fishboneId      String              @db.NVarChar(20)
+  causeNo         Int
+  causeText       String              @db.NVarChar(1000)
+  isActive        Boolean             @default(true)
+  createdAt       DateTime            @default(now())
+  createdBy       String?             @db.NVarChar(20)
+  updatedAt       DateTime            @updatedAt
+  updatedBy       String?             @db.NVarChar(20)
+  isDeleted       Boolean             @default(false)
+  deletedAt       DateTime?
+  deletedBy       String?             @db.NVarChar(20)
+  master_fishbone MasterFishbone      @relation(fields: [fishboneId], references: [fishboneId], onDelete: NoAction, onUpdate: NoAction)
+  itemLinks       FishboneItemCause[]
+
+  @@unique([fishboneId, causeNo])
+  @@index([fishboneId, isActive, isDeleted])
+  @@map("fishbone_cause")
+}
+
+/// Fishbone problem + solution per category (6M)
+model FishboneItem {
+  fishboneItemId  String              @id @db.NVarChar(20)
+  fishboneId      String              @db.NVarChar(20)
+  categoryCode    String              @db.NVarChar(20)
+  problemText     String              @db.NVarChar(1000)
+  solutionText    String              @db.NVarChar(1000)
+  isActive        Boolean             @default(true)
+  createdAt       DateTime            @default(now())
+  createdBy       String?             @db.NVarChar(20)
+  updatedAt       DateTime            @updatedAt
+  updatedBy       String?             @db.NVarChar(20)
+  isDeleted       Boolean             @default(false)
+  deletedAt       DateTime?
+  deletedBy       String?             @db.NVarChar(20)
+  master_fishbone MasterFishbone      @relation(fields: [fishboneId], references: [fishboneId], onDelete: NoAction, onUpdate: NoAction)
+  category        FishboneCategory    @relation(fields: [categoryCode], references: [categoryCode], onDelete: NoAction, onUpdate: NoAction)
+  causeLinks      FishboneItemCause[]
+
+  @@index([fishboneId, categoryCode])
+  @@index([fishboneId, isActive, isDeleted])
+  @@map("fishbone_item")
+}
+
+/// Fishbone item to cause mapping
+model FishboneItemCause {
+  fishboneItemCauseId String        @id @db.NVarChar(20)
+  fishboneItemId      String        @db.NVarChar(20)
+  fishboneCauseId     String        @db.NVarChar(20)
+  isActive            Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  createdBy           String?       @db.NVarChar(20)
+  updatedAt           DateTime      @updatedAt
+  updatedBy           String?       @db.NVarChar(20)
+  isDeleted           Boolean       @default(false)
+  deletedAt           DateTime?
+  deletedBy           String?       @db.NVarChar(20)
+  item                FishboneItem  @relation(fields: [fishboneItemId], references: [fishboneItemId], onDelete: NoAction, onUpdate: NoAction)
+  cause               FishboneCause @relation(fields: [fishboneCauseId], references: [fishboneCauseId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([fishboneItemId, fishboneCauseId])
+  @@index([fishboneItemId, isActive, isDeleted])
+  @@index([fishboneCauseId, isActive, isDeleted])
+  @@map("fishbone_item_cause")
+}
+
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model jabatan {
   jabatanId       String    @id @db.NVarChar(20)

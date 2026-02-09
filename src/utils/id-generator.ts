@@ -211,6 +211,101 @@ export async function generateProcedureSopIkId(): Promise<() => string> {
   return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
 }
 
+export async function generateMasterFishboneId(): Promise<string> {
+  const today = getDDMMYY();
+  const prefix = `FBN${today}`;
+
+  const existing = await prisma.masterFishbone.findFirst({
+    where: { fishboneId: { startsWith: prefix } },
+    select: { fishboneId: true },
+    orderBy: { fishboneId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.fishboneId) {
+    const currentSeq = extractSeqFromId(existing.fishboneId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}
+
+export async function generateFishboneCategoryId(): Promise<string> {
+  const today = getDDMMYY();
+  const prefix = `FCG${today}`;
+
+  const existing = await prisma.fishboneCategory.findFirst({
+    where: { fishboneCategoryId: { startsWith: prefix } },
+    select: { fishboneCategoryId: true },
+    orderBy: { fishboneCategoryId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.fishboneCategoryId) {
+    const currentSeq = extractSeqFromId(existing.fishboneCategoryId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+}
+
+export async function generateFishboneCauseId(): Promise<() => string> {
+  const today = getDDMMYY();
+  const prefix = `FBC${today}`;
+
+  const existing = await prisma.fishboneCause.findFirst({
+    where: { fishboneCauseId: { startsWith: prefix } },
+    select: { fishboneCauseId: true },
+    orderBy: { fishboneCauseId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.fishboneCauseId) {
+    const currentSeq = extractSeqFromId(existing.fishboneCauseId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+}
+
+export async function generateFishboneItemId(): Promise<() => string> {
+  const today = getDDMMYY();
+  const prefix = `FBI${today}`;
+
+  const existing = await prisma.fishboneItem.findFirst({
+    where: { fishboneItemId: { startsWith: prefix } },
+    select: { fishboneItemId: true },
+    orderBy: { fishboneItemId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.fishboneItemId) {
+    const currentSeq = extractSeqFromId(existing.fishboneItemId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+}
+
+export async function generateFishboneItemCauseId(): Promise<() => string> {
+  const today = getDDMMYY();
+  const prefix = `FIC${today}`;
+
+  const existing = await prisma.fishboneItemCause.findFirst({
+    where: { fishboneItemCauseId: { startsWith: prefix } },
+    select: { fishboneItemCauseId: true },
+    orderBy: { fishboneItemCauseId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.fishboneItemCauseId) {
+    const currentSeq = extractSeqFromId(existing.fishboneItemCauseId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+}
+
 export async function generateProcedureIkId(): Promise<string> {
   return generateMasterIkId();
 }

@@ -1,7 +1,13 @@
 // prisma/seed.ts
 import { prismaFlowly as prisma } from "../src/application/database.js";
 import bcrypt from "bcrypt";
-import { generateUserId, generateRoleId, generatemasAccessId, generateAcessRoleId } from "../src/utils/id-generator.js";
+import {
+  generateUserId,
+  generateRoleId,
+  generatemasAccessId,
+  generateAcessRoleId,
+  generateFishboneCategoryId
+} from "../src/utils/id-generator.js";
 
 // 🔹 Daftar Role
 const roles = [
@@ -93,6 +99,15 @@ const accessRoles: accessRoleseed[] = [
     resourceKey: "ABSENSI",
     accessLevel: "READ",
   },
+];
+
+const fishboneCategories = [
+  { categoryCode: "MAN", categoryName: "Man (Manusia)" },
+  { categoryCode: "MATERIAL", categoryName: "Material (Materi)" },
+  { categoryCode: "MACHINE", categoryName: "Machine (Mesin)" },
+  { categoryCode: "METHOD", categoryName: "Method (Metode)" },
+  { categoryCode: "MANAGEMENT", categoryName: "Management (Manajemen)" },
+  { categoryCode: "ENVIRONMENT", categoryName: "Environment (Lingkungan)" },
 ];
 
 async function main() {
@@ -213,6 +228,38 @@ async function main() {
         masAccessId: role.masAccessId ?? null,
         resourceKey: role.resourceKey ?? null,
         accessLevel: role.accessLevel,
+        isActive: true,
+        isDeleted: false,
+      },
+    });
+  }
+
+  for (const category of fishboneCategories) {
+    const existing = await prisma.fishboneCategory.findUnique({
+      where: { categoryCode: category.categoryCode },
+      select: { fishboneCategoryId: true },
+    });
+
+    if (existing?.fishboneCategoryId) {
+      await prisma.fishboneCategory.update({
+        where: { fishboneCategoryId: existing.fishboneCategoryId },
+        data: {
+          categoryName: category.categoryName,
+          categoryDesc: null,
+          isActive: true,
+          isDeleted: false,
+        },
+      });
+      continue;
+    }
+
+    const fishboneCategoryId = await generateFishboneCategoryId();
+    await prisma.fishboneCategory.create({
+      data: {
+        fishboneCategoryId,
+        categoryCode: category.categoryCode,
+        categoryName: category.categoryName,
+        categoryDesc: null,
         isActive: true,
         isDeleted: false,
       },
