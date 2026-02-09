@@ -50,6 +50,31 @@ export type MasterIK = $Result.DefaultSelection<Prisma.$MasterIKPayload>
  */
 export type ProcedureSopIK = $Result.DefaultSelection<Prisma.$ProcedureSopIKPayload>
 /**
+ * Model MasterFishbone
+ * Fishbone header
+ */
+export type MasterFishbone = $Result.DefaultSelection<Prisma.$MasterFishbonePayload>
+/**
+ * Model FishboneCategory
+ * Fishbone category master (6M, etc.)
+ */
+export type FishboneCategory = $Result.DefaultSelection<Prisma.$FishboneCategoryPayload>
+/**
+ * Model FishboneCause
+ * Fishbone root causes
+ */
+export type FishboneCause = $Result.DefaultSelection<Prisma.$FishboneCausePayload>
+/**
+ * Model FishboneItem
+ * Fishbone problem + solution per category (6M)
+ */
+export type FishboneItem = $Result.DefaultSelection<Prisma.$FishboneItemPayload>
+/**
+ * Model FishboneItemCause
+ * Fishbone item to cause mapping
+ */
+export type FishboneItemCause = $Result.DefaultSelection<Prisma.$FishboneItemCausePayload>
+/**
  * Model jabatan
  * The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
  */
@@ -257,6 +282,56 @@ export class PrismaClient<
     * ```
     */
   get procedureSopIK(): Prisma.ProcedureSopIKDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.masterFishbone`: Exposes CRUD operations for the **MasterFishbone** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MasterFishbones
+    * const masterFishbones = await prisma.masterFishbone.findMany()
+    * ```
+    */
+  get masterFishbone(): Prisma.MasterFishboneDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fishboneCategory`: Exposes CRUD operations for the **FishboneCategory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FishboneCategories
+    * const fishboneCategories = await prisma.fishboneCategory.findMany()
+    * ```
+    */
+  get fishboneCategory(): Prisma.FishboneCategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fishboneCause`: Exposes CRUD operations for the **FishboneCause** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FishboneCauses
+    * const fishboneCauses = await prisma.fishboneCause.findMany()
+    * ```
+    */
+  get fishboneCause(): Prisma.FishboneCauseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fishboneItem`: Exposes CRUD operations for the **FishboneItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FishboneItems
+    * const fishboneItems = await prisma.fishboneItem.findMany()
+    * ```
+    */
+  get fishboneItem(): Prisma.FishboneItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fishboneItemCause`: Exposes CRUD operations for the **FishboneItemCause** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FishboneItemCauses
+    * const fishboneItemCauses = await prisma.fishboneItemCause.findMany()
+    * ```
+    */
+  get fishboneItemCause(): Prisma.FishboneItemCauseDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.jabatan`: Exposes CRUD operations for the **jabatan** model.
@@ -745,6 +820,11 @@ export namespace Prisma {
     ProcedureSop: 'ProcedureSop',
     MasterIK: 'MasterIK',
     ProcedureSopIK: 'ProcedureSopIK',
+    MasterFishbone: 'MasterFishbone',
+    FishboneCategory: 'FishboneCategory',
+    FishboneCause: 'FishboneCause',
+    FishboneItem: 'FishboneItem',
+    FishboneItemCause: 'FishboneItemCause',
     jabatan: 'jabatan',
     AccessRole: 'AccessRole',
     MasterAccessRole: 'MasterAccessRole',
@@ -767,7 +847,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "masterFishbone" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1233,6 +1313,336 @@ export namespace Prisma {
           }
         }
       }
+      MasterFishbone: {
+        payload: Prisma.$MasterFishbonePayload<ExtArgs>
+        fields: Prisma.MasterFishboneFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MasterFishboneFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MasterFishboneFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>
+          }
+          findFirst: {
+            args: Prisma.MasterFishboneFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MasterFishboneFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>
+          }
+          findMany: {
+            args: Prisma.MasterFishboneFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>[]
+          }
+          create: {
+            args: Prisma.MasterFishboneCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>
+          }
+          createMany: {
+            args: Prisma.MasterFishboneCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MasterFishboneDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>
+          }
+          update: {
+            args: Prisma.MasterFishboneUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>
+          }
+          deleteMany: {
+            args: Prisma.MasterFishboneDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MasterFishboneUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MasterFishboneUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterFishbonePayload>
+          }
+          aggregate: {
+            args: Prisma.MasterFishboneAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMasterFishbone>
+          }
+          groupBy: {
+            args: Prisma.MasterFishboneGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MasterFishboneGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MasterFishboneCountArgs<ExtArgs>
+            result: $Utils.Optional<MasterFishboneCountAggregateOutputType> | number
+          }
+        }
+      }
+      FishboneCategory: {
+        payload: Prisma.$FishboneCategoryPayload<ExtArgs>
+        fields: Prisma.FishboneCategoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FishboneCategoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FishboneCategoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>
+          }
+          findFirst: {
+            args: Prisma.FishboneCategoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FishboneCategoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>
+          }
+          findMany: {
+            args: Prisma.FishboneCategoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>[]
+          }
+          create: {
+            args: Prisma.FishboneCategoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>
+          }
+          createMany: {
+            args: Prisma.FishboneCategoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.FishboneCategoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>
+          }
+          update: {
+            args: Prisma.FishboneCategoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.FishboneCategoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FishboneCategoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FishboneCategoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCategoryPayload>
+          }
+          aggregate: {
+            args: Prisma.FishboneCategoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFishboneCategory>
+          }
+          groupBy: {
+            args: Prisma.FishboneCategoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FishboneCategoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FishboneCategoryCountArgs<ExtArgs>
+            result: $Utils.Optional<FishboneCategoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      FishboneCause: {
+        payload: Prisma.$FishboneCausePayload<ExtArgs>
+        fields: Prisma.FishboneCauseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FishboneCauseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FishboneCauseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>
+          }
+          findFirst: {
+            args: Prisma.FishboneCauseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FishboneCauseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>
+          }
+          findMany: {
+            args: Prisma.FishboneCauseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>[]
+          }
+          create: {
+            args: Prisma.FishboneCauseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>
+          }
+          createMany: {
+            args: Prisma.FishboneCauseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.FishboneCauseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>
+          }
+          update: {
+            args: Prisma.FishboneCauseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>
+          }
+          deleteMany: {
+            args: Prisma.FishboneCauseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FishboneCauseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FishboneCauseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneCausePayload>
+          }
+          aggregate: {
+            args: Prisma.FishboneCauseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFishboneCause>
+          }
+          groupBy: {
+            args: Prisma.FishboneCauseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FishboneCauseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FishboneCauseCountArgs<ExtArgs>
+            result: $Utils.Optional<FishboneCauseCountAggregateOutputType> | number
+          }
+        }
+      }
+      FishboneItem: {
+        payload: Prisma.$FishboneItemPayload<ExtArgs>
+        fields: Prisma.FishboneItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FishboneItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FishboneItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>
+          }
+          findFirst: {
+            args: Prisma.FishboneItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FishboneItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>
+          }
+          findMany: {
+            args: Prisma.FishboneItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>[]
+          }
+          create: {
+            args: Prisma.FishboneItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>
+          }
+          createMany: {
+            args: Prisma.FishboneItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.FishboneItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>
+          }
+          update: {
+            args: Prisma.FishboneItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.FishboneItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FishboneItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FishboneItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemPayload>
+          }
+          aggregate: {
+            args: Prisma.FishboneItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFishboneItem>
+          }
+          groupBy: {
+            args: Prisma.FishboneItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FishboneItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FishboneItemCountArgs<ExtArgs>
+            result: $Utils.Optional<FishboneItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      FishboneItemCause: {
+        payload: Prisma.$FishboneItemCausePayload<ExtArgs>
+        fields: Prisma.FishboneItemCauseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FishboneItemCauseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FishboneItemCauseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>
+          }
+          findFirst: {
+            args: Prisma.FishboneItemCauseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FishboneItemCauseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>
+          }
+          findMany: {
+            args: Prisma.FishboneItemCauseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>[]
+          }
+          create: {
+            args: Prisma.FishboneItemCauseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>
+          }
+          createMany: {
+            args: Prisma.FishboneItemCauseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.FishboneItemCauseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>
+          }
+          update: {
+            args: Prisma.FishboneItemCauseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>
+          }
+          deleteMany: {
+            args: Prisma.FishboneItemCauseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FishboneItemCauseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FishboneItemCauseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FishboneItemCausePayload>
+          }
+          aggregate: {
+            args: Prisma.FishboneItemCauseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFishboneItemCause>
+          }
+          groupBy: {
+            args: Prisma.FishboneItemCauseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FishboneItemCauseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FishboneItemCauseCountArgs<ExtArgs>
+            result: $Utils.Optional<FishboneItemCauseCountAggregateOutputType> | number
+          }
+        }
+      }
       jabatan: {
         payload: Prisma.$jabatanPayload<ExtArgs>
         fields: Prisma.jabatanFieldRefs
@@ -1600,6 +2010,11 @@ export namespace Prisma {
     procedureSop?: ProcedureSopOmit
     masterIK?: MasterIKOmit
     procedureSopIK?: ProcedureSopIKOmit
+    masterFishbone?: MasterFishboneOmit
+    fishboneCategory?: FishboneCategoryOmit
+    fishboneCause?: FishboneCauseOmit
+    fishboneItem?: FishboneItemOmit
+    fishboneItemCause?: FishboneItemCauseOmit
     jabatan?: jabatanOmit
     accessRole?: AccessRoleOmit
     masterAccessRole?: MasterAccessRoleOmit
@@ -1885,6 +2300,139 @@ export namespace Prisma {
    */
   export type MasterIKCountOutputTypeCountSopsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProcedureSopIKWhereInput
+  }
+
+
+  /**
+   * Count Type MasterFishboneCountOutputType
+   */
+
+  export type MasterFishboneCountOutputType = {
+    causes: number
+    items: number
+  }
+
+  export type MasterFishboneCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    causes?: boolean | MasterFishboneCountOutputTypeCountCausesArgs
+    items?: boolean | MasterFishboneCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MasterFishboneCountOutputType without action
+   */
+  export type MasterFishboneCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishboneCountOutputType
+     */
+    select?: MasterFishboneCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MasterFishboneCountOutputType without action
+   */
+  export type MasterFishboneCountOutputTypeCountCausesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneCauseWhereInput
+  }
+
+  /**
+   * MasterFishboneCountOutputType without action
+   */
+  export type MasterFishboneCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneItemWhereInput
+  }
+
+
+  /**
+   * Count Type FishboneCategoryCountOutputType
+   */
+
+  export type FishboneCategoryCountOutputType = {
+    items: number
+  }
+
+  export type FishboneCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | FishboneCategoryCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FishboneCategoryCountOutputType without action
+   */
+  export type FishboneCategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategoryCountOutputType
+     */
+    select?: FishboneCategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FishboneCategoryCountOutputType without action
+   */
+  export type FishboneCategoryCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneItemWhereInput
+  }
+
+
+  /**
+   * Count Type FishboneCauseCountOutputType
+   */
+
+  export type FishboneCauseCountOutputType = {
+    itemLinks: number
+  }
+
+  export type FishboneCauseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    itemLinks?: boolean | FishboneCauseCountOutputTypeCountItemLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FishboneCauseCountOutputType without action
+   */
+  export type FishboneCauseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCauseCountOutputType
+     */
+    select?: FishboneCauseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FishboneCauseCountOutputType without action
+   */
+  export type FishboneCauseCountOutputTypeCountItemLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneItemCauseWhereInput
+  }
+
+
+  /**
+   * Count Type FishboneItemCountOutputType
+   */
+
+  export type FishboneItemCountOutputType = {
+    causeLinks: number
+  }
+
+  export type FishboneItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    causeLinks?: boolean | FishboneItemCountOutputTypeCountCauseLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FishboneItemCountOutputType without action
+   */
+  export type FishboneItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCountOutputType
+     */
+    select?: FishboneItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FishboneItemCountOutputType without action
+   */
+  export type FishboneItemCountOutputTypeCountCauseLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneItemCauseWhereInput
   }
 
 
@@ -9841,6 +10389,5247 @@ export namespace Prisma {
 
 
   /**
+   * Model MasterFishbone
+   */
+
+  export type AggregateMasterFishbone = {
+    _count: MasterFishboneCountAggregateOutputType | null
+    _avg: MasterFishboneAvgAggregateOutputType | null
+    _sum: MasterFishboneSumAggregateOutputType | null
+    _min: MasterFishboneMinAggregateOutputType | null
+    _max: MasterFishboneMaxAggregateOutputType | null
+  }
+
+  export type MasterFishboneAvgAggregateOutputType = {
+    sbuSubId: number | null
+  }
+
+  export type MasterFishboneSumAggregateOutputType = {
+    sbuSubId: number | null
+  }
+
+  export type MasterFishboneMinAggregateOutputType = {
+    fishboneId: string | null
+    sbuSubId: number | null
+    fishboneName: string | null
+    fishboneDesc: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type MasterFishboneMaxAggregateOutputType = {
+    fishboneId: string | null
+    sbuSubId: number | null
+    fishboneName: string | null
+    fishboneDesc: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type MasterFishboneCountAggregateOutputType = {
+    fishboneId: number
+    sbuSubId: number
+    fishboneName: number
+    fishboneDesc: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type MasterFishboneAvgAggregateInputType = {
+    sbuSubId?: true
+  }
+
+  export type MasterFishboneSumAggregateInputType = {
+    sbuSubId?: true
+  }
+
+  export type MasterFishboneMinAggregateInputType = {
+    fishboneId?: true
+    sbuSubId?: true
+    fishboneName?: true
+    fishboneDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type MasterFishboneMaxAggregateInputType = {
+    fishboneId?: true
+    sbuSubId?: true
+    fishboneName?: true
+    fishboneDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type MasterFishboneCountAggregateInputType = {
+    fishboneId?: true
+    sbuSubId?: true
+    fishboneName?: true
+    fishboneDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type MasterFishboneAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterFishbone to aggregate.
+     */
+    where?: MasterFishboneWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterFishbones to fetch.
+     */
+    orderBy?: MasterFishboneOrderByWithRelationInput | MasterFishboneOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MasterFishboneWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterFishbones from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterFishbones.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MasterFishbones
+    **/
+    _count?: true | MasterFishboneCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MasterFishboneAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MasterFishboneSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MasterFishboneMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MasterFishboneMaxAggregateInputType
+  }
+
+  export type GetMasterFishboneAggregateType<T extends MasterFishboneAggregateArgs> = {
+        [P in keyof T & keyof AggregateMasterFishbone]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMasterFishbone[P]>
+      : GetScalarType<T[P], AggregateMasterFishbone[P]>
+  }
+
+
+
+
+  export type MasterFishboneGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MasterFishboneWhereInput
+    orderBy?: MasterFishboneOrderByWithAggregationInput | MasterFishboneOrderByWithAggregationInput[]
+    by: MasterFishboneScalarFieldEnum[] | MasterFishboneScalarFieldEnum
+    having?: MasterFishboneScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MasterFishboneCountAggregateInputType | true
+    _avg?: MasterFishboneAvgAggregateInputType
+    _sum?: MasterFishboneSumAggregateInputType
+    _min?: MasterFishboneMinAggregateInputType
+    _max?: MasterFishboneMaxAggregateInputType
+  }
+
+  export type MasterFishboneGroupByOutputType = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: MasterFishboneCountAggregateOutputType | null
+    _avg: MasterFishboneAvgAggregateOutputType | null
+    _sum: MasterFishboneSumAggregateOutputType | null
+    _min: MasterFishboneMinAggregateOutputType | null
+    _max: MasterFishboneMaxAggregateOutputType | null
+  }
+
+  type GetMasterFishboneGroupByPayload<T extends MasterFishboneGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MasterFishboneGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MasterFishboneGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MasterFishboneGroupByOutputType[P]>
+            : GetScalarType<T[P], MasterFishboneGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MasterFishboneSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    fishboneId?: boolean
+    sbuSubId?: boolean
+    fishboneName?: boolean
+    fishboneDesc?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    causes?: boolean | MasterFishbone$causesArgs<ExtArgs>
+    items?: boolean | MasterFishbone$itemsArgs<ExtArgs>
+    _count?: boolean | MasterFishboneCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["masterFishbone"]>
+
+
+
+  export type MasterFishboneSelectScalar = {
+    fishboneId?: boolean
+    sbuSubId?: boolean
+    fishboneName?: boolean
+    fishboneDesc?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type MasterFishboneOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"fishboneId" | "sbuSubId" | "fishboneName" | "fishboneDesc" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterFishbone"]>
+  export type MasterFishboneInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    causes?: boolean | MasterFishbone$causesArgs<ExtArgs>
+    items?: boolean | MasterFishbone$itemsArgs<ExtArgs>
+    _count?: boolean | MasterFishboneCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MasterFishbonePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MasterFishbone"
+    objects: {
+      causes: Prisma.$FishboneCausePayload<ExtArgs>[]
+      items: Prisma.$FishboneItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      fishboneId: string
+      sbuSubId: number
+      fishboneName: string
+      fishboneDesc: string | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["masterFishbone"]>
+    composites: {}
+  }
+
+  type MasterFishboneGetPayload<S extends boolean | null | undefined | MasterFishboneDefaultArgs> = $Result.GetResult<Prisma.$MasterFishbonePayload, S>
+
+  type MasterFishboneCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MasterFishboneFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MasterFishboneCountAggregateInputType | true
+    }
+
+  export interface MasterFishboneDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MasterFishbone'], meta: { name: 'MasterFishbone' } }
+    /**
+     * Find zero or one MasterFishbone that matches the filter.
+     * @param {MasterFishboneFindUniqueArgs} args - Arguments to find a MasterFishbone
+     * @example
+     * // Get one MasterFishbone
+     * const masterFishbone = await prisma.masterFishbone.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MasterFishboneFindUniqueArgs>(args: SelectSubset<T, MasterFishboneFindUniqueArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MasterFishbone that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MasterFishboneFindUniqueOrThrowArgs} args - Arguments to find a MasterFishbone
+     * @example
+     * // Get one MasterFishbone
+     * const masterFishbone = await prisma.masterFishbone.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MasterFishboneFindUniqueOrThrowArgs>(args: SelectSubset<T, MasterFishboneFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MasterFishbone that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneFindFirstArgs} args - Arguments to find a MasterFishbone
+     * @example
+     * // Get one MasterFishbone
+     * const masterFishbone = await prisma.masterFishbone.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MasterFishboneFindFirstArgs>(args?: SelectSubset<T, MasterFishboneFindFirstArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MasterFishbone that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneFindFirstOrThrowArgs} args - Arguments to find a MasterFishbone
+     * @example
+     * // Get one MasterFishbone
+     * const masterFishbone = await prisma.masterFishbone.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MasterFishboneFindFirstOrThrowArgs>(args?: SelectSubset<T, MasterFishboneFindFirstOrThrowArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MasterFishbones that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MasterFishbones
+     * const masterFishbones = await prisma.masterFishbone.findMany()
+     * 
+     * // Get first 10 MasterFishbones
+     * const masterFishbones = await prisma.masterFishbone.findMany({ take: 10 })
+     * 
+     * // Only select the `fishboneId`
+     * const masterFishboneWithFishboneIdOnly = await prisma.masterFishbone.findMany({ select: { fishboneId: true } })
+     * 
+     */
+    findMany<T extends MasterFishboneFindManyArgs>(args?: SelectSubset<T, MasterFishboneFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MasterFishbone.
+     * @param {MasterFishboneCreateArgs} args - Arguments to create a MasterFishbone.
+     * @example
+     * // Create one MasterFishbone
+     * const MasterFishbone = await prisma.masterFishbone.create({
+     *   data: {
+     *     // ... data to create a MasterFishbone
+     *   }
+     * })
+     * 
+     */
+    create<T extends MasterFishboneCreateArgs>(args: SelectSubset<T, MasterFishboneCreateArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MasterFishbones.
+     * @param {MasterFishboneCreateManyArgs} args - Arguments to create many MasterFishbones.
+     * @example
+     * // Create many MasterFishbones
+     * const masterFishbone = await prisma.masterFishbone.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MasterFishboneCreateManyArgs>(args?: SelectSubset<T, MasterFishboneCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MasterFishbone.
+     * @param {MasterFishboneDeleteArgs} args - Arguments to delete one MasterFishbone.
+     * @example
+     * // Delete one MasterFishbone
+     * const MasterFishbone = await prisma.masterFishbone.delete({
+     *   where: {
+     *     // ... filter to delete one MasterFishbone
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MasterFishboneDeleteArgs>(args: SelectSubset<T, MasterFishboneDeleteArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MasterFishbone.
+     * @param {MasterFishboneUpdateArgs} args - Arguments to update one MasterFishbone.
+     * @example
+     * // Update one MasterFishbone
+     * const masterFishbone = await prisma.masterFishbone.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MasterFishboneUpdateArgs>(args: SelectSubset<T, MasterFishboneUpdateArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MasterFishbones.
+     * @param {MasterFishboneDeleteManyArgs} args - Arguments to filter MasterFishbones to delete.
+     * @example
+     * // Delete a few MasterFishbones
+     * const { count } = await prisma.masterFishbone.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MasterFishboneDeleteManyArgs>(args?: SelectSubset<T, MasterFishboneDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MasterFishbones.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MasterFishbones
+     * const masterFishbone = await prisma.masterFishbone.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MasterFishboneUpdateManyArgs>(args: SelectSubset<T, MasterFishboneUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MasterFishbone.
+     * @param {MasterFishboneUpsertArgs} args - Arguments to update or create a MasterFishbone.
+     * @example
+     * // Update or create a MasterFishbone
+     * const masterFishbone = await prisma.masterFishbone.upsert({
+     *   create: {
+     *     // ... data to create a MasterFishbone
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MasterFishbone we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MasterFishboneUpsertArgs>(args: SelectSubset<T, MasterFishboneUpsertArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MasterFishbones.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneCountArgs} args - Arguments to filter MasterFishbones to count.
+     * @example
+     * // Count the number of MasterFishbones
+     * const count = await prisma.masterFishbone.count({
+     *   where: {
+     *     // ... the filter for the MasterFishbones we want to count
+     *   }
+     * })
+    **/
+    count<T extends MasterFishboneCountArgs>(
+      args?: Subset<T, MasterFishboneCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MasterFishboneCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MasterFishbone.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MasterFishboneAggregateArgs>(args: Subset<T, MasterFishboneAggregateArgs>): Prisma.PrismaPromise<GetMasterFishboneAggregateType<T>>
+
+    /**
+     * Group by MasterFishbone.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterFishboneGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MasterFishboneGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MasterFishboneGroupByArgs['orderBy'] }
+        : { orderBy?: MasterFishboneGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MasterFishboneGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMasterFishboneGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MasterFishbone model
+   */
+  readonly fields: MasterFishboneFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MasterFishbone.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MasterFishboneClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    causes<T extends MasterFishbone$causesArgs<ExtArgs> = {}>(args?: Subset<T, MasterFishbone$causesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    items<T extends MasterFishbone$itemsArgs<ExtArgs> = {}>(args?: Subset<T, MasterFishbone$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MasterFishbone model
+   */
+  interface MasterFishboneFieldRefs {
+    readonly fishboneId: FieldRef<"MasterFishbone", 'String'>
+    readonly sbuSubId: FieldRef<"MasterFishbone", 'Int'>
+    readonly fishboneName: FieldRef<"MasterFishbone", 'String'>
+    readonly fishboneDesc: FieldRef<"MasterFishbone", 'String'>
+    readonly isActive: FieldRef<"MasterFishbone", 'Boolean'>
+    readonly createdAt: FieldRef<"MasterFishbone", 'DateTime'>
+    readonly createdBy: FieldRef<"MasterFishbone", 'String'>
+    readonly updatedAt: FieldRef<"MasterFishbone", 'DateTime'>
+    readonly updatedBy: FieldRef<"MasterFishbone", 'String'>
+    readonly isDeleted: FieldRef<"MasterFishbone", 'Boolean'>
+    readonly deletedAt: FieldRef<"MasterFishbone", 'DateTime'>
+    readonly deletedBy: FieldRef<"MasterFishbone", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MasterFishbone findUnique
+   */
+  export type MasterFishboneFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterFishbone to fetch.
+     */
+    where: MasterFishboneWhereUniqueInput
+  }
+
+  /**
+   * MasterFishbone findUniqueOrThrow
+   */
+  export type MasterFishboneFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterFishbone to fetch.
+     */
+    where: MasterFishboneWhereUniqueInput
+  }
+
+  /**
+   * MasterFishbone findFirst
+   */
+  export type MasterFishboneFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterFishbone to fetch.
+     */
+    where?: MasterFishboneWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterFishbones to fetch.
+     */
+    orderBy?: MasterFishboneOrderByWithRelationInput | MasterFishboneOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MasterFishbones.
+     */
+    cursor?: MasterFishboneWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterFishbones from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterFishbones.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MasterFishbones.
+     */
+    distinct?: MasterFishboneScalarFieldEnum | MasterFishboneScalarFieldEnum[]
+  }
+
+  /**
+   * MasterFishbone findFirstOrThrow
+   */
+  export type MasterFishboneFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterFishbone to fetch.
+     */
+    where?: MasterFishboneWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterFishbones to fetch.
+     */
+    orderBy?: MasterFishboneOrderByWithRelationInput | MasterFishboneOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MasterFishbones.
+     */
+    cursor?: MasterFishboneWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterFishbones from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterFishbones.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MasterFishbones.
+     */
+    distinct?: MasterFishboneScalarFieldEnum | MasterFishboneScalarFieldEnum[]
+  }
+
+  /**
+   * MasterFishbone findMany
+   */
+  export type MasterFishboneFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterFishbones to fetch.
+     */
+    where?: MasterFishboneWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterFishbones to fetch.
+     */
+    orderBy?: MasterFishboneOrderByWithRelationInput | MasterFishboneOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MasterFishbones.
+     */
+    cursor?: MasterFishboneWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterFishbones from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterFishbones.
+     */
+    skip?: number
+    distinct?: MasterFishboneScalarFieldEnum | MasterFishboneScalarFieldEnum[]
+  }
+
+  /**
+   * MasterFishbone create
+   */
+  export type MasterFishboneCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MasterFishbone.
+     */
+    data: XOR<MasterFishboneCreateInput, MasterFishboneUncheckedCreateInput>
+  }
+
+  /**
+   * MasterFishbone createMany
+   */
+  export type MasterFishboneCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MasterFishbones.
+     */
+    data: MasterFishboneCreateManyInput | MasterFishboneCreateManyInput[]
+  }
+
+  /**
+   * MasterFishbone update
+   */
+  export type MasterFishboneUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MasterFishbone.
+     */
+    data: XOR<MasterFishboneUpdateInput, MasterFishboneUncheckedUpdateInput>
+    /**
+     * Choose, which MasterFishbone to update.
+     */
+    where: MasterFishboneWhereUniqueInput
+  }
+
+  /**
+   * MasterFishbone updateMany
+   */
+  export type MasterFishboneUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MasterFishbones.
+     */
+    data: XOR<MasterFishboneUpdateManyMutationInput, MasterFishboneUncheckedUpdateManyInput>
+    /**
+     * Filter which MasterFishbones to update
+     */
+    where?: MasterFishboneWhereInput
+    /**
+     * Limit how many MasterFishbones to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MasterFishbone upsert
+   */
+  export type MasterFishboneUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MasterFishbone to update in case it exists.
+     */
+    where: MasterFishboneWhereUniqueInput
+    /**
+     * In case the MasterFishbone found by the `where` argument doesn't exist, create a new MasterFishbone with this data.
+     */
+    create: XOR<MasterFishboneCreateInput, MasterFishboneUncheckedCreateInput>
+    /**
+     * In case the MasterFishbone was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MasterFishboneUpdateInput, MasterFishboneUncheckedUpdateInput>
+  }
+
+  /**
+   * MasterFishbone delete
+   */
+  export type MasterFishboneDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+    /**
+     * Filter which MasterFishbone to delete.
+     */
+    where: MasterFishboneWhereUniqueInput
+  }
+
+  /**
+   * MasterFishbone deleteMany
+   */
+  export type MasterFishboneDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterFishbones to delete
+     */
+    where?: MasterFishboneWhereInput
+    /**
+     * Limit how many MasterFishbones to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MasterFishbone.causes
+   */
+  export type MasterFishbone$causesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    where?: FishboneCauseWhereInput
+    orderBy?: FishboneCauseOrderByWithRelationInput | FishboneCauseOrderByWithRelationInput[]
+    cursor?: FishboneCauseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FishboneCauseScalarFieldEnum | FishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * MasterFishbone.items
+   */
+  export type MasterFishbone$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    where?: FishboneItemWhereInput
+    orderBy?: FishboneItemOrderByWithRelationInput | FishboneItemOrderByWithRelationInput[]
+    cursor?: FishboneItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FishboneItemScalarFieldEnum | FishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * MasterFishbone without action
+   */
+  export type MasterFishboneDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterFishbone
+     */
+    select?: MasterFishboneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MasterFishbone
+     */
+    omit?: MasterFishboneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterFishboneInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FishboneCategory
+   */
+
+  export type AggregateFishboneCategory = {
+    _count: FishboneCategoryCountAggregateOutputType | null
+    _min: FishboneCategoryMinAggregateOutputType | null
+    _max: FishboneCategoryMaxAggregateOutputType | null
+  }
+
+  export type FishboneCategoryMinAggregateOutputType = {
+    fishboneCategoryId: string | null
+    categoryCode: string | null
+    categoryName: string | null
+    categoryDesc: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneCategoryMaxAggregateOutputType = {
+    fishboneCategoryId: string | null
+    categoryCode: string | null
+    categoryName: string | null
+    categoryDesc: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneCategoryCountAggregateOutputType = {
+    fishboneCategoryId: number
+    categoryCode: number
+    categoryName: number
+    categoryDesc: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type FishboneCategoryMinAggregateInputType = {
+    fishboneCategoryId?: true
+    categoryCode?: true
+    categoryName?: true
+    categoryDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneCategoryMaxAggregateInputType = {
+    fishboneCategoryId?: true
+    categoryCode?: true
+    categoryName?: true
+    categoryDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneCategoryCountAggregateInputType = {
+    fishboneCategoryId?: true
+    categoryCode?: true
+    categoryName?: true
+    categoryDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type FishboneCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneCategory to aggregate.
+     */
+    where?: FishboneCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCategories to fetch.
+     */
+    orderBy?: FishboneCategoryOrderByWithRelationInput | FishboneCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FishboneCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FishboneCategories
+    **/
+    _count?: true | FishboneCategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FishboneCategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FishboneCategoryMaxAggregateInputType
+  }
+
+  export type GetFishboneCategoryAggregateType<T extends FishboneCategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateFishboneCategory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFishboneCategory[P]>
+      : GetScalarType<T[P], AggregateFishboneCategory[P]>
+  }
+
+
+
+
+  export type FishboneCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneCategoryWhereInput
+    orderBy?: FishboneCategoryOrderByWithAggregationInput | FishboneCategoryOrderByWithAggregationInput[]
+    by: FishboneCategoryScalarFieldEnum[] | FishboneCategoryScalarFieldEnum
+    having?: FishboneCategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FishboneCategoryCountAggregateInputType | true
+    _min?: FishboneCategoryMinAggregateInputType
+    _max?: FishboneCategoryMaxAggregateInputType
+  }
+
+  export type FishboneCategoryGroupByOutputType = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: FishboneCategoryCountAggregateOutputType | null
+    _min: FishboneCategoryMinAggregateOutputType | null
+    _max: FishboneCategoryMaxAggregateOutputType | null
+  }
+
+  type GetFishboneCategoryGroupByPayload<T extends FishboneCategoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FishboneCategoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FishboneCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FishboneCategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], FishboneCategoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FishboneCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    fishboneCategoryId?: boolean
+    categoryCode?: boolean
+    categoryName?: boolean
+    categoryDesc?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    items?: boolean | FishboneCategory$itemsArgs<ExtArgs>
+    _count?: boolean | FishboneCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fishboneCategory"]>
+
+
+
+  export type FishboneCategorySelectScalar = {
+    fishboneCategoryId?: boolean
+    categoryCode?: boolean
+    categoryName?: boolean
+    categoryDesc?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type FishboneCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"fishboneCategoryId" | "categoryCode" | "categoryName" | "categoryDesc" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["fishboneCategory"]>
+  export type FishboneCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | FishboneCategory$itemsArgs<ExtArgs>
+    _count?: boolean | FishboneCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $FishboneCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FishboneCategory"
+    objects: {
+      items: Prisma.$FishboneItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      fishboneCategoryId: string
+      categoryCode: string
+      categoryName: string
+      categoryDesc: string | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["fishboneCategory"]>
+    composites: {}
+  }
+
+  type FishboneCategoryGetPayload<S extends boolean | null | undefined | FishboneCategoryDefaultArgs> = $Result.GetResult<Prisma.$FishboneCategoryPayload, S>
+
+  type FishboneCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FishboneCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FishboneCategoryCountAggregateInputType | true
+    }
+
+  export interface FishboneCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FishboneCategory'], meta: { name: 'FishboneCategory' } }
+    /**
+     * Find zero or one FishboneCategory that matches the filter.
+     * @param {FishboneCategoryFindUniqueArgs} args - Arguments to find a FishboneCategory
+     * @example
+     * // Get one FishboneCategory
+     * const fishboneCategory = await prisma.fishboneCategory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FishboneCategoryFindUniqueArgs>(args: SelectSubset<T, FishboneCategoryFindUniqueArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FishboneCategory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FishboneCategoryFindUniqueOrThrowArgs} args - Arguments to find a FishboneCategory
+     * @example
+     * // Get one FishboneCategory
+     * const fishboneCategory = await prisma.fishboneCategory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FishboneCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, FishboneCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneCategory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryFindFirstArgs} args - Arguments to find a FishboneCategory
+     * @example
+     * // Get one FishboneCategory
+     * const fishboneCategory = await prisma.fishboneCategory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FishboneCategoryFindFirstArgs>(args?: SelectSubset<T, FishboneCategoryFindFirstArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneCategory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryFindFirstOrThrowArgs} args - Arguments to find a FishboneCategory
+     * @example
+     * // Get one FishboneCategory
+     * const fishboneCategory = await prisma.fishboneCategory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FishboneCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, FishboneCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FishboneCategories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FishboneCategories
+     * const fishboneCategories = await prisma.fishboneCategory.findMany()
+     * 
+     * // Get first 10 FishboneCategories
+     * const fishboneCategories = await prisma.fishboneCategory.findMany({ take: 10 })
+     * 
+     * // Only select the `fishboneCategoryId`
+     * const fishboneCategoryWithFishboneCategoryIdOnly = await prisma.fishboneCategory.findMany({ select: { fishboneCategoryId: true } })
+     * 
+     */
+    findMany<T extends FishboneCategoryFindManyArgs>(args?: SelectSubset<T, FishboneCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FishboneCategory.
+     * @param {FishboneCategoryCreateArgs} args - Arguments to create a FishboneCategory.
+     * @example
+     * // Create one FishboneCategory
+     * const FishboneCategory = await prisma.fishboneCategory.create({
+     *   data: {
+     *     // ... data to create a FishboneCategory
+     *   }
+     * })
+     * 
+     */
+    create<T extends FishboneCategoryCreateArgs>(args: SelectSubset<T, FishboneCategoryCreateArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FishboneCategories.
+     * @param {FishboneCategoryCreateManyArgs} args - Arguments to create many FishboneCategories.
+     * @example
+     * // Create many FishboneCategories
+     * const fishboneCategory = await prisma.fishboneCategory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FishboneCategoryCreateManyArgs>(args?: SelectSubset<T, FishboneCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FishboneCategory.
+     * @param {FishboneCategoryDeleteArgs} args - Arguments to delete one FishboneCategory.
+     * @example
+     * // Delete one FishboneCategory
+     * const FishboneCategory = await prisma.fishboneCategory.delete({
+     *   where: {
+     *     // ... filter to delete one FishboneCategory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FishboneCategoryDeleteArgs>(args: SelectSubset<T, FishboneCategoryDeleteArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FishboneCategory.
+     * @param {FishboneCategoryUpdateArgs} args - Arguments to update one FishboneCategory.
+     * @example
+     * // Update one FishboneCategory
+     * const fishboneCategory = await prisma.fishboneCategory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FishboneCategoryUpdateArgs>(args: SelectSubset<T, FishboneCategoryUpdateArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FishboneCategories.
+     * @param {FishboneCategoryDeleteManyArgs} args - Arguments to filter FishboneCategories to delete.
+     * @example
+     * // Delete a few FishboneCategories
+     * const { count } = await prisma.fishboneCategory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FishboneCategoryDeleteManyArgs>(args?: SelectSubset<T, FishboneCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FishboneCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FishboneCategories
+     * const fishboneCategory = await prisma.fishboneCategory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FishboneCategoryUpdateManyArgs>(args: SelectSubset<T, FishboneCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FishboneCategory.
+     * @param {FishboneCategoryUpsertArgs} args - Arguments to update or create a FishboneCategory.
+     * @example
+     * // Update or create a FishboneCategory
+     * const fishboneCategory = await prisma.fishboneCategory.upsert({
+     *   create: {
+     *     // ... data to create a FishboneCategory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FishboneCategory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FishboneCategoryUpsertArgs>(args: SelectSubset<T, FishboneCategoryUpsertArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FishboneCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryCountArgs} args - Arguments to filter FishboneCategories to count.
+     * @example
+     * // Count the number of FishboneCategories
+     * const count = await prisma.fishboneCategory.count({
+     *   where: {
+     *     // ... the filter for the FishboneCategories we want to count
+     *   }
+     * })
+    **/
+    count<T extends FishboneCategoryCountArgs>(
+      args?: Subset<T, FishboneCategoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FishboneCategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FishboneCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FishboneCategoryAggregateArgs>(args: Subset<T, FishboneCategoryAggregateArgs>): Prisma.PrismaPromise<GetFishboneCategoryAggregateType<T>>
+
+    /**
+     * Group by FishboneCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FishboneCategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FishboneCategoryGroupByArgs['orderBy'] }
+        : { orderBy?: FishboneCategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FishboneCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFishboneCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FishboneCategory model
+   */
+  readonly fields: FishboneCategoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FishboneCategory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FishboneCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    items<T extends FishboneCategory$itemsArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCategory$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FishboneCategory model
+   */
+  interface FishboneCategoryFieldRefs {
+    readonly fishboneCategoryId: FieldRef<"FishboneCategory", 'String'>
+    readonly categoryCode: FieldRef<"FishboneCategory", 'String'>
+    readonly categoryName: FieldRef<"FishboneCategory", 'String'>
+    readonly categoryDesc: FieldRef<"FishboneCategory", 'String'>
+    readonly isActive: FieldRef<"FishboneCategory", 'Boolean'>
+    readonly createdAt: FieldRef<"FishboneCategory", 'DateTime'>
+    readonly createdBy: FieldRef<"FishboneCategory", 'String'>
+    readonly updatedAt: FieldRef<"FishboneCategory", 'DateTime'>
+    readonly updatedBy: FieldRef<"FishboneCategory", 'String'>
+    readonly isDeleted: FieldRef<"FishboneCategory", 'Boolean'>
+    readonly deletedAt: FieldRef<"FishboneCategory", 'DateTime'>
+    readonly deletedBy: FieldRef<"FishboneCategory", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FishboneCategory findUnique
+   */
+  export type FishboneCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCategory to fetch.
+     */
+    where: FishboneCategoryWhereUniqueInput
+  }
+
+  /**
+   * FishboneCategory findUniqueOrThrow
+   */
+  export type FishboneCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCategory to fetch.
+     */
+    where: FishboneCategoryWhereUniqueInput
+  }
+
+  /**
+   * FishboneCategory findFirst
+   */
+  export type FishboneCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCategory to fetch.
+     */
+    where?: FishboneCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCategories to fetch.
+     */
+    orderBy?: FishboneCategoryOrderByWithRelationInput | FishboneCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneCategories.
+     */
+    cursor?: FishboneCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneCategories.
+     */
+    distinct?: FishboneCategoryScalarFieldEnum | FishboneCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCategory findFirstOrThrow
+   */
+  export type FishboneCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCategory to fetch.
+     */
+    where?: FishboneCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCategories to fetch.
+     */
+    orderBy?: FishboneCategoryOrderByWithRelationInput | FishboneCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneCategories.
+     */
+    cursor?: FishboneCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneCategories.
+     */
+    distinct?: FishboneCategoryScalarFieldEnum | FishboneCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCategory findMany
+   */
+  export type FishboneCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCategories to fetch.
+     */
+    where?: FishboneCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCategories to fetch.
+     */
+    orderBy?: FishboneCategoryOrderByWithRelationInput | FishboneCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FishboneCategories.
+     */
+    cursor?: FishboneCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCategories.
+     */
+    skip?: number
+    distinct?: FishboneCategoryScalarFieldEnum | FishboneCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCategory create
+   */
+  export type FishboneCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FishboneCategory.
+     */
+    data: XOR<FishboneCategoryCreateInput, FishboneCategoryUncheckedCreateInput>
+  }
+
+  /**
+   * FishboneCategory createMany
+   */
+  export type FishboneCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FishboneCategories.
+     */
+    data: FishboneCategoryCreateManyInput | FishboneCategoryCreateManyInput[]
+  }
+
+  /**
+   * FishboneCategory update
+   */
+  export type FishboneCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FishboneCategory.
+     */
+    data: XOR<FishboneCategoryUpdateInput, FishboneCategoryUncheckedUpdateInput>
+    /**
+     * Choose, which FishboneCategory to update.
+     */
+    where: FishboneCategoryWhereUniqueInput
+  }
+
+  /**
+   * FishboneCategory updateMany
+   */
+  export type FishboneCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FishboneCategories.
+     */
+    data: XOR<FishboneCategoryUpdateManyMutationInput, FishboneCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which FishboneCategories to update
+     */
+    where?: FishboneCategoryWhereInput
+    /**
+     * Limit how many FishboneCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneCategory upsert
+   */
+  export type FishboneCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FishboneCategory to update in case it exists.
+     */
+    where: FishboneCategoryWhereUniqueInput
+    /**
+     * In case the FishboneCategory found by the `where` argument doesn't exist, create a new FishboneCategory with this data.
+     */
+    create: XOR<FishboneCategoryCreateInput, FishboneCategoryUncheckedCreateInput>
+    /**
+     * In case the FishboneCategory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FishboneCategoryUpdateInput, FishboneCategoryUncheckedUpdateInput>
+  }
+
+  /**
+   * FishboneCategory delete
+   */
+  export type FishboneCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+    /**
+     * Filter which FishboneCategory to delete.
+     */
+    where: FishboneCategoryWhereUniqueInput
+  }
+
+  /**
+   * FishboneCategory deleteMany
+   */
+  export type FishboneCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneCategories to delete
+     */
+    where?: FishboneCategoryWhereInput
+    /**
+     * Limit how many FishboneCategories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneCategory.items
+   */
+  export type FishboneCategory$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    where?: FishboneItemWhereInput
+    orderBy?: FishboneItemOrderByWithRelationInput | FishboneItemOrderByWithRelationInput[]
+    cursor?: FishboneItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FishboneItemScalarFieldEnum | FishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCategory without action
+   */
+  export type FishboneCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCategory
+     */
+    select?: FishboneCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCategory
+     */
+    omit?: FishboneCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCategoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FishboneCause
+   */
+
+  export type AggregateFishboneCause = {
+    _count: FishboneCauseCountAggregateOutputType | null
+    _avg: FishboneCauseAvgAggregateOutputType | null
+    _sum: FishboneCauseSumAggregateOutputType | null
+    _min: FishboneCauseMinAggregateOutputType | null
+    _max: FishboneCauseMaxAggregateOutputType | null
+  }
+
+  export type FishboneCauseAvgAggregateOutputType = {
+    causeNo: number | null
+  }
+
+  export type FishboneCauseSumAggregateOutputType = {
+    causeNo: number | null
+  }
+
+  export type FishboneCauseMinAggregateOutputType = {
+    fishboneCauseId: string | null
+    fishboneId: string | null
+    causeNo: number | null
+    causeText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneCauseMaxAggregateOutputType = {
+    fishboneCauseId: string | null
+    fishboneId: string | null
+    causeNo: number | null
+    causeText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneCauseCountAggregateOutputType = {
+    fishboneCauseId: number
+    fishboneId: number
+    causeNo: number
+    causeText: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type FishboneCauseAvgAggregateInputType = {
+    causeNo?: true
+  }
+
+  export type FishboneCauseSumAggregateInputType = {
+    causeNo?: true
+  }
+
+  export type FishboneCauseMinAggregateInputType = {
+    fishboneCauseId?: true
+    fishboneId?: true
+    causeNo?: true
+    causeText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneCauseMaxAggregateInputType = {
+    fishboneCauseId?: true
+    fishboneId?: true
+    causeNo?: true
+    causeText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneCauseCountAggregateInputType = {
+    fishboneCauseId?: true
+    fishboneId?: true
+    causeNo?: true
+    causeText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type FishboneCauseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneCause to aggregate.
+     */
+    where?: FishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCauses to fetch.
+     */
+    orderBy?: FishboneCauseOrderByWithRelationInput | FishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FishboneCauses
+    **/
+    _count?: true | FishboneCauseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FishboneCauseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FishboneCauseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FishboneCauseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FishboneCauseMaxAggregateInputType
+  }
+
+  export type GetFishboneCauseAggregateType<T extends FishboneCauseAggregateArgs> = {
+        [P in keyof T & keyof AggregateFishboneCause]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFishboneCause[P]>
+      : GetScalarType<T[P], AggregateFishboneCause[P]>
+  }
+
+
+
+
+  export type FishboneCauseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneCauseWhereInput
+    orderBy?: FishboneCauseOrderByWithAggregationInput | FishboneCauseOrderByWithAggregationInput[]
+    by: FishboneCauseScalarFieldEnum[] | FishboneCauseScalarFieldEnum
+    having?: FishboneCauseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FishboneCauseCountAggregateInputType | true
+    _avg?: FishboneCauseAvgAggregateInputType
+    _sum?: FishboneCauseSumAggregateInputType
+    _min?: FishboneCauseMinAggregateInputType
+    _max?: FishboneCauseMaxAggregateInputType
+  }
+
+  export type FishboneCauseGroupByOutputType = {
+    fishboneCauseId: string
+    fishboneId: string
+    causeNo: number
+    causeText: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: FishboneCauseCountAggregateOutputType | null
+    _avg: FishboneCauseAvgAggregateOutputType | null
+    _sum: FishboneCauseSumAggregateOutputType | null
+    _min: FishboneCauseMinAggregateOutputType | null
+    _max: FishboneCauseMaxAggregateOutputType | null
+  }
+
+  type GetFishboneCauseGroupByPayload<T extends FishboneCauseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FishboneCauseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FishboneCauseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FishboneCauseGroupByOutputType[P]>
+            : GetScalarType<T[P], FishboneCauseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FishboneCauseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    fishboneCauseId?: boolean
+    fishboneId?: boolean
+    causeNo?: boolean
+    causeText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    master_fishbone?: boolean | MasterFishboneDefaultArgs<ExtArgs>
+    itemLinks?: boolean | FishboneCause$itemLinksArgs<ExtArgs>
+    _count?: boolean | FishboneCauseCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fishboneCause"]>
+
+
+
+  export type FishboneCauseSelectScalar = {
+    fishboneCauseId?: boolean
+    fishboneId?: boolean
+    causeNo?: boolean
+    causeText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type FishboneCauseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"fishboneCauseId" | "fishboneId" | "causeNo" | "causeText" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["fishboneCause"]>
+  export type FishboneCauseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    master_fishbone?: boolean | MasterFishboneDefaultArgs<ExtArgs>
+    itemLinks?: boolean | FishboneCause$itemLinksArgs<ExtArgs>
+    _count?: boolean | FishboneCauseCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $FishboneCausePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FishboneCause"
+    objects: {
+      master_fishbone: Prisma.$MasterFishbonePayload<ExtArgs>
+      itemLinks: Prisma.$FishboneItemCausePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      fishboneCauseId: string
+      fishboneId: string
+      causeNo: number
+      causeText: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["fishboneCause"]>
+    composites: {}
+  }
+
+  type FishboneCauseGetPayload<S extends boolean | null | undefined | FishboneCauseDefaultArgs> = $Result.GetResult<Prisma.$FishboneCausePayload, S>
+
+  type FishboneCauseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FishboneCauseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FishboneCauseCountAggregateInputType | true
+    }
+
+  export interface FishboneCauseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FishboneCause'], meta: { name: 'FishboneCause' } }
+    /**
+     * Find zero or one FishboneCause that matches the filter.
+     * @param {FishboneCauseFindUniqueArgs} args - Arguments to find a FishboneCause
+     * @example
+     * // Get one FishboneCause
+     * const fishboneCause = await prisma.fishboneCause.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FishboneCauseFindUniqueArgs>(args: SelectSubset<T, FishboneCauseFindUniqueArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FishboneCause that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FishboneCauseFindUniqueOrThrowArgs} args - Arguments to find a FishboneCause
+     * @example
+     * // Get one FishboneCause
+     * const fishboneCause = await prisma.fishboneCause.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FishboneCauseFindUniqueOrThrowArgs>(args: SelectSubset<T, FishboneCauseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneCause that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseFindFirstArgs} args - Arguments to find a FishboneCause
+     * @example
+     * // Get one FishboneCause
+     * const fishboneCause = await prisma.fishboneCause.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FishboneCauseFindFirstArgs>(args?: SelectSubset<T, FishboneCauseFindFirstArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneCause that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseFindFirstOrThrowArgs} args - Arguments to find a FishboneCause
+     * @example
+     * // Get one FishboneCause
+     * const fishboneCause = await prisma.fishboneCause.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FishboneCauseFindFirstOrThrowArgs>(args?: SelectSubset<T, FishboneCauseFindFirstOrThrowArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FishboneCauses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FishboneCauses
+     * const fishboneCauses = await prisma.fishboneCause.findMany()
+     * 
+     * // Get first 10 FishboneCauses
+     * const fishboneCauses = await prisma.fishboneCause.findMany({ take: 10 })
+     * 
+     * // Only select the `fishboneCauseId`
+     * const fishboneCauseWithFishboneCauseIdOnly = await prisma.fishboneCause.findMany({ select: { fishboneCauseId: true } })
+     * 
+     */
+    findMany<T extends FishboneCauseFindManyArgs>(args?: SelectSubset<T, FishboneCauseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FishboneCause.
+     * @param {FishboneCauseCreateArgs} args - Arguments to create a FishboneCause.
+     * @example
+     * // Create one FishboneCause
+     * const FishboneCause = await prisma.fishboneCause.create({
+     *   data: {
+     *     // ... data to create a FishboneCause
+     *   }
+     * })
+     * 
+     */
+    create<T extends FishboneCauseCreateArgs>(args: SelectSubset<T, FishboneCauseCreateArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FishboneCauses.
+     * @param {FishboneCauseCreateManyArgs} args - Arguments to create many FishboneCauses.
+     * @example
+     * // Create many FishboneCauses
+     * const fishboneCause = await prisma.fishboneCause.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FishboneCauseCreateManyArgs>(args?: SelectSubset<T, FishboneCauseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FishboneCause.
+     * @param {FishboneCauseDeleteArgs} args - Arguments to delete one FishboneCause.
+     * @example
+     * // Delete one FishboneCause
+     * const FishboneCause = await prisma.fishboneCause.delete({
+     *   where: {
+     *     // ... filter to delete one FishboneCause
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FishboneCauseDeleteArgs>(args: SelectSubset<T, FishboneCauseDeleteArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FishboneCause.
+     * @param {FishboneCauseUpdateArgs} args - Arguments to update one FishboneCause.
+     * @example
+     * // Update one FishboneCause
+     * const fishboneCause = await prisma.fishboneCause.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FishboneCauseUpdateArgs>(args: SelectSubset<T, FishboneCauseUpdateArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FishboneCauses.
+     * @param {FishboneCauseDeleteManyArgs} args - Arguments to filter FishboneCauses to delete.
+     * @example
+     * // Delete a few FishboneCauses
+     * const { count } = await prisma.fishboneCause.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FishboneCauseDeleteManyArgs>(args?: SelectSubset<T, FishboneCauseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FishboneCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FishboneCauses
+     * const fishboneCause = await prisma.fishboneCause.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FishboneCauseUpdateManyArgs>(args: SelectSubset<T, FishboneCauseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FishboneCause.
+     * @param {FishboneCauseUpsertArgs} args - Arguments to update or create a FishboneCause.
+     * @example
+     * // Update or create a FishboneCause
+     * const fishboneCause = await prisma.fishboneCause.upsert({
+     *   create: {
+     *     // ... data to create a FishboneCause
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FishboneCause we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FishboneCauseUpsertArgs>(args: SelectSubset<T, FishboneCauseUpsertArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FishboneCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseCountArgs} args - Arguments to filter FishboneCauses to count.
+     * @example
+     * // Count the number of FishboneCauses
+     * const count = await prisma.fishboneCause.count({
+     *   where: {
+     *     // ... the filter for the FishboneCauses we want to count
+     *   }
+     * })
+    **/
+    count<T extends FishboneCauseCountArgs>(
+      args?: Subset<T, FishboneCauseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FishboneCauseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FishboneCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FishboneCauseAggregateArgs>(args: Subset<T, FishboneCauseAggregateArgs>): Prisma.PrismaPromise<GetFishboneCauseAggregateType<T>>
+
+    /**
+     * Group by FishboneCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneCauseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FishboneCauseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FishboneCauseGroupByArgs['orderBy'] }
+        : { orderBy?: FishboneCauseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FishboneCauseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFishboneCauseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FishboneCause model
+   */
+  readonly fields: FishboneCauseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FishboneCause.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FishboneCauseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    master_fishbone<T extends MasterFishboneDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MasterFishboneDefaultArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    itemLinks<T extends FishboneCause$itemLinksArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCause$itemLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FishboneCause model
+   */
+  interface FishboneCauseFieldRefs {
+    readonly fishboneCauseId: FieldRef<"FishboneCause", 'String'>
+    readonly fishboneId: FieldRef<"FishboneCause", 'String'>
+    readonly causeNo: FieldRef<"FishboneCause", 'Int'>
+    readonly causeText: FieldRef<"FishboneCause", 'String'>
+    readonly isActive: FieldRef<"FishboneCause", 'Boolean'>
+    readonly createdAt: FieldRef<"FishboneCause", 'DateTime'>
+    readonly createdBy: FieldRef<"FishboneCause", 'String'>
+    readonly updatedAt: FieldRef<"FishboneCause", 'DateTime'>
+    readonly updatedBy: FieldRef<"FishboneCause", 'String'>
+    readonly isDeleted: FieldRef<"FishboneCause", 'Boolean'>
+    readonly deletedAt: FieldRef<"FishboneCause", 'DateTime'>
+    readonly deletedBy: FieldRef<"FishboneCause", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FishboneCause findUnique
+   */
+  export type FishboneCauseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCause to fetch.
+     */
+    where: FishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneCause findUniqueOrThrow
+   */
+  export type FishboneCauseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCause to fetch.
+     */
+    where: FishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneCause findFirst
+   */
+  export type FishboneCauseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCause to fetch.
+     */
+    where?: FishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCauses to fetch.
+     */
+    orderBy?: FishboneCauseOrderByWithRelationInput | FishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneCauses.
+     */
+    cursor?: FishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneCauses.
+     */
+    distinct?: FishboneCauseScalarFieldEnum | FishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCause findFirstOrThrow
+   */
+  export type FishboneCauseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCause to fetch.
+     */
+    where?: FishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCauses to fetch.
+     */
+    orderBy?: FishboneCauseOrderByWithRelationInput | FishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneCauses.
+     */
+    cursor?: FishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneCauses.
+     */
+    distinct?: FishboneCauseScalarFieldEnum | FishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCause findMany
+   */
+  export type FishboneCauseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneCauses to fetch.
+     */
+    where?: FishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneCauses to fetch.
+     */
+    orderBy?: FishboneCauseOrderByWithRelationInput | FishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FishboneCauses.
+     */
+    cursor?: FishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneCauses.
+     */
+    skip?: number
+    distinct?: FishboneCauseScalarFieldEnum | FishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCause create
+   */
+  export type FishboneCauseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FishboneCause.
+     */
+    data: XOR<FishboneCauseCreateInput, FishboneCauseUncheckedCreateInput>
+  }
+
+  /**
+   * FishboneCause createMany
+   */
+  export type FishboneCauseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FishboneCauses.
+     */
+    data: FishboneCauseCreateManyInput | FishboneCauseCreateManyInput[]
+  }
+
+  /**
+   * FishboneCause update
+   */
+  export type FishboneCauseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FishboneCause.
+     */
+    data: XOR<FishboneCauseUpdateInput, FishboneCauseUncheckedUpdateInput>
+    /**
+     * Choose, which FishboneCause to update.
+     */
+    where: FishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneCause updateMany
+   */
+  export type FishboneCauseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FishboneCauses.
+     */
+    data: XOR<FishboneCauseUpdateManyMutationInput, FishboneCauseUncheckedUpdateManyInput>
+    /**
+     * Filter which FishboneCauses to update
+     */
+    where?: FishboneCauseWhereInput
+    /**
+     * Limit how many FishboneCauses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneCause upsert
+   */
+  export type FishboneCauseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FishboneCause to update in case it exists.
+     */
+    where: FishboneCauseWhereUniqueInput
+    /**
+     * In case the FishboneCause found by the `where` argument doesn't exist, create a new FishboneCause with this data.
+     */
+    create: XOR<FishboneCauseCreateInput, FishboneCauseUncheckedCreateInput>
+    /**
+     * In case the FishboneCause was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FishboneCauseUpdateInput, FishboneCauseUncheckedUpdateInput>
+  }
+
+  /**
+   * FishboneCause delete
+   */
+  export type FishboneCauseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter which FishboneCause to delete.
+     */
+    where: FishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneCause deleteMany
+   */
+  export type FishboneCauseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneCauses to delete
+     */
+    where?: FishboneCauseWhereInput
+    /**
+     * Limit how many FishboneCauses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneCause.itemLinks
+   */
+  export type FishboneCause$itemLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    where?: FishboneItemCauseWhereInput
+    orderBy?: FishboneItemCauseOrderByWithRelationInput | FishboneItemCauseOrderByWithRelationInput[]
+    cursor?: FishboneItemCauseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FishboneItemCauseScalarFieldEnum | FishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCause without action
+   */
+  export type FishboneCauseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneCause
+     */
+    select?: FishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneCause
+     */
+    omit?: FishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneCauseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FishboneItem
+   */
+
+  export type AggregateFishboneItem = {
+    _count: FishboneItemCountAggregateOutputType | null
+    _min: FishboneItemMinAggregateOutputType | null
+    _max: FishboneItemMaxAggregateOutputType | null
+  }
+
+  export type FishboneItemMinAggregateOutputType = {
+    fishboneItemId: string | null
+    fishboneId: string | null
+    categoryCode: string | null
+    problemText: string | null
+    solutionText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneItemMaxAggregateOutputType = {
+    fishboneItemId: string | null
+    fishboneId: string | null
+    categoryCode: string | null
+    problemText: string | null
+    solutionText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneItemCountAggregateOutputType = {
+    fishboneItemId: number
+    fishboneId: number
+    categoryCode: number
+    problemText: number
+    solutionText: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type FishboneItemMinAggregateInputType = {
+    fishboneItemId?: true
+    fishboneId?: true
+    categoryCode?: true
+    problemText?: true
+    solutionText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneItemMaxAggregateInputType = {
+    fishboneItemId?: true
+    fishboneId?: true
+    categoryCode?: true
+    problemText?: true
+    solutionText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneItemCountAggregateInputType = {
+    fishboneItemId?: true
+    fishboneId?: true
+    categoryCode?: true
+    problemText?: true
+    solutionText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type FishboneItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneItem to aggregate.
+     */
+    where?: FishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItems to fetch.
+     */
+    orderBy?: FishboneItemOrderByWithRelationInput | FishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FishboneItems
+    **/
+    _count?: true | FishboneItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FishboneItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FishboneItemMaxAggregateInputType
+  }
+
+  export type GetFishboneItemAggregateType<T extends FishboneItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateFishboneItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFishboneItem[P]>
+      : GetScalarType<T[P], AggregateFishboneItem[P]>
+  }
+
+
+
+
+  export type FishboneItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneItemWhereInput
+    orderBy?: FishboneItemOrderByWithAggregationInput | FishboneItemOrderByWithAggregationInput[]
+    by: FishboneItemScalarFieldEnum[] | FishboneItemScalarFieldEnum
+    having?: FishboneItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FishboneItemCountAggregateInputType | true
+    _min?: FishboneItemMinAggregateInputType
+    _max?: FishboneItemMaxAggregateInputType
+  }
+
+  export type FishboneItemGroupByOutputType = {
+    fishboneItemId: string
+    fishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: FishboneItemCountAggregateOutputType | null
+    _min: FishboneItemMinAggregateOutputType | null
+    _max: FishboneItemMaxAggregateOutputType | null
+  }
+
+  type GetFishboneItemGroupByPayload<T extends FishboneItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FishboneItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FishboneItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FishboneItemGroupByOutputType[P]>
+            : GetScalarType<T[P], FishboneItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FishboneItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    fishboneItemId?: boolean
+    fishboneId?: boolean
+    categoryCode?: boolean
+    problemText?: boolean
+    solutionText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    master_fishbone?: boolean | MasterFishboneDefaultArgs<ExtArgs>
+    category?: boolean | FishboneCategoryDefaultArgs<ExtArgs>
+    causeLinks?: boolean | FishboneItem$causeLinksArgs<ExtArgs>
+    _count?: boolean | FishboneItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fishboneItem"]>
+
+
+
+  export type FishboneItemSelectScalar = {
+    fishboneItemId?: boolean
+    fishboneId?: boolean
+    categoryCode?: boolean
+    problemText?: boolean
+    solutionText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type FishboneItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"fishboneItemId" | "fishboneId" | "categoryCode" | "problemText" | "solutionText" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["fishboneItem"]>
+  export type FishboneItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    master_fishbone?: boolean | MasterFishboneDefaultArgs<ExtArgs>
+    category?: boolean | FishboneCategoryDefaultArgs<ExtArgs>
+    causeLinks?: boolean | FishboneItem$causeLinksArgs<ExtArgs>
+    _count?: boolean | FishboneItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $FishboneItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FishboneItem"
+    objects: {
+      master_fishbone: Prisma.$MasterFishbonePayload<ExtArgs>
+      category: Prisma.$FishboneCategoryPayload<ExtArgs>
+      causeLinks: Prisma.$FishboneItemCausePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      fishboneItemId: string
+      fishboneId: string
+      categoryCode: string
+      problemText: string
+      solutionText: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["fishboneItem"]>
+    composites: {}
+  }
+
+  type FishboneItemGetPayload<S extends boolean | null | undefined | FishboneItemDefaultArgs> = $Result.GetResult<Prisma.$FishboneItemPayload, S>
+
+  type FishboneItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FishboneItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FishboneItemCountAggregateInputType | true
+    }
+
+  export interface FishboneItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FishboneItem'], meta: { name: 'FishboneItem' } }
+    /**
+     * Find zero or one FishboneItem that matches the filter.
+     * @param {FishboneItemFindUniqueArgs} args - Arguments to find a FishboneItem
+     * @example
+     * // Get one FishboneItem
+     * const fishboneItem = await prisma.fishboneItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FishboneItemFindUniqueArgs>(args: SelectSubset<T, FishboneItemFindUniqueArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FishboneItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FishboneItemFindUniqueOrThrowArgs} args - Arguments to find a FishboneItem
+     * @example
+     * // Get one FishboneItem
+     * const fishboneItem = await prisma.fishboneItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FishboneItemFindUniqueOrThrowArgs>(args: SelectSubset<T, FishboneItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemFindFirstArgs} args - Arguments to find a FishboneItem
+     * @example
+     * // Get one FishboneItem
+     * const fishboneItem = await prisma.fishboneItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FishboneItemFindFirstArgs>(args?: SelectSubset<T, FishboneItemFindFirstArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemFindFirstOrThrowArgs} args - Arguments to find a FishboneItem
+     * @example
+     * // Get one FishboneItem
+     * const fishboneItem = await prisma.fishboneItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FishboneItemFindFirstOrThrowArgs>(args?: SelectSubset<T, FishboneItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FishboneItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FishboneItems
+     * const fishboneItems = await prisma.fishboneItem.findMany()
+     * 
+     * // Get first 10 FishboneItems
+     * const fishboneItems = await prisma.fishboneItem.findMany({ take: 10 })
+     * 
+     * // Only select the `fishboneItemId`
+     * const fishboneItemWithFishboneItemIdOnly = await prisma.fishboneItem.findMany({ select: { fishboneItemId: true } })
+     * 
+     */
+    findMany<T extends FishboneItemFindManyArgs>(args?: SelectSubset<T, FishboneItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FishboneItem.
+     * @param {FishboneItemCreateArgs} args - Arguments to create a FishboneItem.
+     * @example
+     * // Create one FishboneItem
+     * const FishboneItem = await prisma.fishboneItem.create({
+     *   data: {
+     *     // ... data to create a FishboneItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends FishboneItemCreateArgs>(args: SelectSubset<T, FishboneItemCreateArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FishboneItems.
+     * @param {FishboneItemCreateManyArgs} args - Arguments to create many FishboneItems.
+     * @example
+     * // Create many FishboneItems
+     * const fishboneItem = await prisma.fishboneItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FishboneItemCreateManyArgs>(args?: SelectSubset<T, FishboneItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FishboneItem.
+     * @param {FishboneItemDeleteArgs} args - Arguments to delete one FishboneItem.
+     * @example
+     * // Delete one FishboneItem
+     * const FishboneItem = await prisma.fishboneItem.delete({
+     *   where: {
+     *     // ... filter to delete one FishboneItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FishboneItemDeleteArgs>(args: SelectSubset<T, FishboneItemDeleteArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FishboneItem.
+     * @param {FishboneItemUpdateArgs} args - Arguments to update one FishboneItem.
+     * @example
+     * // Update one FishboneItem
+     * const fishboneItem = await prisma.fishboneItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FishboneItemUpdateArgs>(args: SelectSubset<T, FishboneItemUpdateArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FishboneItems.
+     * @param {FishboneItemDeleteManyArgs} args - Arguments to filter FishboneItems to delete.
+     * @example
+     * // Delete a few FishboneItems
+     * const { count } = await prisma.fishboneItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FishboneItemDeleteManyArgs>(args?: SelectSubset<T, FishboneItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FishboneItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FishboneItems
+     * const fishboneItem = await prisma.fishboneItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FishboneItemUpdateManyArgs>(args: SelectSubset<T, FishboneItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FishboneItem.
+     * @param {FishboneItemUpsertArgs} args - Arguments to update or create a FishboneItem.
+     * @example
+     * // Update or create a FishboneItem
+     * const fishboneItem = await prisma.fishboneItem.upsert({
+     *   create: {
+     *     // ... data to create a FishboneItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FishboneItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FishboneItemUpsertArgs>(args: SelectSubset<T, FishboneItemUpsertArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FishboneItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCountArgs} args - Arguments to filter FishboneItems to count.
+     * @example
+     * // Count the number of FishboneItems
+     * const count = await prisma.fishboneItem.count({
+     *   where: {
+     *     // ... the filter for the FishboneItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends FishboneItemCountArgs>(
+      args?: Subset<T, FishboneItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FishboneItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FishboneItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FishboneItemAggregateArgs>(args: Subset<T, FishboneItemAggregateArgs>): Prisma.PrismaPromise<GetFishboneItemAggregateType<T>>
+
+    /**
+     * Group by FishboneItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FishboneItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FishboneItemGroupByArgs['orderBy'] }
+        : { orderBy?: FishboneItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FishboneItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFishboneItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FishboneItem model
+   */
+  readonly fields: FishboneItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FishboneItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FishboneItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    master_fishbone<T extends MasterFishboneDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MasterFishboneDefaultArgs<ExtArgs>>): Prisma__MasterFishboneClient<$Result.GetResult<Prisma.$MasterFishbonePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    category<T extends FishboneCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCategoryDefaultArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    causeLinks<T extends FishboneItem$causeLinksArgs<ExtArgs> = {}>(args?: Subset<T, FishboneItem$causeLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FishboneItem model
+   */
+  interface FishboneItemFieldRefs {
+    readonly fishboneItemId: FieldRef<"FishboneItem", 'String'>
+    readonly fishboneId: FieldRef<"FishboneItem", 'String'>
+    readonly categoryCode: FieldRef<"FishboneItem", 'String'>
+    readonly problemText: FieldRef<"FishboneItem", 'String'>
+    readonly solutionText: FieldRef<"FishboneItem", 'String'>
+    readonly isActive: FieldRef<"FishboneItem", 'Boolean'>
+    readonly createdAt: FieldRef<"FishboneItem", 'DateTime'>
+    readonly createdBy: FieldRef<"FishboneItem", 'String'>
+    readonly updatedAt: FieldRef<"FishboneItem", 'DateTime'>
+    readonly updatedBy: FieldRef<"FishboneItem", 'String'>
+    readonly isDeleted: FieldRef<"FishboneItem", 'Boolean'>
+    readonly deletedAt: FieldRef<"FishboneItem", 'DateTime'>
+    readonly deletedBy: FieldRef<"FishboneItem", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FishboneItem findUnique
+   */
+  export type FishboneItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItem to fetch.
+     */
+    where: FishboneItemWhereUniqueInput
+  }
+
+  /**
+   * FishboneItem findUniqueOrThrow
+   */
+  export type FishboneItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItem to fetch.
+     */
+    where: FishboneItemWhereUniqueInput
+  }
+
+  /**
+   * FishboneItem findFirst
+   */
+  export type FishboneItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItem to fetch.
+     */
+    where?: FishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItems to fetch.
+     */
+    orderBy?: FishboneItemOrderByWithRelationInput | FishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneItems.
+     */
+    cursor?: FishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneItems.
+     */
+    distinct?: FishboneItemScalarFieldEnum | FishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItem findFirstOrThrow
+   */
+  export type FishboneItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItem to fetch.
+     */
+    where?: FishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItems to fetch.
+     */
+    orderBy?: FishboneItemOrderByWithRelationInput | FishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneItems.
+     */
+    cursor?: FishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneItems.
+     */
+    distinct?: FishboneItemScalarFieldEnum | FishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItem findMany
+   */
+  export type FishboneItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItems to fetch.
+     */
+    where?: FishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItems to fetch.
+     */
+    orderBy?: FishboneItemOrderByWithRelationInput | FishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FishboneItems.
+     */
+    cursor?: FishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItems.
+     */
+    skip?: number
+    distinct?: FishboneItemScalarFieldEnum | FishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItem create
+   */
+  export type FishboneItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FishboneItem.
+     */
+    data: XOR<FishboneItemCreateInput, FishboneItemUncheckedCreateInput>
+  }
+
+  /**
+   * FishboneItem createMany
+   */
+  export type FishboneItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FishboneItems.
+     */
+    data: FishboneItemCreateManyInput | FishboneItemCreateManyInput[]
+  }
+
+  /**
+   * FishboneItem update
+   */
+  export type FishboneItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FishboneItem.
+     */
+    data: XOR<FishboneItemUpdateInput, FishboneItemUncheckedUpdateInput>
+    /**
+     * Choose, which FishboneItem to update.
+     */
+    where: FishboneItemWhereUniqueInput
+  }
+
+  /**
+   * FishboneItem updateMany
+   */
+  export type FishboneItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FishboneItems.
+     */
+    data: XOR<FishboneItemUpdateManyMutationInput, FishboneItemUncheckedUpdateManyInput>
+    /**
+     * Filter which FishboneItems to update
+     */
+    where?: FishboneItemWhereInput
+    /**
+     * Limit how many FishboneItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneItem upsert
+   */
+  export type FishboneItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FishboneItem to update in case it exists.
+     */
+    where: FishboneItemWhereUniqueInput
+    /**
+     * In case the FishboneItem found by the `where` argument doesn't exist, create a new FishboneItem with this data.
+     */
+    create: XOR<FishboneItemCreateInput, FishboneItemUncheckedCreateInput>
+    /**
+     * In case the FishboneItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FishboneItemUpdateInput, FishboneItemUncheckedUpdateInput>
+  }
+
+  /**
+   * FishboneItem delete
+   */
+  export type FishboneItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter which FishboneItem to delete.
+     */
+    where: FishboneItemWhereUniqueInput
+  }
+
+  /**
+   * FishboneItem deleteMany
+   */
+  export type FishboneItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneItems to delete
+     */
+    where?: FishboneItemWhereInput
+    /**
+     * Limit how many FishboneItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneItem.causeLinks
+   */
+  export type FishboneItem$causeLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    where?: FishboneItemCauseWhereInput
+    orderBy?: FishboneItemCauseOrderByWithRelationInput | FishboneItemCauseOrderByWithRelationInput[]
+    cursor?: FishboneItemCauseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FishboneItemCauseScalarFieldEnum | FishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItem without action
+   */
+  export type FishboneItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItem
+     */
+    select?: FishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItem
+     */
+    omit?: FishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FishboneItemCause
+   */
+
+  export type AggregateFishboneItemCause = {
+    _count: FishboneItemCauseCountAggregateOutputType | null
+    _min: FishboneItemCauseMinAggregateOutputType | null
+    _max: FishboneItemCauseMaxAggregateOutputType | null
+  }
+
+  export type FishboneItemCauseMinAggregateOutputType = {
+    fishboneItemCauseId: string | null
+    fishboneItemId: string | null
+    fishboneCauseId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneItemCauseMaxAggregateOutputType = {
+    fishboneItemCauseId: string | null
+    fishboneItemId: string | null
+    fishboneCauseId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type FishboneItemCauseCountAggregateOutputType = {
+    fishboneItemCauseId: number
+    fishboneItemId: number
+    fishboneCauseId: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type FishboneItemCauseMinAggregateInputType = {
+    fishboneItemCauseId?: true
+    fishboneItemId?: true
+    fishboneCauseId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneItemCauseMaxAggregateInputType = {
+    fishboneItemCauseId?: true
+    fishboneItemId?: true
+    fishboneCauseId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type FishboneItemCauseCountAggregateInputType = {
+    fishboneItemCauseId?: true
+    fishboneItemId?: true
+    fishboneCauseId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type FishboneItemCauseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneItemCause to aggregate.
+     */
+    where?: FishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItemCauses to fetch.
+     */
+    orderBy?: FishboneItemCauseOrderByWithRelationInput | FishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItemCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FishboneItemCauses
+    **/
+    _count?: true | FishboneItemCauseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FishboneItemCauseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FishboneItemCauseMaxAggregateInputType
+  }
+
+  export type GetFishboneItemCauseAggregateType<T extends FishboneItemCauseAggregateArgs> = {
+        [P in keyof T & keyof AggregateFishboneItemCause]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFishboneItemCause[P]>
+      : GetScalarType<T[P], AggregateFishboneItemCause[P]>
+  }
+
+
+
+
+  export type FishboneItemCauseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FishboneItemCauseWhereInput
+    orderBy?: FishboneItemCauseOrderByWithAggregationInput | FishboneItemCauseOrderByWithAggregationInput[]
+    by: FishboneItemCauseScalarFieldEnum[] | FishboneItemCauseScalarFieldEnum
+    having?: FishboneItemCauseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FishboneItemCauseCountAggregateInputType | true
+    _min?: FishboneItemCauseMinAggregateInputType
+    _max?: FishboneItemCauseMaxAggregateInputType
+  }
+
+  export type FishboneItemCauseGroupByOutputType = {
+    fishboneItemCauseId: string
+    fishboneItemId: string
+    fishboneCauseId: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: FishboneItemCauseCountAggregateOutputType | null
+    _min: FishboneItemCauseMinAggregateOutputType | null
+    _max: FishboneItemCauseMaxAggregateOutputType | null
+  }
+
+  type GetFishboneItemCauseGroupByPayload<T extends FishboneItemCauseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FishboneItemCauseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FishboneItemCauseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FishboneItemCauseGroupByOutputType[P]>
+            : GetScalarType<T[P], FishboneItemCauseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FishboneItemCauseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    fishboneItemCauseId?: boolean
+    fishboneItemId?: boolean
+    fishboneCauseId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    item?: boolean | FishboneItemDefaultArgs<ExtArgs>
+    cause?: boolean | FishboneCauseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fishboneItemCause"]>
+
+
+
+  export type FishboneItemCauseSelectScalar = {
+    fishboneItemCauseId?: boolean
+    fishboneItemId?: boolean
+    fishboneCauseId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type FishboneItemCauseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"fishboneItemCauseId" | "fishboneItemId" | "fishboneCauseId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["fishboneItemCause"]>
+  export type FishboneItemCauseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    item?: boolean | FishboneItemDefaultArgs<ExtArgs>
+    cause?: boolean | FishboneCauseDefaultArgs<ExtArgs>
+  }
+
+  export type $FishboneItemCausePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FishboneItemCause"
+    objects: {
+      item: Prisma.$FishboneItemPayload<ExtArgs>
+      cause: Prisma.$FishboneCausePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      fishboneItemCauseId: string
+      fishboneItemId: string
+      fishboneCauseId: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["fishboneItemCause"]>
+    composites: {}
+  }
+
+  type FishboneItemCauseGetPayload<S extends boolean | null | undefined | FishboneItemCauseDefaultArgs> = $Result.GetResult<Prisma.$FishboneItemCausePayload, S>
+
+  type FishboneItemCauseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FishboneItemCauseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FishboneItemCauseCountAggregateInputType | true
+    }
+
+  export interface FishboneItemCauseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FishboneItemCause'], meta: { name: 'FishboneItemCause' } }
+    /**
+     * Find zero or one FishboneItemCause that matches the filter.
+     * @param {FishboneItemCauseFindUniqueArgs} args - Arguments to find a FishboneItemCause
+     * @example
+     * // Get one FishboneItemCause
+     * const fishboneItemCause = await prisma.fishboneItemCause.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FishboneItemCauseFindUniqueArgs>(args: SelectSubset<T, FishboneItemCauseFindUniqueArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FishboneItemCause that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FishboneItemCauseFindUniqueOrThrowArgs} args - Arguments to find a FishboneItemCause
+     * @example
+     * // Get one FishboneItemCause
+     * const fishboneItemCause = await prisma.fishboneItemCause.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FishboneItemCauseFindUniqueOrThrowArgs>(args: SelectSubset<T, FishboneItemCauseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneItemCause that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseFindFirstArgs} args - Arguments to find a FishboneItemCause
+     * @example
+     * // Get one FishboneItemCause
+     * const fishboneItemCause = await prisma.fishboneItemCause.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FishboneItemCauseFindFirstArgs>(args?: SelectSubset<T, FishboneItemCauseFindFirstArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FishboneItemCause that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseFindFirstOrThrowArgs} args - Arguments to find a FishboneItemCause
+     * @example
+     * // Get one FishboneItemCause
+     * const fishboneItemCause = await prisma.fishboneItemCause.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FishboneItemCauseFindFirstOrThrowArgs>(args?: SelectSubset<T, FishboneItemCauseFindFirstOrThrowArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FishboneItemCauses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FishboneItemCauses
+     * const fishboneItemCauses = await prisma.fishboneItemCause.findMany()
+     * 
+     * // Get first 10 FishboneItemCauses
+     * const fishboneItemCauses = await prisma.fishboneItemCause.findMany({ take: 10 })
+     * 
+     * // Only select the `fishboneItemCauseId`
+     * const fishboneItemCauseWithFishboneItemCauseIdOnly = await prisma.fishboneItemCause.findMany({ select: { fishboneItemCauseId: true } })
+     * 
+     */
+    findMany<T extends FishboneItemCauseFindManyArgs>(args?: SelectSubset<T, FishboneItemCauseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FishboneItemCause.
+     * @param {FishboneItemCauseCreateArgs} args - Arguments to create a FishboneItemCause.
+     * @example
+     * // Create one FishboneItemCause
+     * const FishboneItemCause = await prisma.fishboneItemCause.create({
+     *   data: {
+     *     // ... data to create a FishboneItemCause
+     *   }
+     * })
+     * 
+     */
+    create<T extends FishboneItemCauseCreateArgs>(args: SelectSubset<T, FishboneItemCauseCreateArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FishboneItemCauses.
+     * @param {FishboneItemCauseCreateManyArgs} args - Arguments to create many FishboneItemCauses.
+     * @example
+     * // Create many FishboneItemCauses
+     * const fishboneItemCause = await prisma.fishboneItemCause.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FishboneItemCauseCreateManyArgs>(args?: SelectSubset<T, FishboneItemCauseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FishboneItemCause.
+     * @param {FishboneItemCauseDeleteArgs} args - Arguments to delete one FishboneItemCause.
+     * @example
+     * // Delete one FishboneItemCause
+     * const FishboneItemCause = await prisma.fishboneItemCause.delete({
+     *   where: {
+     *     // ... filter to delete one FishboneItemCause
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FishboneItemCauseDeleteArgs>(args: SelectSubset<T, FishboneItemCauseDeleteArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FishboneItemCause.
+     * @param {FishboneItemCauseUpdateArgs} args - Arguments to update one FishboneItemCause.
+     * @example
+     * // Update one FishboneItemCause
+     * const fishboneItemCause = await prisma.fishboneItemCause.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FishboneItemCauseUpdateArgs>(args: SelectSubset<T, FishboneItemCauseUpdateArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FishboneItemCauses.
+     * @param {FishboneItemCauseDeleteManyArgs} args - Arguments to filter FishboneItemCauses to delete.
+     * @example
+     * // Delete a few FishboneItemCauses
+     * const { count } = await prisma.fishboneItemCause.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FishboneItemCauseDeleteManyArgs>(args?: SelectSubset<T, FishboneItemCauseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FishboneItemCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FishboneItemCauses
+     * const fishboneItemCause = await prisma.fishboneItemCause.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FishboneItemCauseUpdateManyArgs>(args: SelectSubset<T, FishboneItemCauseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FishboneItemCause.
+     * @param {FishboneItemCauseUpsertArgs} args - Arguments to update or create a FishboneItemCause.
+     * @example
+     * // Update or create a FishboneItemCause
+     * const fishboneItemCause = await prisma.fishboneItemCause.upsert({
+     *   create: {
+     *     // ... data to create a FishboneItemCause
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FishboneItemCause we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FishboneItemCauseUpsertArgs>(args: SelectSubset<T, FishboneItemCauseUpsertArgs<ExtArgs>>): Prisma__FishboneItemCauseClient<$Result.GetResult<Prisma.$FishboneItemCausePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FishboneItemCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseCountArgs} args - Arguments to filter FishboneItemCauses to count.
+     * @example
+     * // Count the number of FishboneItemCauses
+     * const count = await prisma.fishboneItemCause.count({
+     *   where: {
+     *     // ... the filter for the FishboneItemCauses we want to count
+     *   }
+     * })
+    **/
+    count<T extends FishboneItemCauseCountArgs>(
+      args?: Subset<T, FishboneItemCauseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FishboneItemCauseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FishboneItemCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FishboneItemCauseAggregateArgs>(args: Subset<T, FishboneItemCauseAggregateArgs>): Prisma.PrismaPromise<GetFishboneItemCauseAggregateType<T>>
+
+    /**
+     * Group by FishboneItemCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FishboneItemCauseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FishboneItemCauseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FishboneItemCauseGroupByArgs['orderBy'] }
+        : { orderBy?: FishboneItemCauseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FishboneItemCauseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFishboneItemCauseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FishboneItemCause model
+   */
+  readonly fields: FishboneItemCauseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FishboneItemCause.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FishboneItemCauseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    item<T extends FishboneItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FishboneItemDefaultArgs<ExtArgs>>): Prisma__FishboneItemClient<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cause<T extends FishboneCauseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCauseDefaultArgs<ExtArgs>>): Prisma__FishboneCauseClient<$Result.GetResult<Prisma.$FishboneCausePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FishboneItemCause model
+   */
+  interface FishboneItemCauseFieldRefs {
+    readonly fishboneItemCauseId: FieldRef<"FishboneItemCause", 'String'>
+    readonly fishboneItemId: FieldRef<"FishboneItemCause", 'String'>
+    readonly fishboneCauseId: FieldRef<"FishboneItemCause", 'String'>
+    readonly isActive: FieldRef<"FishboneItemCause", 'Boolean'>
+    readonly createdAt: FieldRef<"FishboneItemCause", 'DateTime'>
+    readonly createdBy: FieldRef<"FishboneItemCause", 'String'>
+    readonly updatedAt: FieldRef<"FishboneItemCause", 'DateTime'>
+    readonly updatedBy: FieldRef<"FishboneItemCause", 'String'>
+    readonly isDeleted: FieldRef<"FishboneItemCause", 'Boolean'>
+    readonly deletedAt: FieldRef<"FishboneItemCause", 'DateTime'>
+    readonly deletedBy: FieldRef<"FishboneItemCause", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FishboneItemCause findUnique
+   */
+  export type FishboneItemCauseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItemCause to fetch.
+     */
+    where: FishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneItemCause findUniqueOrThrow
+   */
+  export type FishboneItemCauseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItemCause to fetch.
+     */
+    where: FishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneItemCause findFirst
+   */
+  export type FishboneItemCauseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItemCause to fetch.
+     */
+    where?: FishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItemCauses to fetch.
+     */
+    orderBy?: FishboneItemCauseOrderByWithRelationInput | FishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneItemCauses.
+     */
+    cursor?: FishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItemCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneItemCauses.
+     */
+    distinct?: FishboneItemCauseScalarFieldEnum | FishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItemCause findFirstOrThrow
+   */
+  export type FishboneItemCauseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItemCause to fetch.
+     */
+    where?: FishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItemCauses to fetch.
+     */
+    orderBy?: FishboneItemCauseOrderByWithRelationInput | FishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FishboneItemCauses.
+     */
+    cursor?: FishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItemCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FishboneItemCauses.
+     */
+    distinct?: FishboneItemCauseScalarFieldEnum | FishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItemCause findMany
+   */
+  export type FishboneItemCauseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which FishboneItemCauses to fetch.
+     */
+    where?: FishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FishboneItemCauses to fetch.
+     */
+    orderBy?: FishboneItemCauseOrderByWithRelationInput | FishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FishboneItemCauses.
+     */
+    cursor?: FishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FishboneItemCauses.
+     */
+    skip?: number
+    distinct?: FishboneItemCauseScalarFieldEnum | FishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneItemCause create
+   */
+  export type FishboneItemCauseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FishboneItemCause.
+     */
+    data: XOR<FishboneItemCauseCreateInput, FishboneItemCauseUncheckedCreateInput>
+  }
+
+  /**
+   * FishboneItemCause createMany
+   */
+  export type FishboneItemCauseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FishboneItemCauses.
+     */
+    data: FishboneItemCauseCreateManyInput | FishboneItemCauseCreateManyInput[]
+  }
+
+  /**
+   * FishboneItemCause update
+   */
+  export type FishboneItemCauseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FishboneItemCause.
+     */
+    data: XOR<FishboneItemCauseUpdateInput, FishboneItemCauseUncheckedUpdateInput>
+    /**
+     * Choose, which FishboneItemCause to update.
+     */
+    where: FishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneItemCause updateMany
+   */
+  export type FishboneItemCauseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FishboneItemCauses.
+     */
+    data: XOR<FishboneItemCauseUpdateManyMutationInput, FishboneItemCauseUncheckedUpdateManyInput>
+    /**
+     * Filter which FishboneItemCauses to update
+     */
+    where?: FishboneItemCauseWhereInput
+    /**
+     * Limit how many FishboneItemCauses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneItemCause upsert
+   */
+  export type FishboneItemCauseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FishboneItemCause to update in case it exists.
+     */
+    where: FishboneItemCauseWhereUniqueInput
+    /**
+     * In case the FishboneItemCause found by the `where` argument doesn't exist, create a new FishboneItemCause with this data.
+     */
+    create: XOR<FishboneItemCauseCreateInput, FishboneItemCauseUncheckedCreateInput>
+    /**
+     * In case the FishboneItemCause was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FishboneItemCauseUpdateInput, FishboneItemCauseUncheckedUpdateInput>
+  }
+
+  /**
+   * FishboneItemCause delete
+   */
+  export type FishboneItemCauseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter which FishboneItemCause to delete.
+     */
+    where: FishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * FishboneItemCause deleteMany
+   */
+  export type FishboneItemCauseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FishboneItemCauses to delete
+     */
+    where?: FishboneItemCauseWhereInput
+    /**
+     * Limit how many FishboneItemCauses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FishboneItemCause without action
+   */
+  export type FishboneItemCauseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FishboneItemCause
+     */
+    select?: FishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FishboneItemCause
+     */
+    omit?: FishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FishboneItemCauseInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model jabatan
    */
 
@@ -13988,6 +19777,96 @@ export namespace Prisma {
   export type ProcedureSopIKScalarFieldEnum = (typeof ProcedureSopIKScalarFieldEnum)[keyof typeof ProcedureSopIKScalarFieldEnum]
 
 
+  export const MasterFishboneScalarFieldEnum: {
+    fishboneId: 'fishboneId',
+    sbuSubId: 'sbuSubId',
+    fishboneName: 'fishboneName',
+    fishboneDesc: 'fishboneDesc',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type MasterFishboneScalarFieldEnum = (typeof MasterFishboneScalarFieldEnum)[keyof typeof MasterFishboneScalarFieldEnum]
+
+
+  export const FishboneCategoryScalarFieldEnum: {
+    fishboneCategoryId: 'fishboneCategoryId',
+    categoryCode: 'categoryCode',
+    categoryName: 'categoryName',
+    categoryDesc: 'categoryDesc',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type FishboneCategoryScalarFieldEnum = (typeof FishboneCategoryScalarFieldEnum)[keyof typeof FishboneCategoryScalarFieldEnum]
+
+
+  export const FishboneCauseScalarFieldEnum: {
+    fishboneCauseId: 'fishboneCauseId',
+    fishboneId: 'fishboneId',
+    causeNo: 'causeNo',
+    causeText: 'causeText',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type FishboneCauseScalarFieldEnum = (typeof FishboneCauseScalarFieldEnum)[keyof typeof FishboneCauseScalarFieldEnum]
+
+
+  export const FishboneItemScalarFieldEnum: {
+    fishboneItemId: 'fishboneItemId',
+    fishboneId: 'fishboneId',
+    categoryCode: 'categoryCode',
+    problemText: 'problemText',
+    solutionText: 'solutionText',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type FishboneItemScalarFieldEnum = (typeof FishboneItemScalarFieldEnum)[keyof typeof FishboneItemScalarFieldEnum]
+
+
+  export const FishboneItemCauseScalarFieldEnum: {
+    fishboneItemCauseId: 'fishboneItemCauseId',
+    fishboneItemId: 'fishboneItemId',
+    fishboneCauseId: 'fishboneCauseId',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type FishboneItemCauseScalarFieldEnum = (typeof FishboneItemCauseScalarFieldEnum)[keyof typeof FishboneItemCauseScalarFieldEnum]
+
+
   export const JabatanScalarFieldEnum: {
     jabatanId: 'jabatanId',
     jabatanName: 'jabatanName',
@@ -14897,6 +20776,477 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"ProcedureSopIK"> | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ProcedureSopIK"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"ProcedureSopIK"> | string | null
+  }
+
+  export type MasterFishboneWhereInput = {
+    AND?: MasterFishboneWhereInput | MasterFishboneWhereInput[]
+    OR?: MasterFishboneWhereInput[]
+    NOT?: MasterFishboneWhereInput | MasterFishboneWhereInput[]
+    fishboneId?: StringFilter<"MasterFishbone"> | string
+    sbuSubId?: IntFilter<"MasterFishbone"> | number
+    fishboneName?: StringFilter<"MasterFishbone"> | string
+    fishboneDesc?: StringNullableFilter<"MasterFishbone"> | string | null
+    isActive?: BoolFilter<"MasterFishbone"> | boolean
+    createdAt?: DateTimeFilter<"MasterFishbone"> | Date | string
+    createdBy?: StringNullableFilter<"MasterFishbone"> | string | null
+    updatedAt?: DateTimeFilter<"MasterFishbone"> | Date | string
+    updatedBy?: StringNullableFilter<"MasterFishbone"> | string | null
+    isDeleted?: BoolFilter<"MasterFishbone"> | boolean
+    deletedAt?: DateTimeNullableFilter<"MasterFishbone"> | Date | string | null
+    deletedBy?: StringNullableFilter<"MasterFishbone"> | string | null
+    causes?: FishboneCauseListRelationFilter
+    items?: FishboneItemListRelationFilter
+  }
+
+  export type MasterFishboneOrderByWithRelationInput = {
+    fishboneId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    causes?: FishboneCauseOrderByRelationAggregateInput
+    items?: FishboneItemOrderByRelationAggregateInput
+  }
+
+  export type MasterFishboneWhereUniqueInput = Prisma.AtLeast<{
+    fishboneId?: string
+    AND?: MasterFishboneWhereInput | MasterFishboneWhereInput[]
+    OR?: MasterFishboneWhereInput[]
+    NOT?: MasterFishboneWhereInput | MasterFishboneWhereInput[]
+    sbuSubId?: IntFilter<"MasterFishbone"> | number
+    fishboneName?: StringFilter<"MasterFishbone"> | string
+    fishboneDesc?: StringNullableFilter<"MasterFishbone"> | string | null
+    isActive?: BoolFilter<"MasterFishbone"> | boolean
+    createdAt?: DateTimeFilter<"MasterFishbone"> | Date | string
+    createdBy?: StringNullableFilter<"MasterFishbone"> | string | null
+    updatedAt?: DateTimeFilter<"MasterFishbone"> | Date | string
+    updatedBy?: StringNullableFilter<"MasterFishbone"> | string | null
+    isDeleted?: BoolFilter<"MasterFishbone"> | boolean
+    deletedAt?: DateTimeNullableFilter<"MasterFishbone"> | Date | string | null
+    deletedBy?: StringNullableFilter<"MasterFishbone"> | string | null
+    causes?: FishboneCauseListRelationFilter
+    items?: FishboneItemListRelationFilter
+  }, "fishboneId">
+
+  export type MasterFishboneOrderByWithAggregationInput = {
+    fishboneId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: MasterFishboneCountOrderByAggregateInput
+    _avg?: MasterFishboneAvgOrderByAggregateInput
+    _max?: MasterFishboneMaxOrderByAggregateInput
+    _min?: MasterFishboneMinOrderByAggregateInput
+    _sum?: MasterFishboneSumOrderByAggregateInput
+  }
+
+  export type MasterFishboneScalarWhereWithAggregatesInput = {
+    AND?: MasterFishboneScalarWhereWithAggregatesInput | MasterFishboneScalarWhereWithAggregatesInput[]
+    OR?: MasterFishboneScalarWhereWithAggregatesInput[]
+    NOT?: MasterFishboneScalarWhereWithAggregatesInput | MasterFishboneScalarWhereWithAggregatesInput[]
+    fishboneId?: StringWithAggregatesFilter<"MasterFishbone"> | string
+    sbuSubId?: IntWithAggregatesFilter<"MasterFishbone"> | number
+    fishboneName?: StringWithAggregatesFilter<"MasterFishbone"> | string
+    fishboneDesc?: StringNullableWithAggregatesFilter<"MasterFishbone"> | string | null
+    isActive?: BoolWithAggregatesFilter<"MasterFishbone"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"MasterFishbone"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"MasterFishbone"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"MasterFishbone"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"MasterFishbone"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"MasterFishbone"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"MasterFishbone"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"MasterFishbone"> | string | null
+  }
+
+  export type FishboneCategoryWhereInput = {
+    AND?: FishboneCategoryWhereInput | FishboneCategoryWhereInput[]
+    OR?: FishboneCategoryWhereInput[]
+    NOT?: FishboneCategoryWhereInput | FishboneCategoryWhereInput[]
+    fishboneCategoryId?: StringFilter<"FishboneCategory"> | string
+    categoryCode?: StringFilter<"FishboneCategory"> | string
+    categoryName?: StringFilter<"FishboneCategory"> | string
+    categoryDesc?: StringNullableFilter<"FishboneCategory"> | string | null
+    isActive?: BoolFilter<"FishboneCategory"> | boolean
+    createdAt?: DateTimeFilter<"FishboneCategory"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneCategory"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneCategory"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneCategory"> | string | null
+    isDeleted?: BoolFilter<"FishboneCategory"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneCategory"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneCategory"> | string | null
+    items?: FishboneItemListRelationFilter
+  }
+
+  export type FishboneCategoryOrderByWithRelationInput = {
+    fishboneCategoryId?: SortOrder
+    categoryCode?: SortOrder
+    categoryName?: SortOrder
+    categoryDesc?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    items?: FishboneItemOrderByRelationAggregateInput
+  }
+
+  export type FishboneCategoryWhereUniqueInput = Prisma.AtLeast<{
+    fishboneCategoryId?: string
+    categoryCode?: string
+    AND?: FishboneCategoryWhereInput | FishboneCategoryWhereInput[]
+    OR?: FishboneCategoryWhereInput[]
+    NOT?: FishboneCategoryWhereInput | FishboneCategoryWhereInput[]
+    categoryName?: StringFilter<"FishboneCategory"> | string
+    categoryDesc?: StringNullableFilter<"FishboneCategory"> | string | null
+    isActive?: BoolFilter<"FishboneCategory"> | boolean
+    createdAt?: DateTimeFilter<"FishboneCategory"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneCategory"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneCategory"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneCategory"> | string | null
+    isDeleted?: BoolFilter<"FishboneCategory"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneCategory"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneCategory"> | string | null
+    items?: FishboneItemListRelationFilter
+  }, "fishboneCategoryId" | "categoryCode">
+
+  export type FishboneCategoryOrderByWithAggregationInput = {
+    fishboneCategoryId?: SortOrder
+    categoryCode?: SortOrder
+    categoryName?: SortOrder
+    categoryDesc?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: FishboneCategoryCountOrderByAggregateInput
+    _max?: FishboneCategoryMaxOrderByAggregateInput
+    _min?: FishboneCategoryMinOrderByAggregateInput
+  }
+
+  export type FishboneCategoryScalarWhereWithAggregatesInput = {
+    AND?: FishboneCategoryScalarWhereWithAggregatesInput | FishboneCategoryScalarWhereWithAggregatesInput[]
+    OR?: FishboneCategoryScalarWhereWithAggregatesInput[]
+    NOT?: FishboneCategoryScalarWhereWithAggregatesInput | FishboneCategoryScalarWhereWithAggregatesInput[]
+    fishboneCategoryId?: StringWithAggregatesFilter<"FishboneCategory"> | string
+    categoryCode?: StringWithAggregatesFilter<"FishboneCategory"> | string
+    categoryName?: StringWithAggregatesFilter<"FishboneCategory"> | string
+    categoryDesc?: StringNullableWithAggregatesFilter<"FishboneCategory"> | string | null
+    isActive?: BoolWithAggregatesFilter<"FishboneCategory"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"FishboneCategory"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"FishboneCategory"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"FishboneCategory"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"FishboneCategory"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"FishboneCategory"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"FishboneCategory"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"FishboneCategory"> | string | null
+  }
+
+  export type FishboneCauseWhereInput = {
+    AND?: FishboneCauseWhereInput | FishboneCauseWhereInput[]
+    OR?: FishboneCauseWhereInput[]
+    NOT?: FishboneCauseWhereInput | FishboneCauseWhereInput[]
+    fishboneCauseId?: StringFilter<"FishboneCause"> | string
+    fishboneId?: StringFilter<"FishboneCause"> | string
+    causeNo?: IntFilter<"FishboneCause"> | number
+    causeText?: StringFilter<"FishboneCause"> | string
+    isActive?: BoolFilter<"FishboneCause"> | boolean
+    createdAt?: DateTimeFilter<"FishboneCause"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneCause"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneCause"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneCause"> | string | null
+    isDeleted?: BoolFilter<"FishboneCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneCause"> | string | null
+    master_fishbone?: XOR<MasterFishboneScalarRelationFilter, MasterFishboneWhereInput>
+    itemLinks?: FishboneItemCauseListRelationFilter
+  }
+
+  export type FishboneCauseOrderByWithRelationInput = {
+    fishboneCauseId?: SortOrder
+    fishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    master_fishbone?: MasterFishboneOrderByWithRelationInput
+    itemLinks?: FishboneItemCauseOrderByRelationAggregateInput
+  }
+
+  export type FishboneCauseWhereUniqueInput = Prisma.AtLeast<{
+    fishboneCauseId?: string
+    fishboneId_causeNo?: FishboneCauseFishboneIdCauseNoCompoundUniqueInput
+    AND?: FishboneCauseWhereInput | FishboneCauseWhereInput[]
+    OR?: FishboneCauseWhereInput[]
+    NOT?: FishboneCauseWhereInput | FishboneCauseWhereInput[]
+    fishboneId?: StringFilter<"FishboneCause"> | string
+    causeNo?: IntFilter<"FishboneCause"> | number
+    causeText?: StringFilter<"FishboneCause"> | string
+    isActive?: BoolFilter<"FishboneCause"> | boolean
+    createdAt?: DateTimeFilter<"FishboneCause"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneCause"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneCause"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneCause"> | string | null
+    isDeleted?: BoolFilter<"FishboneCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneCause"> | string | null
+    master_fishbone?: XOR<MasterFishboneScalarRelationFilter, MasterFishboneWhereInput>
+    itemLinks?: FishboneItemCauseListRelationFilter
+  }, "fishboneCauseId" | "fishboneId_causeNo">
+
+  export type FishboneCauseOrderByWithAggregationInput = {
+    fishboneCauseId?: SortOrder
+    fishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: FishboneCauseCountOrderByAggregateInput
+    _avg?: FishboneCauseAvgOrderByAggregateInput
+    _max?: FishboneCauseMaxOrderByAggregateInput
+    _min?: FishboneCauseMinOrderByAggregateInput
+    _sum?: FishboneCauseSumOrderByAggregateInput
+  }
+
+  export type FishboneCauseScalarWhereWithAggregatesInput = {
+    AND?: FishboneCauseScalarWhereWithAggregatesInput | FishboneCauseScalarWhereWithAggregatesInput[]
+    OR?: FishboneCauseScalarWhereWithAggregatesInput[]
+    NOT?: FishboneCauseScalarWhereWithAggregatesInput | FishboneCauseScalarWhereWithAggregatesInput[]
+    fishboneCauseId?: StringWithAggregatesFilter<"FishboneCause"> | string
+    fishboneId?: StringWithAggregatesFilter<"FishboneCause"> | string
+    causeNo?: IntWithAggregatesFilter<"FishboneCause"> | number
+    causeText?: StringWithAggregatesFilter<"FishboneCause"> | string
+    isActive?: BoolWithAggregatesFilter<"FishboneCause"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"FishboneCause"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"FishboneCause"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"FishboneCause"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"FishboneCause"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"FishboneCause"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"FishboneCause"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"FishboneCause"> | string | null
+  }
+
+  export type FishboneItemWhereInput = {
+    AND?: FishboneItemWhereInput | FishboneItemWhereInput[]
+    OR?: FishboneItemWhereInput[]
+    NOT?: FishboneItemWhereInput | FishboneItemWhereInput[]
+    fishboneItemId?: StringFilter<"FishboneItem"> | string
+    fishboneId?: StringFilter<"FishboneItem"> | string
+    categoryCode?: StringFilter<"FishboneItem"> | string
+    problemText?: StringFilter<"FishboneItem"> | string
+    solutionText?: StringFilter<"FishboneItem"> | string
+    isActive?: BoolFilter<"FishboneItem"> | boolean
+    createdAt?: DateTimeFilter<"FishboneItem"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneItem"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneItem"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneItem"> | string | null
+    isDeleted?: BoolFilter<"FishboneItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneItem"> | string | null
+    master_fishbone?: XOR<MasterFishboneScalarRelationFilter, MasterFishboneWhereInput>
+    category?: XOR<FishboneCategoryScalarRelationFilter, FishboneCategoryWhereInput>
+    causeLinks?: FishboneItemCauseListRelationFilter
+  }
+
+  export type FishboneItemOrderByWithRelationInput = {
+    fishboneItemId?: SortOrder
+    fishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    master_fishbone?: MasterFishboneOrderByWithRelationInput
+    category?: FishboneCategoryOrderByWithRelationInput
+    causeLinks?: FishboneItemCauseOrderByRelationAggregateInput
+  }
+
+  export type FishboneItemWhereUniqueInput = Prisma.AtLeast<{
+    fishboneItemId?: string
+    AND?: FishboneItemWhereInput | FishboneItemWhereInput[]
+    OR?: FishboneItemWhereInput[]
+    NOT?: FishboneItemWhereInput | FishboneItemWhereInput[]
+    fishboneId?: StringFilter<"FishboneItem"> | string
+    categoryCode?: StringFilter<"FishboneItem"> | string
+    problemText?: StringFilter<"FishboneItem"> | string
+    solutionText?: StringFilter<"FishboneItem"> | string
+    isActive?: BoolFilter<"FishboneItem"> | boolean
+    createdAt?: DateTimeFilter<"FishboneItem"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneItem"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneItem"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneItem"> | string | null
+    isDeleted?: BoolFilter<"FishboneItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneItem"> | string | null
+    master_fishbone?: XOR<MasterFishboneScalarRelationFilter, MasterFishboneWhereInput>
+    category?: XOR<FishboneCategoryScalarRelationFilter, FishboneCategoryWhereInput>
+    causeLinks?: FishboneItemCauseListRelationFilter
+  }, "fishboneItemId">
+
+  export type FishboneItemOrderByWithAggregationInput = {
+    fishboneItemId?: SortOrder
+    fishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: FishboneItemCountOrderByAggregateInput
+    _max?: FishboneItemMaxOrderByAggregateInput
+    _min?: FishboneItemMinOrderByAggregateInput
+  }
+
+  export type FishboneItemScalarWhereWithAggregatesInput = {
+    AND?: FishboneItemScalarWhereWithAggregatesInput | FishboneItemScalarWhereWithAggregatesInput[]
+    OR?: FishboneItemScalarWhereWithAggregatesInput[]
+    NOT?: FishboneItemScalarWhereWithAggregatesInput | FishboneItemScalarWhereWithAggregatesInput[]
+    fishboneItemId?: StringWithAggregatesFilter<"FishboneItem"> | string
+    fishboneId?: StringWithAggregatesFilter<"FishboneItem"> | string
+    categoryCode?: StringWithAggregatesFilter<"FishboneItem"> | string
+    problemText?: StringWithAggregatesFilter<"FishboneItem"> | string
+    solutionText?: StringWithAggregatesFilter<"FishboneItem"> | string
+    isActive?: BoolWithAggregatesFilter<"FishboneItem"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"FishboneItem"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"FishboneItem"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"FishboneItem"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"FishboneItem"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"FishboneItem"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"FishboneItem"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"FishboneItem"> | string | null
+  }
+
+  export type FishboneItemCauseWhereInput = {
+    AND?: FishboneItemCauseWhereInput | FishboneItemCauseWhereInput[]
+    OR?: FishboneItemCauseWhereInput[]
+    NOT?: FishboneItemCauseWhereInput | FishboneItemCauseWhereInput[]
+    fishboneItemCauseId?: StringFilter<"FishboneItemCause"> | string
+    fishboneItemId?: StringFilter<"FishboneItemCause"> | string
+    fishboneCauseId?: StringFilter<"FishboneItemCause"> | string
+    isActive?: BoolFilter<"FishboneItemCause"> | boolean
+    createdAt?: DateTimeFilter<"FishboneItemCause"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneItemCause"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    isDeleted?: BoolFilter<"FishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    item?: XOR<FishboneItemScalarRelationFilter, FishboneItemWhereInput>
+    cause?: XOR<FishboneCauseScalarRelationFilter, FishboneCauseWhereInput>
+  }
+
+  export type FishboneItemCauseOrderByWithRelationInput = {
+    fishboneItemCauseId?: SortOrder
+    fishboneItemId?: SortOrder
+    fishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    item?: FishboneItemOrderByWithRelationInput
+    cause?: FishboneCauseOrderByWithRelationInput
+  }
+
+  export type FishboneItemCauseWhereUniqueInput = Prisma.AtLeast<{
+    fishboneItemCauseId?: string
+    fishboneItemId_fishboneCauseId?: FishboneItemCauseFishboneItemIdFishboneCauseIdCompoundUniqueInput
+    AND?: FishboneItemCauseWhereInput | FishboneItemCauseWhereInput[]
+    OR?: FishboneItemCauseWhereInput[]
+    NOT?: FishboneItemCauseWhereInput | FishboneItemCauseWhereInput[]
+    fishboneItemId?: StringFilter<"FishboneItemCause"> | string
+    fishboneCauseId?: StringFilter<"FishboneItemCause"> | string
+    isActive?: BoolFilter<"FishboneItemCause"> | boolean
+    createdAt?: DateTimeFilter<"FishboneItemCause"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneItemCause"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    isDeleted?: BoolFilter<"FishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    item?: XOR<FishboneItemScalarRelationFilter, FishboneItemWhereInput>
+    cause?: XOR<FishboneCauseScalarRelationFilter, FishboneCauseWhereInput>
+  }, "fishboneItemCauseId" | "fishboneItemId_fishboneCauseId">
+
+  export type FishboneItemCauseOrderByWithAggregationInput = {
+    fishboneItemCauseId?: SortOrder
+    fishboneItemId?: SortOrder
+    fishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: FishboneItemCauseCountOrderByAggregateInput
+    _max?: FishboneItemCauseMaxOrderByAggregateInput
+    _min?: FishboneItemCauseMinOrderByAggregateInput
+  }
+
+  export type FishboneItemCauseScalarWhereWithAggregatesInput = {
+    AND?: FishboneItemCauseScalarWhereWithAggregatesInput | FishboneItemCauseScalarWhereWithAggregatesInput[]
+    OR?: FishboneItemCauseScalarWhereWithAggregatesInput[]
+    NOT?: FishboneItemCauseScalarWhereWithAggregatesInput | FishboneItemCauseScalarWhereWithAggregatesInput[]
+    fishboneItemCauseId?: StringWithAggregatesFilter<"FishboneItemCause"> | string
+    fishboneItemId?: StringWithAggregatesFilter<"FishboneItemCause"> | string
+    fishboneCauseId?: StringWithAggregatesFilter<"FishboneItemCause"> | string
+    isActive?: BoolWithAggregatesFilter<"FishboneItemCause"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"FishboneItemCause"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"FishboneItemCause"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"FishboneItemCause"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"FishboneItemCause"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"FishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"FishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"FishboneItemCause"> | string | null
   }
 
   export type jabatanWhereInput = {
@@ -16174,6 +22524,546 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type MasterFishboneCreateInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: FishboneCauseCreateNestedManyWithoutMaster_fishboneInput
+    items?: FishboneItemCreateNestedManyWithoutMaster_fishboneInput
+  }
+
+  export type MasterFishboneUncheckedCreateInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: FishboneCauseUncheckedCreateNestedManyWithoutMaster_fishboneInput
+    items?: FishboneItemUncheckedCreateNestedManyWithoutMaster_fishboneInput
+  }
+
+  export type MasterFishboneUpdateInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: FishboneCauseUpdateManyWithoutMaster_fishboneNestedInput
+    items?: FishboneItemUpdateManyWithoutMaster_fishboneNestedInput
+  }
+
+  export type MasterFishboneUncheckedUpdateInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: FishboneCauseUncheckedUpdateManyWithoutMaster_fishboneNestedInput
+    items?: FishboneItemUncheckedUpdateManyWithoutMaster_fishboneNestedInput
+  }
+
+  export type MasterFishboneCreateManyInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type MasterFishboneUpdateManyMutationInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MasterFishboneUncheckedUpdateManyInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCategoryCreateInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: FishboneItemCreateNestedManyWithoutCategoryInput
+  }
+
+  export type FishboneCategoryUncheckedCreateInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: FishboneItemUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type FishboneCategoryUpdateInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: FishboneItemUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type FishboneCategoryUncheckedUpdateInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: FishboneItemUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type FishboneCategoryCreateManyInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneCategoryUpdateManyMutationInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCategoryUncheckedUpdateManyInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCauseCreateInput = {
+    fishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    master_fishbone: MasterFishboneCreateNestedOneWithoutCausesInput
+    itemLinks?: FishboneItemCauseCreateNestedManyWithoutCauseInput
+  }
+
+  export type FishboneCauseUncheckedCreateInput = {
+    fishboneCauseId: string
+    fishboneId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    itemLinks?: FishboneItemCauseUncheckedCreateNestedManyWithoutCauseInput
+  }
+
+  export type FishboneCauseUpdateInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    master_fishbone?: MasterFishboneUpdateOneRequiredWithoutCausesNestedInput
+    itemLinks?: FishboneItemCauseUpdateManyWithoutCauseNestedInput
+  }
+
+  export type FishboneCauseUncheckedUpdateInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    itemLinks?: FishboneItemCauseUncheckedUpdateManyWithoutCauseNestedInput
+  }
+
+  export type FishboneCauseCreateManyInput = {
+    fishboneCauseId: string
+    fishboneId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneCauseUpdateManyMutationInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCauseUncheckedUpdateManyInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCreateInput = {
+    fishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    master_fishbone: MasterFishboneCreateNestedOneWithoutItemsInput
+    category: FishboneCategoryCreateNestedOneWithoutItemsInput
+    causeLinks?: FishboneItemCauseCreateNestedManyWithoutItemInput
+  }
+
+  export type FishboneItemUncheckedCreateInput = {
+    fishboneItemId: string
+    fishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causeLinks?: FishboneItemCauseUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type FishboneItemUpdateInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    master_fishbone?: MasterFishboneUpdateOneRequiredWithoutItemsNestedInput
+    category?: FishboneCategoryUpdateOneRequiredWithoutItemsNestedInput
+    causeLinks?: FishboneItemCauseUpdateManyWithoutItemNestedInput
+  }
+
+  export type FishboneItemUncheckedUpdateInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causeLinks?: FishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type FishboneItemCreateManyInput = {
+    fishboneItemId: string
+    fishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemUpdateManyMutationInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemUncheckedUpdateManyInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseCreateInput = {
+    fishboneItemCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    item: FishboneItemCreateNestedOneWithoutCauseLinksInput
+    cause: FishboneCauseCreateNestedOneWithoutItemLinksInput
+  }
+
+  export type FishboneItemCauseUncheckedCreateInput = {
+    fishboneItemCauseId: string
+    fishboneItemId: string
+    fishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCauseUpdateInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    item?: FishboneItemUpdateOneRequiredWithoutCauseLinksNestedInput
+    cause?: FishboneCauseUpdateOneRequiredWithoutItemLinksNestedInput
+  }
+
+  export type FishboneItemCauseUncheckedUpdateInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseCreateManyInput = {
+    fishboneItemCauseId: string
+    fishboneItemId: string
+    fishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCauseUpdateManyMutationInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseUncheckedUpdateManyInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type jabatanCreateInput = {
     jabatanId: string
     jabatanName: string
@@ -17316,6 +24206,307 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
+  export type FishboneCauseListRelationFilter = {
+    every?: FishboneCauseWhereInput
+    some?: FishboneCauseWhereInput
+    none?: FishboneCauseWhereInput
+  }
+
+  export type FishboneItemListRelationFilter = {
+    every?: FishboneItemWhereInput
+    some?: FishboneItemWhereInput
+    none?: FishboneItemWhereInput
+  }
+
+  export type FishboneCauseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FishboneItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MasterFishboneCountOrderByAggregateInput = {
+    fishboneId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type MasterFishboneAvgOrderByAggregateInput = {
+    sbuSubId?: SortOrder
+  }
+
+  export type MasterFishboneMaxOrderByAggregateInput = {
+    fishboneId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type MasterFishboneMinOrderByAggregateInput = {
+    fishboneId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type MasterFishboneSumOrderByAggregateInput = {
+    sbuSubId?: SortOrder
+  }
+
+  export type FishboneCategoryCountOrderByAggregateInput = {
+    fishboneCategoryId?: SortOrder
+    categoryCode?: SortOrder
+    categoryName?: SortOrder
+    categoryDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneCategoryMaxOrderByAggregateInput = {
+    fishboneCategoryId?: SortOrder
+    categoryCode?: SortOrder
+    categoryName?: SortOrder
+    categoryDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneCategoryMinOrderByAggregateInput = {
+    fishboneCategoryId?: SortOrder
+    categoryCode?: SortOrder
+    categoryName?: SortOrder
+    categoryDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type MasterFishboneScalarRelationFilter = {
+    is?: MasterFishboneWhereInput
+    isNot?: MasterFishboneWhereInput
+  }
+
+  export type FishboneItemCauseListRelationFilter = {
+    every?: FishboneItemCauseWhereInput
+    some?: FishboneItemCauseWhereInput
+    none?: FishboneItemCauseWhereInput
+  }
+
+  export type FishboneItemCauseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FishboneCauseFishboneIdCauseNoCompoundUniqueInput = {
+    fishboneId: string
+    causeNo: number
+  }
+
+  export type FishboneCauseCountOrderByAggregateInput = {
+    fishboneCauseId?: SortOrder
+    fishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneCauseAvgOrderByAggregateInput = {
+    causeNo?: SortOrder
+  }
+
+  export type FishboneCauseMaxOrderByAggregateInput = {
+    fishboneCauseId?: SortOrder
+    fishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneCauseMinOrderByAggregateInput = {
+    fishboneCauseId?: SortOrder
+    fishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneCauseSumOrderByAggregateInput = {
+    causeNo?: SortOrder
+  }
+
+  export type FishboneCategoryScalarRelationFilter = {
+    is?: FishboneCategoryWhereInput
+    isNot?: FishboneCategoryWhereInput
+  }
+
+  export type FishboneItemCountOrderByAggregateInput = {
+    fishboneItemId?: SortOrder
+    fishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneItemMaxOrderByAggregateInput = {
+    fishboneItemId?: SortOrder
+    fishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneItemMinOrderByAggregateInput = {
+    fishboneItemId?: SortOrder
+    fishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneItemScalarRelationFilter = {
+    is?: FishboneItemWhereInput
+    isNot?: FishboneItemWhereInput
+  }
+
+  export type FishboneCauseScalarRelationFilter = {
+    is?: FishboneCauseWhereInput
+    isNot?: FishboneCauseWhereInput
+  }
+
+  export type FishboneItemCauseFishboneItemIdFishboneCauseIdCompoundUniqueInput = {
+    fishboneItemId: string
+    fishboneCauseId: string
+  }
+
+  export type FishboneItemCauseCountOrderByAggregateInput = {
+    fishboneItemCauseId?: SortOrder
+    fishboneItemId?: SortOrder
+    fishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneItemCauseMaxOrderByAggregateInput = {
+    fishboneItemCauseId?: SortOrder
+    fishboneItemId?: SortOrder
+    fishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type FishboneItemCauseMinOrderByAggregateInput = {
+    fishboneItemCauseId?: SortOrder
+    fishboneItemId?: SortOrder
+    fishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
   export type jabatanCountOrderByAggregateInput = {
     jabatanId?: SortOrder
     jabatanName?: SortOrder
@@ -18212,6 +25403,286 @@ export namespace Prisma {
     upsert?: MasterIKUpsertWithoutSopsInput
     connect?: MasterIKWhereUniqueInput
     update?: XOR<XOR<MasterIKUpdateToOneWithWhereWithoutSopsInput, MasterIKUpdateWithoutSopsInput>, MasterIKUncheckedUpdateWithoutSopsInput>
+  }
+
+  export type FishboneCauseCreateNestedManyWithoutMaster_fishboneInput = {
+    create?: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput> | FishboneCauseCreateWithoutMaster_fishboneInput[] | FishboneCauseUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneCauseCreateOrConnectWithoutMaster_fishboneInput | FishboneCauseCreateOrConnectWithoutMaster_fishboneInput[]
+    createMany?: FishboneCauseCreateManyMaster_fishboneInputEnvelope
+    connect?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+  }
+
+  export type FishboneItemCreateNestedManyWithoutMaster_fishboneInput = {
+    create?: XOR<FishboneItemCreateWithoutMaster_fishboneInput, FishboneItemUncheckedCreateWithoutMaster_fishboneInput> | FishboneItemCreateWithoutMaster_fishboneInput[] | FishboneItemUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutMaster_fishboneInput | FishboneItemCreateOrConnectWithoutMaster_fishboneInput[]
+    createMany?: FishboneItemCreateManyMaster_fishboneInputEnvelope
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+  }
+
+  export type FishboneCauseUncheckedCreateNestedManyWithoutMaster_fishboneInput = {
+    create?: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput> | FishboneCauseCreateWithoutMaster_fishboneInput[] | FishboneCauseUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneCauseCreateOrConnectWithoutMaster_fishboneInput | FishboneCauseCreateOrConnectWithoutMaster_fishboneInput[]
+    createMany?: FishboneCauseCreateManyMaster_fishboneInputEnvelope
+    connect?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+  }
+
+  export type FishboneItemUncheckedCreateNestedManyWithoutMaster_fishboneInput = {
+    create?: XOR<FishboneItemCreateWithoutMaster_fishboneInput, FishboneItemUncheckedCreateWithoutMaster_fishboneInput> | FishboneItemCreateWithoutMaster_fishboneInput[] | FishboneItemUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutMaster_fishboneInput | FishboneItemCreateOrConnectWithoutMaster_fishboneInput[]
+    createMany?: FishboneItemCreateManyMaster_fishboneInputEnvelope
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+  }
+
+  export type FishboneCauseUpdateManyWithoutMaster_fishboneNestedInput = {
+    create?: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput> | FishboneCauseCreateWithoutMaster_fishboneInput[] | FishboneCauseUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneCauseCreateOrConnectWithoutMaster_fishboneInput | FishboneCauseCreateOrConnectWithoutMaster_fishboneInput[]
+    upsert?: FishboneCauseUpsertWithWhereUniqueWithoutMaster_fishboneInput | FishboneCauseUpsertWithWhereUniqueWithoutMaster_fishboneInput[]
+    createMany?: FishboneCauseCreateManyMaster_fishboneInputEnvelope
+    set?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    disconnect?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    delete?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    connect?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    update?: FishboneCauseUpdateWithWhereUniqueWithoutMaster_fishboneInput | FishboneCauseUpdateWithWhereUniqueWithoutMaster_fishboneInput[]
+    updateMany?: FishboneCauseUpdateManyWithWhereWithoutMaster_fishboneInput | FishboneCauseUpdateManyWithWhereWithoutMaster_fishboneInput[]
+    deleteMany?: FishboneCauseScalarWhereInput | FishboneCauseScalarWhereInput[]
+  }
+
+  export type FishboneItemUpdateManyWithoutMaster_fishboneNestedInput = {
+    create?: XOR<FishboneItemCreateWithoutMaster_fishboneInput, FishboneItemUncheckedCreateWithoutMaster_fishboneInput> | FishboneItemCreateWithoutMaster_fishboneInput[] | FishboneItemUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutMaster_fishboneInput | FishboneItemCreateOrConnectWithoutMaster_fishboneInput[]
+    upsert?: FishboneItemUpsertWithWhereUniqueWithoutMaster_fishboneInput | FishboneItemUpsertWithWhereUniqueWithoutMaster_fishboneInput[]
+    createMany?: FishboneItemCreateManyMaster_fishboneInputEnvelope
+    set?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    disconnect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    delete?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    update?: FishboneItemUpdateWithWhereUniqueWithoutMaster_fishboneInput | FishboneItemUpdateWithWhereUniqueWithoutMaster_fishboneInput[]
+    updateMany?: FishboneItemUpdateManyWithWhereWithoutMaster_fishboneInput | FishboneItemUpdateManyWithWhereWithoutMaster_fishboneInput[]
+    deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+  }
+
+  export type FishboneCauseUncheckedUpdateManyWithoutMaster_fishboneNestedInput = {
+    create?: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput> | FishboneCauseCreateWithoutMaster_fishboneInput[] | FishboneCauseUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneCauseCreateOrConnectWithoutMaster_fishboneInput | FishboneCauseCreateOrConnectWithoutMaster_fishboneInput[]
+    upsert?: FishboneCauseUpsertWithWhereUniqueWithoutMaster_fishboneInput | FishboneCauseUpsertWithWhereUniqueWithoutMaster_fishboneInput[]
+    createMany?: FishboneCauseCreateManyMaster_fishboneInputEnvelope
+    set?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    disconnect?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    delete?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    connect?: FishboneCauseWhereUniqueInput | FishboneCauseWhereUniqueInput[]
+    update?: FishboneCauseUpdateWithWhereUniqueWithoutMaster_fishboneInput | FishboneCauseUpdateWithWhereUniqueWithoutMaster_fishboneInput[]
+    updateMany?: FishboneCauseUpdateManyWithWhereWithoutMaster_fishboneInput | FishboneCauseUpdateManyWithWhereWithoutMaster_fishboneInput[]
+    deleteMany?: FishboneCauseScalarWhereInput | FishboneCauseScalarWhereInput[]
+  }
+
+  export type FishboneItemUncheckedUpdateManyWithoutMaster_fishboneNestedInput = {
+    create?: XOR<FishboneItemCreateWithoutMaster_fishboneInput, FishboneItemUncheckedCreateWithoutMaster_fishboneInput> | FishboneItemCreateWithoutMaster_fishboneInput[] | FishboneItemUncheckedCreateWithoutMaster_fishboneInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutMaster_fishboneInput | FishboneItemCreateOrConnectWithoutMaster_fishboneInput[]
+    upsert?: FishboneItemUpsertWithWhereUniqueWithoutMaster_fishboneInput | FishboneItemUpsertWithWhereUniqueWithoutMaster_fishboneInput[]
+    createMany?: FishboneItemCreateManyMaster_fishboneInputEnvelope
+    set?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    disconnect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    delete?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    update?: FishboneItemUpdateWithWhereUniqueWithoutMaster_fishboneInput | FishboneItemUpdateWithWhereUniqueWithoutMaster_fishboneInput[]
+    updateMany?: FishboneItemUpdateManyWithWhereWithoutMaster_fishboneInput | FishboneItemUpdateManyWithWhereWithoutMaster_fishboneInput[]
+    deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+  }
+
+  export type FishboneItemCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
+    createMany?: FishboneItemCreateManyCategoryInputEnvelope
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+  }
+
+  export type FishboneItemUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
+    createMany?: FishboneItemCreateManyCategoryInputEnvelope
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+  }
+
+  export type FishboneItemUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
+    upsert?: FishboneItemUpsertWithWhereUniqueWithoutCategoryInput | FishboneItemUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: FishboneItemCreateManyCategoryInputEnvelope
+    set?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    disconnect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    delete?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    update?: FishboneItemUpdateWithWhereUniqueWithoutCategoryInput | FishboneItemUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: FishboneItemUpdateManyWithWhereWithoutCategoryInput | FishboneItemUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+  }
+
+  export type FishboneItemUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
+    upsert?: FishboneItemUpsertWithWhereUniqueWithoutCategoryInput | FishboneItemUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: FishboneItemCreateManyCategoryInputEnvelope
+    set?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    disconnect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    delete?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+    update?: FishboneItemUpdateWithWhereUniqueWithoutCategoryInput | FishboneItemUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: FishboneItemUpdateManyWithWhereWithoutCategoryInput | FishboneItemUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+  }
+
+  export type MasterFishboneCreateNestedOneWithoutCausesInput = {
+    create?: XOR<MasterFishboneCreateWithoutCausesInput, MasterFishboneUncheckedCreateWithoutCausesInput>
+    connectOrCreate?: MasterFishboneCreateOrConnectWithoutCausesInput
+    connect?: MasterFishboneWhereUniqueInput
+  }
+
+  export type FishboneItemCauseCreateNestedManyWithoutCauseInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutCauseInput, FishboneItemCauseUncheckedCreateWithoutCauseInput> | FishboneItemCauseCreateWithoutCauseInput[] | FishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutCauseInput | FishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    createMany?: FishboneItemCauseCreateManyCauseInputEnvelope
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type FishboneItemCauseUncheckedCreateNestedManyWithoutCauseInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutCauseInput, FishboneItemCauseUncheckedCreateWithoutCauseInput> | FishboneItemCauseCreateWithoutCauseInput[] | FishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutCauseInput | FishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    createMany?: FishboneItemCauseCreateManyCauseInputEnvelope
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type MasterFishboneUpdateOneRequiredWithoutCausesNestedInput = {
+    create?: XOR<MasterFishboneCreateWithoutCausesInput, MasterFishboneUncheckedCreateWithoutCausesInput>
+    connectOrCreate?: MasterFishboneCreateOrConnectWithoutCausesInput
+    upsert?: MasterFishboneUpsertWithoutCausesInput
+    connect?: MasterFishboneWhereUniqueInput
+    update?: XOR<XOR<MasterFishboneUpdateToOneWithWhereWithoutCausesInput, MasterFishboneUpdateWithoutCausesInput>, MasterFishboneUncheckedUpdateWithoutCausesInput>
+  }
+
+  export type FishboneItemCauseUpdateManyWithoutCauseNestedInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutCauseInput, FishboneItemCauseUncheckedCreateWithoutCauseInput> | FishboneItemCauseCreateWithoutCauseInput[] | FishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutCauseInput | FishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    upsert?: FishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput | FishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput[]
+    createMany?: FishboneItemCauseCreateManyCauseInputEnvelope
+    set?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    disconnect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    delete?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    update?: FishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput | FishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput[]
+    updateMany?: FishboneItemCauseUpdateManyWithWhereWithoutCauseInput | FishboneItemCauseUpdateManyWithWhereWithoutCauseInput[]
+    deleteMany?: FishboneItemCauseScalarWhereInput | FishboneItemCauseScalarWhereInput[]
+  }
+
+  export type FishboneItemCauseUncheckedUpdateManyWithoutCauseNestedInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutCauseInput, FishboneItemCauseUncheckedCreateWithoutCauseInput> | FishboneItemCauseCreateWithoutCauseInput[] | FishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutCauseInput | FishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    upsert?: FishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput | FishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput[]
+    createMany?: FishboneItemCauseCreateManyCauseInputEnvelope
+    set?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    disconnect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    delete?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    update?: FishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput | FishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput[]
+    updateMany?: FishboneItemCauseUpdateManyWithWhereWithoutCauseInput | FishboneItemCauseUpdateManyWithWhereWithoutCauseInput[]
+    deleteMany?: FishboneItemCauseScalarWhereInput | FishboneItemCauseScalarWhereInput[]
+  }
+
+  export type MasterFishboneCreateNestedOneWithoutItemsInput = {
+    create?: XOR<MasterFishboneCreateWithoutItemsInput, MasterFishboneUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: MasterFishboneCreateOrConnectWithoutItemsInput
+    connect?: MasterFishboneWhereUniqueInput
+  }
+
+  export type FishboneCategoryCreateNestedOneWithoutItemsInput = {
+    create?: XOR<FishboneCategoryCreateWithoutItemsInput, FishboneCategoryUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: FishboneCategoryCreateOrConnectWithoutItemsInput
+    connect?: FishboneCategoryWhereUniqueInput
+  }
+
+  export type FishboneItemCauseCreateNestedManyWithoutItemInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutItemInput, FishboneItemCauseUncheckedCreateWithoutItemInput> | FishboneItemCauseCreateWithoutItemInput[] | FishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutItemInput | FishboneItemCauseCreateOrConnectWithoutItemInput[]
+    createMany?: FishboneItemCauseCreateManyItemInputEnvelope
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type FishboneItemCauseUncheckedCreateNestedManyWithoutItemInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutItemInput, FishboneItemCauseUncheckedCreateWithoutItemInput> | FishboneItemCauseCreateWithoutItemInput[] | FishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutItemInput | FishboneItemCauseCreateOrConnectWithoutItemInput[]
+    createMany?: FishboneItemCauseCreateManyItemInputEnvelope
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type MasterFishboneUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<MasterFishboneCreateWithoutItemsInput, MasterFishboneUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: MasterFishboneCreateOrConnectWithoutItemsInput
+    upsert?: MasterFishboneUpsertWithoutItemsInput
+    connect?: MasterFishboneWhereUniqueInput
+    update?: XOR<XOR<MasterFishboneUpdateToOneWithWhereWithoutItemsInput, MasterFishboneUpdateWithoutItemsInput>, MasterFishboneUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type FishboneCategoryUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<FishboneCategoryCreateWithoutItemsInput, FishboneCategoryUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: FishboneCategoryCreateOrConnectWithoutItemsInput
+    upsert?: FishboneCategoryUpsertWithoutItemsInput
+    connect?: FishboneCategoryWhereUniqueInput
+    update?: XOR<XOR<FishboneCategoryUpdateToOneWithWhereWithoutItemsInput, FishboneCategoryUpdateWithoutItemsInput>, FishboneCategoryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type FishboneItemCauseUpdateManyWithoutItemNestedInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutItemInput, FishboneItemCauseUncheckedCreateWithoutItemInput> | FishboneItemCauseCreateWithoutItemInput[] | FishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutItemInput | FishboneItemCauseCreateOrConnectWithoutItemInput[]
+    upsert?: FishboneItemCauseUpsertWithWhereUniqueWithoutItemInput | FishboneItemCauseUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: FishboneItemCauseCreateManyItemInputEnvelope
+    set?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    disconnect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    delete?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    update?: FishboneItemCauseUpdateWithWhereUniqueWithoutItemInput | FishboneItemCauseUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: FishboneItemCauseUpdateManyWithWhereWithoutItemInput | FishboneItemCauseUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: FishboneItemCauseScalarWhereInput | FishboneItemCauseScalarWhereInput[]
+  }
+
+  export type FishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput = {
+    create?: XOR<FishboneItemCauseCreateWithoutItemInput, FishboneItemCauseUncheckedCreateWithoutItemInput> | FishboneItemCauseCreateWithoutItemInput[] | FishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: FishboneItemCauseCreateOrConnectWithoutItemInput | FishboneItemCauseCreateOrConnectWithoutItemInput[]
+    upsert?: FishboneItemCauseUpsertWithWhereUniqueWithoutItemInput | FishboneItemCauseUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: FishboneItemCauseCreateManyItemInputEnvelope
+    set?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    disconnect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    delete?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    connect?: FishboneItemCauseWhereUniqueInput | FishboneItemCauseWhereUniqueInput[]
+    update?: FishboneItemCauseUpdateWithWhereUniqueWithoutItemInput | FishboneItemCauseUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: FishboneItemCauseUpdateManyWithWhereWithoutItemInput | FishboneItemCauseUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: FishboneItemCauseScalarWhereInput | FishboneItemCauseScalarWhereInput[]
+  }
+
+  export type FishboneItemCreateNestedOneWithoutCauseLinksInput = {
+    create?: XOR<FishboneItemCreateWithoutCauseLinksInput, FishboneItemUncheckedCreateWithoutCauseLinksInput>
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutCauseLinksInput
+    connect?: FishboneItemWhereUniqueInput
+  }
+
+  export type FishboneCauseCreateNestedOneWithoutItemLinksInput = {
+    create?: XOR<FishboneCauseCreateWithoutItemLinksInput, FishboneCauseUncheckedCreateWithoutItemLinksInput>
+    connectOrCreate?: FishboneCauseCreateOrConnectWithoutItemLinksInput
+    connect?: FishboneCauseWhereUniqueInput
+  }
+
+  export type FishboneItemUpdateOneRequiredWithoutCauseLinksNestedInput = {
+    create?: XOR<FishboneItemCreateWithoutCauseLinksInput, FishboneItemUncheckedCreateWithoutCauseLinksInput>
+    connectOrCreate?: FishboneItemCreateOrConnectWithoutCauseLinksInput
+    upsert?: FishboneItemUpsertWithoutCauseLinksInput
+    connect?: FishboneItemWhereUniqueInput
+    update?: XOR<XOR<FishboneItemUpdateToOneWithWhereWithoutCauseLinksInput, FishboneItemUpdateWithoutCauseLinksInput>, FishboneItemUncheckedUpdateWithoutCauseLinksInput>
+  }
+
+  export type FishboneCauseUpdateOneRequiredWithoutItemLinksNestedInput = {
+    create?: XOR<FishboneCauseCreateWithoutItemLinksInput, FishboneCauseUncheckedCreateWithoutItemLinksInput>
+    connectOrCreate?: FishboneCauseCreateOrConnectWithoutItemLinksInput
+    upsert?: FishboneCauseUpsertWithoutItemLinksInput
+    connect?: FishboneCauseWhereUniqueInput
+    update?: XOR<XOR<FishboneCauseUpdateToOneWithWhereWithoutItemLinksInput, FishboneCauseUpdateWithoutItemLinksInput>, FishboneCauseUncheckedUpdateWithoutItemLinksInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -20355,6 +27826,723 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type FishboneCauseCreateWithoutMaster_fishboneInput = {
+    fishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    itemLinks?: FishboneItemCauseCreateNestedManyWithoutCauseInput
+  }
+
+  export type FishboneCauseUncheckedCreateWithoutMaster_fishboneInput = {
+    fishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    itemLinks?: FishboneItemCauseUncheckedCreateNestedManyWithoutCauseInput
+  }
+
+  export type FishboneCauseCreateOrConnectWithoutMaster_fishboneInput = {
+    where: FishboneCauseWhereUniqueInput
+    create: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneCauseCreateManyMaster_fishboneInputEnvelope = {
+    data: FishboneCauseCreateManyMaster_fishboneInput | FishboneCauseCreateManyMaster_fishboneInput[]
+  }
+
+  export type FishboneItemCreateWithoutMaster_fishboneInput = {
+    fishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    category: FishboneCategoryCreateNestedOneWithoutItemsInput
+    causeLinks?: FishboneItemCauseCreateNestedManyWithoutItemInput
+  }
+
+  export type FishboneItemUncheckedCreateWithoutMaster_fishboneInput = {
+    fishboneItemId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causeLinks?: FishboneItemCauseUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type FishboneItemCreateOrConnectWithoutMaster_fishboneInput = {
+    where: FishboneItemWhereUniqueInput
+    create: XOR<FishboneItemCreateWithoutMaster_fishboneInput, FishboneItemUncheckedCreateWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneItemCreateManyMaster_fishboneInputEnvelope = {
+    data: FishboneItemCreateManyMaster_fishboneInput | FishboneItemCreateManyMaster_fishboneInput[]
+  }
+
+  export type FishboneCauseUpsertWithWhereUniqueWithoutMaster_fishboneInput = {
+    where: FishboneCauseWhereUniqueInput
+    update: XOR<FishboneCauseUpdateWithoutMaster_fishboneInput, FishboneCauseUncheckedUpdateWithoutMaster_fishboneInput>
+    create: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneCauseUpdateWithWhereUniqueWithoutMaster_fishboneInput = {
+    where: FishboneCauseWhereUniqueInput
+    data: XOR<FishboneCauseUpdateWithoutMaster_fishboneInput, FishboneCauseUncheckedUpdateWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneCauseUpdateManyWithWhereWithoutMaster_fishboneInput = {
+    where: FishboneCauseScalarWhereInput
+    data: XOR<FishboneCauseUpdateManyMutationInput, FishboneCauseUncheckedUpdateManyWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneCauseScalarWhereInput = {
+    AND?: FishboneCauseScalarWhereInput | FishboneCauseScalarWhereInput[]
+    OR?: FishboneCauseScalarWhereInput[]
+    NOT?: FishboneCauseScalarWhereInput | FishboneCauseScalarWhereInput[]
+    fishboneCauseId?: StringFilter<"FishboneCause"> | string
+    fishboneId?: StringFilter<"FishboneCause"> | string
+    causeNo?: IntFilter<"FishboneCause"> | number
+    causeText?: StringFilter<"FishboneCause"> | string
+    isActive?: BoolFilter<"FishboneCause"> | boolean
+    createdAt?: DateTimeFilter<"FishboneCause"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneCause"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneCause"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneCause"> | string | null
+    isDeleted?: BoolFilter<"FishboneCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneCause"> | string | null
+  }
+
+  export type FishboneItemUpsertWithWhereUniqueWithoutMaster_fishboneInput = {
+    where: FishboneItemWhereUniqueInput
+    update: XOR<FishboneItemUpdateWithoutMaster_fishboneInput, FishboneItemUncheckedUpdateWithoutMaster_fishboneInput>
+    create: XOR<FishboneItemCreateWithoutMaster_fishboneInput, FishboneItemUncheckedCreateWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneItemUpdateWithWhereUniqueWithoutMaster_fishboneInput = {
+    where: FishboneItemWhereUniqueInput
+    data: XOR<FishboneItemUpdateWithoutMaster_fishboneInput, FishboneItemUncheckedUpdateWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneItemUpdateManyWithWhereWithoutMaster_fishboneInput = {
+    where: FishboneItemScalarWhereInput
+    data: XOR<FishboneItemUpdateManyMutationInput, FishboneItemUncheckedUpdateManyWithoutMaster_fishboneInput>
+  }
+
+  export type FishboneItemScalarWhereInput = {
+    AND?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+    OR?: FishboneItemScalarWhereInput[]
+    NOT?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+    fishboneItemId?: StringFilter<"FishboneItem"> | string
+    fishboneId?: StringFilter<"FishboneItem"> | string
+    categoryCode?: StringFilter<"FishboneItem"> | string
+    problemText?: StringFilter<"FishboneItem"> | string
+    solutionText?: StringFilter<"FishboneItem"> | string
+    isActive?: BoolFilter<"FishboneItem"> | boolean
+    createdAt?: DateTimeFilter<"FishboneItem"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneItem"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneItem"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneItem"> | string | null
+    isDeleted?: BoolFilter<"FishboneItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneItem"> | string | null
+  }
+
+  export type FishboneItemCreateWithoutCategoryInput = {
+    fishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    master_fishbone: MasterFishboneCreateNestedOneWithoutItemsInput
+    causeLinks?: FishboneItemCauseCreateNestedManyWithoutItemInput
+  }
+
+  export type FishboneItemUncheckedCreateWithoutCategoryInput = {
+    fishboneItemId: string
+    fishboneId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causeLinks?: FishboneItemCauseUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type FishboneItemCreateOrConnectWithoutCategoryInput = {
+    where: FishboneItemWhereUniqueInput
+    create: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type FishboneItemCreateManyCategoryInputEnvelope = {
+    data: FishboneItemCreateManyCategoryInput | FishboneItemCreateManyCategoryInput[]
+  }
+
+  export type FishboneItemUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: FishboneItemWhereUniqueInput
+    update: XOR<FishboneItemUpdateWithoutCategoryInput, FishboneItemUncheckedUpdateWithoutCategoryInput>
+    create: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type FishboneItemUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: FishboneItemWhereUniqueInput
+    data: XOR<FishboneItemUpdateWithoutCategoryInput, FishboneItemUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type FishboneItemUpdateManyWithWhereWithoutCategoryInput = {
+    where: FishboneItemScalarWhereInput
+    data: XOR<FishboneItemUpdateManyMutationInput, FishboneItemUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type MasterFishboneCreateWithoutCausesInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: FishboneItemCreateNestedManyWithoutMaster_fishboneInput
+  }
+
+  export type MasterFishboneUncheckedCreateWithoutCausesInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: FishboneItemUncheckedCreateNestedManyWithoutMaster_fishboneInput
+  }
+
+  export type MasterFishboneCreateOrConnectWithoutCausesInput = {
+    where: MasterFishboneWhereUniqueInput
+    create: XOR<MasterFishboneCreateWithoutCausesInput, MasterFishboneUncheckedCreateWithoutCausesInput>
+  }
+
+  export type FishboneItemCauseCreateWithoutCauseInput = {
+    fishboneItemCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    item: FishboneItemCreateNestedOneWithoutCauseLinksInput
+  }
+
+  export type FishboneItemCauseUncheckedCreateWithoutCauseInput = {
+    fishboneItemCauseId: string
+    fishboneItemId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCauseCreateOrConnectWithoutCauseInput = {
+    where: FishboneItemCauseWhereUniqueInput
+    create: XOR<FishboneItemCauseCreateWithoutCauseInput, FishboneItemCauseUncheckedCreateWithoutCauseInput>
+  }
+
+  export type FishboneItemCauseCreateManyCauseInputEnvelope = {
+    data: FishboneItemCauseCreateManyCauseInput | FishboneItemCauseCreateManyCauseInput[]
+  }
+
+  export type MasterFishboneUpsertWithoutCausesInput = {
+    update: XOR<MasterFishboneUpdateWithoutCausesInput, MasterFishboneUncheckedUpdateWithoutCausesInput>
+    create: XOR<MasterFishboneCreateWithoutCausesInput, MasterFishboneUncheckedCreateWithoutCausesInput>
+    where?: MasterFishboneWhereInput
+  }
+
+  export type MasterFishboneUpdateToOneWithWhereWithoutCausesInput = {
+    where?: MasterFishboneWhereInput
+    data: XOR<MasterFishboneUpdateWithoutCausesInput, MasterFishboneUncheckedUpdateWithoutCausesInput>
+  }
+
+  export type MasterFishboneUpdateWithoutCausesInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: FishboneItemUpdateManyWithoutMaster_fishboneNestedInput
+  }
+
+  export type MasterFishboneUncheckedUpdateWithoutCausesInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: FishboneItemUncheckedUpdateManyWithoutMaster_fishboneNestedInput
+  }
+
+  export type FishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput = {
+    where: FishboneItemCauseWhereUniqueInput
+    update: XOR<FishboneItemCauseUpdateWithoutCauseInput, FishboneItemCauseUncheckedUpdateWithoutCauseInput>
+    create: XOR<FishboneItemCauseCreateWithoutCauseInput, FishboneItemCauseUncheckedCreateWithoutCauseInput>
+  }
+
+  export type FishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput = {
+    where: FishboneItemCauseWhereUniqueInput
+    data: XOR<FishboneItemCauseUpdateWithoutCauseInput, FishboneItemCauseUncheckedUpdateWithoutCauseInput>
+  }
+
+  export type FishboneItemCauseUpdateManyWithWhereWithoutCauseInput = {
+    where: FishboneItemCauseScalarWhereInput
+    data: XOR<FishboneItemCauseUpdateManyMutationInput, FishboneItemCauseUncheckedUpdateManyWithoutCauseInput>
+  }
+
+  export type FishboneItemCauseScalarWhereInput = {
+    AND?: FishboneItemCauseScalarWhereInput | FishboneItemCauseScalarWhereInput[]
+    OR?: FishboneItemCauseScalarWhereInput[]
+    NOT?: FishboneItemCauseScalarWhereInput | FishboneItemCauseScalarWhereInput[]
+    fishboneItemCauseId?: StringFilter<"FishboneItemCause"> | string
+    fishboneItemId?: StringFilter<"FishboneItemCause"> | string
+    fishboneCauseId?: StringFilter<"FishboneItemCause"> | string
+    isActive?: BoolFilter<"FishboneItemCause"> | boolean
+    createdAt?: DateTimeFilter<"FishboneItemCause"> | Date | string
+    createdBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    updatedAt?: DateTimeFilter<"FishboneItemCause"> | Date | string
+    updatedBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+    isDeleted?: BoolFilter<"FishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"FishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"FishboneItemCause"> | string | null
+  }
+
+  export type MasterFishboneCreateWithoutItemsInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: FishboneCauseCreateNestedManyWithoutMaster_fishboneInput
+  }
+
+  export type MasterFishboneUncheckedCreateWithoutItemsInput = {
+    fishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: FishboneCauseUncheckedCreateNestedManyWithoutMaster_fishboneInput
+  }
+
+  export type MasterFishboneCreateOrConnectWithoutItemsInput = {
+    where: MasterFishboneWhereUniqueInput
+    create: XOR<MasterFishboneCreateWithoutItemsInput, MasterFishboneUncheckedCreateWithoutItemsInput>
+  }
+
+  export type FishboneCategoryCreateWithoutItemsInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneCategoryUncheckedCreateWithoutItemsInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneCategoryCreateOrConnectWithoutItemsInput = {
+    where: FishboneCategoryWhereUniqueInput
+    create: XOR<FishboneCategoryCreateWithoutItemsInput, FishboneCategoryUncheckedCreateWithoutItemsInput>
+  }
+
+  export type FishboneItemCauseCreateWithoutItemInput = {
+    fishboneItemCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    cause: FishboneCauseCreateNestedOneWithoutItemLinksInput
+  }
+
+  export type FishboneItemCauseUncheckedCreateWithoutItemInput = {
+    fishboneItemCauseId: string
+    fishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCauseCreateOrConnectWithoutItemInput = {
+    where: FishboneItemCauseWhereUniqueInput
+    create: XOR<FishboneItemCauseCreateWithoutItemInput, FishboneItemCauseUncheckedCreateWithoutItemInput>
+  }
+
+  export type FishboneItemCauseCreateManyItemInputEnvelope = {
+    data: FishboneItemCauseCreateManyItemInput | FishboneItemCauseCreateManyItemInput[]
+  }
+
+  export type MasterFishboneUpsertWithoutItemsInput = {
+    update: XOR<MasterFishboneUpdateWithoutItemsInput, MasterFishboneUncheckedUpdateWithoutItemsInput>
+    create: XOR<MasterFishboneCreateWithoutItemsInput, MasterFishboneUncheckedCreateWithoutItemsInput>
+    where?: MasterFishboneWhereInput
+  }
+
+  export type MasterFishboneUpdateToOneWithWhereWithoutItemsInput = {
+    where?: MasterFishboneWhereInput
+    data: XOR<MasterFishboneUpdateWithoutItemsInput, MasterFishboneUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type MasterFishboneUpdateWithoutItemsInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: FishboneCauseUpdateManyWithoutMaster_fishboneNestedInput
+  }
+
+  export type MasterFishboneUncheckedUpdateWithoutItemsInput = {
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: FishboneCauseUncheckedUpdateManyWithoutMaster_fishboneNestedInput
+  }
+
+  export type FishboneCategoryUpsertWithoutItemsInput = {
+    update: XOR<FishboneCategoryUpdateWithoutItemsInput, FishboneCategoryUncheckedUpdateWithoutItemsInput>
+    create: XOR<FishboneCategoryCreateWithoutItemsInput, FishboneCategoryUncheckedCreateWithoutItemsInput>
+    where?: FishboneCategoryWhereInput
+  }
+
+  export type FishboneCategoryUpdateToOneWithWhereWithoutItemsInput = {
+    where?: FishboneCategoryWhereInput
+    data: XOR<FishboneCategoryUpdateWithoutItemsInput, FishboneCategoryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type FishboneCategoryUpdateWithoutItemsInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCategoryUncheckedUpdateWithoutItemsInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseUpsertWithWhereUniqueWithoutItemInput = {
+    where: FishboneItemCauseWhereUniqueInput
+    update: XOR<FishboneItemCauseUpdateWithoutItemInput, FishboneItemCauseUncheckedUpdateWithoutItemInput>
+    create: XOR<FishboneItemCauseCreateWithoutItemInput, FishboneItemCauseUncheckedCreateWithoutItemInput>
+  }
+
+  export type FishboneItemCauseUpdateWithWhereUniqueWithoutItemInput = {
+    where: FishboneItemCauseWhereUniqueInput
+    data: XOR<FishboneItemCauseUpdateWithoutItemInput, FishboneItemCauseUncheckedUpdateWithoutItemInput>
+  }
+
+  export type FishboneItemCauseUpdateManyWithWhereWithoutItemInput = {
+    where: FishboneItemCauseScalarWhereInput
+    data: XOR<FishboneItemCauseUpdateManyMutationInput, FishboneItemCauseUncheckedUpdateManyWithoutItemInput>
+  }
+
+  export type FishboneItemCreateWithoutCauseLinksInput = {
+    fishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    master_fishbone: MasterFishboneCreateNestedOneWithoutItemsInput
+    category: FishboneCategoryCreateNestedOneWithoutItemsInput
+  }
+
+  export type FishboneItemUncheckedCreateWithoutCauseLinksInput = {
+    fishboneItemId: string
+    fishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCreateOrConnectWithoutCauseLinksInput = {
+    where: FishboneItemWhereUniqueInput
+    create: XOR<FishboneItemCreateWithoutCauseLinksInput, FishboneItemUncheckedCreateWithoutCauseLinksInput>
+  }
+
+  export type FishboneCauseCreateWithoutItemLinksInput = {
+    fishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    master_fishbone: MasterFishboneCreateNestedOneWithoutCausesInput
+  }
+
+  export type FishboneCauseUncheckedCreateWithoutItemLinksInput = {
+    fishboneCauseId: string
+    fishboneId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneCauseCreateOrConnectWithoutItemLinksInput = {
+    where: FishboneCauseWhereUniqueInput
+    create: XOR<FishboneCauseCreateWithoutItemLinksInput, FishboneCauseUncheckedCreateWithoutItemLinksInput>
+  }
+
+  export type FishboneItemUpsertWithoutCauseLinksInput = {
+    update: XOR<FishboneItemUpdateWithoutCauseLinksInput, FishboneItemUncheckedUpdateWithoutCauseLinksInput>
+    create: XOR<FishboneItemCreateWithoutCauseLinksInput, FishboneItemUncheckedCreateWithoutCauseLinksInput>
+    where?: FishboneItemWhereInput
+  }
+
+  export type FishboneItemUpdateToOneWithWhereWithoutCauseLinksInput = {
+    where?: FishboneItemWhereInput
+    data: XOR<FishboneItemUpdateWithoutCauseLinksInput, FishboneItemUncheckedUpdateWithoutCauseLinksInput>
+  }
+
+  export type FishboneItemUpdateWithoutCauseLinksInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    master_fishbone?: MasterFishboneUpdateOneRequiredWithoutItemsNestedInput
+    category?: FishboneCategoryUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type FishboneItemUncheckedUpdateWithoutCauseLinksInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCauseUpsertWithoutItemLinksInput = {
+    update: XOR<FishboneCauseUpdateWithoutItemLinksInput, FishboneCauseUncheckedUpdateWithoutItemLinksInput>
+    create: XOR<FishboneCauseCreateWithoutItemLinksInput, FishboneCauseUncheckedCreateWithoutItemLinksInput>
+    where?: FishboneCauseWhereInput
+  }
+
+  export type FishboneCauseUpdateToOneWithWhereWithoutItemLinksInput = {
+    where?: FishboneCauseWhereInput
+    data: XOR<FishboneCauseUpdateWithoutItemLinksInput, FishboneCauseUncheckedUpdateWithoutItemLinksInput>
+  }
+
+  export type FishboneCauseUpdateWithoutItemLinksInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    master_fishbone?: MasterFishboneUpdateOneRequiredWithoutCausesNestedInput
+  }
+
+  export type FishboneCauseUncheckedUpdateWithoutItemLinksInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type UserCreateManyRoleInput = {
     userId: string
     username: string
@@ -21109,6 +29297,292 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneCauseCreateManyMaster_fishboneInput = {
+    fishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCreateManyMaster_fishboneInput = {
+    fishboneItemId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneCauseUpdateWithoutMaster_fishboneInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    itemLinks?: FishboneItemCauseUpdateManyWithoutCauseNestedInput
+  }
+
+  export type FishboneCauseUncheckedUpdateWithoutMaster_fishboneInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    itemLinks?: FishboneItemCauseUncheckedUpdateManyWithoutCauseNestedInput
+  }
+
+  export type FishboneCauseUncheckedUpdateManyWithoutMaster_fishboneInput = {
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemUpdateWithoutMaster_fishboneInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: FishboneCategoryUpdateOneRequiredWithoutItemsNestedInput
+    causeLinks?: FishboneItemCauseUpdateManyWithoutItemNestedInput
+  }
+
+  export type FishboneItemUncheckedUpdateWithoutMaster_fishboneInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causeLinks?: FishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type FishboneItemUncheckedUpdateManyWithoutMaster_fishboneInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCreateManyCategoryInput = {
+    fishboneItemId: string
+    fishboneId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemUpdateWithoutCategoryInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    master_fishbone?: MasterFishboneUpdateOneRequiredWithoutItemsNestedInput
+    causeLinks?: FishboneItemCauseUpdateManyWithoutItemNestedInput
+  }
+
+  export type FishboneItemUncheckedUpdateWithoutCategoryInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causeLinks?: FishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type FishboneItemUncheckedUpdateManyWithoutCategoryInput = {
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    fishboneId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseCreateManyCauseInput = {
+    fishboneItemCauseId: string
+    fishboneItemId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCauseUpdateWithoutCauseInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    item?: FishboneItemUpdateOneRequiredWithoutCauseLinksNestedInput
+  }
+
+  export type FishboneItemCauseUncheckedUpdateWithoutCauseInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseUncheckedUpdateManyWithoutCauseInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneItemId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseCreateManyItemInput = {
+    fishboneItemCauseId: string
+    fishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type FishboneItemCauseUpdateWithoutItemInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cause?: FishboneCauseUpdateOneRequiredWithoutItemLinksNestedInput
+  }
+
+  export type FishboneItemCauseUncheckedUpdateWithoutItemInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FishboneItemCauseUncheckedUpdateManyWithoutItemInput = {
+    fishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    fishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }

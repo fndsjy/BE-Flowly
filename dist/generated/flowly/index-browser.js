@@ -245,6 +245,81 @@ exports.Prisma.ProcedureSopIKScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.MasterFishboneScalarFieldEnum = {
+  fishboneId: 'fishboneId',
+  sbuSubId: 'sbuSubId',
+  fishboneName: 'fishboneName',
+  fishboneDesc: 'fishboneDesc',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.FishboneCategoryScalarFieldEnum = {
+  fishboneCategoryId: 'fishboneCategoryId',
+  categoryCode: 'categoryCode',
+  categoryName: 'categoryName',
+  categoryDesc: 'categoryDesc',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.FishboneCauseScalarFieldEnum = {
+  fishboneCauseId: 'fishboneCauseId',
+  fishboneId: 'fishboneId',
+  causeNo: 'causeNo',
+  causeText: 'causeText',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.FishboneItemScalarFieldEnum = {
+  fishboneItemId: 'fishboneItemId',
+  fishboneId: 'fishboneId',
+  categoryCode: 'categoryCode',
+  problemText: 'problemText',
+  solutionText: 'solutionText',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.FishboneItemCauseScalarFieldEnum = {
+  fishboneItemCauseId: 'fishboneItemCauseId',
+  fishboneItemId: 'fishboneItemId',
+  fishboneCauseId: 'fishboneCauseId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.JabatanScalarFieldEnum = {
   jabatanId: 'jabatanId',
   jabatanName: 'jabatanName',
@@ -329,6 +404,11 @@ exports.Prisma.ModelName = {
   ProcedureSop: 'ProcedureSop',
   MasterIK: 'MasterIK',
   ProcedureSopIK: 'ProcedureSopIK',
+  MasterFishbone: 'MasterFishbone',
+  FishboneCategory: 'FishboneCategory',
+  FishboneCause: 'FishboneCause',
+  FishboneItem: 'FishboneItem',
+  FishboneItemCause: 'FishboneItemCause',
   jabatan: 'jabatan',
   AccessRole: 'AccessRole',
   MasterAccessRole: 'MasterAccessRole',
