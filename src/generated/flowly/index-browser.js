@@ -245,11 +245,200 @@ exports.Prisma.ProcedureSopIKScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.CaseHeaderScalarFieldEnum = {
+  caseId: 'caseId',
+  caseType: 'caseType',
+  caseTitle: 'caseTitle',
+  background: 'background',
+  currentCondition: 'currentCondition',
+  projectDesc: 'projectDesc',
+  projectObjective: 'projectObjective',
+  locationDesc: 'locationDesc',
+  notes: 'notes',
+  status: 'status',
+  requesterId: 'requesterId',
+  requesterEmployeeId: 'requesterEmployeeId',
+  originSbuSubId: 'originSbuSubId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseDepartmentScalarFieldEnum = {
+  caseDepartmentId: 'caseDepartmentId',
+  caseId: 'caseId',
+  sbuSubId: 'sbuSubId',
+  decisionStatus: 'decisionStatus',
+  decisionAt: 'decisionAt',
+  decisionBy: 'decisionBy',
+  assigneeEmployeeId: 'assigneeEmployeeId',
+  assignedAt: 'assignedAt',
+  assignedBy: 'assignedBy',
+  workStatus: 'workStatus',
+  startDate: 'startDate',
+  targetDate: 'targetDate',
+  endDate: 'endDate',
+  workNotes: 'workNotes',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseNotificationOutboxScalarFieldEnum = {
+  caseNotificationId: 'caseNotificationId',
+  caseId: 'caseId',
+  caseDepartmentId: 'caseDepartmentId',
+  recipientEmployeeId: 'recipientEmployeeId',
+  channel: 'channel',
+  phoneNumber: 'phoneNumber',
+  message: 'message',
+  status: 'status',
+  attempts: 'attempts',
+  lastError: 'lastError',
+  provider: 'provider',
+  meta: 'meta',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseNotificationMessageScalarFieldEnum = {
+  caseNotificationMessageId: 'caseNotificationMessageId',
+  caseId: 'caseId',
+  caseDepartmentId: 'caseDepartmentId',
+  recipientEmployeeId: 'recipientEmployeeId',
+  role: 'role',
+  messageTemplate: 'messageTemplate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseNotificationTemplateScalarFieldEnum = {
+  caseNotificationTemplateId: 'caseNotificationTemplateId',
+  templateName: 'templateName',
+  channel: 'channel',
+  role: 'role',
+  action: 'action',
+  caseType: 'caseType',
+  messageTemplate: 'messageTemplate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseAttachmentScalarFieldEnum = {
+  caseAttachmentId: 'caseAttachmentId',
+  caseId: 'caseId',
+  mediaType: 'mediaType',
+  filePath: 'filePath',
+  fileName: 'fileName',
+  fileMime: 'fileMime',
+  fileSize: 'fileSize',
+  caption: 'caption',
+  locationDesc: 'locationDesc',
+  orderIndex: 'orderIndex',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.MasterFishboneScalarFieldEnum = {
   fishboneId: 'fishboneId',
   sbuSubId: 'sbuSubId',
   fishboneName: 'fishboneName',
   fishboneDesc: 'fishboneDesc',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseFishboneMasterScalarFieldEnum = {
+  caseFishboneId: 'caseFishboneId',
+  caseId: 'caseId',
+  sbuSubId: 'sbuSubId',
+  fishboneName: 'fishboneName',
+  fishboneDesc: 'fishboneDesc',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseFishboneCauseScalarFieldEnum = {
+  caseFishboneCauseId: 'caseFishboneCauseId',
+  caseFishboneId: 'caseFishboneId',
+  causeNo: 'causeNo',
+  causeText: 'causeText',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseFishboneItemScalarFieldEnum = {
+  caseFishboneItemId: 'caseFishboneItemId',
+  caseFishboneId: 'caseFishboneId',
+  categoryCode: 'categoryCode',
+  problemText: 'problemText',
+  solutionText: 'solutionText',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseFishboneItemCauseScalarFieldEnum = {
+  caseFishboneItemCauseId: 'caseFishboneItemCauseId',
+  caseFishboneItemId: 'caseFishboneItemId',
+  caseFishboneCauseId: 'caseFishboneCauseId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
@@ -404,7 +593,17 @@ exports.Prisma.ModelName = {
   ProcedureSop: 'ProcedureSop',
   MasterIK: 'MasterIK',
   ProcedureSopIK: 'ProcedureSopIK',
+  CaseHeader: 'CaseHeader',
+  CaseDepartment: 'CaseDepartment',
+  CaseNotificationOutbox: 'CaseNotificationOutbox',
+  CaseNotificationMessage: 'CaseNotificationMessage',
+  CaseNotificationTemplate: 'CaseNotificationTemplate',
+  CaseAttachment: 'CaseAttachment',
   MasterFishbone: 'MasterFishbone',
+  CaseFishboneMaster: 'CaseFishboneMaster',
+  CaseFishboneCause: 'CaseFishboneCause',
+  CaseFishboneItem: 'CaseFishboneItem',
+  CaseFishboneItemCause: 'CaseFishboneItemCause',
   FishboneCategory: 'FishboneCategory',
   FishboneCause: 'FishboneCause',
   FishboneItem: 'FishboneItem',

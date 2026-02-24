@@ -321,8 +321,8 @@ export class SbuService {
         const pilar = await prismaEmployee.em_pilar.findUnique({
             where: { id: pilarId },
         });
-        // Jika pilar tidak ada atau isDeleted true → return [] langsung
-        if (!pilar || pilar.isDeleted === true) {
+        // Jika pilar tidak ada / isDeleted true / status bukan A -> return [] langsung
+        if (!pilar || pilar.isDeleted === true || pilar.status !== "A") {
             return [];
         }
         const exists = await prismaEmployee.em_pilar.findUnique({
@@ -334,6 +334,7 @@ export class SbuService {
             where: {
                 sbu_pilar: pilarId,
                 OR: [{ isDeleted: false }, { isDeleted: null }],
+                status: "A",
                 ...(accessContext.isAdmin
                     ? {}
                     : { id: { in: Array.from(accessContext.sbu.read) } })

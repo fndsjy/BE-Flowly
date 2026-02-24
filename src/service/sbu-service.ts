@@ -381,44 +381,46 @@ export class SbuService {
     return list.map(toSbuListResponse);
   }
 
-    /* ---------- GET BY PILAR ---------- */
-    static async getByPilar(requesterId: string, pilarId: number) {
-      const accessContext = await getAccessContext(requesterId);
-      const moduleAccessMap = await getModuleAccessMap(requesterId);
-      if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "SBU")) {
-        throw new ResponseError(403, "Module SBU access required");
-      }
-      if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
-        return [];
-      }
-
-      // Cek apakah pilar masih aktif
-      const pilar = await prismaEmployee.em_pilar.findUnique({
-        where: { id: pilarId },
-      });
-
-      // Jika pilar tidak ada atau isDeleted true → return [] langsung
-      if (!pilar || pilar.isDeleted === true) {
-        return [];
-      }
-
-        const exists = await prismaEmployee.em_pilar.findUnique({
-            where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }]}
-        });
-
-        if (!exists) throw new ResponseError(404, "Pilar not found");
-
-        const list = await prismaEmployee.em_sbu.findMany({
-          where: {
-            sbu_pilar: pilarId,
-            OR: [{ isDeleted: false }, { isDeleted: null }],
-            ...(accessContext.isAdmin
-              ? {}
-              : { id: { in: Array.from(accessContext.sbu.read) } })
-          },
-          orderBy: { createdAt: "desc" }
-        });
-
-        return list.map(toSbuListResponse);
+  /* ---------- GET BY PILAR ---------- */
+  static async getByPilar(requesterId: string, pilarId: number) {
+    const accessContext = await getAccessContext(requesterId);
+    const moduleAccessMap = await getModuleAccessMap(requesterId);
+    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "SBU")) {
+      throw new ResponseError(403, "Module SBU access required");
     }
+    if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
+      return [];
+    }
+
+    // Cek apakah pilar masih aktif
+    const pilar = await prismaEmployee.em_pilar.findUnique({
+      where: { id: pilarId },
+    });
+
+    // Jika pilar tidak ada / isDeleted true / status bukan A -> return [] langsung
+    if (!pilar || pilar.isDeleted === true || pilar.status !== "A") {
+      return [];
+    }
+
+    const exists = await prismaEmployee.em_pilar.findUnique({
+      where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }] }
+    });
+    if (!exists) throw new ResponseError(404, "Pilar not found");
+
+    const list = await prismaEmployee.em_sbu.findMany({
+      where: {
+        sbu_pilar: pilarId,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
+        status: "A",
+        ...(accessContext.isAdmin
+          ? {}
+          : { id: { in: Array.from(accessContext.sbu.read) } })
+      },
+      orderBy: { createdAt: "desc" }
+    });
+
+    return list.map(toSbuListResponse);
+  }
 }
+
+

@@ -50,10 +50,60 @@ export type MasterIK = $Result.DefaultSelection<Prisma.$MasterIKPayload>
  */
 export type ProcedureSopIK = $Result.DefaultSelection<Prisma.$ProcedureSopIKPayload>
 /**
+ * Model CaseHeader
+ * Case header (problem/project)
+ */
+export type CaseHeader = $Result.DefaultSelection<Prisma.$CaseHeaderPayload>
+/**
+ * Model CaseDepartment
+ * Case -> target departments (SBU sub) with decision + PIC assignment
+ */
+export type CaseDepartment = $Result.DefaultSelection<Prisma.$CaseDepartmentPayload>
+/**
+ * Model CaseNotificationOutbox
+ * Case notification outbox (WhatsApp, etc.)
+ */
+export type CaseNotificationOutbox = $Result.DefaultSelection<Prisma.$CaseNotificationOutboxPayload>
+/**
+ * Model CaseNotificationMessage
+ * Custom notification message template (per case/person/role)
+ */
+export type CaseNotificationMessage = $Result.DefaultSelection<Prisma.$CaseNotificationMessagePayload>
+/**
+ * Model CaseNotificationTemplate
+ * Default notification template for outbox
+ */
+export type CaseNotificationTemplate = $Result.DefaultSelection<Prisma.$CaseNotificationTemplatePayload>
+/**
+ * Model CaseAttachment
+ * Case attachments (photo/video documentation)
+ */
+export type CaseAttachment = $Result.DefaultSelection<Prisma.$CaseAttachmentPayload>
+/**
  * Model MasterFishbone
- * Fishbone header
+ * Fishbone master
  */
 export type MasterFishbone = $Result.DefaultSelection<Prisma.$MasterFishbonePayload>
+/**
+ * Model CaseFishboneMaster
+ * Case fishbone header (per case)
+ */
+export type CaseFishboneMaster = $Result.DefaultSelection<Prisma.$CaseFishboneMasterPayload>
+/**
+ * Model CaseFishboneCause
+ * Case fishbone root causes
+ */
+export type CaseFishboneCause = $Result.DefaultSelection<Prisma.$CaseFishboneCausePayload>
+/**
+ * Model CaseFishboneItem
+ * Case fishbone problem + solution per category (6M)
+ */
+export type CaseFishboneItem = $Result.DefaultSelection<Prisma.$CaseFishboneItemPayload>
+/**
+ * Model CaseFishboneItemCause
+ * Case fishbone item to cause mapping
+ */
+export type CaseFishboneItemCause = $Result.DefaultSelection<Prisma.$CaseFishboneItemCausePayload>
 /**
  * Model FishboneCategory
  * Fishbone category master (6M, etc.)
@@ -284,6 +334,66 @@ export class PrismaClient<
   get procedureSopIK(): Prisma.ProcedureSopIKDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.caseHeader`: Exposes CRUD operations for the **CaseHeader** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseHeaders
+    * const caseHeaders = await prisma.caseHeader.findMany()
+    * ```
+    */
+  get caseHeader(): Prisma.CaseHeaderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseDepartment`: Exposes CRUD operations for the **CaseDepartment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseDepartments
+    * const caseDepartments = await prisma.caseDepartment.findMany()
+    * ```
+    */
+  get caseDepartment(): Prisma.CaseDepartmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseNotificationOutbox`: Exposes CRUD operations for the **CaseNotificationOutbox** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseNotificationOutboxes
+    * const caseNotificationOutboxes = await prisma.caseNotificationOutbox.findMany()
+    * ```
+    */
+  get caseNotificationOutbox(): Prisma.CaseNotificationOutboxDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseNotificationMessage`: Exposes CRUD operations for the **CaseNotificationMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseNotificationMessages
+    * const caseNotificationMessages = await prisma.caseNotificationMessage.findMany()
+    * ```
+    */
+  get caseNotificationMessage(): Prisma.CaseNotificationMessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseNotificationTemplate`: Exposes CRUD operations for the **CaseNotificationTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseNotificationTemplates
+    * const caseNotificationTemplates = await prisma.caseNotificationTemplate.findMany()
+    * ```
+    */
+  get caseNotificationTemplate(): Prisma.CaseNotificationTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseAttachment`: Exposes CRUD operations for the **CaseAttachment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseAttachments
+    * const caseAttachments = await prisma.caseAttachment.findMany()
+    * ```
+    */
+  get caseAttachment(): Prisma.CaseAttachmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.masterFishbone`: Exposes CRUD operations for the **MasterFishbone** model.
     * Example usage:
     * ```ts
@@ -292,6 +402,46 @@ export class PrismaClient<
     * ```
     */
   get masterFishbone(): Prisma.MasterFishboneDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseFishboneMaster`: Exposes CRUD operations for the **CaseFishboneMaster** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseFishboneMasters
+    * const caseFishboneMasters = await prisma.caseFishboneMaster.findMany()
+    * ```
+    */
+  get caseFishboneMaster(): Prisma.CaseFishboneMasterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseFishboneCause`: Exposes CRUD operations for the **CaseFishboneCause** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseFishboneCauses
+    * const caseFishboneCauses = await prisma.caseFishboneCause.findMany()
+    * ```
+    */
+  get caseFishboneCause(): Prisma.CaseFishboneCauseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseFishboneItem`: Exposes CRUD operations for the **CaseFishboneItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseFishboneItems
+    * const caseFishboneItems = await prisma.caseFishboneItem.findMany()
+    * ```
+    */
+  get caseFishboneItem(): Prisma.CaseFishboneItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseFishboneItemCause`: Exposes CRUD operations for the **CaseFishboneItemCause** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseFishboneItemCauses
+    * const caseFishboneItemCauses = await prisma.caseFishboneItemCause.findMany()
+    * ```
+    */
+  get caseFishboneItemCause(): Prisma.CaseFishboneItemCauseDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.fishboneCategory`: Exposes CRUD operations for the **FishboneCategory** model.
@@ -820,7 +970,17 @@ export namespace Prisma {
     ProcedureSop: 'ProcedureSop',
     MasterIK: 'MasterIK',
     ProcedureSopIK: 'ProcedureSopIK',
+    CaseHeader: 'CaseHeader',
+    CaseDepartment: 'CaseDepartment',
+    CaseNotificationOutbox: 'CaseNotificationOutbox',
+    CaseNotificationMessage: 'CaseNotificationMessage',
+    CaseNotificationTemplate: 'CaseNotificationTemplate',
+    CaseAttachment: 'CaseAttachment',
     MasterFishbone: 'MasterFishbone',
+    CaseFishboneMaster: 'CaseFishboneMaster',
+    CaseFishboneCause: 'CaseFishboneCause',
+    CaseFishboneItem: 'CaseFishboneItem',
+    CaseFishboneItemCause: 'CaseFishboneItemCause',
     FishboneCategory: 'FishboneCategory',
     FishboneCause: 'FishboneCause',
     FishboneItem: 'FishboneItem',
@@ -847,7 +1007,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "masterFishbone" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1313,6 +1473,402 @@ export namespace Prisma {
           }
         }
       }
+      CaseHeader: {
+        payload: Prisma.$CaseHeaderPayload<ExtArgs>
+        fields: Prisma.CaseHeaderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseHeaderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseHeaderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseHeaderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseHeaderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>
+          }
+          findMany: {
+            args: Prisma.CaseHeaderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>[]
+          }
+          create: {
+            args: Prisma.CaseHeaderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>
+          }
+          createMany: {
+            args: Prisma.CaseHeaderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseHeaderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>
+          }
+          update: {
+            args: Prisma.CaseHeaderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseHeaderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseHeaderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseHeaderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseHeaderPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseHeaderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseHeader>
+          }
+          groupBy: {
+            args: Prisma.CaseHeaderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseHeaderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseHeaderCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseHeaderCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseDepartment: {
+        payload: Prisma.$CaseDepartmentPayload<ExtArgs>
+        fields: Prisma.CaseDepartmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseDepartmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseDepartmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseDepartmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseDepartmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>
+          }
+          findMany: {
+            args: Prisma.CaseDepartmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>[]
+          }
+          create: {
+            args: Prisma.CaseDepartmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>
+          }
+          createMany: {
+            args: Prisma.CaseDepartmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseDepartmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>
+          }
+          update: {
+            args: Prisma.CaseDepartmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseDepartmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseDepartmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseDepartmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseDepartmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseDepartment>
+          }
+          groupBy: {
+            args: Prisma.CaseDepartmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseDepartmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseDepartmentCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseDepartmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseNotificationOutbox: {
+        payload: Prisma.$CaseNotificationOutboxPayload<ExtArgs>
+        fields: Prisma.CaseNotificationOutboxFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseNotificationOutboxFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseNotificationOutboxFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseNotificationOutboxFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseNotificationOutboxFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>
+          }
+          findMany: {
+            args: Prisma.CaseNotificationOutboxFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>[]
+          }
+          create: {
+            args: Prisma.CaseNotificationOutboxCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>
+          }
+          createMany: {
+            args: Prisma.CaseNotificationOutboxCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseNotificationOutboxDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>
+          }
+          update: {
+            args: Prisma.CaseNotificationOutboxUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseNotificationOutboxDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseNotificationOutboxUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseNotificationOutboxUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationOutboxPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseNotificationOutboxAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseNotificationOutbox>
+          }
+          groupBy: {
+            args: Prisma.CaseNotificationOutboxGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseNotificationOutboxGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseNotificationOutboxCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseNotificationOutboxCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseNotificationMessage: {
+        payload: Prisma.$CaseNotificationMessagePayload<ExtArgs>
+        fields: Prisma.CaseNotificationMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseNotificationMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseNotificationMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.CaseNotificationMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseNotificationMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>
+          }
+          findMany: {
+            args: Prisma.CaseNotificationMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>[]
+          }
+          create: {
+            args: Prisma.CaseNotificationMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>
+          }
+          createMany: {
+            args: Prisma.CaseNotificationMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseNotificationMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>
+          }
+          update: {
+            args: Prisma.CaseNotificationMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseNotificationMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseNotificationMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseNotificationMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.CaseNotificationMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseNotificationMessage>
+          }
+          groupBy: {
+            args: Prisma.CaseNotificationMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseNotificationMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseNotificationMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseNotificationMessageCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseNotificationTemplate: {
+        payload: Prisma.$CaseNotificationTemplatePayload<ExtArgs>
+        fields: Prisma.CaseNotificationTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseNotificationTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseNotificationTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.CaseNotificationTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseNotificationTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.CaseNotificationTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.CaseNotificationTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.CaseNotificationTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseNotificationTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>
+          }
+          update: {
+            args: Prisma.CaseNotificationTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseNotificationTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseNotificationTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseNotificationTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseNotificationTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.CaseNotificationTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseNotificationTemplate>
+          }
+          groupBy: {
+            args: Prisma.CaseNotificationTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseNotificationTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseNotificationTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseNotificationTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseAttachment: {
+        payload: Prisma.$CaseAttachmentPayload<ExtArgs>
+        fields: Prisma.CaseAttachmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseAttachmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseAttachmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseAttachmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseAttachmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>
+          }
+          findMany: {
+            args: Prisma.CaseAttachmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>[]
+          }
+          create: {
+            args: Prisma.CaseAttachmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>
+          }
+          createMany: {
+            args: Prisma.CaseAttachmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseAttachmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>
+          }
+          update: {
+            args: Prisma.CaseAttachmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseAttachmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseAttachmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseAttachmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseAttachmentPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseAttachmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseAttachment>
+          }
+          groupBy: {
+            args: Prisma.CaseAttachmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseAttachmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseAttachmentCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseAttachmentCountAggregateOutputType> | number
+          }
+        }
+      }
       MasterFishbone: {
         payload: Prisma.$MasterFishbonePayload<ExtArgs>
         fields: Prisma.MasterFishboneFieldRefs
@@ -1376,6 +1932,270 @@ export namespace Prisma {
           count: {
             args: Prisma.MasterFishboneCountArgs<ExtArgs>
             result: $Utils.Optional<MasterFishboneCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseFishboneMaster: {
+        payload: Prisma.$CaseFishboneMasterPayload<ExtArgs>
+        fields: Prisma.CaseFishboneMasterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseFishboneMasterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseFishboneMasterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseFishboneMasterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseFishboneMasterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>
+          }
+          findMany: {
+            args: Prisma.CaseFishboneMasterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>[]
+          }
+          create: {
+            args: Prisma.CaseFishboneMasterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>
+          }
+          createMany: {
+            args: Prisma.CaseFishboneMasterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseFishboneMasterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>
+          }
+          update: {
+            args: Prisma.CaseFishboneMasterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseFishboneMasterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseFishboneMasterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseFishboneMasterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneMasterPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseFishboneMasterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseFishboneMaster>
+          }
+          groupBy: {
+            args: Prisma.CaseFishboneMasterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneMasterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseFishboneMasterCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneMasterCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseFishboneCause: {
+        payload: Prisma.$CaseFishboneCausePayload<ExtArgs>
+        fields: Prisma.CaseFishboneCauseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseFishboneCauseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseFishboneCauseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>
+          }
+          findFirst: {
+            args: Prisma.CaseFishboneCauseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseFishboneCauseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>
+          }
+          findMany: {
+            args: Prisma.CaseFishboneCauseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>[]
+          }
+          create: {
+            args: Prisma.CaseFishboneCauseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>
+          }
+          createMany: {
+            args: Prisma.CaseFishboneCauseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseFishboneCauseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>
+          }
+          update: {
+            args: Prisma.CaseFishboneCauseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseFishboneCauseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseFishboneCauseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseFishboneCauseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneCausePayload>
+          }
+          aggregate: {
+            args: Prisma.CaseFishboneCauseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseFishboneCause>
+          }
+          groupBy: {
+            args: Prisma.CaseFishboneCauseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneCauseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseFishboneCauseCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneCauseCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseFishboneItem: {
+        payload: Prisma.$CaseFishboneItemPayload<ExtArgs>
+        fields: Prisma.CaseFishboneItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseFishboneItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseFishboneItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseFishboneItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseFishboneItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>
+          }
+          findMany: {
+            args: Prisma.CaseFishboneItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>[]
+          }
+          create: {
+            args: Prisma.CaseFishboneItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>
+          }
+          createMany: {
+            args: Prisma.CaseFishboneItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseFishboneItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>
+          }
+          update: {
+            args: Prisma.CaseFishboneItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseFishboneItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseFishboneItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseFishboneItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseFishboneItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseFishboneItem>
+          }
+          groupBy: {
+            args: Prisma.CaseFishboneItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseFishboneItemCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseFishboneItemCause: {
+        payload: Prisma.$CaseFishboneItemCausePayload<ExtArgs>
+        fields: Prisma.CaseFishboneItemCauseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseFishboneItemCauseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseFishboneItemCauseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>
+          }
+          findFirst: {
+            args: Prisma.CaseFishboneItemCauseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseFishboneItemCauseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>
+          }
+          findMany: {
+            args: Prisma.CaseFishboneItemCauseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>[]
+          }
+          create: {
+            args: Prisma.CaseFishboneItemCauseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>
+          }
+          createMany: {
+            args: Prisma.CaseFishboneItemCauseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseFishboneItemCauseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>
+          }
+          update: {
+            args: Prisma.CaseFishboneItemCauseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseFishboneItemCauseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseFishboneItemCauseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseFishboneItemCauseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFishboneItemCausePayload>
+          }
+          aggregate: {
+            args: Prisma.CaseFishboneItemCauseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseFishboneItemCause>
+          }
+          groupBy: {
+            args: Prisma.CaseFishboneItemCauseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneItemCauseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseFishboneItemCauseCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseFishboneItemCauseCountAggregateOutputType> | number
           }
         }
       }
@@ -2010,7 +2830,17 @@ export namespace Prisma {
     procedureSop?: ProcedureSopOmit
     masterIK?: MasterIKOmit
     procedureSopIK?: ProcedureSopIKOmit
+    caseHeader?: CaseHeaderOmit
+    caseDepartment?: CaseDepartmentOmit
+    caseNotificationOutbox?: CaseNotificationOutboxOmit
+    caseNotificationMessage?: CaseNotificationMessageOmit
+    caseNotificationTemplate?: CaseNotificationTemplateOmit
+    caseAttachment?: CaseAttachmentOmit
     masterFishbone?: MasterFishboneOmit
+    caseFishboneMaster?: CaseFishboneMasterOmit
+    caseFishboneCause?: CaseFishboneCauseOmit
+    caseFishboneItem?: CaseFishboneItemOmit
+    caseFishboneItemCause?: CaseFishboneItemCauseOmit
     fishboneCategory?: FishboneCategoryOmit
     fishboneCause?: FishboneCauseOmit
     fishboneItem?: FishboneItemOmit
@@ -2304,6 +3134,113 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CaseHeaderCountOutputType
+   */
+
+  export type CaseHeaderCountOutputType = {
+    departments: number
+    attachments: number
+    caseFishbones: number
+    notifications: number
+    caseNotificationMessages: number
+  }
+
+  export type CaseHeaderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    departments?: boolean | CaseHeaderCountOutputTypeCountDepartmentsArgs
+    attachments?: boolean | CaseHeaderCountOutputTypeCountAttachmentsArgs
+    caseFishbones?: boolean | CaseHeaderCountOutputTypeCountCaseFishbonesArgs
+    notifications?: boolean | CaseHeaderCountOutputTypeCountNotificationsArgs
+    caseNotificationMessages?: boolean | CaseHeaderCountOutputTypeCountCaseNotificationMessagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeaderCountOutputType
+     */
+    select?: CaseHeaderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountDepartmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseDepartmentWhereInput
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountAttachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseAttachmentWhereInput
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountCaseFishbonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneMasterWhereInput
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationOutboxWhereInput
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountCaseNotificationMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationMessageWhereInput
+  }
+
+
+  /**
+   * Count Type CaseDepartmentCountOutputType
+   */
+
+  export type CaseDepartmentCountOutputType = {
+    notifications: number
+    caseNotificationMessages: number
+  }
+
+  export type CaseDepartmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | CaseDepartmentCountOutputTypeCountNotificationsArgs
+    caseNotificationMessages?: boolean | CaseDepartmentCountOutputTypeCountCaseNotificationMessagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CaseDepartmentCountOutputType without action
+   */
+  export type CaseDepartmentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentCountOutputType
+     */
+    select?: CaseDepartmentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CaseDepartmentCountOutputType without action
+   */
+  export type CaseDepartmentCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationOutboxWhereInput
+  }
+
+  /**
+   * CaseDepartmentCountOutputType without action
+   */
+  export type CaseDepartmentCountOutputTypeCountCaseNotificationMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationMessageWhereInput
+  }
+
+
+  /**
    * Count Type MasterFishboneCountOutputType
    */
 
@@ -2344,15 +3281,119 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CaseFishboneMasterCountOutputType
+   */
+
+  export type CaseFishboneMasterCountOutputType = {
+    causes: number
+    items: number
+  }
+
+  export type CaseFishboneMasterCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    causes?: boolean | CaseFishboneMasterCountOutputTypeCountCausesArgs
+    items?: boolean | CaseFishboneMasterCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneMasterCountOutputType without action
+   */
+  export type CaseFishboneMasterCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMasterCountOutputType
+     */
+    select?: CaseFishboneMasterCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CaseFishboneMasterCountOutputType without action
+   */
+  export type CaseFishboneMasterCountOutputTypeCountCausesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneCauseWhereInput
+  }
+
+  /**
+   * CaseFishboneMasterCountOutputType without action
+   */
+  export type CaseFishboneMasterCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneItemWhereInput
+  }
+
+
+  /**
+   * Count Type CaseFishboneCauseCountOutputType
+   */
+
+  export type CaseFishboneCauseCountOutputType = {
+    itemLinks: number
+  }
+
+  export type CaseFishboneCauseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    itemLinks?: boolean | CaseFishboneCauseCountOutputTypeCountItemLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneCauseCountOutputType without action
+   */
+  export type CaseFishboneCauseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCauseCountOutputType
+     */
+    select?: CaseFishboneCauseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CaseFishboneCauseCountOutputType without action
+   */
+  export type CaseFishboneCauseCountOutputTypeCountItemLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneItemCauseWhereInput
+  }
+
+
+  /**
+   * Count Type CaseFishboneItemCountOutputType
+   */
+
+  export type CaseFishboneItemCountOutputType = {
+    causeLinks: number
+  }
+
+  export type CaseFishboneItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    causeLinks?: boolean | CaseFishboneItemCountOutputTypeCountCauseLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneItemCountOutputType without action
+   */
+  export type CaseFishboneItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCountOutputType
+     */
+    select?: CaseFishboneItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CaseFishboneItemCountOutputType without action
+   */
+  export type CaseFishboneItemCountOutputTypeCountCauseLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneItemCauseWhereInput
+  }
+
+
+  /**
    * Count Type FishboneCategoryCountOutputType
    */
 
   export type FishboneCategoryCountOutputType = {
     items: number
+    caseFishboneItems: number
   }
 
   export type FishboneCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | FishboneCategoryCountOutputTypeCountItemsArgs
+    caseFishboneItems?: boolean | FishboneCategoryCountOutputTypeCountCaseFishboneItemsArgs
   }
 
   // Custom InputTypes
@@ -2371,6 +3412,13 @@ export namespace Prisma {
    */
   export type FishboneCategoryCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FishboneItemWhereInput
+  }
+
+  /**
+   * FishboneCategoryCountOutputType without action
+   */
+  export type FishboneCategoryCountOutputTypeCountCaseFishboneItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneItemWhereInput
   }
 
 
@@ -10389,6 +11437,6876 @@ export namespace Prisma {
 
 
   /**
+   * Model CaseHeader
+   */
+
+  export type AggregateCaseHeader = {
+    _count: CaseHeaderCountAggregateOutputType | null
+    _avg: CaseHeaderAvgAggregateOutputType | null
+    _sum: CaseHeaderSumAggregateOutputType | null
+    _min: CaseHeaderMinAggregateOutputType | null
+    _max: CaseHeaderMaxAggregateOutputType | null
+  }
+
+  export type CaseHeaderAvgAggregateOutputType = {
+    requesterEmployeeId: number | null
+    originSbuSubId: number | null
+  }
+
+  export type CaseHeaderSumAggregateOutputType = {
+    requesterEmployeeId: number | null
+    originSbuSubId: number | null
+  }
+
+  export type CaseHeaderMinAggregateOutputType = {
+    caseId: string | null
+    caseType: string | null
+    caseTitle: string | null
+    background: string | null
+    currentCondition: string | null
+    projectDesc: string | null
+    projectObjective: string | null
+    locationDesc: string | null
+    notes: string | null
+    status: string | null
+    requesterId: string | null
+    requesterEmployeeId: number | null
+    originSbuSubId: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseHeaderMaxAggregateOutputType = {
+    caseId: string | null
+    caseType: string | null
+    caseTitle: string | null
+    background: string | null
+    currentCondition: string | null
+    projectDesc: string | null
+    projectObjective: string | null
+    locationDesc: string | null
+    notes: string | null
+    status: string | null
+    requesterId: string | null
+    requesterEmployeeId: number | null
+    originSbuSubId: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseHeaderCountAggregateOutputType = {
+    caseId: number
+    caseType: number
+    caseTitle: number
+    background: number
+    currentCondition: number
+    projectDesc: number
+    projectObjective: number
+    locationDesc: number
+    notes: number
+    status: number
+    requesterId: number
+    requesterEmployeeId: number
+    originSbuSubId: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseHeaderAvgAggregateInputType = {
+    requesterEmployeeId?: true
+    originSbuSubId?: true
+  }
+
+  export type CaseHeaderSumAggregateInputType = {
+    requesterEmployeeId?: true
+    originSbuSubId?: true
+  }
+
+  export type CaseHeaderMinAggregateInputType = {
+    caseId?: true
+    caseType?: true
+    caseTitle?: true
+    background?: true
+    currentCondition?: true
+    projectDesc?: true
+    projectObjective?: true
+    locationDesc?: true
+    notes?: true
+    status?: true
+    requesterId?: true
+    requesterEmployeeId?: true
+    originSbuSubId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseHeaderMaxAggregateInputType = {
+    caseId?: true
+    caseType?: true
+    caseTitle?: true
+    background?: true
+    currentCondition?: true
+    projectDesc?: true
+    projectObjective?: true
+    locationDesc?: true
+    notes?: true
+    status?: true
+    requesterId?: true
+    requesterEmployeeId?: true
+    originSbuSubId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseHeaderCountAggregateInputType = {
+    caseId?: true
+    caseType?: true
+    caseTitle?: true
+    background?: true
+    currentCondition?: true
+    projectDesc?: true
+    projectObjective?: true
+    locationDesc?: true
+    notes?: true
+    status?: true
+    requesterId?: true
+    requesterEmployeeId?: true
+    originSbuSubId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseHeaderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseHeader to aggregate.
+     */
+    where?: CaseHeaderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseHeaders to fetch.
+     */
+    orderBy?: CaseHeaderOrderByWithRelationInput | CaseHeaderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseHeaderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseHeaders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseHeaders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseHeaders
+    **/
+    _count?: true | CaseHeaderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseHeaderAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseHeaderSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseHeaderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseHeaderMaxAggregateInputType
+  }
+
+  export type GetCaseHeaderAggregateType<T extends CaseHeaderAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseHeader]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseHeader[P]>
+      : GetScalarType<T[P], AggregateCaseHeader[P]>
+  }
+
+
+
+
+  export type CaseHeaderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseHeaderWhereInput
+    orderBy?: CaseHeaderOrderByWithAggregationInput | CaseHeaderOrderByWithAggregationInput[]
+    by: CaseHeaderScalarFieldEnum[] | CaseHeaderScalarFieldEnum
+    having?: CaseHeaderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseHeaderCountAggregateInputType | true
+    _avg?: CaseHeaderAvgAggregateInputType
+    _sum?: CaseHeaderSumAggregateInputType
+    _min?: CaseHeaderMinAggregateInputType
+    _max?: CaseHeaderMaxAggregateInputType
+  }
+
+  export type CaseHeaderGroupByOutputType = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background: string | null
+    currentCondition: string | null
+    projectDesc: string | null
+    projectObjective: string | null
+    locationDesc: string | null
+    notes: string | null
+    status: string
+    requesterId: string | null
+    requesterEmployeeId: number | null
+    originSbuSubId: number | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseHeaderCountAggregateOutputType | null
+    _avg: CaseHeaderAvgAggregateOutputType | null
+    _sum: CaseHeaderSumAggregateOutputType | null
+    _min: CaseHeaderMinAggregateOutputType | null
+    _max: CaseHeaderMaxAggregateOutputType | null
+  }
+
+  type GetCaseHeaderGroupByPayload<T extends CaseHeaderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseHeaderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseHeaderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseHeaderGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseHeaderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseHeaderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseId?: boolean
+    caseType?: boolean
+    caseTitle?: boolean
+    background?: boolean
+    currentCondition?: boolean
+    projectDesc?: boolean
+    projectObjective?: boolean
+    locationDesc?: boolean
+    notes?: boolean
+    status?: boolean
+    requesterId?: boolean
+    requesterEmployeeId?: boolean
+    originSbuSubId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    departments?: boolean | CaseHeader$departmentsArgs<ExtArgs>
+    attachments?: boolean | CaseHeader$attachmentsArgs<ExtArgs>
+    caseFishbones?: boolean | CaseHeader$caseFishbonesArgs<ExtArgs>
+    notifications?: boolean | CaseHeader$notificationsArgs<ExtArgs>
+    caseNotificationMessages?: boolean | CaseHeader$caseNotificationMessagesArgs<ExtArgs>
+    _count?: boolean | CaseHeaderCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseHeader"]>
+
+
+
+  export type CaseHeaderSelectScalar = {
+    caseId?: boolean
+    caseType?: boolean
+    caseTitle?: boolean
+    background?: boolean
+    currentCondition?: boolean
+    projectDesc?: boolean
+    projectObjective?: boolean
+    locationDesc?: boolean
+    notes?: boolean
+    status?: boolean
+    requesterId?: boolean
+    requesterEmployeeId?: boolean
+    originSbuSubId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseHeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseId" | "caseType" | "caseTitle" | "background" | "currentCondition" | "projectDesc" | "projectObjective" | "locationDesc" | "notes" | "status" | "requesterId" | "requesterEmployeeId" | "originSbuSubId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseHeader"]>
+  export type CaseHeaderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    departments?: boolean | CaseHeader$departmentsArgs<ExtArgs>
+    attachments?: boolean | CaseHeader$attachmentsArgs<ExtArgs>
+    caseFishbones?: boolean | CaseHeader$caseFishbonesArgs<ExtArgs>
+    notifications?: boolean | CaseHeader$notificationsArgs<ExtArgs>
+    caseNotificationMessages?: boolean | CaseHeader$caseNotificationMessagesArgs<ExtArgs>
+    _count?: boolean | CaseHeaderCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseHeaderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseHeader"
+    objects: {
+      departments: Prisma.$CaseDepartmentPayload<ExtArgs>[]
+      attachments: Prisma.$CaseAttachmentPayload<ExtArgs>[]
+      caseFishbones: Prisma.$CaseFishboneMasterPayload<ExtArgs>[]
+      notifications: Prisma.$CaseNotificationOutboxPayload<ExtArgs>[]
+      caseNotificationMessages: Prisma.$CaseNotificationMessagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      /**
+       * e.g., "CAS260211-0001"
+       */
+      caseId: string
+      caseType: string
+      caseTitle: string
+      background: string | null
+      currentCondition: string | null
+      projectDesc: string | null
+      projectObjective: string | null
+      locationDesc: string | null
+      notes: string | null
+      status: string
+      requesterId: string | null
+      requesterEmployeeId: number | null
+      originSbuSubId: number | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseHeader"]>
+    composites: {}
+  }
+
+  type CaseHeaderGetPayload<S extends boolean | null | undefined | CaseHeaderDefaultArgs> = $Result.GetResult<Prisma.$CaseHeaderPayload, S>
+
+  type CaseHeaderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseHeaderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseHeaderCountAggregateInputType | true
+    }
+
+  export interface CaseHeaderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseHeader'], meta: { name: 'CaseHeader' } }
+    /**
+     * Find zero or one CaseHeader that matches the filter.
+     * @param {CaseHeaderFindUniqueArgs} args - Arguments to find a CaseHeader
+     * @example
+     * // Get one CaseHeader
+     * const caseHeader = await prisma.caseHeader.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseHeaderFindUniqueArgs>(args: SelectSubset<T, CaseHeaderFindUniqueArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseHeader that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseHeaderFindUniqueOrThrowArgs} args - Arguments to find a CaseHeader
+     * @example
+     * // Get one CaseHeader
+     * const caseHeader = await prisma.caseHeader.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseHeaderFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseHeaderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseHeader that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderFindFirstArgs} args - Arguments to find a CaseHeader
+     * @example
+     * // Get one CaseHeader
+     * const caseHeader = await prisma.caseHeader.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseHeaderFindFirstArgs>(args?: SelectSubset<T, CaseHeaderFindFirstArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseHeader that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderFindFirstOrThrowArgs} args - Arguments to find a CaseHeader
+     * @example
+     * // Get one CaseHeader
+     * const caseHeader = await prisma.caseHeader.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseHeaderFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseHeaderFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseHeaders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseHeaders
+     * const caseHeaders = await prisma.caseHeader.findMany()
+     * 
+     * // Get first 10 CaseHeaders
+     * const caseHeaders = await prisma.caseHeader.findMany({ take: 10 })
+     * 
+     * // Only select the `caseId`
+     * const caseHeaderWithCaseIdOnly = await prisma.caseHeader.findMany({ select: { caseId: true } })
+     * 
+     */
+    findMany<T extends CaseHeaderFindManyArgs>(args?: SelectSubset<T, CaseHeaderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseHeader.
+     * @param {CaseHeaderCreateArgs} args - Arguments to create a CaseHeader.
+     * @example
+     * // Create one CaseHeader
+     * const CaseHeader = await prisma.caseHeader.create({
+     *   data: {
+     *     // ... data to create a CaseHeader
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseHeaderCreateArgs>(args: SelectSubset<T, CaseHeaderCreateArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseHeaders.
+     * @param {CaseHeaderCreateManyArgs} args - Arguments to create many CaseHeaders.
+     * @example
+     * // Create many CaseHeaders
+     * const caseHeader = await prisma.caseHeader.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseHeaderCreateManyArgs>(args?: SelectSubset<T, CaseHeaderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseHeader.
+     * @param {CaseHeaderDeleteArgs} args - Arguments to delete one CaseHeader.
+     * @example
+     * // Delete one CaseHeader
+     * const CaseHeader = await prisma.caseHeader.delete({
+     *   where: {
+     *     // ... filter to delete one CaseHeader
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseHeaderDeleteArgs>(args: SelectSubset<T, CaseHeaderDeleteArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseHeader.
+     * @param {CaseHeaderUpdateArgs} args - Arguments to update one CaseHeader.
+     * @example
+     * // Update one CaseHeader
+     * const caseHeader = await prisma.caseHeader.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseHeaderUpdateArgs>(args: SelectSubset<T, CaseHeaderUpdateArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseHeaders.
+     * @param {CaseHeaderDeleteManyArgs} args - Arguments to filter CaseHeaders to delete.
+     * @example
+     * // Delete a few CaseHeaders
+     * const { count } = await prisma.caseHeader.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseHeaderDeleteManyArgs>(args?: SelectSubset<T, CaseHeaderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseHeaders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseHeaders
+     * const caseHeader = await prisma.caseHeader.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseHeaderUpdateManyArgs>(args: SelectSubset<T, CaseHeaderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseHeader.
+     * @param {CaseHeaderUpsertArgs} args - Arguments to update or create a CaseHeader.
+     * @example
+     * // Update or create a CaseHeader
+     * const caseHeader = await prisma.caseHeader.upsert({
+     *   create: {
+     *     // ... data to create a CaseHeader
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseHeader we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseHeaderUpsertArgs>(args: SelectSubset<T, CaseHeaderUpsertArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseHeaders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderCountArgs} args - Arguments to filter CaseHeaders to count.
+     * @example
+     * // Count the number of CaseHeaders
+     * const count = await prisma.caseHeader.count({
+     *   where: {
+     *     // ... the filter for the CaseHeaders we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseHeaderCountArgs>(
+      args?: Subset<T, CaseHeaderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseHeaderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseHeader.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseHeaderAggregateArgs>(args: Subset<T, CaseHeaderAggregateArgs>): Prisma.PrismaPromise<GetCaseHeaderAggregateType<T>>
+
+    /**
+     * Group by CaseHeader.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseHeaderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseHeaderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseHeaderGroupByArgs['orderBy'] }
+        : { orderBy?: CaseHeaderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseHeaderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseHeaderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseHeader model
+   */
+  readonly fields: CaseHeaderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseHeader.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseHeaderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    departments<T extends CaseHeader$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    attachments<T extends CaseHeader$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    caseFishbones<T extends CaseHeader$caseFishbonesArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$caseFishbonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends CaseHeader$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    caseNotificationMessages<T extends CaseHeader$caseNotificationMessagesArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$caseNotificationMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseHeader model
+   */
+  interface CaseHeaderFieldRefs {
+    readonly caseId: FieldRef<"CaseHeader", 'String'>
+    readonly caseType: FieldRef<"CaseHeader", 'String'>
+    readonly caseTitle: FieldRef<"CaseHeader", 'String'>
+    readonly background: FieldRef<"CaseHeader", 'String'>
+    readonly currentCondition: FieldRef<"CaseHeader", 'String'>
+    readonly projectDesc: FieldRef<"CaseHeader", 'String'>
+    readonly projectObjective: FieldRef<"CaseHeader", 'String'>
+    readonly locationDesc: FieldRef<"CaseHeader", 'String'>
+    readonly notes: FieldRef<"CaseHeader", 'String'>
+    readonly status: FieldRef<"CaseHeader", 'String'>
+    readonly requesterId: FieldRef<"CaseHeader", 'String'>
+    readonly requesterEmployeeId: FieldRef<"CaseHeader", 'Int'>
+    readonly originSbuSubId: FieldRef<"CaseHeader", 'Int'>
+    readonly isActive: FieldRef<"CaseHeader", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseHeader", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseHeader", 'String'>
+    readonly updatedAt: FieldRef<"CaseHeader", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseHeader", 'String'>
+    readonly isDeleted: FieldRef<"CaseHeader", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseHeader", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseHeader", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseHeader findUnique
+   */
+  export type CaseHeaderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseHeader to fetch.
+     */
+    where: CaseHeaderWhereUniqueInput
+  }
+
+  /**
+   * CaseHeader findUniqueOrThrow
+   */
+  export type CaseHeaderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseHeader to fetch.
+     */
+    where: CaseHeaderWhereUniqueInput
+  }
+
+  /**
+   * CaseHeader findFirst
+   */
+  export type CaseHeaderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseHeader to fetch.
+     */
+    where?: CaseHeaderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseHeaders to fetch.
+     */
+    orderBy?: CaseHeaderOrderByWithRelationInput | CaseHeaderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseHeaders.
+     */
+    cursor?: CaseHeaderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseHeaders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseHeaders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseHeaders.
+     */
+    distinct?: CaseHeaderScalarFieldEnum | CaseHeaderScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader findFirstOrThrow
+   */
+  export type CaseHeaderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseHeader to fetch.
+     */
+    where?: CaseHeaderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseHeaders to fetch.
+     */
+    orderBy?: CaseHeaderOrderByWithRelationInput | CaseHeaderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseHeaders.
+     */
+    cursor?: CaseHeaderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseHeaders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseHeaders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseHeaders.
+     */
+    distinct?: CaseHeaderScalarFieldEnum | CaseHeaderScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader findMany
+   */
+  export type CaseHeaderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseHeaders to fetch.
+     */
+    where?: CaseHeaderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseHeaders to fetch.
+     */
+    orderBy?: CaseHeaderOrderByWithRelationInput | CaseHeaderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseHeaders.
+     */
+    cursor?: CaseHeaderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseHeaders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseHeaders.
+     */
+    skip?: number
+    distinct?: CaseHeaderScalarFieldEnum | CaseHeaderScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader create
+   */
+  export type CaseHeaderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseHeader.
+     */
+    data: XOR<CaseHeaderCreateInput, CaseHeaderUncheckedCreateInput>
+  }
+
+  /**
+   * CaseHeader createMany
+   */
+  export type CaseHeaderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseHeaders.
+     */
+    data: CaseHeaderCreateManyInput | CaseHeaderCreateManyInput[]
+  }
+
+  /**
+   * CaseHeader update
+   */
+  export type CaseHeaderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseHeader.
+     */
+    data: XOR<CaseHeaderUpdateInput, CaseHeaderUncheckedUpdateInput>
+    /**
+     * Choose, which CaseHeader to update.
+     */
+    where: CaseHeaderWhereUniqueInput
+  }
+
+  /**
+   * CaseHeader updateMany
+   */
+  export type CaseHeaderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseHeaders.
+     */
+    data: XOR<CaseHeaderUpdateManyMutationInput, CaseHeaderUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseHeaders to update
+     */
+    where?: CaseHeaderWhereInput
+    /**
+     * Limit how many CaseHeaders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseHeader upsert
+   */
+  export type CaseHeaderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseHeader to update in case it exists.
+     */
+    where: CaseHeaderWhereUniqueInput
+    /**
+     * In case the CaseHeader found by the `where` argument doesn't exist, create a new CaseHeader with this data.
+     */
+    create: XOR<CaseHeaderCreateInput, CaseHeaderUncheckedCreateInput>
+    /**
+     * In case the CaseHeader was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseHeaderUpdateInput, CaseHeaderUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseHeader delete
+   */
+  export type CaseHeaderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    /**
+     * Filter which CaseHeader to delete.
+     */
+    where: CaseHeaderWhereUniqueInput
+  }
+
+  /**
+   * CaseHeader deleteMany
+   */
+  export type CaseHeaderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseHeaders to delete
+     */
+    where?: CaseHeaderWhereInput
+    /**
+     * Limit how many CaseHeaders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseHeader.departments
+   */
+  export type CaseHeader$departmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    where?: CaseDepartmentWhereInput
+    orderBy?: CaseDepartmentOrderByWithRelationInput | CaseDepartmentOrderByWithRelationInput[]
+    cursor?: CaseDepartmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseDepartmentScalarFieldEnum | CaseDepartmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader.attachments
+   */
+  export type CaseHeader$attachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    where?: CaseAttachmentWhereInput
+    orderBy?: CaseAttachmentOrderByWithRelationInput | CaseAttachmentOrderByWithRelationInput[]
+    cursor?: CaseAttachmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseAttachmentScalarFieldEnum | CaseAttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader.caseFishbones
+   */
+  export type CaseHeader$caseFishbonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    where?: CaseFishboneMasterWhereInput
+    orderBy?: CaseFishboneMasterOrderByWithRelationInput | CaseFishboneMasterOrderByWithRelationInput[]
+    cursor?: CaseFishboneMasterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFishboneMasterScalarFieldEnum | CaseFishboneMasterScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader.notifications
+   */
+  export type CaseHeader$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    where?: CaseNotificationOutboxWhereInput
+    orderBy?: CaseNotificationOutboxOrderByWithRelationInput | CaseNotificationOutboxOrderByWithRelationInput[]
+    cursor?: CaseNotificationOutboxWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseNotificationOutboxScalarFieldEnum | CaseNotificationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader.caseNotificationMessages
+   */
+  export type CaseHeader$caseNotificationMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    where?: CaseNotificationMessageWhereInput
+    orderBy?: CaseNotificationMessageOrderByWithRelationInput | CaseNotificationMessageOrderByWithRelationInput[]
+    cursor?: CaseNotificationMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseNotificationMessageScalarFieldEnum | CaseNotificationMessageScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader without action
+   */
+  export type CaseHeaderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseDepartment
+   */
+
+  export type AggregateCaseDepartment = {
+    _count: CaseDepartmentCountAggregateOutputType | null
+    _avg: CaseDepartmentAvgAggregateOutputType | null
+    _sum: CaseDepartmentSumAggregateOutputType | null
+    _min: CaseDepartmentMinAggregateOutputType | null
+    _max: CaseDepartmentMaxAggregateOutputType | null
+  }
+
+  export type CaseDepartmentAvgAggregateOutputType = {
+    sbuSubId: number | null
+    assigneeEmployeeId: number | null
+  }
+
+  export type CaseDepartmentSumAggregateOutputType = {
+    sbuSubId: number | null
+    assigneeEmployeeId: number | null
+  }
+
+  export type CaseDepartmentMinAggregateOutputType = {
+    caseDepartmentId: string | null
+    caseId: string | null
+    sbuSubId: number | null
+    decisionStatus: string | null
+    decisionAt: Date | null
+    decisionBy: string | null
+    assigneeEmployeeId: number | null
+    assignedAt: Date | null
+    assignedBy: string | null
+    workStatus: string | null
+    startDate: Date | null
+    targetDate: Date | null
+    endDate: Date | null
+    workNotes: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseDepartmentMaxAggregateOutputType = {
+    caseDepartmentId: string | null
+    caseId: string | null
+    sbuSubId: number | null
+    decisionStatus: string | null
+    decisionAt: Date | null
+    decisionBy: string | null
+    assigneeEmployeeId: number | null
+    assignedAt: Date | null
+    assignedBy: string | null
+    workStatus: string | null
+    startDate: Date | null
+    targetDate: Date | null
+    endDate: Date | null
+    workNotes: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseDepartmentCountAggregateOutputType = {
+    caseDepartmentId: number
+    caseId: number
+    sbuSubId: number
+    decisionStatus: number
+    decisionAt: number
+    decisionBy: number
+    assigneeEmployeeId: number
+    assignedAt: number
+    assignedBy: number
+    workStatus: number
+    startDate: number
+    targetDate: number
+    endDate: number
+    workNotes: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseDepartmentAvgAggregateInputType = {
+    sbuSubId?: true
+    assigneeEmployeeId?: true
+  }
+
+  export type CaseDepartmentSumAggregateInputType = {
+    sbuSubId?: true
+    assigneeEmployeeId?: true
+  }
+
+  export type CaseDepartmentMinAggregateInputType = {
+    caseDepartmentId?: true
+    caseId?: true
+    sbuSubId?: true
+    decisionStatus?: true
+    decisionAt?: true
+    decisionBy?: true
+    assigneeEmployeeId?: true
+    assignedAt?: true
+    assignedBy?: true
+    workStatus?: true
+    startDate?: true
+    targetDate?: true
+    endDate?: true
+    workNotes?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseDepartmentMaxAggregateInputType = {
+    caseDepartmentId?: true
+    caseId?: true
+    sbuSubId?: true
+    decisionStatus?: true
+    decisionAt?: true
+    decisionBy?: true
+    assigneeEmployeeId?: true
+    assignedAt?: true
+    assignedBy?: true
+    workStatus?: true
+    startDate?: true
+    targetDate?: true
+    endDate?: true
+    workNotes?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseDepartmentCountAggregateInputType = {
+    caseDepartmentId?: true
+    caseId?: true
+    sbuSubId?: true
+    decisionStatus?: true
+    decisionAt?: true
+    decisionBy?: true
+    assigneeEmployeeId?: true
+    assignedAt?: true
+    assignedBy?: true
+    workStatus?: true
+    startDate?: true
+    targetDate?: true
+    endDate?: true
+    workNotes?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseDepartmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseDepartment to aggregate.
+     */
+    where?: CaseDepartmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartments to fetch.
+     */
+    orderBy?: CaseDepartmentOrderByWithRelationInput | CaseDepartmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseDepartmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseDepartments
+    **/
+    _count?: true | CaseDepartmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseDepartmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseDepartmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseDepartmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseDepartmentMaxAggregateInputType
+  }
+
+  export type GetCaseDepartmentAggregateType<T extends CaseDepartmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseDepartment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseDepartment[P]>
+      : GetScalarType<T[P], AggregateCaseDepartment[P]>
+  }
+
+
+
+
+  export type CaseDepartmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseDepartmentWhereInput
+    orderBy?: CaseDepartmentOrderByWithAggregationInput | CaseDepartmentOrderByWithAggregationInput[]
+    by: CaseDepartmentScalarFieldEnum[] | CaseDepartmentScalarFieldEnum
+    having?: CaseDepartmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseDepartmentCountAggregateInputType | true
+    _avg?: CaseDepartmentAvgAggregateInputType
+    _sum?: CaseDepartmentSumAggregateInputType
+    _min?: CaseDepartmentMinAggregateInputType
+    _max?: CaseDepartmentMaxAggregateInputType
+  }
+
+  export type CaseDepartmentGroupByOutputType = {
+    caseDepartmentId: string
+    caseId: string
+    sbuSubId: number
+    decisionStatus: string
+    decisionAt: Date | null
+    decisionBy: string | null
+    assigneeEmployeeId: number | null
+    assignedAt: Date | null
+    assignedBy: string | null
+    workStatus: string | null
+    startDate: Date | null
+    targetDate: Date | null
+    endDate: Date | null
+    workNotes: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseDepartmentCountAggregateOutputType | null
+    _avg: CaseDepartmentAvgAggregateOutputType | null
+    _sum: CaseDepartmentSumAggregateOutputType | null
+    _min: CaseDepartmentMinAggregateOutputType | null
+    _max: CaseDepartmentMaxAggregateOutputType | null
+  }
+
+  type GetCaseDepartmentGroupByPayload<T extends CaseDepartmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseDepartmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseDepartmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseDepartmentGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseDepartmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseDepartmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseDepartmentId?: boolean
+    caseId?: boolean
+    sbuSubId?: boolean
+    decisionStatus?: boolean
+    decisionAt?: boolean
+    decisionBy?: boolean
+    assigneeEmployeeId?: boolean
+    assignedAt?: boolean
+    assignedBy?: boolean
+    workStatus?: boolean
+    startDate?: boolean
+    targetDate?: boolean
+    endDate?: boolean
+    workNotes?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+    notifications?: boolean | CaseDepartment$notificationsArgs<ExtArgs>
+    caseNotificationMessages?: boolean | CaseDepartment$caseNotificationMessagesArgs<ExtArgs>
+    _count?: boolean | CaseDepartmentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseDepartment"]>
+
+
+
+  export type CaseDepartmentSelectScalar = {
+    caseDepartmentId?: boolean
+    caseId?: boolean
+    sbuSubId?: boolean
+    decisionStatus?: boolean
+    decisionAt?: boolean
+    decisionBy?: boolean
+    assigneeEmployeeId?: boolean
+    assignedAt?: boolean
+    assignedBy?: boolean
+    workStatus?: boolean
+    startDate?: boolean
+    targetDate?: boolean
+    endDate?: boolean
+    workNotes?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseDepartmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseDepartmentId" | "caseId" | "sbuSubId" | "decisionStatus" | "decisionAt" | "decisionBy" | "assigneeEmployeeId" | "assignedAt" | "assignedBy" | "workStatus" | "startDate" | "targetDate" | "endDate" | "workNotes" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseDepartment"]>
+  export type CaseDepartmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+    notifications?: boolean | CaseDepartment$notificationsArgs<ExtArgs>
+    caseNotificationMessages?: boolean | CaseDepartment$caseNotificationMessagesArgs<ExtArgs>
+    _count?: boolean | CaseDepartmentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseDepartmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseDepartment"
+    objects: {
+      case: Prisma.$CaseHeaderPayload<ExtArgs>
+      notifications: Prisma.$CaseNotificationOutboxPayload<ExtArgs>[]
+      caseNotificationMessages: Prisma.$CaseNotificationMessagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseDepartmentId: string
+      caseId: string
+      sbuSubId: number
+      decisionStatus: string
+      decisionAt: Date | null
+      decisionBy: string | null
+      assigneeEmployeeId: number | null
+      assignedAt: Date | null
+      assignedBy: string | null
+      workStatus: string | null
+      startDate: Date | null
+      targetDate: Date | null
+      endDate: Date | null
+      workNotes: string | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseDepartment"]>
+    composites: {}
+  }
+
+  type CaseDepartmentGetPayload<S extends boolean | null | undefined | CaseDepartmentDefaultArgs> = $Result.GetResult<Prisma.$CaseDepartmentPayload, S>
+
+  type CaseDepartmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseDepartmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseDepartmentCountAggregateInputType | true
+    }
+
+  export interface CaseDepartmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseDepartment'], meta: { name: 'CaseDepartment' } }
+    /**
+     * Find zero or one CaseDepartment that matches the filter.
+     * @param {CaseDepartmentFindUniqueArgs} args - Arguments to find a CaseDepartment
+     * @example
+     * // Get one CaseDepartment
+     * const caseDepartment = await prisma.caseDepartment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseDepartmentFindUniqueArgs>(args: SelectSubset<T, CaseDepartmentFindUniqueArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseDepartment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseDepartmentFindUniqueOrThrowArgs} args - Arguments to find a CaseDepartment
+     * @example
+     * // Get one CaseDepartment
+     * const caseDepartment = await prisma.caseDepartment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseDepartmentFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseDepartmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseDepartment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentFindFirstArgs} args - Arguments to find a CaseDepartment
+     * @example
+     * // Get one CaseDepartment
+     * const caseDepartment = await prisma.caseDepartment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseDepartmentFindFirstArgs>(args?: SelectSubset<T, CaseDepartmentFindFirstArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseDepartment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentFindFirstOrThrowArgs} args - Arguments to find a CaseDepartment
+     * @example
+     * // Get one CaseDepartment
+     * const caseDepartment = await prisma.caseDepartment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseDepartmentFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseDepartmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseDepartments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseDepartments
+     * const caseDepartments = await prisma.caseDepartment.findMany()
+     * 
+     * // Get first 10 CaseDepartments
+     * const caseDepartments = await prisma.caseDepartment.findMany({ take: 10 })
+     * 
+     * // Only select the `caseDepartmentId`
+     * const caseDepartmentWithCaseDepartmentIdOnly = await prisma.caseDepartment.findMany({ select: { caseDepartmentId: true } })
+     * 
+     */
+    findMany<T extends CaseDepartmentFindManyArgs>(args?: SelectSubset<T, CaseDepartmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseDepartment.
+     * @param {CaseDepartmentCreateArgs} args - Arguments to create a CaseDepartment.
+     * @example
+     * // Create one CaseDepartment
+     * const CaseDepartment = await prisma.caseDepartment.create({
+     *   data: {
+     *     // ... data to create a CaseDepartment
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseDepartmentCreateArgs>(args: SelectSubset<T, CaseDepartmentCreateArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseDepartments.
+     * @param {CaseDepartmentCreateManyArgs} args - Arguments to create many CaseDepartments.
+     * @example
+     * // Create many CaseDepartments
+     * const caseDepartment = await prisma.caseDepartment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseDepartmentCreateManyArgs>(args?: SelectSubset<T, CaseDepartmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseDepartment.
+     * @param {CaseDepartmentDeleteArgs} args - Arguments to delete one CaseDepartment.
+     * @example
+     * // Delete one CaseDepartment
+     * const CaseDepartment = await prisma.caseDepartment.delete({
+     *   where: {
+     *     // ... filter to delete one CaseDepartment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseDepartmentDeleteArgs>(args: SelectSubset<T, CaseDepartmentDeleteArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseDepartment.
+     * @param {CaseDepartmentUpdateArgs} args - Arguments to update one CaseDepartment.
+     * @example
+     * // Update one CaseDepartment
+     * const caseDepartment = await prisma.caseDepartment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseDepartmentUpdateArgs>(args: SelectSubset<T, CaseDepartmentUpdateArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseDepartments.
+     * @param {CaseDepartmentDeleteManyArgs} args - Arguments to filter CaseDepartments to delete.
+     * @example
+     * // Delete a few CaseDepartments
+     * const { count } = await prisma.caseDepartment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseDepartmentDeleteManyArgs>(args?: SelectSubset<T, CaseDepartmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseDepartments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseDepartments
+     * const caseDepartment = await prisma.caseDepartment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseDepartmentUpdateManyArgs>(args: SelectSubset<T, CaseDepartmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseDepartment.
+     * @param {CaseDepartmentUpsertArgs} args - Arguments to update or create a CaseDepartment.
+     * @example
+     * // Update or create a CaseDepartment
+     * const caseDepartment = await prisma.caseDepartment.upsert({
+     *   create: {
+     *     // ... data to create a CaseDepartment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseDepartment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseDepartmentUpsertArgs>(args: SelectSubset<T, CaseDepartmentUpsertArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseDepartments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentCountArgs} args - Arguments to filter CaseDepartments to count.
+     * @example
+     * // Count the number of CaseDepartments
+     * const count = await prisma.caseDepartment.count({
+     *   where: {
+     *     // ... the filter for the CaseDepartments we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseDepartmentCountArgs>(
+      args?: Subset<T, CaseDepartmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseDepartmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseDepartment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseDepartmentAggregateArgs>(args: Subset<T, CaseDepartmentAggregateArgs>): Prisma.PrismaPromise<GetCaseDepartmentAggregateType<T>>
+
+    /**
+     * Group by CaseDepartment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseDepartmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseDepartmentGroupByArgs['orderBy'] }
+        : { orderBy?: CaseDepartmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseDepartmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseDepartmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseDepartment model
+   */
+  readonly fields: CaseDepartmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseDepartment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseDepartmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case<T extends CaseHeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeaderDefaultArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    notifications<T extends CaseDepartment$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CaseDepartment$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    caseNotificationMessages<T extends CaseDepartment$caseNotificationMessagesArgs<ExtArgs> = {}>(args?: Subset<T, CaseDepartment$caseNotificationMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseDepartment model
+   */
+  interface CaseDepartmentFieldRefs {
+    readonly caseDepartmentId: FieldRef<"CaseDepartment", 'String'>
+    readonly caseId: FieldRef<"CaseDepartment", 'String'>
+    readonly sbuSubId: FieldRef<"CaseDepartment", 'Int'>
+    readonly decisionStatus: FieldRef<"CaseDepartment", 'String'>
+    readonly decisionAt: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly decisionBy: FieldRef<"CaseDepartment", 'String'>
+    readonly assigneeEmployeeId: FieldRef<"CaseDepartment", 'Int'>
+    readonly assignedAt: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly assignedBy: FieldRef<"CaseDepartment", 'String'>
+    readonly workStatus: FieldRef<"CaseDepartment", 'String'>
+    readonly startDate: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly targetDate: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly endDate: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly workNotes: FieldRef<"CaseDepartment", 'String'>
+    readonly isActive: FieldRef<"CaseDepartment", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseDepartment", 'String'>
+    readonly updatedAt: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseDepartment", 'String'>
+    readonly isDeleted: FieldRef<"CaseDepartment", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseDepartment", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseDepartment", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseDepartment findUnique
+   */
+  export type CaseDepartmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartment to fetch.
+     */
+    where: CaseDepartmentWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartment findUniqueOrThrow
+   */
+  export type CaseDepartmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartment to fetch.
+     */
+    where: CaseDepartmentWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartment findFirst
+   */
+  export type CaseDepartmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartment to fetch.
+     */
+    where?: CaseDepartmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartments to fetch.
+     */
+    orderBy?: CaseDepartmentOrderByWithRelationInput | CaseDepartmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseDepartments.
+     */
+    cursor?: CaseDepartmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseDepartments.
+     */
+    distinct?: CaseDepartmentScalarFieldEnum | CaseDepartmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartment findFirstOrThrow
+   */
+  export type CaseDepartmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartment to fetch.
+     */
+    where?: CaseDepartmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartments to fetch.
+     */
+    orderBy?: CaseDepartmentOrderByWithRelationInput | CaseDepartmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseDepartments.
+     */
+    cursor?: CaseDepartmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseDepartments.
+     */
+    distinct?: CaseDepartmentScalarFieldEnum | CaseDepartmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartment findMany
+   */
+  export type CaseDepartmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartments to fetch.
+     */
+    where?: CaseDepartmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartments to fetch.
+     */
+    orderBy?: CaseDepartmentOrderByWithRelationInput | CaseDepartmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseDepartments.
+     */
+    cursor?: CaseDepartmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartments.
+     */
+    skip?: number
+    distinct?: CaseDepartmentScalarFieldEnum | CaseDepartmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartment create
+   */
+  export type CaseDepartmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseDepartment.
+     */
+    data: XOR<CaseDepartmentCreateInput, CaseDepartmentUncheckedCreateInput>
+  }
+
+  /**
+   * CaseDepartment createMany
+   */
+  export type CaseDepartmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseDepartments.
+     */
+    data: CaseDepartmentCreateManyInput | CaseDepartmentCreateManyInput[]
+  }
+
+  /**
+   * CaseDepartment update
+   */
+  export type CaseDepartmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseDepartment.
+     */
+    data: XOR<CaseDepartmentUpdateInput, CaseDepartmentUncheckedUpdateInput>
+    /**
+     * Choose, which CaseDepartment to update.
+     */
+    where: CaseDepartmentWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartment updateMany
+   */
+  export type CaseDepartmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseDepartments.
+     */
+    data: XOR<CaseDepartmentUpdateManyMutationInput, CaseDepartmentUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseDepartments to update
+     */
+    where?: CaseDepartmentWhereInput
+    /**
+     * Limit how many CaseDepartments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseDepartment upsert
+   */
+  export type CaseDepartmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseDepartment to update in case it exists.
+     */
+    where: CaseDepartmentWhereUniqueInput
+    /**
+     * In case the CaseDepartment found by the `where` argument doesn't exist, create a new CaseDepartment with this data.
+     */
+    create: XOR<CaseDepartmentCreateInput, CaseDepartmentUncheckedCreateInput>
+    /**
+     * In case the CaseDepartment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseDepartmentUpdateInput, CaseDepartmentUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseDepartment delete
+   */
+  export type CaseDepartmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    /**
+     * Filter which CaseDepartment to delete.
+     */
+    where: CaseDepartmentWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartment deleteMany
+   */
+  export type CaseDepartmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseDepartments to delete
+     */
+    where?: CaseDepartmentWhereInput
+    /**
+     * Limit how many CaseDepartments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseDepartment.notifications
+   */
+  export type CaseDepartment$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    where?: CaseNotificationOutboxWhereInput
+    orderBy?: CaseNotificationOutboxOrderByWithRelationInput | CaseNotificationOutboxOrderByWithRelationInput[]
+    cursor?: CaseNotificationOutboxWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseNotificationOutboxScalarFieldEnum | CaseNotificationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartment.caseNotificationMessages
+   */
+  export type CaseDepartment$caseNotificationMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    where?: CaseNotificationMessageWhereInput
+    orderBy?: CaseNotificationMessageOrderByWithRelationInput | CaseNotificationMessageOrderByWithRelationInput[]
+    cursor?: CaseNotificationMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseNotificationMessageScalarFieldEnum | CaseNotificationMessageScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartment without action
+   */
+  export type CaseDepartmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseNotificationOutbox
+   */
+
+  export type AggregateCaseNotificationOutbox = {
+    _count: CaseNotificationOutboxCountAggregateOutputType | null
+    _avg: CaseNotificationOutboxAvgAggregateOutputType | null
+    _sum: CaseNotificationOutboxSumAggregateOutputType | null
+    _min: CaseNotificationOutboxMinAggregateOutputType | null
+    _max: CaseNotificationOutboxMaxAggregateOutputType | null
+  }
+
+  export type CaseNotificationOutboxAvgAggregateOutputType = {
+    recipientEmployeeId: number | null
+    attempts: number | null
+  }
+
+  export type CaseNotificationOutboxSumAggregateOutputType = {
+    recipientEmployeeId: number | null
+    attempts: number | null
+  }
+
+  export type CaseNotificationOutboxMinAggregateOutputType = {
+    caseNotificationId: string | null
+    caseId: string | null
+    caseDepartmentId: string | null
+    recipientEmployeeId: number | null
+    channel: string | null
+    phoneNumber: string | null
+    message: string | null
+    status: string | null
+    attempts: number | null
+    lastError: string | null
+    provider: string | null
+    meta: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseNotificationOutboxMaxAggregateOutputType = {
+    caseNotificationId: string | null
+    caseId: string | null
+    caseDepartmentId: string | null
+    recipientEmployeeId: number | null
+    channel: string | null
+    phoneNumber: string | null
+    message: string | null
+    status: string | null
+    attempts: number | null
+    lastError: string | null
+    provider: string | null
+    meta: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseNotificationOutboxCountAggregateOutputType = {
+    caseNotificationId: number
+    caseId: number
+    caseDepartmentId: number
+    recipientEmployeeId: number
+    channel: number
+    phoneNumber: number
+    message: number
+    status: number
+    attempts: number
+    lastError: number
+    provider: number
+    meta: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseNotificationOutboxAvgAggregateInputType = {
+    recipientEmployeeId?: true
+    attempts?: true
+  }
+
+  export type CaseNotificationOutboxSumAggregateInputType = {
+    recipientEmployeeId?: true
+    attempts?: true
+  }
+
+  export type CaseNotificationOutboxMinAggregateInputType = {
+    caseNotificationId?: true
+    caseId?: true
+    caseDepartmentId?: true
+    recipientEmployeeId?: true
+    channel?: true
+    phoneNumber?: true
+    message?: true
+    status?: true
+    attempts?: true
+    lastError?: true
+    provider?: true
+    meta?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseNotificationOutboxMaxAggregateInputType = {
+    caseNotificationId?: true
+    caseId?: true
+    caseDepartmentId?: true
+    recipientEmployeeId?: true
+    channel?: true
+    phoneNumber?: true
+    message?: true
+    status?: true
+    attempts?: true
+    lastError?: true
+    provider?: true
+    meta?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseNotificationOutboxCountAggregateInputType = {
+    caseNotificationId?: true
+    caseId?: true
+    caseDepartmentId?: true
+    recipientEmployeeId?: true
+    channel?: true
+    phoneNumber?: true
+    message?: true
+    status?: true
+    attempts?: true
+    lastError?: true
+    provider?: true
+    meta?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseNotificationOutboxAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseNotificationOutbox to aggregate.
+     */
+    where?: CaseNotificationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationOutboxes to fetch.
+     */
+    orderBy?: CaseNotificationOutboxOrderByWithRelationInput | CaseNotificationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseNotificationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationOutboxes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseNotificationOutboxes
+    **/
+    _count?: true | CaseNotificationOutboxCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseNotificationOutboxAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseNotificationOutboxSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseNotificationOutboxMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseNotificationOutboxMaxAggregateInputType
+  }
+
+  export type GetCaseNotificationOutboxAggregateType<T extends CaseNotificationOutboxAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseNotificationOutbox]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseNotificationOutbox[P]>
+      : GetScalarType<T[P], AggregateCaseNotificationOutbox[P]>
+  }
+
+
+
+
+  export type CaseNotificationOutboxGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationOutboxWhereInput
+    orderBy?: CaseNotificationOutboxOrderByWithAggregationInput | CaseNotificationOutboxOrderByWithAggregationInput[]
+    by: CaseNotificationOutboxScalarFieldEnum[] | CaseNotificationOutboxScalarFieldEnum
+    having?: CaseNotificationOutboxScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseNotificationOutboxCountAggregateInputType | true
+    _avg?: CaseNotificationOutboxAvgAggregateInputType
+    _sum?: CaseNotificationOutboxSumAggregateInputType
+    _min?: CaseNotificationOutboxMinAggregateInputType
+    _max?: CaseNotificationOutboxMaxAggregateInputType
+  }
+
+  export type CaseNotificationOutboxGroupByOutputType = {
+    caseNotificationId: string
+    caseId: string | null
+    caseDepartmentId: string | null
+    recipientEmployeeId: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status: string
+    attempts: number
+    lastError: string | null
+    provider: string | null
+    meta: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseNotificationOutboxCountAggregateOutputType | null
+    _avg: CaseNotificationOutboxAvgAggregateOutputType | null
+    _sum: CaseNotificationOutboxSumAggregateOutputType | null
+    _min: CaseNotificationOutboxMinAggregateOutputType | null
+    _max: CaseNotificationOutboxMaxAggregateOutputType | null
+  }
+
+  type GetCaseNotificationOutboxGroupByPayload<T extends CaseNotificationOutboxGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseNotificationOutboxGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseNotificationOutboxGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseNotificationOutboxGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseNotificationOutboxGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseNotificationOutboxSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseNotificationId?: boolean
+    caseId?: boolean
+    caseDepartmentId?: boolean
+    recipientEmployeeId?: boolean
+    channel?: boolean
+    phoneNumber?: boolean
+    message?: boolean
+    status?: boolean
+    attempts?: boolean
+    lastError?: boolean
+    provider?: boolean
+    meta?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case?: boolean | CaseNotificationOutbox$caseArgs<ExtArgs>
+    department?: boolean | CaseNotificationOutbox$departmentArgs<ExtArgs>
+  }, ExtArgs["result"]["caseNotificationOutbox"]>
+
+
+
+  export type CaseNotificationOutboxSelectScalar = {
+    caseNotificationId?: boolean
+    caseId?: boolean
+    caseDepartmentId?: boolean
+    recipientEmployeeId?: boolean
+    channel?: boolean
+    phoneNumber?: boolean
+    message?: boolean
+    status?: boolean
+    attempts?: boolean
+    lastError?: boolean
+    provider?: boolean
+    meta?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseNotificationOutboxOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseNotificationId" | "caseId" | "caseDepartmentId" | "recipientEmployeeId" | "channel" | "phoneNumber" | "message" | "status" | "attempts" | "lastError" | "provider" | "meta" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseNotificationOutbox"]>
+  export type CaseNotificationOutboxInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case?: boolean | CaseNotificationOutbox$caseArgs<ExtArgs>
+    department?: boolean | CaseNotificationOutbox$departmentArgs<ExtArgs>
+  }
+
+  export type $CaseNotificationOutboxPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseNotificationOutbox"
+    objects: {
+      case: Prisma.$CaseHeaderPayload<ExtArgs> | null
+      department: Prisma.$CaseDepartmentPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseNotificationId: string
+      caseId: string | null
+      caseDepartmentId: string | null
+      recipientEmployeeId: number | null
+      channel: string
+      phoneNumber: string
+      message: string
+      status: string
+      attempts: number
+      lastError: string | null
+      provider: string | null
+      meta: string | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseNotificationOutbox"]>
+    composites: {}
+  }
+
+  type CaseNotificationOutboxGetPayload<S extends boolean | null | undefined | CaseNotificationOutboxDefaultArgs> = $Result.GetResult<Prisma.$CaseNotificationOutboxPayload, S>
+
+  type CaseNotificationOutboxCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseNotificationOutboxFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseNotificationOutboxCountAggregateInputType | true
+    }
+
+  export interface CaseNotificationOutboxDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseNotificationOutbox'], meta: { name: 'CaseNotificationOutbox' } }
+    /**
+     * Find zero or one CaseNotificationOutbox that matches the filter.
+     * @param {CaseNotificationOutboxFindUniqueArgs} args - Arguments to find a CaseNotificationOutbox
+     * @example
+     * // Get one CaseNotificationOutbox
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseNotificationOutboxFindUniqueArgs>(args: SelectSubset<T, CaseNotificationOutboxFindUniqueArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseNotificationOutbox that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseNotificationOutboxFindUniqueOrThrowArgs} args - Arguments to find a CaseNotificationOutbox
+     * @example
+     * // Get one CaseNotificationOutbox
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseNotificationOutboxFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseNotificationOutboxFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseNotificationOutbox that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxFindFirstArgs} args - Arguments to find a CaseNotificationOutbox
+     * @example
+     * // Get one CaseNotificationOutbox
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseNotificationOutboxFindFirstArgs>(args?: SelectSubset<T, CaseNotificationOutboxFindFirstArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseNotificationOutbox that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxFindFirstOrThrowArgs} args - Arguments to find a CaseNotificationOutbox
+     * @example
+     * // Get one CaseNotificationOutbox
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseNotificationOutboxFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseNotificationOutboxFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseNotificationOutboxes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseNotificationOutboxes
+     * const caseNotificationOutboxes = await prisma.caseNotificationOutbox.findMany()
+     * 
+     * // Get first 10 CaseNotificationOutboxes
+     * const caseNotificationOutboxes = await prisma.caseNotificationOutbox.findMany({ take: 10 })
+     * 
+     * // Only select the `caseNotificationId`
+     * const caseNotificationOutboxWithCaseNotificationIdOnly = await prisma.caseNotificationOutbox.findMany({ select: { caseNotificationId: true } })
+     * 
+     */
+    findMany<T extends CaseNotificationOutboxFindManyArgs>(args?: SelectSubset<T, CaseNotificationOutboxFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseNotificationOutbox.
+     * @param {CaseNotificationOutboxCreateArgs} args - Arguments to create a CaseNotificationOutbox.
+     * @example
+     * // Create one CaseNotificationOutbox
+     * const CaseNotificationOutbox = await prisma.caseNotificationOutbox.create({
+     *   data: {
+     *     // ... data to create a CaseNotificationOutbox
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseNotificationOutboxCreateArgs>(args: SelectSubset<T, CaseNotificationOutboxCreateArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseNotificationOutboxes.
+     * @param {CaseNotificationOutboxCreateManyArgs} args - Arguments to create many CaseNotificationOutboxes.
+     * @example
+     * // Create many CaseNotificationOutboxes
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseNotificationOutboxCreateManyArgs>(args?: SelectSubset<T, CaseNotificationOutboxCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseNotificationOutbox.
+     * @param {CaseNotificationOutboxDeleteArgs} args - Arguments to delete one CaseNotificationOutbox.
+     * @example
+     * // Delete one CaseNotificationOutbox
+     * const CaseNotificationOutbox = await prisma.caseNotificationOutbox.delete({
+     *   where: {
+     *     // ... filter to delete one CaseNotificationOutbox
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseNotificationOutboxDeleteArgs>(args: SelectSubset<T, CaseNotificationOutboxDeleteArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseNotificationOutbox.
+     * @param {CaseNotificationOutboxUpdateArgs} args - Arguments to update one CaseNotificationOutbox.
+     * @example
+     * // Update one CaseNotificationOutbox
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseNotificationOutboxUpdateArgs>(args: SelectSubset<T, CaseNotificationOutboxUpdateArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseNotificationOutboxes.
+     * @param {CaseNotificationOutboxDeleteManyArgs} args - Arguments to filter CaseNotificationOutboxes to delete.
+     * @example
+     * // Delete a few CaseNotificationOutboxes
+     * const { count } = await prisma.caseNotificationOutbox.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseNotificationOutboxDeleteManyArgs>(args?: SelectSubset<T, CaseNotificationOutboxDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseNotificationOutboxes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseNotificationOutboxes
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseNotificationOutboxUpdateManyArgs>(args: SelectSubset<T, CaseNotificationOutboxUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseNotificationOutbox.
+     * @param {CaseNotificationOutboxUpsertArgs} args - Arguments to update or create a CaseNotificationOutbox.
+     * @example
+     * // Update or create a CaseNotificationOutbox
+     * const caseNotificationOutbox = await prisma.caseNotificationOutbox.upsert({
+     *   create: {
+     *     // ... data to create a CaseNotificationOutbox
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseNotificationOutbox we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseNotificationOutboxUpsertArgs>(args: SelectSubset<T, CaseNotificationOutboxUpsertArgs<ExtArgs>>): Prisma__CaseNotificationOutboxClient<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseNotificationOutboxes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxCountArgs} args - Arguments to filter CaseNotificationOutboxes to count.
+     * @example
+     * // Count the number of CaseNotificationOutboxes
+     * const count = await prisma.caseNotificationOutbox.count({
+     *   where: {
+     *     // ... the filter for the CaseNotificationOutboxes we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseNotificationOutboxCountArgs>(
+      args?: Subset<T, CaseNotificationOutboxCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseNotificationOutboxCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseNotificationOutbox.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseNotificationOutboxAggregateArgs>(args: Subset<T, CaseNotificationOutboxAggregateArgs>): Prisma.PrismaPromise<GetCaseNotificationOutboxAggregateType<T>>
+
+    /**
+     * Group by CaseNotificationOutbox.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationOutboxGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseNotificationOutboxGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseNotificationOutboxGroupByArgs['orderBy'] }
+        : { orderBy?: CaseNotificationOutboxGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseNotificationOutboxGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseNotificationOutboxGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseNotificationOutbox model
+   */
+  readonly fields: CaseNotificationOutboxFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseNotificationOutbox.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseNotificationOutboxClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case<T extends CaseNotificationOutbox$caseArgs<ExtArgs> = {}>(args?: Subset<T, CaseNotificationOutbox$caseArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    department<T extends CaseNotificationOutbox$departmentArgs<ExtArgs> = {}>(args?: Subset<T, CaseNotificationOutbox$departmentArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseNotificationOutbox model
+   */
+  interface CaseNotificationOutboxFieldRefs {
+    readonly caseNotificationId: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly caseId: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly caseDepartmentId: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly recipientEmployeeId: FieldRef<"CaseNotificationOutbox", 'Int'>
+    readonly channel: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly phoneNumber: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly message: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly status: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly attempts: FieldRef<"CaseNotificationOutbox", 'Int'>
+    readonly lastError: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly provider: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly meta: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly isActive: FieldRef<"CaseNotificationOutbox", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseNotificationOutbox", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly updatedAt: FieldRef<"CaseNotificationOutbox", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseNotificationOutbox", 'String'>
+    readonly isDeleted: FieldRef<"CaseNotificationOutbox", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseNotificationOutbox", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseNotificationOutbox", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseNotificationOutbox findUnique
+   */
+  export type CaseNotificationOutboxFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationOutbox to fetch.
+     */
+    where: CaseNotificationOutboxWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationOutbox findUniqueOrThrow
+   */
+  export type CaseNotificationOutboxFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationOutbox to fetch.
+     */
+    where: CaseNotificationOutboxWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationOutbox findFirst
+   */
+  export type CaseNotificationOutboxFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationOutbox to fetch.
+     */
+    where?: CaseNotificationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationOutboxes to fetch.
+     */
+    orderBy?: CaseNotificationOutboxOrderByWithRelationInput | CaseNotificationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseNotificationOutboxes.
+     */
+    cursor?: CaseNotificationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationOutboxes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseNotificationOutboxes.
+     */
+    distinct?: CaseNotificationOutboxScalarFieldEnum | CaseNotificationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationOutbox findFirstOrThrow
+   */
+  export type CaseNotificationOutboxFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationOutbox to fetch.
+     */
+    where?: CaseNotificationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationOutboxes to fetch.
+     */
+    orderBy?: CaseNotificationOutboxOrderByWithRelationInput | CaseNotificationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseNotificationOutboxes.
+     */
+    cursor?: CaseNotificationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationOutboxes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseNotificationOutboxes.
+     */
+    distinct?: CaseNotificationOutboxScalarFieldEnum | CaseNotificationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationOutbox findMany
+   */
+  export type CaseNotificationOutboxFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationOutboxes to fetch.
+     */
+    where?: CaseNotificationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationOutboxes to fetch.
+     */
+    orderBy?: CaseNotificationOutboxOrderByWithRelationInput | CaseNotificationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseNotificationOutboxes.
+     */
+    cursor?: CaseNotificationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationOutboxes.
+     */
+    skip?: number
+    distinct?: CaseNotificationOutboxScalarFieldEnum | CaseNotificationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationOutbox create
+   */
+  export type CaseNotificationOutboxCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseNotificationOutbox.
+     */
+    data: XOR<CaseNotificationOutboxCreateInput, CaseNotificationOutboxUncheckedCreateInput>
+  }
+
+  /**
+   * CaseNotificationOutbox createMany
+   */
+  export type CaseNotificationOutboxCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseNotificationOutboxes.
+     */
+    data: CaseNotificationOutboxCreateManyInput | CaseNotificationOutboxCreateManyInput[]
+  }
+
+  /**
+   * CaseNotificationOutbox update
+   */
+  export type CaseNotificationOutboxUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseNotificationOutbox.
+     */
+    data: XOR<CaseNotificationOutboxUpdateInput, CaseNotificationOutboxUncheckedUpdateInput>
+    /**
+     * Choose, which CaseNotificationOutbox to update.
+     */
+    where: CaseNotificationOutboxWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationOutbox updateMany
+   */
+  export type CaseNotificationOutboxUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseNotificationOutboxes.
+     */
+    data: XOR<CaseNotificationOutboxUpdateManyMutationInput, CaseNotificationOutboxUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseNotificationOutboxes to update
+     */
+    where?: CaseNotificationOutboxWhereInput
+    /**
+     * Limit how many CaseNotificationOutboxes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseNotificationOutbox upsert
+   */
+  export type CaseNotificationOutboxUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseNotificationOutbox to update in case it exists.
+     */
+    where: CaseNotificationOutboxWhereUniqueInput
+    /**
+     * In case the CaseNotificationOutbox found by the `where` argument doesn't exist, create a new CaseNotificationOutbox with this data.
+     */
+    create: XOR<CaseNotificationOutboxCreateInput, CaseNotificationOutboxUncheckedCreateInput>
+    /**
+     * In case the CaseNotificationOutbox was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseNotificationOutboxUpdateInput, CaseNotificationOutboxUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseNotificationOutbox delete
+   */
+  export type CaseNotificationOutboxDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+    /**
+     * Filter which CaseNotificationOutbox to delete.
+     */
+    where: CaseNotificationOutboxWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationOutbox deleteMany
+   */
+  export type CaseNotificationOutboxDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseNotificationOutboxes to delete
+     */
+    where?: CaseNotificationOutboxWhereInput
+    /**
+     * Limit how many CaseNotificationOutboxes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseNotificationOutbox.case
+   */
+  export type CaseNotificationOutbox$caseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    where?: CaseHeaderWhereInput
+  }
+
+  /**
+   * CaseNotificationOutbox.department
+   */
+  export type CaseNotificationOutbox$departmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    where?: CaseDepartmentWhereInput
+  }
+
+  /**
+   * CaseNotificationOutbox without action
+   */
+  export type CaseNotificationOutboxDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationOutbox
+     */
+    select?: CaseNotificationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationOutbox
+     */
+    omit?: CaseNotificationOutboxOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationOutboxInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseNotificationMessage
+   */
+
+  export type AggregateCaseNotificationMessage = {
+    _count: CaseNotificationMessageCountAggregateOutputType | null
+    _avg: CaseNotificationMessageAvgAggregateOutputType | null
+    _sum: CaseNotificationMessageSumAggregateOutputType | null
+    _min: CaseNotificationMessageMinAggregateOutputType | null
+    _max: CaseNotificationMessageMaxAggregateOutputType | null
+  }
+
+  export type CaseNotificationMessageAvgAggregateOutputType = {
+    recipientEmployeeId: number | null
+  }
+
+  export type CaseNotificationMessageSumAggregateOutputType = {
+    recipientEmployeeId: number | null
+  }
+
+  export type CaseNotificationMessageMinAggregateOutputType = {
+    caseNotificationMessageId: string | null
+    caseId: string | null
+    caseDepartmentId: string | null
+    recipientEmployeeId: number | null
+    role: string | null
+    messageTemplate: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseNotificationMessageMaxAggregateOutputType = {
+    caseNotificationMessageId: string | null
+    caseId: string | null
+    caseDepartmentId: string | null
+    recipientEmployeeId: number | null
+    role: string | null
+    messageTemplate: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseNotificationMessageCountAggregateOutputType = {
+    caseNotificationMessageId: number
+    caseId: number
+    caseDepartmentId: number
+    recipientEmployeeId: number
+    role: number
+    messageTemplate: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseNotificationMessageAvgAggregateInputType = {
+    recipientEmployeeId?: true
+  }
+
+  export type CaseNotificationMessageSumAggregateInputType = {
+    recipientEmployeeId?: true
+  }
+
+  export type CaseNotificationMessageMinAggregateInputType = {
+    caseNotificationMessageId?: true
+    caseId?: true
+    caseDepartmentId?: true
+    recipientEmployeeId?: true
+    role?: true
+    messageTemplate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseNotificationMessageMaxAggregateInputType = {
+    caseNotificationMessageId?: true
+    caseId?: true
+    caseDepartmentId?: true
+    recipientEmployeeId?: true
+    role?: true
+    messageTemplate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseNotificationMessageCountAggregateInputType = {
+    caseNotificationMessageId?: true
+    caseId?: true
+    caseDepartmentId?: true
+    recipientEmployeeId?: true
+    role?: true
+    messageTemplate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseNotificationMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseNotificationMessage to aggregate.
+     */
+    where?: CaseNotificationMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationMessages to fetch.
+     */
+    orderBy?: CaseNotificationMessageOrderByWithRelationInput | CaseNotificationMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseNotificationMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseNotificationMessages
+    **/
+    _count?: true | CaseNotificationMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseNotificationMessageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseNotificationMessageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseNotificationMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseNotificationMessageMaxAggregateInputType
+  }
+
+  export type GetCaseNotificationMessageAggregateType<T extends CaseNotificationMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseNotificationMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseNotificationMessage[P]>
+      : GetScalarType<T[P], AggregateCaseNotificationMessage[P]>
+  }
+
+
+
+
+  export type CaseNotificationMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationMessageWhereInput
+    orderBy?: CaseNotificationMessageOrderByWithAggregationInput | CaseNotificationMessageOrderByWithAggregationInput[]
+    by: CaseNotificationMessageScalarFieldEnum[] | CaseNotificationMessageScalarFieldEnum
+    having?: CaseNotificationMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseNotificationMessageCountAggregateInputType | true
+    _avg?: CaseNotificationMessageAvgAggregateInputType
+    _sum?: CaseNotificationMessageSumAggregateInputType
+    _min?: CaseNotificationMessageMinAggregateInputType
+    _max?: CaseNotificationMessageMaxAggregateInputType
+  }
+
+  export type CaseNotificationMessageGroupByOutputType = {
+    caseNotificationMessageId: string
+    caseId: string | null
+    caseDepartmentId: string | null
+    recipientEmployeeId: number | null
+    role: string
+    messageTemplate: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseNotificationMessageCountAggregateOutputType | null
+    _avg: CaseNotificationMessageAvgAggregateOutputType | null
+    _sum: CaseNotificationMessageSumAggregateOutputType | null
+    _min: CaseNotificationMessageMinAggregateOutputType | null
+    _max: CaseNotificationMessageMaxAggregateOutputType | null
+  }
+
+  type GetCaseNotificationMessageGroupByPayload<T extends CaseNotificationMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseNotificationMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseNotificationMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseNotificationMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseNotificationMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseNotificationMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseNotificationMessageId?: boolean
+    caseId?: boolean
+    caseDepartmentId?: boolean
+    recipientEmployeeId?: boolean
+    role?: boolean
+    messageTemplate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case?: boolean | CaseNotificationMessage$caseArgs<ExtArgs>
+    department?: boolean | CaseNotificationMessage$departmentArgs<ExtArgs>
+  }, ExtArgs["result"]["caseNotificationMessage"]>
+
+
+
+  export type CaseNotificationMessageSelectScalar = {
+    caseNotificationMessageId?: boolean
+    caseId?: boolean
+    caseDepartmentId?: boolean
+    recipientEmployeeId?: boolean
+    role?: boolean
+    messageTemplate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseNotificationMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseNotificationMessageId" | "caseId" | "caseDepartmentId" | "recipientEmployeeId" | "role" | "messageTemplate" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseNotificationMessage"]>
+  export type CaseNotificationMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case?: boolean | CaseNotificationMessage$caseArgs<ExtArgs>
+    department?: boolean | CaseNotificationMessage$departmentArgs<ExtArgs>
+  }
+
+  export type $CaseNotificationMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseNotificationMessage"
+    objects: {
+      case: Prisma.$CaseHeaderPayload<ExtArgs> | null
+      department: Prisma.$CaseDepartmentPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseNotificationMessageId: string
+      caseId: string | null
+      caseDepartmentId: string | null
+      recipientEmployeeId: number | null
+      role: string
+      messageTemplate: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseNotificationMessage"]>
+    composites: {}
+  }
+
+  type CaseNotificationMessageGetPayload<S extends boolean | null | undefined | CaseNotificationMessageDefaultArgs> = $Result.GetResult<Prisma.$CaseNotificationMessagePayload, S>
+
+  type CaseNotificationMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseNotificationMessageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseNotificationMessageCountAggregateInputType | true
+    }
+
+  export interface CaseNotificationMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseNotificationMessage'], meta: { name: 'CaseNotificationMessage' } }
+    /**
+     * Find zero or one CaseNotificationMessage that matches the filter.
+     * @param {CaseNotificationMessageFindUniqueArgs} args - Arguments to find a CaseNotificationMessage
+     * @example
+     * // Get one CaseNotificationMessage
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseNotificationMessageFindUniqueArgs>(args: SelectSubset<T, CaseNotificationMessageFindUniqueArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseNotificationMessage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseNotificationMessageFindUniqueOrThrowArgs} args - Arguments to find a CaseNotificationMessage
+     * @example
+     * // Get one CaseNotificationMessage
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseNotificationMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseNotificationMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseNotificationMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageFindFirstArgs} args - Arguments to find a CaseNotificationMessage
+     * @example
+     * // Get one CaseNotificationMessage
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseNotificationMessageFindFirstArgs>(args?: SelectSubset<T, CaseNotificationMessageFindFirstArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseNotificationMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageFindFirstOrThrowArgs} args - Arguments to find a CaseNotificationMessage
+     * @example
+     * // Get one CaseNotificationMessage
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseNotificationMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseNotificationMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseNotificationMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseNotificationMessages
+     * const caseNotificationMessages = await prisma.caseNotificationMessage.findMany()
+     * 
+     * // Get first 10 CaseNotificationMessages
+     * const caseNotificationMessages = await prisma.caseNotificationMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `caseNotificationMessageId`
+     * const caseNotificationMessageWithCaseNotificationMessageIdOnly = await prisma.caseNotificationMessage.findMany({ select: { caseNotificationMessageId: true } })
+     * 
+     */
+    findMany<T extends CaseNotificationMessageFindManyArgs>(args?: SelectSubset<T, CaseNotificationMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseNotificationMessage.
+     * @param {CaseNotificationMessageCreateArgs} args - Arguments to create a CaseNotificationMessage.
+     * @example
+     * // Create one CaseNotificationMessage
+     * const CaseNotificationMessage = await prisma.caseNotificationMessage.create({
+     *   data: {
+     *     // ... data to create a CaseNotificationMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseNotificationMessageCreateArgs>(args: SelectSubset<T, CaseNotificationMessageCreateArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseNotificationMessages.
+     * @param {CaseNotificationMessageCreateManyArgs} args - Arguments to create many CaseNotificationMessages.
+     * @example
+     * // Create many CaseNotificationMessages
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseNotificationMessageCreateManyArgs>(args?: SelectSubset<T, CaseNotificationMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseNotificationMessage.
+     * @param {CaseNotificationMessageDeleteArgs} args - Arguments to delete one CaseNotificationMessage.
+     * @example
+     * // Delete one CaseNotificationMessage
+     * const CaseNotificationMessage = await prisma.caseNotificationMessage.delete({
+     *   where: {
+     *     // ... filter to delete one CaseNotificationMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseNotificationMessageDeleteArgs>(args: SelectSubset<T, CaseNotificationMessageDeleteArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseNotificationMessage.
+     * @param {CaseNotificationMessageUpdateArgs} args - Arguments to update one CaseNotificationMessage.
+     * @example
+     * // Update one CaseNotificationMessage
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseNotificationMessageUpdateArgs>(args: SelectSubset<T, CaseNotificationMessageUpdateArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseNotificationMessages.
+     * @param {CaseNotificationMessageDeleteManyArgs} args - Arguments to filter CaseNotificationMessages to delete.
+     * @example
+     * // Delete a few CaseNotificationMessages
+     * const { count } = await prisma.caseNotificationMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseNotificationMessageDeleteManyArgs>(args?: SelectSubset<T, CaseNotificationMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseNotificationMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseNotificationMessages
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseNotificationMessageUpdateManyArgs>(args: SelectSubset<T, CaseNotificationMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseNotificationMessage.
+     * @param {CaseNotificationMessageUpsertArgs} args - Arguments to update or create a CaseNotificationMessage.
+     * @example
+     * // Update or create a CaseNotificationMessage
+     * const caseNotificationMessage = await prisma.caseNotificationMessage.upsert({
+     *   create: {
+     *     // ... data to create a CaseNotificationMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseNotificationMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseNotificationMessageUpsertArgs>(args: SelectSubset<T, CaseNotificationMessageUpsertArgs<ExtArgs>>): Prisma__CaseNotificationMessageClient<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseNotificationMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageCountArgs} args - Arguments to filter CaseNotificationMessages to count.
+     * @example
+     * // Count the number of CaseNotificationMessages
+     * const count = await prisma.caseNotificationMessage.count({
+     *   where: {
+     *     // ... the filter for the CaseNotificationMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseNotificationMessageCountArgs>(
+      args?: Subset<T, CaseNotificationMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseNotificationMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseNotificationMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseNotificationMessageAggregateArgs>(args: Subset<T, CaseNotificationMessageAggregateArgs>): Prisma.PrismaPromise<GetCaseNotificationMessageAggregateType<T>>
+
+    /**
+     * Group by CaseNotificationMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseNotificationMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseNotificationMessageGroupByArgs['orderBy'] }
+        : { orderBy?: CaseNotificationMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseNotificationMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseNotificationMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseNotificationMessage model
+   */
+  readonly fields: CaseNotificationMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseNotificationMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseNotificationMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case<T extends CaseNotificationMessage$caseArgs<ExtArgs> = {}>(args?: Subset<T, CaseNotificationMessage$caseArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    department<T extends CaseNotificationMessage$departmentArgs<ExtArgs> = {}>(args?: Subset<T, CaseNotificationMessage$departmentArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseNotificationMessage model
+   */
+  interface CaseNotificationMessageFieldRefs {
+    readonly caseNotificationMessageId: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly caseId: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly caseDepartmentId: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly recipientEmployeeId: FieldRef<"CaseNotificationMessage", 'Int'>
+    readonly role: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly messageTemplate: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly isActive: FieldRef<"CaseNotificationMessage", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseNotificationMessage", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly updatedAt: FieldRef<"CaseNotificationMessage", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseNotificationMessage", 'String'>
+    readonly isDeleted: FieldRef<"CaseNotificationMessage", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseNotificationMessage", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseNotificationMessage", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseNotificationMessage findUnique
+   */
+  export type CaseNotificationMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationMessage to fetch.
+     */
+    where: CaseNotificationMessageWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationMessage findUniqueOrThrow
+   */
+  export type CaseNotificationMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationMessage to fetch.
+     */
+    where: CaseNotificationMessageWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationMessage findFirst
+   */
+  export type CaseNotificationMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationMessage to fetch.
+     */
+    where?: CaseNotificationMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationMessages to fetch.
+     */
+    orderBy?: CaseNotificationMessageOrderByWithRelationInput | CaseNotificationMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseNotificationMessages.
+     */
+    cursor?: CaseNotificationMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseNotificationMessages.
+     */
+    distinct?: CaseNotificationMessageScalarFieldEnum | CaseNotificationMessageScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationMessage findFirstOrThrow
+   */
+  export type CaseNotificationMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationMessage to fetch.
+     */
+    where?: CaseNotificationMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationMessages to fetch.
+     */
+    orderBy?: CaseNotificationMessageOrderByWithRelationInput | CaseNotificationMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseNotificationMessages.
+     */
+    cursor?: CaseNotificationMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseNotificationMessages.
+     */
+    distinct?: CaseNotificationMessageScalarFieldEnum | CaseNotificationMessageScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationMessage findMany
+   */
+  export type CaseNotificationMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationMessages to fetch.
+     */
+    where?: CaseNotificationMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationMessages to fetch.
+     */
+    orderBy?: CaseNotificationMessageOrderByWithRelationInput | CaseNotificationMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseNotificationMessages.
+     */
+    cursor?: CaseNotificationMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationMessages.
+     */
+    skip?: number
+    distinct?: CaseNotificationMessageScalarFieldEnum | CaseNotificationMessageScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationMessage create
+   */
+  export type CaseNotificationMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseNotificationMessage.
+     */
+    data: XOR<CaseNotificationMessageCreateInput, CaseNotificationMessageUncheckedCreateInput>
+  }
+
+  /**
+   * CaseNotificationMessage createMany
+   */
+  export type CaseNotificationMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseNotificationMessages.
+     */
+    data: CaseNotificationMessageCreateManyInput | CaseNotificationMessageCreateManyInput[]
+  }
+
+  /**
+   * CaseNotificationMessage update
+   */
+  export type CaseNotificationMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseNotificationMessage.
+     */
+    data: XOR<CaseNotificationMessageUpdateInput, CaseNotificationMessageUncheckedUpdateInput>
+    /**
+     * Choose, which CaseNotificationMessage to update.
+     */
+    where: CaseNotificationMessageWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationMessage updateMany
+   */
+  export type CaseNotificationMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseNotificationMessages.
+     */
+    data: XOR<CaseNotificationMessageUpdateManyMutationInput, CaseNotificationMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseNotificationMessages to update
+     */
+    where?: CaseNotificationMessageWhereInput
+    /**
+     * Limit how many CaseNotificationMessages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseNotificationMessage upsert
+   */
+  export type CaseNotificationMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseNotificationMessage to update in case it exists.
+     */
+    where: CaseNotificationMessageWhereUniqueInput
+    /**
+     * In case the CaseNotificationMessage found by the `where` argument doesn't exist, create a new CaseNotificationMessage with this data.
+     */
+    create: XOR<CaseNotificationMessageCreateInput, CaseNotificationMessageUncheckedCreateInput>
+    /**
+     * In case the CaseNotificationMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseNotificationMessageUpdateInput, CaseNotificationMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseNotificationMessage delete
+   */
+  export type CaseNotificationMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+    /**
+     * Filter which CaseNotificationMessage to delete.
+     */
+    where: CaseNotificationMessageWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationMessage deleteMany
+   */
+  export type CaseNotificationMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseNotificationMessages to delete
+     */
+    where?: CaseNotificationMessageWhereInput
+    /**
+     * Limit how many CaseNotificationMessages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseNotificationMessage.case
+   */
+  export type CaseNotificationMessage$caseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseHeader
+     */
+    select?: CaseHeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseHeader
+     */
+    omit?: CaseHeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseHeaderInclude<ExtArgs> | null
+    where?: CaseHeaderWhereInput
+  }
+
+  /**
+   * CaseNotificationMessage.department
+   */
+  export type CaseNotificationMessage$departmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartment
+     */
+    select?: CaseDepartmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartment
+     */
+    omit?: CaseDepartmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentInclude<ExtArgs> | null
+    where?: CaseDepartmentWhereInput
+  }
+
+  /**
+   * CaseNotificationMessage without action
+   */
+  export type CaseNotificationMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationMessage
+     */
+    select?: CaseNotificationMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationMessage
+     */
+    omit?: CaseNotificationMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseNotificationMessageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseNotificationTemplate
+   */
+
+  export type AggregateCaseNotificationTemplate = {
+    _count: CaseNotificationTemplateCountAggregateOutputType | null
+    _min: CaseNotificationTemplateMinAggregateOutputType | null
+    _max: CaseNotificationTemplateMaxAggregateOutputType | null
+  }
+
+  export type CaseNotificationTemplateMinAggregateOutputType = {
+    caseNotificationTemplateId: string | null
+    templateName: string | null
+    channel: string | null
+    role: string | null
+    action: string | null
+    caseType: string | null
+    messageTemplate: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseNotificationTemplateMaxAggregateOutputType = {
+    caseNotificationTemplateId: string | null
+    templateName: string | null
+    channel: string | null
+    role: string | null
+    action: string | null
+    caseType: string | null
+    messageTemplate: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseNotificationTemplateCountAggregateOutputType = {
+    caseNotificationTemplateId: number
+    templateName: number
+    channel: number
+    role: number
+    action: number
+    caseType: number
+    messageTemplate: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseNotificationTemplateMinAggregateInputType = {
+    caseNotificationTemplateId?: true
+    templateName?: true
+    channel?: true
+    role?: true
+    action?: true
+    caseType?: true
+    messageTemplate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseNotificationTemplateMaxAggregateInputType = {
+    caseNotificationTemplateId?: true
+    templateName?: true
+    channel?: true
+    role?: true
+    action?: true
+    caseType?: true
+    messageTemplate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseNotificationTemplateCountAggregateInputType = {
+    caseNotificationTemplateId?: true
+    templateName?: true
+    channel?: true
+    role?: true
+    action?: true
+    caseType?: true
+    messageTemplate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseNotificationTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseNotificationTemplate to aggregate.
+     */
+    where?: CaseNotificationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationTemplates to fetch.
+     */
+    orderBy?: CaseNotificationTemplateOrderByWithRelationInput | CaseNotificationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseNotificationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseNotificationTemplates
+    **/
+    _count?: true | CaseNotificationTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseNotificationTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseNotificationTemplateMaxAggregateInputType
+  }
+
+  export type GetCaseNotificationTemplateAggregateType<T extends CaseNotificationTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseNotificationTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseNotificationTemplate[P]>
+      : GetScalarType<T[P], AggregateCaseNotificationTemplate[P]>
+  }
+
+
+
+
+  export type CaseNotificationTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseNotificationTemplateWhereInput
+    orderBy?: CaseNotificationTemplateOrderByWithAggregationInput | CaseNotificationTemplateOrderByWithAggregationInput[]
+    by: CaseNotificationTemplateScalarFieldEnum[] | CaseNotificationTemplateScalarFieldEnum
+    having?: CaseNotificationTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseNotificationTemplateCountAggregateInputType | true
+    _min?: CaseNotificationTemplateMinAggregateInputType
+    _max?: CaseNotificationTemplateMaxAggregateInputType
+  }
+
+  export type CaseNotificationTemplateGroupByOutputType = {
+    caseNotificationTemplateId: string
+    templateName: string
+    channel: string
+    role: string
+    action: string | null
+    caseType: string | null
+    messageTemplate: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseNotificationTemplateCountAggregateOutputType | null
+    _min: CaseNotificationTemplateMinAggregateOutputType | null
+    _max: CaseNotificationTemplateMaxAggregateOutputType | null
+  }
+
+  type GetCaseNotificationTemplateGroupByPayload<T extends CaseNotificationTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseNotificationTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseNotificationTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseNotificationTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseNotificationTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseNotificationTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseNotificationTemplateId?: boolean
+    templateName?: boolean
+    channel?: boolean
+    role?: boolean
+    action?: boolean
+    caseType?: boolean
+    messageTemplate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }, ExtArgs["result"]["caseNotificationTemplate"]>
+
+
+
+  export type CaseNotificationTemplateSelectScalar = {
+    caseNotificationTemplateId?: boolean
+    templateName?: boolean
+    channel?: boolean
+    role?: boolean
+    action?: boolean
+    caseType?: boolean
+    messageTemplate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseNotificationTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseNotificationTemplateId" | "templateName" | "channel" | "role" | "action" | "caseType" | "messageTemplate" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseNotificationTemplate"]>
+
+  export type $CaseNotificationTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseNotificationTemplate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      caseNotificationTemplateId: string
+      templateName: string
+      channel: string
+      role: string
+      action: string | null
+      caseType: string | null
+      messageTemplate: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseNotificationTemplate"]>
+    composites: {}
+  }
+
+  type CaseNotificationTemplateGetPayload<S extends boolean | null | undefined | CaseNotificationTemplateDefaultArgs> = $Result.GetResult<Prisma.$CaseNotificationTemplatePayload, S>
+
+  type CaseNotificationTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseNotificationTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseNotificationTemplateCountAggregateInputType | true
+    }
+
+  export interface CaseNotificationTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseNotificationTemplate'], meta: { name: 'CaseNotificationTemplate' } }
+    /**
+     * Find zero or one CaseNotificationTemplate that matches the filter.
+     * @param {CaseNotificationTemplateFindUniqueArgs} args - Arguments to find a CaseNotificationTemplate
+     * @example
+     * // Get one CaseNotificationTemplate
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseNotificationTemplateFindUniqueArgs>(args: SelectSubset<T, CaseNotificationTemplateFindUniqueArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseNotificationTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseNotificationTemplateFindUniqueOrThrowArgs} args - Arguments to find a CaseNotificationTemplate
+     * @example
+     * // Get one CaseNotificationTemplate
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseNotificationTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseNotificationTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseNotificationTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateFindFirstArgs} args - Arguments to find a CaseNotificationTemplate
+     * @example
+     * // Get one CaseNotificationTemplate
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseNotificationTemplateFindFirstArgs>(args?: SelectSubset<T, CaseNotificationTemplateFindFirstArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseNotificationTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateFindFirstOrThrowArgs} args - Arguments to find a CaseNotificationTemplate
+     * @example
+     * // Get one CaseNotificationTemplate
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseNotificationTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseNotificationTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseNotificationTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseNotificationTemplates
+     * const caseNotificationTemplates = await prisma.caseNotificationTemplate.findMany()
+     * 
+     * // Get first 10 CaseNotificationTemplates
+     * const caseNotificationTemplates = await prisma.caseNotificationTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `caseNotificationTemplateId`
+     * const caseNotificationTemplateWithCaseNotificationTemplateIdOnly = await prisma.caseNotificationTemplate.findMany({ select: { caseNotificationTemplateId: true } })
+     * 
+     */
+    findMany<T extends CaseNotificationTemplateFindManyArgs>(args?: SelectSubset<T, CaseNotificationTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseNotificationTemplate.
+     * @param {CaseNotificationTemplateCreateArgs} args - Arguments to create a CaseNotificationTemplate.
+     * @example
+     * // Create one CaseNotificationTemplate
+     * const CaseNotificationTemplate = await prisma.caseNotificationTemplate.create({
+     *   data: {
+     *     // ... data to create a CaseNotificationTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseNotificationTemplateCreateArgs>(args: SelectSubset<T, CaseNotificationTemplateCreateArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseNotificationTemplates.
+     * @param {CaseNotificationTemplateCreateManyArgs} args - Arguments to create many CaseNotificationTemplates.
+     * @example
+     * // Create many CaseNotificationTemplates
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseNotificationTemplateCreateManyArgs>(args?: SelectSubset<T, CaseNotificationTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseNotificationTemplate.
+     * @param {CaseNotificationTemplateDeleteArgs} args - Arguments to delete one CaseNotificationTemplate.
+     * @example
+     * // Delete one CaseNotificationTemplate
+     * const CaseNotificationTemplate = await prisma.caseNotificationTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one CaseNotificationTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseNotificationTemplateDeleteArgs>(args: SelectSubset<T, CaseNotificationTemplateDeleteArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseNotificationTemplate.
+     * @param {CaseNotificationTemplateUpdateArgs} args - Arguments to update one CaseNotificationTemplate.
+     * @example
+     * // Update one CaseNotificationTemplate
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseNotificationTemplateUpdateArgs>(args: SelectSubset<T, CaseNotificationTemplateUpdateArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseNotificationTemplates.
+     * @param {CaseNotificationTemplateDeleteManyArgs} args - Arguments to filter CaseNotificationTemplates to delete.
+     * @example
+     * // Delete a few CaseNotificationTemplates
+     * const { count } = await prisma.caseNotificationTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseNotificationTemplateDeleteManyArgs>(args?: SelectSubset<T, CaseNotificationTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseNotificationTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseNotificationTemplates
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseNotificationTemplateUpdateManyArgs>(args: SelectSubset<T, CaseNotificationTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseNotificationTemplate.
+     * @param {CaseNotificationTemplateUpsertArgs} args - Arguments to update or create a CaseNotificationTemplate.
+     * @example
+     * // Update or create a CaseNotificationTemplate
+     * const caseNotificationTemplate = await prisma.caseNotificationTemplate.upsert({
+     *   create: {
+     *     // ... data to create a CaseNotificationTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseNotificationTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseNotificationTemplateUpsertArgs>(args: SelectSubset<T, CaseNotificationTemplateUpsertArgs<ExtArgs>>): Prisma__CaseNotificationTemplateClient<$Result.GetResult<Prisma.$CaseNotificationTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseNotificationTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateCountArgs} args - Arguments to filter CaseNotificationTemplates to count.
+     * @example
+     * // Count the number of CaseNotificationTemplates
+     * const count = await prisma.caseNotificationTemplate.count({
+     *   where: {
+     *     // ... the filter for the CaseNotificationTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseNotificationTemplateCountArgs>(
+      args?: Subset<T, CaseNotificationTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseNotificationTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseNotificationTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseNotificationTemplateAggregateArgs>(args: Subset<T, CaseNotificationTemplateAggregateArgs>): Prisma.PrismaPromise<GetCaseNotificationTemplateAggregateType<T>>
+
+    /**
+     * Group by CaseNotificationTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseNotificationTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseNotificationTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseNotificationTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: CaseNotificationTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseNotificationTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseNotificationTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseNotificationTemplate model
+   */
+  readonly fields: CaseNotificationTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseNotificationTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseNotificationTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseNotificationTemplate model
+   */
+  interface CaseNotificationTemplateFieldRefs {
+    readonly caseNotificationTemplateId: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly templateName: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly channel: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly role: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly action: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly caseType: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly messageTemplate: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly isActive: FieldRef<"CaseNotificationTemplate", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseNotificationTemplate", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly updatedAt: FieldRef<"CaseNotificationTemplate", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseNotificationTemplate", 'String'>
+    readonly isDeleted: FieldRef<"CaseNotificationTemplate", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseNotificationTemplate", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseNotificationTemplate", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseNotificationTemplate findUnique
+   */
+  export type CaseNotificationTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationTemplate to fetch.
+     */
+    where: CaseNotificationTemplateWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationTemplate findUniqueOrThrow
+   */
+  export type CaseNotificationTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationTemplate to fetch.
+     */
+    where: CaseNotificationTemplateWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationTemplate findFirst
+   */
+  export type CaseNotificationTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationTemplate to fetch.
+     */
+    where?: CaseNotificationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationTemplates to fetch.
+     */
+    orderBy?: CaseNotificationTemplateOrderByWithRelationInput | CaseNotificationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseNotificationTemplates.
+     */
+    cursor?: CaseNotificationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseNotificationTemplates.
+     */
+    distinct?: CaseNotificationTemplateScalarFieldEnum | CaseNotificationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationTemplate findFirstOrThrow
+   */
+  export type CaseNotificationTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationTemplate to fetch.
+     */
+    where?: CaseNotificationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationTemplates to fetch.
+     */
+    orderBy?: CaseNotificationTemplateOrderByWithRelationInput | CaseNotificationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseNotificationTemplates.
+     */
+    cursor?: CaseNotificationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseNotificationTemplates.
+     */
+    distinct?: CaseNotificationTemplateScalarFieldEnum | CaseNotificationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationTemplate findMany
+   */
+  export type CaseNotificationTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which CaseNotificationTemplates to fetch.
+     */
+    where?: CaseNotificationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseNotificationTemplates to fetch.
+     */
+    orderBy?: CaseNotificationTemplateOrderByWithRelationInput | CaseNotificationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseNotificationTemplates.
+     */
+    cursor?: CaseNotificationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseNotificationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseNotificationTemplates.
+     */
+    skip?: number
+    distinct?: CaseNotificationTemplateScalarFieldEnum | CaseNotificationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * CaseNotificationTemplate create
+   */
+  export type CaseNotificationTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to create a CaseNotificationTemplate.
+     */
+    data: XOR<CaseNotificationTemplateCreateInput, CaseNotificationTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * CaseNotificationTemplate createMany
+   */
+  export type CaseNotificationTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseNotificationTemplates.
+     */
+    data: CaseNotificationTemplateCreateManyInput | CaseNotificationTemplateCreateManyInput[]
+  }
+
+  /**
+   * CaseNotificationTemplate update
+   */
+  export type CaseNotificationTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to update a CaseNotificationTemplate.
+     */
+    data: XOR<CaseNotificationTemplateUpdateInput, CaseNotificationTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which CaseNotificationTemplate to update.
+     */
+    where: CaseNotificationTemplateWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationTemplate updateMany
+   */
+  export type CaseNotificationTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseNotificationTemplates.
+     */
+    data: XOR<CaseNotificationTemplateUpdateManyMutationInput, CaseNotificationTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseNotificationTemplates to update
+     */
+    where?: CaseNotificationTemplateWhereInput
+    /**
+     * Limit how many CaseNotificationTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseNotificationTemplate upsert
+   */
+  export type CaseNotificationTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * The filter to search for the CaseNotificationTemplate to update in case it exists.
+     */
+    where: CaseNotificationTemplateWhereUniqueInput
+    /**
+     * In case the CaseNotificationTemplate found by the `where` argument doesn't exist, create a new CaseNotificationTemplate with this data.
+     */
+    create: XOR<CaseNotificationTemplateCreateInput, CaseNotificationTemplateUncheckedCreateInput>
+    /**
+     * In case the CaseNotificationTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseNotificationTemplateUpdateInput, CaseNotificationTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseNotificationTemplate delete
+   */
+  export type CaseNotificationTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+    /**
+     * Filter which CaseNotificationTemplate to delete.
+     */
+    where: CaseNotificationTemplateWhereUniqueInput
+  }
+
+  /**
+   * CaseNotificationTemplate deleteMany
+   */
+  export type CaseNotificationTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseNotificationTemplates to delete
+     */
+    where?: CaseNotificationTemplateWhereInput
+    /**
+     * Limit how many CaseNotificationTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseNotificationTemplate without action
+   */
+  export type CaseNotificationTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseNotificationTemplate
+     */
+    select?: CaseNotificationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseNotificationTemplate
+     */
+    omit?: CaseNotificationTemplateOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseAttachment
+   */
+
+  export type AggregateCaseAttachment = {
+    _count: CaseAttachmentCountAggregateOutputType | null
+    _avg: CaseAttachmentAvgAggregateOutputType | null
+    _sum: CaseAttachmentSumAggregateOutputType | null
+    _min: CaseAttachmentMinAggregateOutputType | null
+    _max: CaseAttachmentMaxAggregateOutputType | null
+  }
+
+  export type CaseAttachmentAvgAggregateOutputType = {
+    fileSize: number | null
+    orderIndex: number | null
+  }
+
+  export type CaseAttachmentSumAggregateOutputType = {
+    fileSize: number | null
+    orderIndex: number | null
+  }
+
+  export type CaseAttachmentMinAggregateOutputType = {
+    caseAttachmentId: string | null
+    caseId: string | null
+    mediaType: string | null
+    filePath: string | null
+    fileName: string | null
+    fileMime: string | null
+    fileSize: number | null
+    caption: string | null
+    locationDesc: string | null
+    orderIndex: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseAttachmentMaxAggregateOutputType = {
+    caseAttachmentId: string | null
+    caseId: string | null
+    mediaType: string | null
+    filePath: string | null
+    fileName: string | null
+    fileMime: string | null
+    fileSize: number | null
+    caption: string | null
+    locationDesc: string | null
+    orderIndex: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseAttachmentCountAggregateOutputType = {
+    caseAttachmentId: number
+    caseId: number
+    mediaType: number
+    filePath: number
+    fileName: number
+    fileMime: number
+    fileSize: number
+    caption: number
+    locationDesc: number
+    orderIndex: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseAttachmentAvgAggregateInputType = {
+    fileSize?: true
+    orderIndex?: true
+  }
+
+  export type CaseAttachmentSumAggregateInputType = {
+    fileSize?: true
+    orderIndex?: true
+  }
+
+  export type CaseAttachmentMinAggregateInputType = {
+    caseAttachmentId?: true
+    caseId?: true
+    mediaType?: true
+    filePath?: true
+    fileName?: true
+    fileMime?: true
+    fileSize?: true
+    caption?: true
+    locationDesc?: true
+    orderIndex?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseAttachmentMaxAggregateInputType = {
+    caseAttachmentId?: true
+    caseId?: true
+    mediaType?: true
+    filePath?: true
+    fileName?: true
+    fileMime?: true
+    fileSize?: true
+    caption?: true
+    locationDesc?: true
+    orderIndex?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseAttachmentCountAggregateInputType = {
+    caseAttachmentId?: true
+    caseId?: true
+    mediaType?: true
+    filePath?: true
+    fileName?: true
+    fileMime?: true
+    fileSize?: true
+    caption?: true
+    locationDesc?: true
+    orderIndex?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseAttachmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseAttachment to aggregate.
+     */
+    where?: CaseAttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseAttachments to fetch.
+     */
+    orderBy?: CaseAttachmentOrderByWithRelationInput | CaseAttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseAttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseAttachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseAttachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseAttachments
+    **/
+    _count?: true | CaseAttachmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseAttachmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseAttachmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseAttachmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseAttachmentMaxAggregateInputType
+  }
+
+  export type GetCaseAttachmentAggregateType<T extends CaseAttachmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseAttachment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseAttachment[P]>
+      : GetScalarType<T[P], AggregateCaseAttachment[P]>
+  }
+
+
+
+
+  export type CaseAttachmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseAttachmentWhereInput
+    orderBy?: CaseAttachmentOrderByWithAggregationInput | CaseAttachmentOrderByWithAggregationInput[]
+    by: CaseAttachmentScalarFieldEnum[] | CaseAttachmentScalarFieldEnum
+    having?: CaseAttachmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseAttachmentCountAggregateInputType | true
+    _avg?: CaseAttachmentAvgAggregateInputType
+    _sum?: CaseAttachmentSumAggregateInputType
+    _min?: CaseAttachmentMinAggregateInputType
+    _max?: CaseAttachmentMaxAggregateInputType
+  }
+
+  export type CaseAttachmentGroupByOutputType = {
+    caseAttachmentId: string
+    caseId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime: string | null
+    fileSize: number | null
+    caption: string | null
+    locationDesc: string | null
+    orderIndex: number
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseAttachmentCountAggregateOutputType | null
+    _avg: CaseAttachmentAvgAggregateOutputType | null
+    _sum: CaseAttachmentSumAggregateOutputType | null
+    _min: CaseAttachmentMinAggregateOutputType | null
+    _max: CaseAttachmentMaxAggregateOutputType | null
+  }
+
+  type GetCaseAttachmentGroupByPayload<T extends CaseAttachmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseAttachmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseAttachmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseAttachmentGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseAttachmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseAttachmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseAttachmentId?: boolean
+    caseId?: boolean
+    mediaType?: boolean
+    filePath?: boolean
+    fileName?: boolean
+    fileMime?: boolean
+    fileSize?: boolean
+    caption?: boolean
+    locationDesc?: boolean
+    orderIndex?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseAttachment"]>
+
+
+
+  export type CaseAttachmentSelectScalar = {
+    caseAttachmentId?: boolean
+    caseId?: boolean
+    mediaType?: boolean
+    filePath?: boolean
+    fileName?: boolean
+    fileMime?: boolean
+    fileSize?: boolean
+    caption?: boolean
+    locationDesc?: boolean
+    orderIndex?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseAttachmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseAttachmentId" | "caseId" | "mediaType" | "filePath" | "fileName" | "fileMime" | "fileSize" | "caption" | "locationDesc" | "orderIndex" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseAttachment"]>
+  export type CaseAttachmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseAttachmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseAttachment"
+    objects: {
+      case: Prisma.$CaseHeaderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseAttachmentId: string
+      caseId: string
+      mediaType: string
+      filePath: string
+      fileName: string
+      fileMime: string | null
+      fileSize: number | null
+      caption: string | null
+      locationDesc: string | null
+      orderIndex: number
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseAttachment"]>
+    composites: {}
+  }
+
+  type CaseAttachmentGetPayload<S extends boolean | null | undefined | CaseAttachmentDefaultArgs> = $Result.GetResult<Prisma.$CaseAttachmentPayload, S>
+
+  type CaseAttachmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseAttachmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseAttachmentCountAggregateInputType | true
+    }
+
+  export interface CaseAttachmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseAttachment'], meta: { name: 'CaseAttachment' } }
+    /**
+     * Find zero or one CaseAttachment that matches the filter.
+     * @param {CaseAttachmentFindUniqueArgs} args - Arguments to find a CaseAttachment
+     * @example
+     * // Get one CaseAttachment
+     * const caseAttachment = await prisma.caseAttachment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseAttachmentFindUniqueArgs>(args: SelectSubset<T, CaseAttachmentFindUniqueArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseAttachment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseAttachmentFindUniqueOrThrowArgs} args - Arguments to find a CaseAttachment
+     * @example
+     * // Get one CaseAttachment
+     * const caseAttachment = await prisma.caseAttachment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseAttachmentFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseAttachmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseAttachment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentFindFirstArgs} args - Arguments to find a CaseAttachment
+     * @example
+     * // Get one CaseAttachment
+     * const caseAttachment = await prisma.caseAttachment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseAttachmentFindFirstArgs>(args?: SelectSubset<T, CaseAttachmentFindFirstArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseAttachment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentFindFirstOrThrowArgs} args - Arguments to find a CaseAttachment
+     * @example
+     * // Get one CaseAttachment
+     * const caseAttachment = await prisma.caseAttachment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseAttachmentFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseAttachmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseAttachments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseAttachments
+     * const caseAttachments = await prisma.caseAttachment.findMany()
+     * 
+     * // Get first 10 CaseAttachments
+     * const caseAttachments = await prisma.caseAttachment.findMany({ take: 10 })
+     * 
+     * // Only select the `caseAttachmentId`
+     * const caseAttachmentWithCaseAttachmentIdOnly = await prisma.caseAttachment.findMany({ select: { caseAttachmentId: true } })
+     * 
+     */
+    findMany<T extends CaseAttachmentFindManyArgs>(args?: SelectSubset<T, CaseAttachmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseAttachment.
+     * @param {CaseAttachmentCreateArgs} args - Arguments to create a CaseAttachment.
+     * @example
+     * // Create one CaseAttachment
+     * const CaseAttachment = await prisma.caseAttachment.create({
+     *   data: {
+     *     // ... data to create a CaseAttachment
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseAttachmentCreateArgs>(args: SelectSubset<T, CaseAttachmentCreateArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseAttachments.
+     * @param {CaseAttachmentCreateManyArgs} args - Arguments to create many CaseAttachments.
+     * @example
+     * // Create many CaseAttachments
+     * const caseAttachment = await prisma.caseAttachment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseAttachmentCreateManyArgs>(args?: SelectSubset<T, CaseAttachmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseAttachment.
+     * @param {CaseAttachmentDeleteArgs} args - Arguments to delete one CaseAttachment.
+     * @example
+     * // Delete one CaseAttachment
+     * const CaseAttachment = await prisma.caseAttachment.delete({
+     *   where: {
+     *     // ... filter to delete one CaseAttachment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseAttachmentDeleteArgs>(args: SelectSubset<T, CaseAttachmentDeleteArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseAttachment.
+     * @param {CaseAttachmentUpdateArgs} args - Arguments to update one CaseAttachment.
+     * @example
+     * // Update one CaseAttachment
+     * const caseAttachment = await prisma.caseAttachment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseAttachmentUpdateArgs>(args: SelectSubset<T, CaseAttachmentUpdateArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseAttachments.
+     * @param {CaseAttachmentDeleteManyArgs} args - Arguments to filter CaseAttachments to delete.
+     * @example
+     * // Delete a few CaseAttachments
+     * const { count } = await prisma.caseAttachment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseAttachmentDeleteManyArgs>(args?: SelectSubset<T, CaseAttachmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseAttachments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseAttachments
+     * const caseAttachment = await prisma.caseAttachment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseAttachmentUpdateManyArgs>(args: SelectSubset<T, CaseAttachmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseAttachment.
+     * @param {CaseAttachmentUpsertArgs} args - Arguments to update or create a CaseAttachment.
+     * @example
+     * // Update or create a CaseAttachment
+     * const caseAttachment = await prisma.caseAttachment.upsert({
+     *   create: {
+     *     // ... data to create a CaseAttachment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseAttachment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseAttachmentUpsertArgs>(args: SelectSubset<T, CaseAttachmentUpsertArgs<ExtArgs>>): Prisma__CaseAttachmentClient<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseAttachments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentCountArgs} args - Arguments to filter CaseAttachments to count.
+     * @example
+     * // Count the number of CaseAttachments
+     * const count = await prisma.caseAttachment.count({
+     *   where: {
+     *     // ... the filter for the CaseAttachments we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseAttachmentCountArgs>(
+      args?: Subset<T, CaseAttachmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseAttachmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseAttachment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseAttachmentAggregateArgs>(args: Subset<T, CaseAttachmentAggregateArgs>): Prisma.PrismaPromise<GetCaseAttachmentAggregateType<T>>
+
+    /**
+     * Group by CaseAttachment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseAttachmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseAttachmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseAttachmentGroupByArgs['orderBy'] }
+        : { orderBy?: CaseAttachmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseAttachmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseAttachmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseAttachment model
+   */
+  readonly fields: CaseAttachmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseAttachment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseAttachmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case<T extends CaseHeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeaderDefaultArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseAttachment model
+   */
+  interface CaseAttachmentFieldRefs {
+    readonly caseAttachmentId: FieldRef<"CaseAttachment", 'String'>
+    readonly caseId: FieldRef<"CaseAttachment", 'String'>
+    readonly mediaType: FieldRef<"CaseAttachment", 'String'>
+    readonly filePath: FieldRef<"CaseAttachment", 'String'>
+    readonly fileName: FieldRef<"CaseAttachment", 'String'>
+    readonly fileMime: FieldRef<"CaseAttachment", 'String'>
+    readonly fileSize: FieldRef<"CaseAttachment", 'Int'>
+    readonly caption: FieldRef<"CaseAttachment", 'String'>
+    readonly locationDesc: FieldRef<"CaseAttachment", 'String'>
+    readonly orderIndex: FieldRef<"CaseAttachment", 'Int'>
+    readonly isActive: FieldRef<"CaseAttachment", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseAttachment", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseAttachment", 'String'>
+    readonly updatedAt: FieldRef<"CaseAttachment", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseAttachment", 'String'>
+    readonly isDeleted: FieldRef<"CaseAttachment", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseAttachment", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseAttachment", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseAttachment findUnique
+   */
+  export type CaseAttachmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseAttachment to fetch.
+     */
+    where: CaseAttachmentWhereUniqueInput
+  }
+
+  /**
+   * CaseAttachment findUniqueOrThrow
+   */
+  export type CaseAttachmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseAttachment to fetch.
+     */
+    where: CaseAttachmentWhereUniqueInput
+  }
+
+  /**
+   * CaseAttachment findFirst
+   */
+  export type CaseAttachmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseAttachment to fetch.
+     */
+    where?: CaseAttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseAttachments to fetch.
+     */
+    orderBy?: CaseAttachmentOrderByWithRelationInput | CaseAttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseAttachments.
+     */
+    cursor?: CaseAttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseAttachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseAttachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseAttachments.
+     */
+    distinct?: CaseAttachmentScalarFieldEnum | CaseAttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseAttachment findFirstOrThrow
+   */
+  export type CaseAttachmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseAttachment to fetch.
+     */
+    where?: CaseAttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseAttachments to fetch.
+     */
+    orderBy?: CaseAttachmentOrderByWithRelationInput | CaseAttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseAttachments.
+     */
+    cursor?: CaseAttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseAttachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseAttachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseAttachments.
+     */
+    distinct?: CaseAttachmentScalarFieldEnum | CaseAttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseAttachment findMany
+   */
+  export type CaseAttachmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseAttachments to fetch.
+     */
+    where?: CaseAttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseAttachments to fetch.
+     */
+    orderBy?: CaseAttachmentOrderByWithRelationInput | CaseAttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseAttachments.
+     */
+    cursor?: CaseAttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseAttachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseAttachments.
+     */
+    skip?: number
+    distinct?: CaseAttachmentScalarFieldEnum | CaseAttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseAttachment create
+   */
+  export type CaseAttachmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseAttachment.
+     */
+    data: XOR<CaseAttachmentCreateInput, CaseAttachmentUncheckedCreateInput>
+  }
+
+  /**
+   * CaseAttachment createMany
+   */
+  export type CaseAttachmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseAttachments.
+     */
+    data: CaseAttachmentCreateManyInput | CaseAttachmentCreateManyInput[]
+  }
+
+  /**
+   * CaseAttachment update
+   */
+  export type CaseAttachmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseAttachment.
+     */
+    data: XOR<CaseAttachmentUpdateInput, CaseAttachmentUncheckedUpdateInput>
+    /**
+     * Choose, which CaseAttachment to update.
+     */
+    where: CaseAttachmentWhereUniqueInput
+  }
+
+  /**
+   * CaseAttachment updateMany
+   */
+  export type CaseAttachmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseAttachments.
+     */
+    data: XOR<CaseAttachmentUpdateManyMutationInput, CaseAttachmentUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseAttachments to update
+     */
+    where?: CaseAttachmentWhereInput
+    /**
+     * Limit how many CaseAttachments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseAttachment upsert
+   */
+  export type CaseAttachmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseAttachment to update in case it exists.
+     */
+    where: CaseAttachmentWhereUniqueInput
+    /**
+     * In case the CaseAttachment found by the `where` argument doesn't exist, create a new CaseAttachment with this data.
+     */
+    create: XOR<CaseAttachmentCreateInput, CaseAttachmentUncheckedCreateInput>
+    /**
+     * In case the CaseAttachment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseAttachmentUpdateInput, CaseAttachmentUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseAttachment delete
+   */
+  export type CaseAttachmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+    /**
+     * Filter which CaseAttachment to delete.
+     */
+    where: CaseAttachmentWhereUniqueInput
+  }
+
+  /**
+   * CaseAttachment deleteMany
+   */
+  export type CaseAttachmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseAttachments to delete
+     */
+    where?: CaseAttachmentWhereInput
+    /**
+     * Limit how many CaseAttachments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseAttachment without action
+   */
+  export type CaseAttachmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseAttachment
+     */
+    select?: CaseAttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseAttachment
+     */
+    omit?: CaseAttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseAttachmentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model MasterFishbone
    */
 
@@ -11482,6 +19400,4231 @@ export namespace Prisma {
 
 
   /**
+   * Model CaseFishboneMaster
+   */
+
+  export type AggregateCaseFishboneMaster = {
+    _count: CaseFishboneMasterCountAggregateOutputType | null
+    _avg: CaseFishboneMasterAvgAggregateOutputType | null
+    _sum: CaseFishboneMasterSumAggregateOutputType | null
+    _min: CaseFishboneMasterMinAggregateOutputType | null
+    _max: CaseFishboneMasterMaxAggregateOutputType | null
+  }
+
+  export type CaseFishboneMasterAvgAggregateOutputType = {
+    sbuSubId: number | null
+  }
+
+  export type CaseFishboneMasterSumAggregateOutputType = {
+    sbuSubId: number | null
+  }
+
+  export type CaseFishboneMasterMinAggregateOutputType = {
+    caseFishboneId: string | null
+    caseId: string | null
+    sbuSubId: number | null
+    fishboneName: string | null
+    fishboneDesc: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneMasterMaxAggregateOutputType = {
+    caseFishboneId: string | null
+    caseId: string | null
+    sbuSubId: number | null
+    fishboneName: string | null
+    fishboneDesc: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneMasterCountAggregateOutputType = {
+    caseFishboneId: number
+    caseId: number
+    sbuSubId: number
+    fishboneName: number
+    fishboneDesc: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseFishboneMasterAvgAggregateInputType = {
+    sbuSubId?: true
+  }
+
+  export type CaseFishboneMasterSumAggregateInputType = {
+    sbuSubId?: true
+  }
+
+  export type CaseFishboneMasterMinAggregateInputType = {
+    caseFishboneId?: true
+    caseId?: true
+    sbuSubId?: true
+    fishboneName?: true
+    fishboneDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneMasterMaxAggregateInputType = {
+    caseFishboneId?: true
+    caseId?: true
+    sbuSubId?: true
+    fishboneName?: true
+    fishboneDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneMasterCountAggregateInputType = {
+    caseFishboneId?: true
+    caseId?: true
+    sbuSubId?: true
+    fishboneName?: true
+    fishboneDesc?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseFishboneMasterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneMaster to aggregate.
+     */
+    where?: CaseFishboneMasterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneMasters to fetch.
+     */
+    orderBy?: CaseFishboneMasterOrderByWithRelationInput | CaseFishboneMasterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseFishboneMasterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneMasters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneMasters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseFishboneMasters
+    **/
+    _count?: true | CaseFishboneMasterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseFishboneMasterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseFishboneMasterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseFishboneMasterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseFishboneMasterMaxAggregateInputType
+  }
+
+  export type GetCaseFishboneMasterAggregateType<T extends CaseFishboneMasterAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseFishboneMaster]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseFishboneMaster[P]>
+      : GetScalarType<T[P], AggregateCaseFishboneMaster[P]>
+  }
+
+
+
+
+  export type CaseFishboneMasterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneMasterWhereInput
+    orderBy?: CaseFishboneMasterOrderByWithAggregationInput | CaseFishboneMasterOrderByWithAggregationInput[]
+    by: CaseFishboneMasterScalarFieldEnum[] | CaseFishboneMasterScalarFieldEnum
+    having?: CaseFishboneMasterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseFishboneMasterCountAggregateInputType | true
+    _avg?: CaseFishboneMasterAvgAggregateInputType
+    _sum?: CaseFishboneMasterSumAggregateInputType
+    _min?: CaseFishboneMasterMinAggregateInputType
+    _max?: CaseFishboneMasterMaxAggregateInputType
+  }
+
+  export type CaseFishboneMasterGroupByOutputType = {
+    caseFishboneId: string
+    caseId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseFishboneMasterCountAggregateOutputType | null
+    _avg: CaseFishboneMasterAvgAggregateOutputType | null
+    _sum: CaseFishboneMasterSumAggregateOutputType | null
+    _min: CaseFishboneMasterMinAggregateOutputType | null
+    _max: CaseFishboneMasterMaxAggregateOutputType | null
+  }
+
+  type GetCaseFishboneMasterGroupByPayload<T extends CaseFishboneMasterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseFishboneMasterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseFishboneMasterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseFishboneMasterGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseFishboneMasterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseFishboneMasterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseFishboneId?: boolean
+    caseId?: boolean
+    sbuSubId?: boolean
+    fishboneName?: boolean
+    fishboneDesc?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case_header?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+    causes?: boolean | CaseFishboneMaster$causesArgs<ExtArgs>
+    items?: boolean | CaseFishboneMaster$itemsArgs<ExtArgs>
+    _count?: boolean | CaseFishboneMasterCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseFishboneMaster"]>
+
+
+
+  export type CaseFishboneMasterSelectScalar = {
+    caseFishboneId?: boolean
+    caseId?: boolean
+    sbuSubId?: boolean
+    fishboneName?: boolean
+    fishboneDesc?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseFishboneMasterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseFishboneId" | "caseId" | "sbuSubId" | "fishboneName" | "fishboneDesc" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseFishboneMaster"]>
+  export type CaseFishboneMasterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case_header?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+    causes?: boolean | CaseFishboneMaster$causesArgs<ExtArgs>
+    items?: boolean | CaseFishboneMaster$itemsArgs<ExtArgs>
+    _count?: boolean | CaseFishboneMasterCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseFishboneMasterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseFishboneMaster"
+    objects: {
+      case_header: Prisma.$CaseHeaderPayload<ExtArgs>
+      causes: Prisma.$CaseFishboneCausePayload<ExtArgs>[]
+      items: Prisma.$CaseFishboneItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseFishboneId: string
+      caseId: string
+      sbuSubId: number
+      fishboneName: string
+      fishboneDesc: string | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseFishboneMaster"]>
+    composites: {}
+  }
+
+  type CaseFishboneMasterGetPayload<S extends boolean | null | undefined | CaseFishboneMasterDefaultArgs> = $Result.GetResult<Prisma.$CaseFishboneMasterPayload, S>
+
+  type CaseFishboneMasterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseFishboneMasterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseFishboneMasterCountAggregateInputType | true
+    }
+
+  export interface CaseFishboneMasterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseFishboneMaster'], meta: { name: 'CaseFishboneMaster' } }
+    /**
+     * Find zero or one CaseFishboneMaster that matches the filter.
+     * @param {CaseFishboneMasterFindUniqueArgs} args - Arguments to find a CaseFishboneMaster
+     * @example
+     * // Get one CaseFishboneMaster
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseFishboneMasterFindUniqueArgs>(args: SelectSubset<T, CaseFishboneMasterFindUniqueArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseFishboneMaster that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseFishboneMasterFindUniqueOrThrowArgs} args - Arguments to find a CaseFishboneMaster
+     * @example
+     * // Get one CaseFishboneMaster
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseFishboneMasterFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseFishboneMasterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneMaster that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterFindFirstArgs} args - Arguments to find a CaseFishboneMaster
+     * @example
+     * // Get one CaseFishboneMaster
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseFishboneMasterFindFirstArgs>(args?: SelectSubset<T, CaseFishboneMasterFindFirstArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneMaster that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterFindFirstOrThrowArgs} args - Arguments to find a CaseFishboneMaster
+     * @example
+     * // Get one CaseFishboneMaster
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseFishboneMasterFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseFishboneMasterFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseFishboneMasters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseFishboneMasters
+     * const caseFishboneMasters = await prisma.caseFishboneMaster.findMany()
+     * 
+     * // Get first 10 CaseFishboneMasters
+     * const caseFishboneMasters = await prisma.caseFishboneMaster.findMany({ take: 10 })
+     * 
+     * // Only select the `caseFishboneId`
+     * const caseFishboneMasterWithCaseFishboneIdOnly = await prisma.caseFishboneMaster.findMany({ select: { caseFishboneId: true } })
+     * 
+     */
+    findMany<T extends CaseFishboneMasterFindManyArgs>(args?: SelectSubset<T, CaseFishboneMasterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseFishboneMaster.
+     * @param {CaseFishboneMasterCreateArgs} args - Arguments to create a CaseFishboneMaster.
+     * @example
+     * // Create one CaseFishboneMaster
+     * const CaseFishboneMaster = await prisma.caseFishboneMaster.create({
+     *   data: {
+     *     // ... data to create a CaseFishboneMaster
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseFishboneMasterCreateArgs>(args: SelectSubset<T, CaseFishboneMasterCreateArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseFishboneMasters.
+     * @param {CaseFishboneMasterCreateManyArgs} args - Arguments to create many CaseFishboneMasters.
+     * @example
+     * // Create many CaseFishboneMasters
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseFishboneMasterCreateManyArgs>(args?: SelectSubset<T, CaseFishboneMasterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseFishboneMaster.
+     * @param {CaseFishboneMasterDeleteArgs} args - Arguments to delete one CaseFishboneMaster.
+     * @example
+     * // Delete one CaseFishboneMaster
+     * const CaseFishboneMaster = await prisma.caseFishboneMaster.delete({
+     *   where: {
+     *     // ... filter to delete one CaseFishboneMaster
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseFishboneMasterDeleteArgs>(args: SelectSubset<T, CaseFishboneMasterDeleteArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseFishboneMaster.
+     * @param {CaseFishboneMasterUpdateArgs} args - Arguments to update one CaseFishboneMaster.
+     * @example
+     * // Update one CaseFishboneMaster
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseFishboneMasterUpdateArgs>(args: SelectSubset<T, CaseFishboneMasterUpdateArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseFishboneMasters.
+     * @param {CaseFishboneMasterDeleteManyArgs} args - Arguments to filter CaseFishboneMasters to delete.
+     * @example
+     * // Delete a few CaseFishboneMasters
+     * const { count } = await prisma.caseFishboneMaster.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseFishboneMasterDeleteManyArgs>(args?: SelectSubset<T, CaseFishboneMasterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseFishboneMasters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseFishboneMasters
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseFishboneMasterUpdateManyArgs>(args: SelectSubset<T, CaseFishboneMasterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseFishboneMaster.
+     * @param {CaseFishboneMasterUpsertArgs} args - Arguments to update or create a CaseFishboneMaster.
+     * @example
+     * // Update or create a CaseFishboneMaster
+     * const caseFishboneMaster = await prisma.caseFishboneMaster.upsert({
+     *   create: {
+     *     // ... data to create a CaseFishboneMaster
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseFishboneMaster we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseFishboneMasterUpsertArgs>(args: SelectSubset<T, CaseFishboneMasterUpsertArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseFishboneMasters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterCountArgs} args - Arguments to filter CaseFishboneMasters to count.
+     * @example
+     * // Count the number of CaseFishboneMasters
+     * const count = await prisma.caseFishboneMaster.count({
+     *   where: {
+     *     // ... the filter for the CaseFishboneMasters we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseFishboneMasterCountArgs>(
+      args?: Subset<T, CaseFishboneMasterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseFishboneMasterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseFishboneMaster.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseFishboneMasterAggregateArgs>(args: Subset<T, CaseFishboneMasterAggregateArgs>): Prisma.PrismaPromise<GetCaseFishboneMasterAggregateType<T>>
+
+    /**
+     * Group by CaseFishboneMaster.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneMasterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseFishboneMasterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseFishboneMasterGroupByArgs['orderBy'] }
+        : { orderBy?: CaseFishboneMasterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseFishboneMasterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseFishboneMasterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseFishboneMaster model
+   */
+  readonly fields: CaseFishboneMasterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseFishboneMaster.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseFishboneMasterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case_header<T extends CaseHeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeaderDefaultArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    causes<T extends CaseFishboneMaster$causesArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneMaster$causesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    items<T extends CaseFishboneMaster$itemsArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneMaster$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseFishboneMaster model
+   */
+  interface CaseFishboneMasterFieldRefs {
+    readonly caseFishboneId: FieldRef<"CaseFishboneMaster", 'String'>
+    readonly caseId: FieldRef<"CaseFishboneMaster", 'String'>
+    readonly sbuSubId: FieldRef<"CaseFishboneMaster", 'Int'>
+    readonly fishboneName: FieldRef<"CaseFishboneMaster", 'String'>
+    readonly fishboneDesc: FieldRef<"CaseFishboneMaster", 'String'>
+    readonly isActive: FieldRef<"CaseFishboneMaster", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseFishboneMaster", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseFishboneMaster", 'String'>
+    readonly updatedAt: FieldRef<"CaseFishboneMaster", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseFishboneMaster", 'String'>
+    readonly isDeleted: FieldRef<"CaseFishboneMaster", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseFishboneMaster", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseFishboneMaster", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneMaster findUnique
+   */
+  export type CaseFishboneMasterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneMaster to fetch.
+     */
+    where: CaseFishboneMasterWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneMaster findUniqueOrThrow
+   */
+  export type CaseFishboneMasterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneMaster to fetch.
+     */
+    where: CaseFishboneMasterWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneMaster findFirst
+   */
+  export type CaseFishboneMasterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneMaster to fetch.
+     */
+    where?: CaseFishboneMasterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneMasters to fetch.
+     */
+    orderBy?: CaseFishboneMasterOrderByWithRelationInput | CaseFishboneMasterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneMasters.
+     */
+    cursor?: CaseFishboneMasterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneMasters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneMasters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneMasters.
+     */
+    distinct?: CaseFishboneMasterScalarFieldEnum | CaseFishboneMasterScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneMaster findFirstOrThrow
+   */
+  export type CaseFishboneMasterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneMaster to fetch.
+     */
+    where?: CaseFishboneMasterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneMasters to fetch.
+     */
+    orderBy?: CaseFishboneMasterOrderByWithRelationInput | CaseFishboneMasterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneMasters.
+     */
+    cursor?: CaseFishboneMasterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneMasters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneMasters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneMasters.
+     */
+    distinct?: CaseFishboneMasterScalarFieldEnum | CaseFishboneMasterScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneMaster findMany
+   */
+  export type CaseFishboneMasterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneMasters to fetch.
+     */
+    where?: CaseFishboneMasterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneMasters to fetch.
+     */
+    orderBy?: CaseFishboneMasterOrderByWithRelationInput | CaseFishboneMasterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseFishboneMasters.
+     */
+    cursor?: CaseFishboneMasterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneMasters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneMasters.
+     */
+    skip?: number
+    distinct?: CaseFishboneMasterScalarFieldEnum | CaseFishboneMasterScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneMaster create
+   */
+  export type CaseFishboneMasterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseFishboneMaster.
+     */
+    data: XOR<CaseFishboneMasterCreateInput, CaseFishboneMasterUncheckedCreateInput>
+  }
+
+  /**
+   * CaseFishboneMaster createMany
+   */
+  export type CaseFishboneMasterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseFishboneMasters.
+     */
+    data: CaseFishboneMasterCreateManyInput | CaseFishboneMasterCreateManyInput[]
+  }
+
+  /**
+   * CaseFishboneMaster update
+   */
+  export type CaseFishboneMasterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseFishboneMaster.
+     */
+    data: XOR<CaseFishboneMasterUpdateInput, CaseFishboneMasterUncheckedUpdateInput>
+    /**
+     * Choose, which CaseFishboneMaster to update.
+     */
+    where: CaseFishboneMasterWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneMaster updateMany
+   */
+  export type CaseFishboneMasterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseFishboneMasters.
+     */
+    data: XOR<CaseFishboneMasterUpdateManyMutationInput, CaseFishboneMasterUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseFishboneMasters to update
+     */
+    where?: CaseFishboneMasterWhereInput
+    /**
+     * Limit how many CaseFishboneMasters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneMaster upsert
+   */
+  export type CaseFishboneMasterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseFishboneMaster to update in case it exists.
+     */
+    where: CaseFishboneMasterWhereUniqueInput
+    /**
+     * In case the CaseFishboneMaster found by the `where` argument doesn't exist, create a new CaseFishboneMaster with this data.
+     */
+    create: XOR<CaseFishboneMasterCreateInput, CaseFishboneMasterUncheckedCreateInput>
+    /**
+     * In case the CaseFishboneMaster was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseFishboneMasterUpdateInput, CaseFishboneMasterUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseFishboneMaster delete
+   */
+  export type CaseFishboneMasterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+    /**
+     * Filter which CaseFishboneMaster to delete.
+     */
+    where: CaseFishboneMasterWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneMaster deleteMany
+   */
+  export type CaseFishboneMasterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneMasters to delete
+     */
+    where?: CaseFishboneMasterWhereInput
+    /**
+     * Limit how many CaseFishboneMasters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneMaster.causes
+   */
+  export type CaseFishboneMaster$causesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    where?: CaseFishboneCauseWhereInput
+    orderBy?: CaseFishboneCauseOrderByWithRelationInput | CaseFishboneCauseOrderByWithRelationInput[]
+    cursor?: CaseFishboneCauseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFishboneCauseScalarFieldEnum | CaseFishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneMaster.items
+   */
+  export type CaseFishboneMaster$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    where?: CaseFishboneItemWhereInput
+    orderBy?: CaseFishboneItemOrderByWithRelationInput | CaseFishboneItemOrderByWithRelationInput[]
+    cursor?: CaseFishboneItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFishboneItemScalarFieldEnum | CaseFishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneMaster without action
+   */
+  export type CaseFishboneMasterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneMaster
+     */
+    select?: CaseFishboneMasterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneMaster
+     */
+    omit?: CaseFishboneMasterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneMasterInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseFishboneCause
+   */
+
+  export type AggregateCaseFishboneCause = {
+    _count: CaseFishboneCauseCountAggregateOutputType | null
+    _avg: CaseFishboneCauseAvgAggregateOutputType | null
+    _sum: CaseFishboneCauseSumAggregateOutputType | null
+    _min: CaseFishboneCauseMinAggregateOutputType | null
+    _max: CaseFishboneCauseMaxAggregateOutputType | null
+  }
+
+  export type CaseFishboneCauseAvgAggregateOutputType = {
+    causeNo: number | null
+  }
+
+  export type CaseFishboneCauseSumAggregateOutputType = {
+    causeNo: number | null
+  }
+
+  export type CaseFishboneCauseMinAggregateOutputType = {
+    caseFishboneCauseId: string | null
+    caseFishboneId: string | null
+    causeNo: number | null
+    causeText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneCauseMaxAggregateOutputType = {
+    caseFishboneCauseId: string | null
+    caseFishboneId: string | null
+    causeNo: number | null
+    causeText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneCauseCountAggregateOutputType = {
+    caseFishboneCauseId: number
+    caseFishboneId: number
+    causeNo: number
+    causeText: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseFishboneCauseAvgAggregateInputType = {
+    causeNo?: true
+  }
+
+  export type CaseFishboneCauseSumAggregateInputType = {
+    causeNo?: true
+  }
+
+  export type CaseFishboneCauseMinAggregateInputType = {
+    caseFishboneCauseId?: true
+    caseFishboneId?: true
+    causeNo?: true
+    causeText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneCauseMaxAggregateInputType = {
+    caseFishboneCauseId?: true
+    caseFishboneId?: true
+    causeNo?: true
+    causeText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneCauseCountAggregateInputType = {
+    caseFishboneCauseId?: true
+    caseFishboneId?: true
+    causeNo?: true
+    causeText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseFishboneCauseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneCause to aggregate.
+     */
+    where?: CaseFishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneCauses to fetch.
+     */
+    orderBy?: CaseFishboneCauseOrderByWithRelationInput | CaseFishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseFishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseFishboneCauses
+    **/
+    _count?: true | CaseFishboneCauseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseFishboneCauseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseFishboneCauseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseFishboneCauseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseFishboneCauseMaxAggregateInputType
+  }
+
+  export type GetCaseFishboneCauseAggregateType<T extends CaseFishboneCauseAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseFishboneCause]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseFishboneCause[P]>
+      : GetScalarType<T[P], AggregateCaseFishboneCause[P]>
+  }
+
+
+
+
+  export type CaseFishboneCauseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneCauseWhereInput
+    orderBy?: CaseFishboneCauseOrderByWithAggregationInput | CaseFishboneCauseOrderByWithAggregationInput[]
+    by: CaseFishboneCauseScalarFieldEnum[] | CaseFishboneCauseScalarFieldEnum
+    having?: CaseFishboneCauseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseFishboneCauseCountAggregateInputType | true
+    _avg?: CaseFishboneCauseAvgAggregateInputType
+    _sum?: CaseFishboneCauseSumAggregateInputType
+    _min?: CaseFishboneCauseMinAggregateInputType
+    _max?: CaseFishboneCauseMaxAggregateInputType
+  }
+
+  export type CaseFishboneCauseGroupByOutputType = {
+    caseFishboneCauseId: string
+    caseFishboneId: string
+    causeNo: number
+    causeText: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseFishboneCauseCountAggregateOutputType | null
+    _avg: CaseFishboneCauseAvgAggregateOutputType | null
+    _sum: CaseFishboneCauseSumAggregateOutputType | null
+    _min: CaseFishboneCauseMinAggregateOutputType | null
+    _max: CaseFishboneCauseMaxAggregateOutputType | null
+  }
+
+  type GetCaseFishboneCauseGroupByPayload<T extends CaseFishboneCauseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseFishboneCauseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseFishboneCauseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseFishboneCauseGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseFishboneCauseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseFishboneCauseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseFishboneCauseId?: boolean
+    caseFishboneId?: boolean
+    causeNo?: boolean
+    causeText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case_fishbone?: boolean | CaseFishboneMasterDefaultArgs<ExtArgs>
+    itemLinks?: boolean | CaseFishboneCause$itemLinksArgs<ExtArgs>
+    _count?: boolean | CaseFishboneCauseCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseFishboneCause"]>
+
+
+
+  export type CaseFishboneCauseSelectScalar = {
+    caseFishboneCauseId?: boolean
+    caseFishboneId?: boolean
+    causeNo?: boolean
+    causeText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseFishboneCauseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseFishboneCauseId" | "caseFishboneId" | "causeNo" | "causeText" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseFishboneCause"]>
+  export type CaseFishboneCauseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case_fishbone?: boolean | CaseFishboneMasterDefaultArgs<ExtArgs>
+    itemLinks?: boolean | CaseFishboneCause$itemLinksArgs<ExtArgs>
+    _count?: boolean | CaseFishboneCauseCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseFishboneCausePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseFishboneCause"
+    objects: {
+      case_fishbone: Prisma.$CaseFishboneMasterPayload<ExtArgs>
+      itemLinks: Prisma.$CaseFishboneItemCausePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseFishboneCauseId: string
+      caseFishboneId: string
+      causeNo: number
+      causeText: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseFishboneCause"]>
+    composites: {}
+  }
+
+  type CaseFishboneCauseGetPayload<S extends boolean | null | undefined | CaseFishboneCauseDefaultArgs> = $Result.GetResult<Prisma.$CaseFishboneCausePayload, S>
+
+  type CaseFishboneCauseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseFishboneCauseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseFishboneCauseCountAggregateInputType | true
+    }
+
+  export interface CaseFishboneCauseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseFishboneCause'], meta: { name: 'CaseFishboneCause' } }
+    /**
+     * Find zero or one CaseFishboneCause that matches the filter.
+     * @param {CaseFishboneCauseFindUniqueArgs} args - Arguments to find a CaseFishboneCause
+     * @example
+     * // Get one CaseFishboneCause
+     * const caseFishboneCause = await prisma.caseFishboneCause.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseFishboneCauseFindUniqueArgs>(args: SelectSubset<T, CaseFishboneCauseFindUniqueArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseFishboneCause that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseFishboneCauseFindUniqueOrThrowArgs} args - Arguments to find a CaseFishboneCause
+     * @example
+     * // Get one CaseFishboneCause
+     * const caseFishboneCause = await prisma.caseFishboneCause.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseFishboneCauseFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseFishboneCauseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneCause that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseFindFirstArgs} args - Arguments to find a CaseFishboneCause
+     * @example
+     * // Get one CaseFishboneCause
+     * const caseFishboneCause = await prisma.caseFishboneCause.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseFishboneCauseFindFirstArgs>(args?: SelectSubset<T, CaseFishboneCauseFindFirstArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneCause that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseFindFirstOrThrowArgs} args - Arguments to find a CaseFishboneCause
+     * @example
+     * // Get one CaseFishboneCause
+     * const caseFishboneCause = await prisma.caseFishboneCause.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseFishboneCauseFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseFishboneCauseFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseFishboneCauses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseFishboneCauses
+     * const caseFishboneCauses = await prisma.caseFishboneCause.findMany()
+     * 
+     * // Get first 10 CaseFishboneCauses
+     * const caseFishboneCauses = await prisma.caseFishboneCause.findMany({ take: 10 })
+     * 
+     * // Only select the `caseFishboneCauseId`
+     * const caseFishboneCauseWithCaseFishboneCauseIdOnly = await prisma.caseFishboneCause.findMany({ select: { caseFishboneCauseId: true } })
+     * 
+     */
+    findMany<T extends CaseFishboneCauseFindManyArgs>(args?: SelectSubset<T, CaseFishboneCauseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseFishboneCause.
+     * @param {CaseFishboneCauseCreateArgs} args - Arguments to create a CaseFishboneCause.
+     * @example
+     * // Create one CaseFishboneCause
+     * const CaseFishboneCause = await prisma.caseFishboneCause.create({
+     *   data: {
+     *     // ... data to create a CaseFishboneCause
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseFishboneCauseCreateArgs>(args: SelectSubset<T, CaseFishboneCauseCreateArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseFishboneCauses.
+     * @param {CaseFishboneCauseCreateManyArgs} args - Arguments to create many CaseFishboneCauses.
+     * @example
+     * // Create many CaseFishboneCauses
+     * const caseFishboneCause = await prisma.caseFishboneCause.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseFishboneCauseCreateManyArgs>(args?: SelectSubset<T, CaseFishboneCauseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseFishboneCause.
+     * @param {CaseFishboneCauseDeleteArgs} args - Arguments to delete one CaseFishboneCause.
+     * @example
+     * // Delete one CaseFishboneCause
+     * const CaseFishboneCause = await prisma.caseFishboneCause.delete({
+     *   where: {
+     *     // ... filter to delete one CaseFishboneCause
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseFishboneCauseDeleteArgs>(args: SelectSubset<T, CaseFishboneCauseDeleteArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseFishboneCause.
+     * @param {CaseFishboneCauseUpdateArgs} args - Arguments to update one CaseFishboneCause.
+     * @example
+     * // Update one CaseFishboneCause
+     * const caseFishboneCause = await prisma.caseFishboneCause.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseFishboneCauseUpdateArgs>(args: SelectSubset<T, CaseFishboneCauseUpdateArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseFishboneCauses.
+     * @param {CaseFishboneCauseDeleteManyArgs} args - Arguments to filter CaseFishboneCauses to delete.
+     * @example
+     * // Delete a few CaseFishboneCauses
+     * const { count } = await prisma.caseFishboneCause.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseFishboneCauseDeleteManyArgs>(args?: SelectSubset<T, CaseFishboneCauseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseFishboneCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseFishboneCauses
+     * const caseFishboneCause = await prisma.caseFishboneCause.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseFishboneCauseUpdateManyArgs>(args: SelectSubset<T, CaseFishboneCauseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseFishboneCause.
+     * @param {CaseFishboneCauseUpsertArgs} args - Arguments to update or create a CaseFishboneCause.
+     * @example
+     * // Update or create a CaseFishboneCause
+     * const caseFishboneCause = await prisma.caseFishboneCause.upsert({
+     *   create: {
+     *     // ... data to create a CaseFishboneCause
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseFishboneCause we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseFishboneCauseUpsertArgs>(args: SelectSubset<T, CaseFishboneCauseUpsertArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseFishboneCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseCountArgs} args - Arguments to filter CaseFishboneCauses to count.
+     * @example
+     * // Count the number of CaseFishboneCauses
+     * const count = await prisma.caseFishboneCause.count({
+     *   where: {
+     *     // ... the filter for the CaseFishboneCauses we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseFishboneCauseCountArgs>(
+      args?: Subset<T, CaseFishboneCauseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseFishboneCauseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseFishboneCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseFishboneCauseAggregateArgs>(args: Subset<T, CaseFishboneCauseAggregateArgs>): Prisma.PrismaPromise<GetCaseFishboneCauseAggregateType<T>>
+
+    /**
+     * Group by CaseFishboneCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneCauseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseFishboneCauseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseFishboneCauseGroupByArgs['orderBy'] }
+        : { orderBy?: CaseFishboneCauseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseFishboneCauseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseFishboneCauseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseFishboneCause model
+   */
+  readonly fields: CaseFishboneCauseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseFishboneCause.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseFishboneCauseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case_fishbone<T extends CaseFishboneMasterDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneMasterDefaultArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    itemLinks<T extends CaseFishboneCause$itemLinksArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneCause$itemLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseFishboneCause model
+   */
+  interface CaseFishboneCauseFieldRefs {
+    readonly caseFishboneCauseId: FieldRef<"CaseFishboneCause", 'String'>
+    readonly caseFishboneId: FieldRef<"CaseFishboneCause", 'String'>
+    readonly causeNo: FieldRef<"CaseFishboneCause", 'Int'>
+    readonly causeText: FieldRef<"CaseFishboneCause", 'String'>
+    readonly isActive: FieldRef<"CaseFishboneCause", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseFishboneCause", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseFishboneCause", 'String'>
+    readonly updatedAt: FieldRef<"CaseFishboneCause", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseFishboneCause", 'String'>
+    readonly isDeleted: FieldRef<"CaseFishboneCause", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseFishboneCause", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseFishboneCause", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneCause findUnique
+   */
+  export type CaseFishboneCauseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneCause to fetch.
+     */
+    where: CaseFishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneCause findUniqueOrThrow
+   */
+  export type CaseFishboneCauseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneCause to fetch.
+     */
+    where: CaseFishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneCause findFirst
+   */
+  export type CaseFishboneCauseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneCause to fetch.
+     */
+    where?: CaseFishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneCauses to fetch.
+     */
+    orderBy?: CaseFishboneCauseOrderByWithRelationInput | CaseFishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneCauses.
+     */
+    cursor?: CaseFishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneCauses.
+     */
+    distinct?: CaseFishboneCauseScalarFieldEnum | CaseFishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneCause findFirstOrThrow
+   */
+  export type CaseFishboneCauseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneCause to fetch.
+     */
+    where?: CaseFishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneCauses to fetch.
+     */
+    orderBy?: CaseFishboneCauseOrderByWithRelationInput | CaseFishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneCauses.
+     */
+    cursor?: CaseFishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneCauses.
+     */
+    distinct?: CaseFishboneCauseScalarFieldEnum | CaseFishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneCause findMany
+   */
+  export type CaseFishboneCauseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneCauses to fetch.
+     */
+    where?: CaseFishboneCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneCauses to fetch.
+     */
+    orderBy?: CaseFishboneCauseOrderByWithRelationInput | CaseFishboneCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseFishboneCauses.
+     */
+    cursor?: CaseFishboneCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneCauses.
+     */
+    skip?: number
+    distinct?: CaseFishboneCauseScalarFieldEnum | CaseFishboneCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneCause create
+   */
+  export type CaseFishboneCauseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseFishboneCause.
+     */
+    data: XOR<CaseFishboneCauseCreateInput, CaseFishboneCauseUncheckedCreateInput>
+  }
+
+  /**
+   * CaseFishboneCause createMany
+   */
+  export type CaseFishboneCauseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseFishboneCauses.
+     */
+    data: CaseFishboneCauseCreateManyInput | CaseFishboneCauseCreateManyInput[]
+  }
+
+  /**
+   * CaseFishboneCause update
+   */
+  export type CaseFishboneCauseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseFishboneCause.
+     */
+    data: XOR<CaseFishboneCauseUpdateInput, CaseFishboneCauseUncheckedUpdateInput>
+    /**
+     * Choose, which CaseFishboneCause to update.
+     */
+    where: CaseFishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneCause updateMany
+   */
+  export type CaseFishboneCauseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseFishboneCauses.
+     */
+    data: XOR<CaseFishboneCauseUpdateManyMutationInput, CaseFishboneCauseUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseFishboneCauses to update
+     */
+    where?: CaseFishboneCauseWhereInput
+    /**
+     * Limit how many CaseFishboneCauses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneCause upsert
+   */
+  export type CaseFishboneCauseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseFishboneCause to update in case it exists.
+     */
+    where: CaseFishboneCauseWhereUniqueInput
+    /**
+     * In case the CaseFishboneCause found by the `where` argument doesn't exist, create a new CaseFishboneCause with this data.
+     */
+    create: XOR<CaseFishboneCauseCreateInput, CaseFishboneCauseUncheckedCreateInput>
+    /**
+     * In case the CaseFishboneCause was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseFishboneCauseUpdateInput, CaseFishboneCauseUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseFishboneCause delete
+   */
+  export type CaseFishboneCauseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+    /**
+     * Filter which CaseFishboneCause to delete.
+     */
+    where: CaseFishboneCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneCause deleteMany
+   */
+  export type CaseFishboneCauseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneCauses to delete
+     */
+    where?: CaseFishboneCauseWhereInput
+    /**
+     * Limit how many CaseFishboneCauses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneCause.itemLinks
+   */
+  export type CaseFishboneCause$itemLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    where?: CaseFishboneItemCauseWhereInput
+    orderBy?: CaseFishboneItemCauseOrderByWithRelationInput | CaseFishboneItemCauseOrderByWithRelationInput[]
+    cursor?: CaseFishboneItemCauseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFishboneItemCauseScalarFieldEnum | CaseFishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneCause without action
+   */
+  export type CaseFishboneCauseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneCause
+     */
+    select?: CaseFishboneCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneCause
+     */
+    omit?: CaseFishboneCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneCauseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseFishboneItem
+   */
+
+  export type AggregateCaseFishboneItem = {
+    _count: CaseFishboneItemCountAggregateOutputType | null
+    _min: CaseFishboneItemMinAggregateOutputType | null
+    _max: CaseFishboneItemMaxAggregateOutputType | null
+  }
+
+  export type CaseFishboneItemMinAggregateOutputType = {
+    caseFishboneItemId: string | null
+    caseFishboneId: string | null
+    categoryCode: string | null
+    problemText: string | null
+    solutionText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneItemMaxAggregateOutputType = {
+    caseFishboneItemId: string | null
+    caseFishboneId: string | null
+    categoryCode: string | null
+    problemText: string | null
+    solutionText: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneItemCountAggregateOutputType = {
+    caseFishboneItemId: number
+    caseFishboneId: number
+    categoryCode: number
+    problemText: number
+    solutionText: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseFishboneItemMinAggregateInputType = {
+    caseFishboneItemId?: true
+    caseFishboneId?: true
+    categoryCode?: true
+    problemText?: true
+    solutionText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneItemMaxAggregateInputType = {
+    caseFishboneItemId?: true
+    caseFishboneId?: true
+    categoryCode?: true
+    problemText?: true
+    solutionText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneItemCountAggregateInputType = {
+    caseFishboneItemId?: true
+    caseFishboneId?: true
+    categoryCode?: true
+    problemText?: true
+    solutionText?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseFishboneItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneItem to aggregate.
+     */
+    where?: CaseFishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItems to fetch.
+     */
+    orderBy?: CaseFishboneItemOrderByWithRelationInput | CaseFishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseFishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseFishboneItems
+    **/
+    _count?: true | CaseFishboneItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseFishboneItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseFishboneItemMaxAggregateInputType
+  }
+
+  export type GetCaseFishboneItemAggregateType<T extends CaseFishboneItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseFishboneItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseFishboneItem[P]>
+      : GetScalarType<T[P], AggregateCaseFishboneItem[P]>
+  }
+
+
+
+
+  export type CaseFishboneItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneItemWhereInput
+    orderBy?: CaseFishboneItemOrderByWithAggregationInput | CaseFishboneItemOrderByWithAggregationInput[]
+    by: CaseFishboneItemScalarFieldEnum[] | CaseFishboneItemScalarFieldEnum
+    having?: CaseFishboneItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseFishboneItemCountAggregateInputType | true
+    _min?: CaseFishboneItemMinAggregateInputType
+    _max?: CaseFishboneItemMaxAggregateInputType
+  }
+
+  export type CaseFishboneItemGroupByOutputType = {
+    caseFishboneItemId: string
+    caseFishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseFishboneItemCountAggregateOutputType | null
+    _min: CaseFishboneItemMinAggregateOutputType | null
+    _max: CaseFishboneItemMaxAggregateOutputType | null
+  }
+
+  type GetCaseFishboneItemGroupByPayload<T extends CaseFishboneItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseFishboneItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseFishboneItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseFishboneItemGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseFishboneItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseFishboneItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseFishboneItemId?: boolean
+    caseFishboneId?: boolean
+    categoryCode?: boolean
+    problemText?: boolean
+    solutionText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case_fishbone?: boolean | CaseFishboneMasterDefaultArgs<ExtArgs>
+    category?: boolean | FishboneCategoryDefaultArgs<ExtArgs>
+    causeLinks?: boolean | CaseFishboneItem$causeLinksArgs<ExtArgs>
+    _count?: boolean | CaseFishboneItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseFishboneItem"]>
+
+
+
+  export type CaseFishboneItemSelectScalar = {
+    caseFishboneItemId?: boolean
+    caseFishboneId?: boolean
+    categoryCode?: boolean
+    problemText?: boolean
+    solutionText?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseFishboneItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseFishboneItemId" | "caseFishboneId" | "categoryCode" | "problemText" | "solutionText" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseFishboneItem"]>
+  export type CaseFishboneItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case_fishbone?: boolean | CaseFishboneMasterDefaultArgs<ExtArgs>
+    category?: boolean | FishboneCategoryDefaultArgs<ExtArgs>
+    causeLinks?: boolean | CaseFishboneItem$causeLinksArgs<ExtArgs>
+    _count?: boolean | CaseFishboneItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseFishboneItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseFishboneItem"
+    objects: {
+      case_fishbone: Prisma.$CaseFishboneMasterPayload<ExtArgs>
+      category: Prisma.$FishboneCategoryPayload<ExtArgs>
+      causeLinks: Prisma.$CaseFishboneItemCausePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseFishboneItemId: string
+      caseFishboneId: string
+      categoryCode: string
+      problemText: string
+      solutionText: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseFishboneItem"]>
+    composites: {}
+  }
+
+  type CaseFishboneItemGetPayload<S extends boolean | null | undefined | CaseFishboneItemDefaultArgs> = $Result.GetResult<Prisma.$CaseFishboneItemPayload, S>
+
+  type CaseFishboneItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseFishboneItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseFishboneItemCountAggregateInputType | true
+    }
+
+  export interface CaseFishboneItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseFishboneItem'], meta: { name: 'CaseFishboneItem' } }
+    /**
+     * Find zero or one CaseFishboneItem that matches the filter.
+     * @param {CaseFishboneItemFindUniqueArgs} args - Arguments to find a CaseFishboneItem
+     * @example
+     * // Get one CaseFishboneItem
+     * const caseFishboneItem = await prisma.caseFishboneItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseFishboneItemFindUniqueArgs>(args: SelectSubset<T, CaseFishboneItemFindUniqueArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseFishboneItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseFishboneItemFindUniqueOrThrowArgs} args - Arguments to find a CaseFishboneItem
+     * @example
+     * // Get one CaseFishboneItem
+     * const caseFishboneItem = await prisma.caseFishboneItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseFishboneItemFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseFishboneItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemFindFirstArgs} args - Arguments to find a CaseFishboneItem
+     * @example
+     * // Get one CaseFishboneItem
+     * const caseFishboneItem = await prisma.caseFishboneItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseFishboneItemFindFirstArgs>(args?: SelectSubset<T, CaseFishboneItemFindFirstArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemFindFirstOrThrowArgs} args - Arguments to find a CaseFishboneItem
+     * @example
+     * // Get one CaseFishboneItem
+     * const caseFishboneItem = await prisma.caseFishboneItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseFishboneItemFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseFishboneItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseFishboneItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseFishboneItems
+     * const caseFishboneItems = await prisma.caseFishboneItem.findMany()
+     * 
+     * // Get first 10 CaseFishboneItems
+     * const caseFishboneItems = await prisma.caseFishboneItem.findMany({ take: 10 })
+     * 
+     * // Only select the `caseFishboneItemId`
+     * const caseFishboneItemWithCaseFishboneItemIdOnly = await prisma.caseFishboneItem.findMany({ select: { caseFishboneItemId: true } })
+     * 
+     */
+    findMany<T extends CaseFishboneItemFindManyArgs>(args?: SelectSubset<T, CaseFishboneItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseFishboneItem.
+     * @param {CaseFishboneItemCreateArgs} args - Arguments to create a CaseFishboneItem.
+     * @example
+     * // Create one CaseFishboneItem
+     * const CaseFishboneItem = await prisma.caseFishboneItem.create({
+     *   data: {
+     *     // ... data to create a CaseFishboneItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseFishboneItemCreateArgs>(args: SelectSubset<T, CaseFishboneItemCreateArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseFishboneItems.
+     * @param {CaseFishboneItemCreateManyArgs} args - Arguments to create many CaseFishboneItems.
+     * @example
+     * // Create many CaseFishboneItems
+     * const caseFishboneItem = await prisma.caseFishboneItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseFishboneItemCreateManyArgs>(args?: SelectSubset<T, CaseFishboneItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseFishboneItem.
+     * @param {CaseFishboneItemDeleteArgs} args - Arguments to delete one CaseFishboneItem.
+     * @example
+     * // Delete one CaseFishboneItem
+     * const CaseFishboneItem = await prisma.caseFishboneItem.delete({
+     *   where: {
+     *     // ... filter to delete one CaseFishboneItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseFishboneItemDeleteArgs>(args: SelectSubset<T, CaseFishboneItemDeleteArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseFishboneItem.
+     * @param {CaseFishboneItemUpdateArgs} args - Arguments to update one CaseFishboneItem.
+     * @example
+     * // Update one CaseFishboneItem
+     * const caseFishboneItem = await prisma.caseFishboneItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseFishboneItemUpdateArgs>(args: SelectSubset<T, CaseFishboneItemUpdateArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseFishboneItems.
+     * @param {CaseFishboneItemDeleteManyArgs} args - Arguments to filter CaseFishboneItems to delete.
+     * @example
+     * // Delete a few CaseFishboneItems
+     * const { count } = await prisma.caseFishboneItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseFishboneItemDeleteManyArgs>(args?: SelectSubset<T, CaseFishboneItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseFishboneItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseFishboneItems
+     * const caseFishboneItem = await prisma.caseFishboneItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseFishboneItemUpdateManyArgs>(args: SelectSubset<T, CaseFishboneItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseFishboneItem.
+     * @param {CaseFishboneItemUpsertArgs} args - Arguments to update or create a CaseFishboneItem.
+     * @example
+     * // Update or create a CaseFishboneItem
+     * const caseFishboneItem = await prisma.caseFishboneItem.upsert({
+     *   create: {
+     *     // ... data to create a CaseFishboneItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseFishboneItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseFishboneItemUpsertArgs>(args: SelectSubset<T, CaseFishboneItemUpsertArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseFishboneItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCountArgs} args - Arguments to filter CaseFishboneItems to count.
+     * @example
+     * // Count the number of CaseFishboneItems
+     * const count = await prisma.caseFishboneItem.count({
+     *   where: {
+     *     // ... the filter for the CaseFishboneItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseFishboneItemCountArgs>(
+      args?: Subset<T, CaseFishboneItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseFishboneItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseFishboneItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseFishboneItemAggregateArgs>(args: Subset<T, CaseFishboneItemAggregateArgs>): Prisma.PrismaPromise<GetCaseFishboneItemAggregateType<T>>
+
+    /**
+     * Group by CaseFishboneItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseFishboneItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseFishboneItemGroupByArgs['orderBy'] }
+        : { orderBy?: CaseFishboneItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseFishboneItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseFishboneItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseFishboneItem model
+   */
+  readonly fields: CaseFishboneItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseFishboneItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseFishboneItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case_fishbone<T extends CaseFishboneMasterDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneMasterDefaultArgs<ExtArgs>>): Prisma__CaseFishboneMasterClient<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    category<T extends FishboneCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCategoryDefaultArgs<ExtArgs>>): Prisma__FishboneCategoryClient<$Result.GetResult<Prisma.$FishboneCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    causeLinks<T extends CaseFishboneItem$causeLinksArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneItem$causeLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseFishboneItem model
+   */
+  interface CaseFishboneItemFieldRefs {
+    readonly caseFishboneItemId: FieldRef<"CaseFishboneItem", 'String'>
+    readonly caseFishboneId: FieldRef<"CaseFishboneItem", 'String'>
+    readonly categoryCode: FieldRef<"CaseFishboneItem", 'String'>
+    readonly problemText: FieldRef<"CaseFishboneItem", 'String'>
+    readonly solutionText: FieldRef<"CaseFishboneItem", 'String'>
+    readonly isActive: FieldRef<"CaseFishboneItem", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseFishboneItem", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseFishboneItem", 'String'>
+    readonly updatedAt: FieldRef<"CaseFishboneItem", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseFishboneItem", 'String'>
+    readonly isDeleted: FieldRef<"CaseFishboneItem", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseFishboneItem", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseFishboneItem", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneItem findUnique
+   */
+  export type CaseFishboneItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItem to fetch.
+     */
+    where: CaseFishboneItemWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItem findUniqueOrThrow
+   */
+  export type CaseFishboneItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItem to fetch.
+     */
+    where: CaseFishboneItemWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItem findFirst
+   */
+  export type CaseFishboneItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItem to fetch.
+     */
+    where?: CaseFishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItems to fetch.
+     */
+    orderBy?: CaseFishboneItemOrderByWithRelationInput | CaseFishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneItems.
+     */
+    cursor?: CaseFishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneItems.
+     */
+    distinct?: CaseFishboneItemScalarFieldEnum | CaseFishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItem findFirstOrThrow
+   */
+  export type CaseFishboneItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItem to fetch.
+     */
+    where?: CaseFishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItems to fetch.
+     */
+    orderBy?: CaseFishboneItemOrderByWithRelationInput | CaseFishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneItems.
+     */
+    cursor?: CaseFishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneItems.
+     */
+    distinct?: CaseFishboneItemScalarFieldEnum | CaseFishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItem findMany
+   */
+  export type CaseFishboneItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItems to fetch.
+     */
+    where?: CaseFishboneItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItems to fetch.
+     */
+    orderBy?: CaseFishboneItemOrderByWithRelationInput | CaseFishboneItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseFishboneItems.
+     */
+    cursor?: CaseFishboneItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItems.
+     */
+    skip?: number
+    distinct?: CaseFishboneItemScalarFieldEnum | CaseFishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItem create
+   */
+  export type CaseFishboneItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseFishboneItem.
+     */
+    data: XOR<CaseFishboneItemCreateInput, CaseFishboneItemUncheckedCreateInput>
+  }
+
+  /**
+   * CaseFishboneItem createMany
+   */
+  export type CaseFishboneItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseFishboneItems.
+     */
+    data: CaseFishboneItemCreateManyInput | CaseFishboneItemCreateManyInput[]
+  }
+
+  /**
+   * CaseFishboneItem update
+   */
+  export type CaseFishboneItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseFishboneItem.
+     */
+    data: XOR<CaseFishboneItemUpdateInput, CaseFishboneItemUncheckedUpdateInput>
+    /**
+     * Choose, which CaseFishboneItem to update.
+     */
+    where: CaseFishboneItemWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItem updateMany
+   */
+  export type CaseFishboneItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseFishboneItems.
+     */
+    data: XOR<CaseFishboneItemUpdateManyMutationInput, CaseFishboneItemUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseFishboneItems to update
+     */
+    where?: CaseFishboneItemWhereInput
+    /**
+     * Limit how many CaseFishboneItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneItem upsert
+   */
+  export type CaseFishboneItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseFishboneItem to update in case it exists.
+     */
+    where: CaseFishboneItemWhereUniqueInput
+    /**
+     * In case the CaseFishboneItem found by the `where` argument doesn't exist, create a new CaseFishboneItem with this data.
+     */
+    create: XOR<CaseFishboneItemCreateInput, CaseFishboneItemUncheckedCreateInput>
+    /**
+     * In case the CaseFishboneItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseFishboneItemUpdateInput, CaseFishboneItemUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseFishboneItem delete
+   */
+  export type CaseFishboneItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    /**
+     * Filter which CaseFishboneItem to delete.
+     */
+    where: CaseFishboneItemWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItem deleteMany
+   */
+  export type CaseFishboneItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneItems to delete
+     */
+    where?: CaseFishboneItemWhereInput
+    /**
+     * Limit how many CaseFishboneItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneItem.causeLinks
+   */
+  export type CaseFishboneItem$causeLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    where?: CaseFishboneItemCauseWhereInput
+    orderBy?: CaseFishboneItemCauseOrderByWithRelationInput | CaseFishboneItemCauseOrderByWithRelationInput[]
+    cursor?: CaseFishboneItemCauseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFishboneItemCauseScalarFieldEnum | CaseFishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItem without action
+   */
+  export type CaseFishboneItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseFishboneItemCause
+   */
+
+  export type AggregateCaseFishboneItemCause = {
+    _count: CaseFishboneItemCauseCountAggregateOutputType | null
+    _min: CaseFishboneItemCauseMinAggregateOutputType | null
+    _max: CaseFishboneItemCauseMaxAggregateOutputType | null
+  }
+
+  export type CaseFishboneItemCauseMinAggregateOutputType = {
+    caseFishboneItemCauseId: string | null
+    caseFishboneItemId: string | null
+    caseFishboneCauseId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneItemCauseMaxAggregateOutputType = {
+    caseFishboneItemCauseId: string | null
+    caseFishboneItemId: string | null
+    caseFishboneCauseId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFishboneItemCauseCountAggregateOutputType = {
+    caseFishboneItemCauseId: number
+    caseFishboneItemId: number
+    caseFishboneCauseId: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseFishboneItemCauseMinAggregateInputType = {
+    caseFishboneItemCauseId?: true
+    caseFishboneItemId?: true
+    caseFishboneCauseId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneItemCauseMaxAggregateInputType = {
+    caseFishboneItemCauseId?: true
+    caseFishboneItemId?: true
+    caseFishboneCauseId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFishboneItemCauseCountAggregateInputType = {
+    caseFishboneItemCauseId?: true
+    caseFishboneItemId?: true
+    caseFishboneCauseId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseFishboneItemCauseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneItemCause to aggregate.
+     */
+    where?: CaseFishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItemCauses to fetch.
+     */
+    orderBy?: CaseFishboneItemCauseOrderByWithRelationInput | CaseFishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseFishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItemCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseFishboneItemCauses
+    **/
+    _count?: true | CaseFishboneItemCauseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseFishboneItemCauseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseFishboneItemCauseMaxAggregateInputType
+  }
+
+  export type GetCaseFishboneItemCauseAggregateType<T extends CaseFishboneItemCauseAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseFishboneItemCause]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseFishboneItemCause[P]>
+      : GetScalarType<T[P], AggregateCaseFishboneItemCause[P]>
+  }
+
+
+
+
+  export type CaseFishboneItemCauseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFishboneItemCauseWhereInput
+    orderBy?: CaseFishboneItemCauseOrderByWithAggregationInput | CaseFishboneItemCauseOrderByWithAggregationInput[]
+    by: CaseFishboneItemCauseScalarFieldEnum[] | CaseFishboneItemCauseScalarFieldEnum
+    having?: CaseFishboneItemCauseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseFishboneItemCauseCountAggregateInputType | true
+    _min?: CaseFishboneItemCauseMinAggregateInputType
+    _max?: CaseFishboneItemCauseMaxAggregateInputType
+  }
+
+  export type CaseFishboneItemCauseGroupByOutputType = {
+    caseFishboneItemCauseId: string
+    caseFishboneItemId: string
+    caseFishboneCauseId: string
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseFishboneItemCauseCountAggregateOutputType | null
+    _min: CaseFishboneItemCauseMinAggregateOutputType | null
+    _max: CaseFishboneItemCauseMaxAggregateOutputType | null
+  }
+
+  type GetCaseFishboneItemCauseGroupByPayload<T extends CaseFishboneItemCauseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseFishboneItemCauseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseFishboneItemCauseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseFishboneItemCauseGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseFishboneItemCauseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseFishboneItemCauseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseFishboneItemCauseId?: boolean
+    caseFishboneItemId?: boolean
+    caseFishboneCauseId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    item?: boolean | CaseFishboneItemDefaultArgs<ExtArgs>
+    cause?: boolean | CaseFishboneCauseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseFishboneItemCause"]>
+
+
+
+  export type CaseFishboneItemCauseSelectScalar = {
+    caseFishboneItemCauseId?: boolean
+    caseFishboneItemId?: boolean
+    caseFishboneCauseId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseFishboneItemCauseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseFishboneItemCauseId" | "caseFishboneItemId" | "caseFishboneCauseId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseFishboneItemCause"]>
+  export type CaseFishboneItemCauseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    item?: boolean | CaseFishboneItemDefaultArgs<ExtArgs>
+    cause?: boolean | CaseFishboneCauseDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseFishboneItemCausePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseFishboneItemCause"
+    objects: {
+      item: Prisma.$CaseFishboneItemPayload<ExtArgs>
+      cause: Prisma.$CaseFishboneCausePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseFishboneItemCauseId: string
+      caseFishboneItemId: string
+      caseFishboneCauseId: string
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseFishboneItemCause"]>
+    composites: {}
+  }
+
+  type CaseFishboneItemCauseGetPayload<S extends boolean | null | undefined | CaseFishboneItemCauseDefaultArgs> = $Result.GetResult<Prisma.$CaseFishboneItemCausePayload, S>
+
+  type CaseFishboneItemCauseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseFishboneItemCauseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseFishboneItemCauseCountAggregateInputType | true
+    }
+
+  export interface CaseFishboneItemCauseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseFishboneItemCause'], meta: { name: 'CaseFishboneItemCause' } }
+    /**
+     * Find zero or one CaseFishboneItemCause that matches the filter.
+     * @param {CaseFishboneItemCauseFindUniqueArgs} args - Arguments to find a CaseFishboneItemCause
+     * @example
+     * // Get one CaseFishboneItemCause
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseFishboneItemCauseFindUniqueArgs>(args: SelectSubset<T, CaseFishboneItemCauseFindUniqueArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseFishboneItemCause that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseFishboneItemCauseFindUniqueOrThrowArgs} args - Arguments to find a CaseFishboneItemCause
+     * @example
+     * // Get one CaseFishboneItemCause
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseFishboneItemCauseFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseFishboneItemCauseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneItemCause that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseFindFirstArgs} args - Arguments to find a CaseFishboneItemCause
+     * @example
+     * // Get one CaseFishboneItemCause
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseFishboneItemCauseFindFirstArgs>(args?: SelectSubset<T, CaseFishboneItemCauseFindFirstArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFishboneItemCause that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseFindFirstOrThrowArgs} args - Arguments to find a CaseFishboneItemCause
+     * @example
+     * // Get one CaseFishboneItemCause
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseFishboneItemCauseFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseFishboneItemCauseFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseFishboneItemCauses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseFishboneItemCauses
+     * const caseFishboneItemCauses = await prisma.caseFishboneItemCause.findMany()
+     * 
+     * // Get first 10 CaseFishboneItemCauses
+     * const caseFishboneItemCauses = await prisma.caseFishboneItemCause.findMany({ take: 10 })
+     * 
+     * // Only select the `caseFishboneItemCauseId`
+     * const caseFishboneItemCauseWithCaseFishboneItemCauseIdOnly = await prisma.caseFishboneItemCause.findMany({ select: { caseFishboneItemCauseId: true } })
+     * 
+     */
+    findMany<T extends CaseFishboneItemCauseFindManyArgs>(args?: SelectSubset<T, CaseFishboneItemCauseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseFishboneItemCause.
+     * @param {CaseFishboneItemCauseCreateArgs} args - Arguments to create a CaseFishboneItemCause.
+     * @example
+     * // Create one CaseFishboneItemCause
+     * const CaseFishboneItemCause = await prisma.caseFishboneItemCause.create({
+     *   data: {
+     *     // ... data to create a CaseFishboneItemCause
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseFishboneItemCauseCreateArgs>(args: SelectSubset<T, CaseFishboneItemCauseCreateArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseFishboneItemCauses.
+     * @param {CaseFishboneItemCauseCreateManyArgs} args - Arguments to create many CaseFishboneItemCauses.
+     * @example
+     * // Create many CaseFishboneItemCauses
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseFishboneItemCauseCreateManyArgs>(args?: SelectSubset<T, CaseFishboneItemCauseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseFishboneItemCause.
+     * @param {CaseFishboneItemCauseDeleteArgs} args - Arguments to delete one CaseFishboneItemCause.
+     * @example
+     * // Delete one CaseFishboneItemCause
+     * const CaseFishboneItemCause = await prisma.caseFishboneItemCause.delete({
+     *   where: {
+     *     // ... filter to delete one CaseFishboneItemCause
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseFishboneItemCauseDeleteArgs>(args: SelectSubset<T, CaseFishboneItemCauseDeleteArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseFishboneItemCause.
+     * @param {CaseFishboneItemCauseUpdateArgs} args - Arguments to update one CaseFishboneItemCause.
+     * @example
+     * // Update one CaseFishboneItemCause
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseFishboneItemCauseUpdateArgs>(args: SelectSubset<T, CaseFishboneItemCauseUpdateArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseFishboneItemCauses.
+     * @param {CaseFishboneItemCauseDeleteManyArgs} args - Arguments to filter CaseFishboneItemCauses to delete.
+     * @example
+     * // Delete a few CaseFishboneItemCauses
+     * const { count } = await prisma.caseFishboneItemCause.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseFishboneItemCauseDeleteManyArgs>(args?: SelectSubset<T, CaseFishboneItemCauseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseFishboneItemCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseFishboneItemCauses
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseFishboneItemCauseUpdateManyArgs>(args: SelectSubset<T, CaseFishboneItemCauseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseFishboneItemCause.
+     * @param {CaseFishboneItemCauseUpsertArgs} args - Arguments to update or create a CaseFishboneItemCause.
+     * @example
+     * // Update or create a CaseFishboneItemCause
+     * const caseFishboneItemCause = await prisma.caseFishboneItemCause.upsert({
+     *   create: {
+     *     // ... data to create a CaseFishboneItemCause
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseFishboneItemCause we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseFishboneItemCauseUpsertArgs>(args: SelectSubset<T, CaseFishboneItemCauseUpsertArgs<ExtArgs>>): Prisma__CaseFishboneItemCauseClient<$Result.GetResult<Prisma.$CaseFishboneItemCausePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseFishboneItemCauses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseCountArgs} args - Arguments to filter CaseFishboneItemCauses to count.
+     * @example
+     * // Count the number of CaseFishboneItemCauses
+     * const count = await prisma.caseFishboneItemCause.count({
+     *   where: {
+     *     // ... the filter for the CaseFishboneItemCauses we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseFishboneItemCauseCountArgs>(
+      args?: Subset<T, CaseFishboneItemCauseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseFishboneItemCauseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseFishboneItemCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseFishboneItemCauseAggregateArgs>(args: Subset<T, CaseFishboneItemCauseAggregateArgs>): Prisma.PrismaPromise<GetCaseFishboneItemCauseAggregateType<T>>
+
+    /**
+     * Group by CaseFishboneItemCause.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFishboneItemCauseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseFishboneItemCauseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseFishboneItemCauseGroupByArgs['orderBy'] }
+        : { orderBy?: CaseFishboneItemCauseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseFishboneItemCauseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseFishboneItemCauseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseFishboneItemCause model
+   */
+  readonly fields: CaseFishboneItemCauseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseFishboneItemCause.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseFishboneItemCauseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    item<T extends CaseFishboneItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneItemDefaultArgs<ExtArgs>>): Prisma__CaseFishboneItemClient<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cause<T extends CaseFishboneCauseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseFishboneCauseDefaultArgs<ExtArgs>>): Prisma__CaseFishboneCauseClient<$Result.GetResult<Prisma.$CaseFishboneCausePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseFishboneItemCause model
+   */
+  interface CaseFishboneItemCauseFieldRefs {
+    readonly caseFishboneItemCauseId: FieldRef<"CaseFishboneItemCause", 'String'>
+    readonly caseFishboneItemId: FieldRef<"CaseFishboneItemCause", 'String'>
+    readonly caseFishboneCauseId: FieldRef<"CaseFishboneItemCause", 'String'>
+    readonly isActive: FieldRef<"CaseFishboneItemCause", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseFishboneItemCause", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseFishboneItemCause", 'String'>
+    readonly updatedAt: FieldRef<"CaseFishboneItemCause", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseFishboneItemCause", 'String'>
+    readonly isDeleted: FieldRef<"CaseFishboneItemCause", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseFishboneItemCause", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseFishboneItemCause", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseFishboneItemCause findUnique
+   */
+  export type CaseFishboneItemCauseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItemCause to fetch.
+     */
+    where: CaseFishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItemCause findUniqueOrThrow
+   */
+  export type CaseFishboneItemCauseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItemCause to fetch.
+     */
+    where: CaseFishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItemCause findFirst
+   */
+  export type CaseFishboneItemCauseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItemCause to fetch.
+     */
+    where?: CaseFishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItemCauses to fetch.
+     */
+    orderBy?: CaseFishboneItemCauseOrderByWithRelationInput | CaseFishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneItemCauses.
+     */
+    cursor?: CaseFishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItemCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneItemCauses.
+     */
+    distinct?: CaseFishboneItemCauseScalarFieldEnum | CaseFishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItemCause findFirstOrThrow
+   */
+  export type CaseFishboneItemCauseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItemCause to fetch.
+     */
+    where?: CaseFishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItemCauses to fetch.
+     */
+    orderBy?: CaseFishboneItemCauseOrderByWithRelationInput | CaseFishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFishboneItemCauses.
+     */
+    cursor?: CaseFishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItemCauses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFishboneItemCauses.
+     */
+    distinct?: CaseFishboneItemCauseScalarFieldEnum | CaseFishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItemCause findMany
+   */
+  export type CaseFishboneItemCauseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFishboneItemCauses to fetch.
+     */
+    where?: CaseFishboneItemCauseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFishboneItemCauses to fetch.
+     */
+    orderBy?: CaseFishboneItemCauseOrderByWithRelationInput | CaseFishboneItemCauseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseFishboneItemCauses.
+     */
+    cursor?: CaseFishboneItemCauseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFishboneItemCauses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFishboneItemCauses.
+     */
+    skip?: number
+    distinct?: CaseFishboneItemCauseScalarFieldEnum | CaseFishboneItemCauseScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFishboneItemCause create
+   */
+  export type CaseFishboneItemCauseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseFishboneItemCause.
+     */
+    data: XOR<CaseFishboneItemCauseCreateInput, CaseFishboneItemCauseUncheckedCreateInput>
+  }
+
+  /**
+   * CaseFishboneItemCause createMany
+   */
+  export type CaseFishboneItemCauseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseFishboneItemCauses.
+     */
+    data: CaseFishboneItemCauseCreateManyInput | CaseFishboneItemCauseCreateManyInput[]
+  }
+
+  /**
+   * CaseFishboneItemCause update
+   */
+  export type CaseFishboneItemCauseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseFishboneItemCause.
+     */
+    data: XOR<CaseFishboneItemCauseUpdateInput, CaseFishboneItemCauseUncheckedUpdateInput>
+    /**
+     * Choose, which CaseFishboneItemCause to update.
+     */
+    where: CaseFishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItemCause updateMany
+   */
+  export type CaseFishboneItemCauseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseFishboneItemCauses.
+     */
+    data: XOR<CaseFishboneItemCauseUpdateManyMutationInput, CaseFishboneItemCauseUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseFishboneItemCauses to update
+     */
+    where?: CaseFishboneItemCauseWhereInput
+    /**
+     * Limit how many CaseFishboneItemCauses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneItemCause upsert
+   */
+  export type CaseFishboneItemCauseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseFishboneItemCause to update in case it exists.
+     */
+    where: CaseFishboneItemCauseWhereUniqueInput
+    /**
+     * In case the CaseFishboneItemCause found by the `where` argument doesn't exist, create a new CaseFishboneItemCause with this data.
+     */
+    create: XOR<CaseFishboneItemCauseCreateInput, CaseFishboneItemCauseUncheckedCreateInput>
+    /**
+     * In case the CaseFishboneItemCause was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseFishboneItemCauseUpdateInput, CaseFishboneItemCauseUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseFishboneItemCause delete
+   */
+  export type CaseFishboneItemCauseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+    /**
+     * Filter which CaseFishboneItemCause to delete.
+     */
+    where: CaseFishboneItemCauseWhereUniqueInput
+  }
+
+  /**
+   * CaseFishboneItemCause deleteMany
+   */
+  export type CaseFishboneItemCauseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFishboneItemCauses to delete
+     */
+    where?: CaseFishboneItemCauseWhereInput
+    /**
+     * Limit how many CaseFishboneItemCauses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFishboneItemCause without action
+   */
+  export type CaseFishboneItemCauseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItemCause
+     */
+    select?: CaseFishboneItemCauseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItemCause
+     */
+    omit?: CaseFishboneItemCauseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemCauseInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model FishboneCategory
    */
 
@@ -11702,6 +23845,7 @@ export namespace Prisma {
     deletedAt?: boolean
     deletedBy?: boolean
     items?: boolean | FishboneCategory$itemsArgs<ExtArgs>
+    caseFishboneItems?: boolean | FishboneCategory$caseFishboneItemsArgs<ExtArgs>
     _count?: boolean | FishboneCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["fishboneCategory"]>
 
@@ -11725,6 +23869,7 @@ export namespace Prisma {
   export type FishboneCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"fishboneCategoryId" | "categoryCode" | "categoryName" | "categoryDesc" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["fishboneCategory"]>
   export type FishboneCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | FishboneCategory$itemsArgs<ExtArgs>
+    caseFishboneItems?: boolean | FishboneCategory$caseFishboneItemsArgs<ExtArgs>
     _count?: boolean | FishboneCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -11732,6 +23877,7 @@ export namespace Prisma {
     name: "FishboneCategory"
     objects: {
       items: Prisma.$FishboneItemPayload<ExtArgs>[]
+      caseFishboneItems: Prisma.$CaseFishboneItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       fishboneCategoryId: string
@@ -12087,6 +24233,7 @@ export namespace Prisma {
   export interface Prisma__FishboneCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     items<T extends FishboneCategory$itemsArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCategory$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    caseFishboneItems<T extends FishboneCategory$caseFishboneItemsArgs<ExtArgs> = {}>(args?: Subset<T, FishboneCategory$caseFishboneItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12491,6 +24638,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FishboneItemScalarFieldEnum | FishboneItemScalarFieldEnum[]
+  }
+
+  /**
+   * FishboneCategory.caseFishboneItems
+   */
+  export type FishboneCategory$caseFishboneItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFishboneItem
+     */
+    select?: CaseFishboneItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFishboneItem
+     */
+    omit?: CaseFishboneItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFishboneItemInclude<ExtArgs> | null
+    where?: CaseFishboneItemWhereInput
+    orderBy?: CaseFishboneItemOrderByWithRelationInput | CaseFishboneItemOrderByWithRelationInput[]
+    cursor?: CaseFishboneItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFishboneItemScalarFieldEnum | CaseFishboneItemScalarFieldEnum[]
   }
 
   /**
@@ -19777,6 +31948,152 @@ export namespace Prisma {
   export type ProcedureSopIKScalarFieldEnum = (typeof ProcedureSopIKScalarFieldEnum)[keyof typeof ProcedureSopIKScalarFieldEnum]
 
 
+  export const CaseHeaderScalarFieldEnum: {
+    caseId: 'caseId',
+    caseType: 'caseType',
+    caseTitle: 'caseTitle',
+    background: 'background',
+    currentCondition: 'currentCondition',
+    projectDesc: 'projectDesc',
+    projectObjective: 'projectObjective',
+    locationDesc: 'locationDesc',
+    notes: 'notes',
+    status: 'status',
+    requesterId: 'requesterId',
+    requesterEmployeeId: 'requesterEmployeeId',
+    originSbuSubId: 'originSbuSubId',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseHeaderScalarFieldEnum = (typeof CaseHeaderScalarFieldEnum)[keyof typeof CaseHeaderScalarFieldEnum]
+
+
+  export const CaseDepartmentScalarFieldEnum: {
+    caseDepartmentId: 'caseDepartmentId',
+    caseId: 'caseId',
+    sbuSubId: 'sbuSubId',
+    decisionStatus: 'decisionStatus',
+    decisionAt: 'decisionAt',
+    decisionBy: 'decisionBy',
+    assigneeEmployeeId: 'assigneeEmployeeId',
+    assignedAt: 'assignedAt',
+    assignedBy: 'assignedBy',
+    workStatus: 'workStatus',
+    startDate: 'startDate',
+    targetDate: 'targetDate',
+    endDate: 'endDate',
+    workNotes: 'workNotes',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseDepartmentScalarFieldEnum = (typeof CaseDepartmentScalarFieldEnum)[keyof typeof CaseDepartmentScalarFieldEnum]
+
+
+  export const CaseNotificationOutboxScalarFieldEnum: {
+    caseNotificationId: 'caseNotificationId',
+    caseId: 'caseId',
+    caseDepartmentId: 'caseDepartmentId',
+    recipientEmployeeId: 'recipientEmployeeId',
+    channel: 'channel',
+    phoneNumber: 'phoneNumber',
+    message: 'message',
+    status: 'status',
+    attempts: 'attempts',
+    lastError: 'lastError',
+    provider: 'provider',
+    meta: 'meta',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseNotificationOutboxScalarFieldEnum = (typeof CaseNotificationOutboxScalarFieldEnum)[keyof typeof CaseNotificationOutboxScalarFieldEnum]
+
+
+  export const CaseNotificationMessageScalarFieldEnum: {
+    caseNotificationMessageId: 'caseNotificationMessageId',
+    caseId: 'caseId',
+    caseDepartmentId: 'caseDepartmentId',
+    recipientEmployeeId: 'recipientEmployeeId',
+    role: 'role',
+    messageTemplate: 'messageTemplate',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseNotificationMessageScalarFieldEnum = (typeof CaseNotificationMessageScalarFieldEnum)[keyof typeof CaseNotificationMessageScalarFieldEnum]
+
+
+  export const CaseNotificationTemplateScalarFieldEnum: {
+    caseNotificationTemplateId: 'caseNotificationTemplateId',
+    templateName: 'templateName',
+    channel: 'channel',
+    role: 'role',
+    action: 'action',
+    caseType: 'caseType',
+    messageTemplate: 'messageTemplate',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseNotificationTemplateScalarFieldEnum = (typeof CaseNotificationTemplateScalarFieldEnum)[keyof typeof CaseNotificationTemplateScalarFieldEnum]
+
+
+  export const CaseAttachmentScalarFieldEnum: {
+    caseAttachmentId: 'caseAttachmentId',
+    caseId: 'caseId',
+    mediaType: 'mediaType',
+    filePath: 'filePath',
+    fileName: 'fileName',
+    fileMime: 'fileMime',
+    fileSize: 'fileSize',
+    caption: 'caption',
+    locationDesc: 'locationDesc',
+    orderIndex: 'orderIndex',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseAttachmentScalarFieldEnum = (typeof CaseAttachmentScalarFieldEnum)[keyof typeof CaseAttachmentScalarFieldEnum]
+
+
   export const MasterFishboneScalarFieldEnum: {
     fishboneId: 'fishboneId',
     sbuSubId: 'sbuSubId',
@@ -19793,6 +32110,79 @@ export namespace Prisma {
   };
 
   export type MasterFishboneScalarFieldEnum = (typeof MasterFishboneScalarFieldEnum)[keyof typeof MasterFishboneScalarFieldEnum]
+
+
+  export const CaseFishboneMasterScalarFieldEnum: {
+    caseFishboneId: 'caseFishboneId',
+    caseId: 'caseId',
+    sbuSubId: 'sbuSubId',
+    fishboneName: 'fishboneName',
+    fishboneDesc: 'fishboneDesc',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseFishboneMasterScalarFieldEnum = (typeof CaseFishboneMasterScalarFieldEnum)[keyof typeof CaseFishboneMasterScalarFieldEnum]
+
+
+  export const CaseFishboneCauseScalarFieldEnum: {
+    caseFishboneCauseId: 'caseFishboneCauseId',
+    caseFishboneId: 'caseFishboneId',
+    causeNo: 'causeNo',
+    causeText: 'causeText',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseFishboneCauseScalarFieldEnum = (typeof CaseFishboneCauseScalarFieldEnum)[keyof typeof CaseFishboneCauseScalarFieldEnum]
+
+
+  export const CaseFishboneItemScalarFieldEnum: {
+    caseFishboneItemId: 'caseFishboneItemId',
+    caseFishboneId: 'caseFishboneId',
+    categoryCode: 'categoryCode',
+    problemText: 'problemText',
+    solutionText: 'solutionText',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseFishboneItemScalarFieldEnum = (typeof CaseFishboneItemScalarFieldEnum)[keyof typeof CaseFishboneItemScalarFieldEnum]
+
+
+  export const CaseFishboneItemCauseScalarFieldEnum: {
+    caseFishboneItemCauseId: 'caseFishboneItemCauseId',
+    caseFishboneItemId: 'caseFishboneItemId',
+    caseFishboneCauseId: 'caseFishboneCauseId',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseFishboneItemCauseScalarFieldEnum = (typeof CaseFishboneItemCauseScalarFieldEnum)[keyof typeof CaseFishboneItemCauseScalarFieldEnum]
 
 
   export const FishboneCategoryScalarFieldEnum: {
@@ -20778,6 +33168,768 @@ export namespace Prisma {
     deletedBy?: StringNullableWithAggregatesFilter<"ProcedureSopIK"> | string | null
   }
 
+  export type CaseHeaderWhereInput = {
+    AND?: CaseHeaderWhereInput | CaseHeaderWhereInput[]
+    OR?: CaseHeaderWhereInput[]
+    NOT?: CaseHeaderWhereInput | CaseHeaderWhereInput[]
+    caseId?: StringFilter<"CaseHeader"> | string
+    caseType?: StringFilter<"CaseHeader"> | string
+    caseTitle?: StringFilter<"CaseHeader"> | string
+    background?: StringNullableFilter<"CaseHeader"> | string | null
+    currentCondition?: StringNullableFilter<"CaseHeader"> | string | null
+    projectDesc?: StringNullableFilter<"CaseHeader"> | string | null
+    projectObjective?: StringNullableFilter<"CaseHeader"> | string | null
+    locationDesc?: StringNullableFilter<"CaseHeader"> | string | null
+    notes?: StringNullableFilter<"CaseHeader"> | string | null
+    status?: StringFilter<"CaseHeader"> | string
+    requesterId?: StringNullableFilter<"CaseHeader"> | string | null
+    requesterEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
+    originSbuSubId?: IntNullableFilter<"CaseHeader"> | number | null
+    isActive?: BoolFilter<"CaseHeader"> | boolean
+    createdAt?: DateTimeFilter<"CaseHeader"> | Date | string
+    createdBy?: StringNullableFilter<"CaseHeader"> | string | null
+    updatedAt?: DateTimeFilter<"CaseHeader"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseHeader"> | string | null
+    isDeleted?: BoolFilter<"CaseHeader"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseHeader"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseHeader"> | string | null
+    departments?: CaseDepartmentListRelationFilter
+    attachments?: CaseAttachmentListRelationFilter
+    caseFishbones?: CaseFishboneMasterListRelationFilter
+    notifications?: CaseNotificationOutboxListRelationFilter
+    caseNotificationMessages?: CaseNotificationMessageListRelationFilter
+  }
+
+  export type CaseHeaderOrderByWithRelationInput = {
+    caseId?: SortOrder
+    caseType?: SortOrder
+    caseTitle?: SortOrder
+    background?: SortOrderInput | SortOrder
+    currentCondition?: SortOrderInput | SortOrder
+    projectDesc?: SortOrderInput | SortOrder
+    projectObjective?: SortOrderInput | SortOrder
+    locationDesc?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    status?: SortOrder
+    requesterId?: SortOrderInput | SortOrder
+    requesterEmployeeId?: SortOrderInput | SortOrder
+    originSbuSubId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    departments?: CaseDepartmentOrderByRelationAggregateInput
+    attachments?: CaseAttachmentOrderByRelationAggregateInput
+    caseFishbones?: CaseFishboneMasterOrderByRelationAggregateInput
+    notifications?: CaseNotificationOutboxOrderByRelationAggregateInput
+    caseNotificationMessages?: CaseNotificationMessageOrderByRelationAggregateInput
+  }
+
+  export type CaseHeaderWhereUniqueInput = Prisma.AtLeast<{
+    caseId?: string
+    AND?: CaseHeaderWhereInput | CaseHeaderWhereInput[]
+    OR?: CaseHeaderWhereInput[]
+    NOT?: CaseHeaderWhereInput | CaseHeaderWhereInput[]
+    caseType?: StringFilter<"CaseHeader"> | string
+    caseTitle?: StringFilter<"CaseHeader"> | string
+    background?: StringNullableFilter<"CaseHeader"> | string | null
+    currentCondition?: StringNullableFilter<"CaseHeader"> | string | null
+    projectDesc?: StringNullableFilter<"CaseHeader"> | string | null
+    projectObjective?: StringNullableFilter<"CaseHeader"> | string | null
+    locationDesc?: StringNullableFilter<"CaseHeader"> | string | null
+    notes?: StringNullableFilter<"CaseHeader"> | string | null
+    status?: StringFilter<"CaseHeader"> | string
+    requesterId?: StringNullableFilter<"CaseHeader"> | string | null
+    requesterEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
+    originSbuSubId?: IntNullableFilter<"CaseHeader"> | number | null
+    isActive?: BoolFilter<"CaseHeader"> | boolean
+    createdAt?: DateTimeFilter<"CaseHeader"> | Date | string
+    createdBy?: StringNullableFilter<"CaseHeader"> | string | null
+    updatedAt?: DateTimeFilter<"CaseHeader"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseHeader"> | string | null
+    isDeleted?: BoolFilter<"CaseHeader"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseHeader"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseHeader"> | string | null
+    departments?: CaseDepartmentListRelationFilter
+    attachments?: CaseAttachmentListRelationFilter
+    caseFishbones?: CaseFishboneMasterListRelationFilter
+    notifications?: CaseNotificationOutboxListRelationFilter
+    caseNotificationMessages?: CaseNotificationMessageListRelationFilter
+  }, "caseId">
+
+  export type CaseHeaderOrderByWithAggregationInput = {
+    caseId?: SortOrder
+    caseType?: SortOrder
+    caseTitle?: SortOrder
+    background?: SortOrderInput | SortOrder
+    currentCondition?: SortOrderInput | SortOrder
+    projectDesc?: SortOrderInput | SortOrder
+    projectObjective?: SortOrderInput | SortOrder
+    locationDesc?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    status?: SortOrder
+    requesterId?: SortOrderInput | SortOrder
+    requesterEmployeeId?: SortOrderInput | SortOrder
+    originSbuSubId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseHeaderCountOrderByAggregateInput
+    _avg?: CaseHeaderAvgOrderByAggregateInput
+    _max?: CaseHeaderMaxOrderByAggregateInput
+    _min?: CaseHeaderMinOrderByAggregateInput
+    _sum?: CaseHeaderSumOrderByAggregateInput
+  }
+
+  export type CaseHeaderScalarWhereWithAggregatesInput = {
+    AND?: CaseHeaderScalarWhereWithAggregatesInput | CaseHeaderScalarWhereWithAggregatesInput[]
+    OR?: CaseHeaderScalarWhereWithAggregatesInput[]
+    NOT?: CaseHeaderScalarWhereWithAggregatesInput | CaseHeaderScalarWhereWithAggregatesInput[]
+    caseId?: StringWithAggregatesFilter<"CaseHeader"> | string
+    caseType?: StringWithAggregatesFilter<"CaseHeader"> | string
+    caseTitle?: StringWithAggregatesFilter<"CaseHeader"> | string
+    background?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    currentCondition?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    projectDesc?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    projectObjective?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    locationDesc?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    status?: StringWithAggregatesFilter<"CaseHeader"> | string
+    requesterId?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    requesterEmployeeId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
+    originSbuSubId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
+    isActive?: BoolWithAggregatesFilter<"CaseHeader"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseHeader"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseHeader"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseHeader"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseHeader"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+  }
+
+  export type CaseDepartmentWhereInput = {
+    AND?: CaseDepartmentWhereInput | CaseDepartmentWhereInput[]
+    OR?: CaseDepartmentWhereInput[]
+    NOT?: CaseDepartmentWhereInput | CaseDepartmentWhereInput[]
+    caseDepartmentId?: StringFilter<"CaseDepartment"> | string
+    caseId?: StringFilter<"CaseDepartment"> | string
+    sbuSubId?: IntFilter<"CaseDepartment"> | number
+    decisionStatus?: StringFilter<"CaseDepartment"> | string
+    decisionAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    decisionBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    assigneeEmployeeId?: IntNullableFilter<"CaseDepartment"> | number | null
+    assignedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    assignedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    workStatus?: StringNullableFilter<"CaseDepartment"> | string | null
+    startDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    targetDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    workNotes?: StringNullableFilter<"CaseDepartment"> | string | null
+    isActive?: BoolFilter<"CaseDepartment"> | boolean
+    createdAt?: DateTimeFilter<"CaseDepartment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseDepartment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    isDeleted?: BoolFilter<"CaseDepartment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+    notifications?: CaseNotificationOutboxListRelationFilter
+    caseNotificationMessages?: CaseNotificationMessageListRelationFilter
+  }
+
+  export type CaseDepartmentOrderByWithRelationInput = {
+    caseDepartmentId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    decisionStatus?: SortOrder
+    decisionAt?: SortOrderInput | SortOrder
+    decisionBy?: SortOrderInput | SortOrder
+    assigneeEmployeeId?: SortOrderInput | SortOrder
+    assignedAt?: SortOrderInput | SortOrder
+    assignedBy?: SortOrderInput | SortOrder
+    workStatus?: SortOrderInput | SortOrder
+    startDate?: SortOrderInput | SortOrder
+    targetDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    workNotes?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case?: CaseHeaderOrderByWithRelationInput
+    notifications?: CaseNotificationOutboxOrderByRelationAggregateInput
+    caseNotificationMessages?: CaseNotificationMessageOrderByRelationAggregateInput
+  }
+
+  export type CaseDepartmentWhereUniqueInput = Prisma.AtLeast<{
+    caseDepartmentId?: string
+    caseId_sbuSubId?: CaseDepartmentCaseIdSbuSubIdCompoundUniqueInput
+    AND?: CaseDepartmentWhereInput | CaseDepartmentWhereInput[]
+    OR?: CaseDepartmentWhereInput[]
+    NOT?: CaseDepartmentWhereInput | CaseDepartmentWhereInput[]
+    caseId?: StringFilter<"CaseDepartment"> | string
+    sbuSubId?: IntFilter<"CaseDepartment"> | number
+    decisionStatus?: StringFilter<"CaseDepartment"> | string
+    decisionAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    decisionBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    assigneeEmployeeId?: IntNullableFilter<"CaseDepartment"> | number | null
+    assignedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    assignedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    workStatus?: StringNullableFilter<"CaseDepartment"> | string | null
+    startDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    targetDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    workNotes?: StringNullableFilter<"CaseDepartment"> | string | null
+    isActive?: BoolFilter<"CaseDepartment"> | boolean
+    createdAt?: DateTimeFilter<"CaseDepartment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseDepartment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    isDeleted?: BoolFilter<"CaseDepartment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+    notifications?: CaseNotificationOutboxListRelationFilter
+    caseNotificationMessages?: CaseNotificationMessageListRelationFilter
+  }, "caseDepartmentId" | "caseId_sbuSubId">
+
+  export type CaseDepartmentOrderByWithAggregationInput = {
+    caseDepartmentId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    decisionStatus?: SortOrder
+    decisionAt?: SortOrderInput | SortOrder
+    decisionBy?: SortOrderInput | SortOrder
+    assigneeEmployeeId?: SortOrderInput | SortOrder
+    assignedAt?: SortOrderInput | SortOrder
+    assignedBy?: SortOrderInput | SortOrder
+    workStatus?: SortOrderInput | SortOrder
+    startDate?: SortOrderInput | SortOrder
+    targetDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    workNotes?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseDepartmentCountOrderByAggregateInput
+    _avg?: CaseDepartmentAvgOrderByAggregateInput
+    _max?: CaseDepartmentMaxOrderByAggregateInput
+    _min?: CaseDepartmentMinOrderByAggregateInput
+    _sum?: CaseDepartmentSumOrderByAggregateInput
+  }
+
+  export type CaseDepartmentScalarWhereWithAggregatesInput = {
+    AND?: CaseDepartmentScalarWhereWithAggregatesInput | CaseDepartmentScalarWhereWithAggregatesInput[]
+    OR?: CaseDepartmentScalarWhereWithAggregatesInput[]
+    NOT?: CaseDepartmentScalarWhereWithAggregatesInput | CaseDepartmentScalarWhereWithAggregatesInput[]
+    caseDepartmentId?: StringWithAggregatesFilter<"CaseDepartment"> | string
+    caseId?: StringWithAggregatesFilter<"CaseDepartment"> | string
+    sbuSubId?: IntWithAggregatesFilter<"CaseDepartment"> | number
+    decisionStatus?: StringWithAggregatesFilter<"CaseDepartment"> | string
+    decisionAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
+    decisionBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    assigneeEmployeeId?: IntNullableWithAggregatesFilter<"CaseDepartment"> | number | null
+    assignedAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
+    assignedBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    workStatus?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    startDate?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
+    targetDate?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
+    endDate?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
+    workNotes?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    isActive?: BoolWithAggregatesFilter<"CaseDepartment"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseDepartment"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseDepartment"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseDepartment"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+  }
+
+  export type CaseNotificationOutboxWhereInput = {
+    AND?: CaseNotificationOutboxWhereInput | CaseNotificationOutboxWhereInput[]
+    OR?: CaseNotificationOutboxWhereInput[]
+    NOT?: CaseNotificationOutboxWhereInput | CaseNotificationOutboxWhereInput[]
+    caseNotificationId?: StringFilter<"CaseNotificationOutbox"> | string
+    caseId?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    caseDepartmentId?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    recipientEmployeeId?: IntNullableFilter<"CaseNotificationOutbox"> | number | null
+    channel?: StringFilter<"CaseNotificationOutbox"> | string
+    phoneNumber?: StringFilter<"CaseNotificationOutbox"> | string
+    message?: StringFilter<"CaseNotificationOutbox"> | string
+    status?: StringFilter<"CaseNotificationOutbox"> | string
+    attempts?: IntFilter<"CaseNotificationOutbox"> | number
+    lastError?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    provider?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    meta?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    isActive?: BoolFilter<"CaseNotificationOutbox"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationOutbox"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationOutbox"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationOutbox"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationOutbox"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    case?: XOR<CaseHeaderNullableScalarRelationFilter, CaseHeaderWhereInput> | null
+    department?: XOR<CaseDepartmentNullableScalarRelationFilter, CaseDepartmentWhereInput> | null
+  }
+
+  export type CaseNotificationOutboxOrderByWithRelationInput = {
+    caseNotificationId?: SortOrder
+    caseId?: SortOrderInput | SortOrder
+    caseDepartmentId?: SortOrderInput | SortOrder
+    recipientEmployeeId?: SortOrderInput | SortOrder
+    channel?: SortOrder
+    phoneNumber?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrderInput | SortOrder
+    provider?: SortOrderInput | SortOrder
+    meta?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case?: CaseHeaderOrderByWithRelationInput
+    department?: CaseDepartmentOrderByWithRelationInput
+  }
+
+  export type CaseNotificationOutboxWhereUniqueInput = Prisma.AtLeast<{
+    caseNotificationId?: string
+    AND?: CaseNotificationOutboxWhereInput | CaseNotificationOutboxWhereInput[]
+    OR?: CaseNotificationOutboxWhereInput[]
+    NOT?: CaseNotificationOutboxWhereInput | CaseNotificationOutboxWhereInput[]
+    caseId?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    caseDepartmentId?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    recipientEmployeeId?: IntNullableFilter<"CaseNotificationOutbox"> | number | null
+    channel?: StringFilter<"CaseNotificationOutbox"> | string
+    phoneNumber?: StringFilter<"CaseNotificationOutbox"> | string
+    message?: StringFilter<"CaseNotificationOutbox"> | string
+    status?: StringFilter<"CaseNotificationOutbox"> | string
+    attempts?: IntFilter<"CaseNotificationOutbox"> | number
+    lastError?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    provider?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    meta?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    isActive?: BoolFilter<"CaseNotificationOutbox"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationOutbox"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationOutbox"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationOutbox"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationOutbox"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    case?: XOR<CaseHeaderNullableScalarRelationFilter, CaseHeaderWhereInput> | null
+    department?: XOR<CaseDepartmentNullableScalarRelationFilter, CaseDepartmentWhereInput> | null
+  }, "caseNotificationId">
+
+  export type CaseNotificationOutboxOrderByWithAggregationInput = {
+    caseNotificationId?: SortOrder
+    caseId?: SortOrderInput | SortOrder
+    caseDepartmentId?: SortOrderInput | SortOrder
+    recipientEmployeeId?: SortOrderInput | SortOrder
+    channel?: SortOrder
+    phoneNumber?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrderInput | SortOrder
+    provider?: SortOrderInput | SortOrder
+    meta?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseNotificationOutboxCountOrderByAggregateInput
+    _avg?: CaseNotificationOutboxAvgOrderByAggregateInput
+    _max?: CaseNotificationOutboxMaxOrderByAggregateInput
+    _min?: CaseNotificationOutboxMinOrderByAggregateInput
+    _sum?: CaseNotificationOutboxSumOrderByAggregateInput
+  }
+
+  export type CaseNotificationOutboxScalarWhereWithAggregatesInput = {
+    AND?: CaseNotificationOutboxScalarWhereWithAggregatesInput | CaseNotificationOutboxScalarWhereWithAggregatesInput[]
+    OR?: CaseNotificationOutboxScalarWhereWithAggregatesInput[]
+    NOT?: CaseNotificationOutboxScalarWhereWithAggregatesInput | CaseNotificationOutboxScalarWhereWithAggregatesInput[]
+    caseNotificationId?: StringWithAggregatesFilter<"CaseNotificationOutbox"> | string
+    caseId?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    caseDepartmentId?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    recipientEmployeeId?: IntNullableWithAggregatesFilter<"CaseNotificationOutbox"> | number | null
+    channel?: StringWithAggregatesFilter<"CaseNotificationOutbox"> | string
+    phoneNumber?: StringWithAggregatesFilter<"CaseNotificationOutbox"> | string
+    message?: StringWithAggregatesFilter<"CaseNotificationOutbox"> | string
+    status?: StringWithAggregatesFilter<"CaseNotificationOutbox"> | string
+    attempts?: IntWithAggregatesFilter<"CaseNotificationOutbox"> | number
+    lastError?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    provider?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    meta?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    isActive?: BoolWithAggregatesFilter<"CaseNotificationOutbox"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseNotificationOutbox"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseNotificationOutbox"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseNotificationOutbox"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseNotificationOutbox"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseNotificationOutbox"> | string | null
+  }
+
+  export type CaseNotificationMessageWhereInput = {
+    AND?: CaseNotificationMessageWhereInput | CaseNotificationMessageWhereInput[]
+    OR?: CaseNotificationMessageWhereInput[]
+    NOT?: CaseNotificationMessageWhereInput | CaseNotificationMessageWhereInput[]
+    caseNotificationMessageId?: StringFilter<"CaseNotificationMessage"> | string
+    caseId?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    caseDepartmentId?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    recipientEmployeeId?: IntNullableFilter<"CaseNotificationMessage"> | number | null
+    role?: StringFilter<"CaseNotificationMessage"> | string
+    messageTemplate?: StringFilter<"CaseNotificationMessage"> | string
+    isActive?: BoolFilter<"CaseNotificationMessage"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationMessage"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationMessage"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationMessage"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationMessage"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    case?: XOR<CaseHeaderNullableScalarRelationFilter, CaseHeaderWhereInput> | null
+    department?: XOR<CaseDepartmentNullableScalarRelationFilter, CaseDepartmentWhereInput> | null
+  }
+
+  export type CaseNotificationMessageOrderByWithRelationInput = {
+    caseNotificationMessageId?: SortOrder
+    caseId?: SortOrderInput | SortOrder
+    caseDepartmentId?: SortOrderInput | SortOrder
+    recipientEmployeeId?: SortOrderInput | SortOrder
+    role?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case?: CaseHeaderOrderByWithRelationInput
+    department?: CaseDepartmentOrderByWithRelationInput
+  }
+
+  export type CaseNotificationMessageWhereUniqueInput = Prisma.AtLeast<{
+    caseNotificationMessageId?: string
+    AND?: CaseNotificationMessageWhereInput | CaseNotificationMessageWhereInput[]
+    OR?: CaseNotificationMessageWhereInput[]
+    NOT?: CaseNotificationMessageWhereInput | CaseNotificationMessageWhereInput[]
+    caseId?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    caseDepartmentId?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    recipientEmployeeId?: IntNullableFilter<"CaseNotificationMessage"> | number | null
+    role?: StringFilter<"CaseNotificationMessage"> | string
+    messageTemplate?: StringFilter<"CaseNotificationMessage"> | string
+    isActive?: BoolFilter<"CaseNotificationMessage"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationMessage"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationMessage"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationMessage"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationMessage"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    case?: XOR<CaseHeaderNullableScalarRelationFilter, CaseHeaderWhereInput> | null
+    department?: XOR<CaseDepartmentNullableScalarRelationFilter, CaseDepartmentWhereInput> | null
+  }, "caseNotificationMessageId">
+
+  export type CaseNotificationMessageOrderByWithAggregationInput = {
+    caseNotificationMessageId?: SortOrder
+    caseId?: SortOrderInput | SortOrder
+    caseDepartmentId?: SortOrderInput | SortOrder
+    recipientEmployeeId?: SortOrderInput | SortOrder
+    role?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseNotificationMessageCountOrderByAggregateInput
+    _avg?: CaseNotificationMessageAvgOrderByAggregateInput
+    _max?: CaseNotificationMessageMaxOrderByAggregateInput
+    _min?: CaseNotificationMessageMinOrderByAggregateInput
+    _sum?: CaseNotificationMessageSumOrderByAggregateInput
+  }
+
+  export type CaseNotificationMessageScalarWhereWithAggregatesInput = {
+    AND?: CaseNotificationMessageScalarWhereWithAggregatesInput | CaseNotificationMessageScalarWhereWithAggregatesInput[]
+    OR?: CaseNotificationMessageScalarWhereWithAggregatesInput[]
+    NOT?: CaseNotificationMessageScalarWhereWithAggregatesInput | CaseNotificationMessageScalarWhereWithAggregatesInput[]
+    caseNotificationMessageId?: StringWithAggregatesFilter<"CaseNotificationMessage"> | string
+    caseId?: StringNullableWithAggregatesFilter<"CaseNotificationMessage"> | string | null
+    caseDepartmentId?: StringNullableWithAggregatesFilter<"CaseNotificationMessage"> | string | null
+    recipientEmployeeId?: IntNullableWithAggregatesFilter<"CaseNotificationMessage"> | number | null
+    role?: StringWithAggregatesFilter<"CaseNotificationMessage"> | string
+    messageTemplate?: StringWithAggregatesFilter<"CaseNotificationMessage"> | string
+    isActive?: BoolWithAggregatesFilter<"CaseNotificationMessage"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseNotificationMessage"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseNotificationMessage"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseNotificationMessage"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseNotificationMessage"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseNotificationMessage"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseNotificationMessage"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseNotificationMessage"> | string | null
+  }
+
+  export type CaseNotificationTemplateWhereInput = {
+    AND?: CaseNotificationTemplateWhereInput | CaseNotificationTemplateWhereInput[]
+    OR?: CaseNotificationTemplateWhereInput[]
+    NOT?: CaseNotificationTemplateWhereInput | CaseNotificationTemplateWhereInput[]
+    caseNotificationTemplateId?: StringFilter<"CaseNotificationTemplate"> | string
+    templateName?: StringFilter<"CaseNotificationTemplate"> | string
+    channel?: StringFilter<"CaseNotificationTemplate"> | string
+    role?: StringFilter<"CaseNotificationTemplate"> | string
+    action?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    caseType?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    messageTemplate?: StringFilter<"CaseNotificationTemplate"> | string
+    isActive?: BoolFilter<"CaseNotificationTemplate"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationTemplate"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationTemplate"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationTemplate"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationTemplate"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+  }
+
+  export type CaseNotificationTemplateOrderByWithRelationInput = {
+    caseNotificationTemplateId?: SortOrder
+    templateName?: SortOrder
+    channel?: SortOrder
+    role?: SortOrder
+    action?: SortOrderInput | SortOrder
+    caseType?: SortOrderInput | SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+  }
+
+  export type CaseNotificationTemplateWhereUniqueInput = Prisma.AtLeast<{
+    caseNotificationTemplateId?: string
+    AND?: CaseNotificationTemplateWhereInput | CaseNotificationTemplateWhereInput[]
+    OR?: CaseNotificationTemplateWhereInput[]
+    NOT?: CaseNotificationTemplateWhereInput | CaseNotificationTemplateWhereInput[]
+    templateName?: StringFilter<"CaseNotificationTemplate"> | string
+    channel?: StringFilter<"CaseNotificationTemplate"> | string
+    role?: StringFilter<"CaseNotificationTemplate"> | string
+    action?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    caseType?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    messageTemplate?: StringFilter<"CaseNotificationTemplate"> | string
+    isActive?: BoolFilter<"CaseNotificationTemplate"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationTemplate"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationTemplate"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationTemplate"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationTemplate"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationTemplate"> | string | null
+  }, "caseNotificationTemplateId">
+
+  export type CaseNotificationTemplateOrderByWithAggregationInput = {
+    caseNotificationTemplateId?: SortOrder
+    templateName?: SortOrder
+    channel?: SortOrder
+    role?: SortOrder
+    action?: SortOrderInput | SortOrder
+    caseType?: SortOrderInput | SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseNotificationTemplateCountOrderByAggregateInput
+    _max?: CaseNotificationTemplateMaxOrderByAggregateInput
+    _min?: CaseNotificationTemplateMinOrderByAggregateInput
+  }
+
+  export type CaseNotificationTemplateScalarWhereWithAggregatesInput = {
+    AND?: CaseNotificationTemplateScalarWhereWithAggregatesInput | CaseNotificationTemplateScalarWhereWithAggregatesInput[]
+    OR?: CaseNotificationTemplateScalarWhereWithAggregatesInput[]
+    NOT?: CaseNotificationTemplateScalarWhereWithAggregatesInput | CaseNotificationTemplateScalarWhereWithAggregatesInput[]
+    caseNotificationTemplateId?: StringWithAggregatesFilter<"CaseNotificationTemplate"> | string
+    templateName?: StringWithAggregatesFilter<"CaseNotificationTemplate"> | string
+    channel?: StringWithAggregatesFilter<"CaseNotificationTemplate"> | string
+    role?: StringWithAggregatesFilter<"CaseNotificationTemplate"> | string
+    action?: StringNullableWithAggregatesFilter<"CaseNotificationTemplate"> | string | null
+    caseType?: StringNullableWithAggregatesFilter<"CaseNotificationTemplate"> | string | null
+    messageTemplate?: StringWithAggregatesFilter<"CaseNotificationTemplate"> | string
+    isActive?: BoolWithAggregatesFilter<"CaseNotificationTemplate"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseNotificationTemplate"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseNotificationTemplate"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseNotificationTemplate"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseNotificationTemplate"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseNotificationTemplate"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseNotificationTemplate"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseNotificationTemplate"> | string | null
+  }
+
+  export type CaseAttachmentWhereInput = {
+    AND?: CaseAttachmentWhereInput | CaseAttachmentWhereInput[]
+    OR?: CaseAttachmentWhereInput[]
+    NOT?: CaseAttachmentWhereInput | CaseAttachmentWhereInput[]
+    caseAttachmentId?: StringFilter<"CaseAttachment"> | string
+    caseId?: StringFilter<"CaseAttachment"> | string
+    mediaType?: StringFilter<"CaseAttachment"> | string
+    filePath?: StringFilter<"CaseAttachment"> | string
+    fileName?: StringFilter<"CaseAttachment"> | string
+    fileMime?: StringNullableFilter<"CaseAttachment"> | string | null
+    fileSize?: IntNullableFilter<"CaseAttachment"> | number | null
+    caption?: StringNullableFilter<"CaseAttachment"> | string | null
+    locationDesc?: StringNullableFilter<"CaseAttachment"> | string | null
+    orderIndex?: IntFilter<"CaseAttachment"> | number
+    isActive?: BoolFilter<"CaseAttachment"> | boolean
+    createdAt?: DateTimeFilter<"CaseAttachment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseAttachment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    isDeleted?: BoolFilter<"CaseAttachment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseAttachment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+  }
+
+  export type CaseAttachmentOrderByWithRelationInput = {
+    caseAttachmentId?: SortOrder
+    caseId?: SortOrder
+    mediaType?: SortOrder
+    filePath?: SortOrder
+    fileName?: SortOrder
+    fileMime?: SortOrderInput | SortOrder
+    fileSize?: SortOrderInput | SortOrder
+    caption?: SortOrderInput | SortOrder
+    locationDesc?: SortOrderInput | SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case?: CaseHeaderOrderByWithRelationInput
+  }
+
+  export type CaseAttachmentWhereUniqueInput = Prisma.AtLeast<{
+    caseAttachmentId?: string
+    AND?: CaseAttachmentWhereInput | CaseAttachmentWhereInput[]
+    OR?: CaseAttachmentWhereInput[]
+    NOT?: CaseAttachmentWhereInput | CaseAttachmentWhereInput[]
+    caseId?: StringFilter<"CaseAttachment"> | string
+    mediaType?: StringFilter<"CaseAttachment"> | string
+    filePath?: StringFilter<"CaseAttachment"> | string
+    fileName?: StringFilter<"CaseAttachment"> | string
+    fileMime?: StringNullableFilter<"CaseAttachment"> | string | null
+    fileSize?: IntNullableFilter<"CaseAttachment"> | number | null
+    caption?: StringNullableFilter<"CaseAttachment"> | string | null
+    locationDesc?: StringNullableFilter<"CaseAttachment"> | string | null
+    orderIndex?: IntFilter<"CaseAttachment"> | number
+    isActive?: BoolFilter<"CaseAttachment"> | boolean
+    createdAt?: DateTimeFilter<"CaseAttachment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseAttachment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    isDeleted?: BoolFilter<"CaseAttachment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseAttachment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+  }, "caseAttachmentId">
+
+  export type CaseAttachmentOrderByWithAggregationInput = {
+    caseAttachmentId?: SortOrder
+    caseId?: SortOrder
+    mediaType?: SortOrder
+    filePath?: SortOrder
+    fileName?: SortOrder
+    fileMime?: SortOrderInput | SortOrder
+    fileSize?: SortOrderInput | SortOrder
+    caption?: SortOrderInput | SortOrder
+    locationDesc?: SortOrderInput | SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseAttachmentCountOrderByAggregateInput
+    _avg?: CaseAttachmentAvgOrderByAggregateInput
+    _max?: CaseAttachmentMaxOrderByAggregateInput
+    _min?: CaseAttachmentMinOrderByAggregateInput
+    _sum?: CaseAttachmentSumOrderByAggregateInput
+  }
+
+  export type CaseAttachmentScalarWhereWithAggregatesInput = {
+    AND?: CaseAttachmentScalarWhereWithAggregatesInput | CaseAttachmentScalarWhereWithAggregatesInput[]
+    OR?: CaseAttachmentScalarWhereWithAggregatesInput[]
+    NOT?: CaseAttachmentScalarWhereWithAggregatesInput | CaseAttachmentScalarWhereWithAggregatesInput[]
+    caseAttachmentId?: StringWithAggregatesFilter<"CaseAttachment"> | string
+    caseId?: StringWithAggregatesFilter<"CaseAttachment"> | string
+    mediaType?: StringWithAggregatesFilter<"CaseAttachment"> | string
+    filePath?: StringWithAggregatesFilter<"CaseAttachment"> | string
+    fileName?: StringWithAggregatesFilter<"CaseAttachment"> | string
+    fileMime?: StringNullableWithAggregatesFilter<"CaseAttachment"> | string | null
+    fileSize?: IntNullableWithAggregatesFilter<"CaseAttachment"> | number | null
+    caption?: StringNullableWithAggregatesFilter<"CaseAttachment"> | string | null
+    locationDesc?: StringNullableWithAggregatesFilter<"CaseAttachment"> | string | null
+    orderIndex?: IntWithAggregatesFilter<"CaseAttachment"> | number
+    isActive?: BoolWithAggregatesFilter<"CaseAttachment"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseAttachment"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseAttachment"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseAttachment"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseAttachment"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseAttachment"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseAttachment"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseAttachment"> | string | null
+  }
+
   export type MasterFishboneWhereInput = {
     AND?: MasterFishboneWhereInput | MasterFishboneWhereInput[]
     OR?: MasterFishboneWhereInput[]
@@ -20873,6 +34025,395 @@ export namespace Prisma {
     deletedBy?: StringNullableWithAggregatesFilter<"MasterFishbone"> | string | null
   }
 
+  export type CaseFishboneMasterWhereInput = {
+    AND?: CaseFishboneMasterWhereInput | CaseFishboneMasterWhereInput[]
+    OR?: CaseFishboneMasterWhereInput[]
+    NOT?: CaseFishboneMasterWhereInput | CaseFishboneMasterWhereInput[]
+    caseFishboneId?: StringFilter<"CaseFishboneMaster"> | string
+    caseId?: StringFilter<"CaseFishboneMaster"> | string
+    sbuSubId?: IntFilter<"CaseFishboneMaster"> | number
+    fishboneName?: StringFilter<"CaseFishboneMaster"> | string
+    fishboneDesc?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    isActive?: BoolFilter<"CaseFishboneMaster"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneMaster"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneMaster"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneMaster"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneMaster"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    case_header?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+    causes?: CaseFishboneCauseListRelationFilter
+    items?: CaseFishboneItemListRelationFilter
+  }
+
+  export type CaseFishboneMasterOrderByWithRelationInput = {
+    caseFishboneId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case_header?: CaseHeaderOrderByWithRelationInput
+    causes?: CaseFishboneCauseOrderByRelationAggregateInput
+    items?: CaseFishboneItemOrderByRelationAggregateInput
+  }
+
+  export type CaseFishboneMasterWhereUniqueInput = Prisma.AtLeast<{
+    caseFishboneId?: string
+    AND?: CaseFishboneMasterWhereInput | CaseFishboneMasterWhereInput[]
+    OR?: CaseFishboneMasterWhereInput[]
+    NOT?: CaseFishboneMasterWhereInput | CaseFishboneMasterWhereInput[]
+    caseId?: StringFilter<"CaseFishboneMaster"> | string
+    sbuSubId?: IntFilter<"CaseFishboneMaster"> | number
+    fishboneName?: StringFilter<"CaseFishboneMaster"> | string
+    fishboneDesc?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    isActive?: BoolFilter<"CaseFishboneMaster"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneMaster"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneMaster"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneMaster"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneMaster"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    case_header?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+    causes?: CaseFishboneCauseListRelationFilter
+    items?: CaseFishboneItemListRelationFilter
+  }, "caseFishboneId">
+
+  export type CaseFishboneMasterOrderByWithAggregationInput = {
+    caseFishboneId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseFishboneMasterCountOrderByAggregateInput
+    _avg?: CaseFishboneMasterAvgOrderByAggregateInput
+    _max?: CaseFishboneMasterMaxOrderByAggregateInput
+    _min?: CaseFishboneMasterMinOrderByAggregateInput
+    _sum?: CaseFishboneMasterSumOrderByAggregateInput
+  }
+
+  export type CaseFishboneMasterScalarWhereWithAggregatesInput = {
+    AND?: CaseFishboneMasterScalarWhereWithAggregatesInput | CaseFishboneMasterScalarWhereWithAggregatesInput[]
+    OR?: CaseFishboneMasterScalarWhereWithAggregatesInput[]
+    NOT?: CaseFishboneMasterScalarWhereWithAggregatesInput | CaseFishboneMasterScalarWhereWithAggregatesInput[]
+    caseFishboneId?: StringWithAggregatesFilter<"CaseFishboneMaster"> | string
+    caseId?: StringWithAggregatesFilter<"CaseFishboneMaster"> | string
+    sbuSubId?: IntWithAggregatesFilter<"CaseFishboneMaster"> | number
+    fishboneName?: StringWithAggregatesFilter<"CaseFishboneMaster"> | string
+    fishboneDesc?: StringNullableWithAggregatesFilter<"CaseFishboneMaster"> | string | null
+    isActive?: BoolWithAggregatesFilter<"CaseFishboneMaster"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseFishboneMaster"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseFishboneMaster"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseFishboneMaster"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseFishboneMaster"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseFishboneMaster"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseFishboneMaster"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseFishboneMaster"> | string | null
+  }
+
+  export type CaseFishboneCauseWhereInput = {
+    AND?: CaseFishboneCauseWhereInput | CaseFishboneCauseWhereInput[]
+    OR?: CaseFishboneCauseWhereInput[]
+    NOT?: CaseFishboneCauseWhereInput | CaseFishboneCauseWhereInput[]
+    caseFishboneCauseId?: StringFilter<"CaseFishboneCause"> | string
+    caseFishboneId?: StringFilter<"CaseFishboneCause"> | string
+    causeNo?: IntFilter<"CaseFishboneCause"> | number
+    causeText?: StringFilter<"CaseFishboneCause"> | string
+    isActive?: BoolFilter<"CaseFishboneCause"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneCause"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneCause"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    case_fishbone?: XOR<CaseFishboneMasterScalarRelationFilter, CaseFishboneMasterWhereInput>
+    itemLinks?: CaseFishboneItemCauseListRelationFilter
+  }
+
+  export type CaseFishboneCauseOrderByWithRelationInput = {
+    caseFishboneCauseId?: SortOrder
+    caseFishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case_fishbone?: CaseFishboneMasterOrderByWithRelationInput
+    itemLinks?: CaseFishboneItemCauseOrderByRelationAggregateInput
+  }
+
+  export type CaseFishboneCauseWhereUniqueInput = Prisma.AtLeast<{
+    caseFishboneCauseId?: string
+    caseFishboneId_causeNo?: CaseFishboneCauseCaseFishboneIdCauseNoCompoundUniqueInput
+    AND?: CaseFishboneCauseWhereInput | CaseFishboneCauseWhereInput[]
+    OR?: CaseFishboneCauseWhereInput[]
+    NOT?: CaseFishboneCauseWhereInput | CaseFishboneCauseWhereInput[]
+    caseFishboneId?: StringFilter<"CaseFishboneCause"> | string
+    causeNo?: IntFilter<"CaseFishboneCause"> | number
+    causeText?: StringFilter<"CaseFishboneCause"> | string
+    isActive?: BoolFilter<"CaseFishboneCause"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneCause"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneCause"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    case_fishbone?: XOR<CaseFishboneMasterScalarRelationFilter, CaseFishboneMasterWhereInput>
+    itemLinks?: CaseFishboneItemCauseListRelationFilter
+  }, "caseFishboneCauseId" | "caseFishboneId_causeNo">
+
+  export type CaseFishboneCauseOrderByWithAggregationInput = {
+    caseFishboneCauseId?: SortOrder
+    caseFishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseFishboneCauseCountOrderByAggregateInput
+    _avg?: CaseFishboneCauseAvgOrderByAggregateInput
+    _max?: CaseFishboneCauseMaxOrderByAggregateInput
+    _min?: CaseFishboneCauseMinOrderByAggregateInput
+    _sum?: CaseFishboneCauseSumOrderByAggregateInput
+  }
+
+  export type CaseFishboneCauseScalarWhereWithAggregatesInput = {
+    AND?: CaseFishboneCauseScalarWhereWithAggregatesInput | CaseFishboneCauseScalarWhereWithAggregatesInput[]
+    OR?: CaseFishboneCauseScalarWhereWithAggregatesInput[]
+    NOT?: CaseFishboneCauseScalarWhereWithAggregatesInput | CaseFishboneCauseScalarWhereWithAggregatesInput[]
+    caseFishboneCauseId?: StringWithAggregatesFilter<"CaseFishboneCause"> | string
+    caseFishboneId?: StringWithAggregatesFilter<"CaseFishboneCause"> | string
+    causeNo?: IntWithAggregatesFilter<"CaseFishboneCause"> | number
+    causeText?: StringWithAggregatesFilter<"CaseFishboneCause"> | string
+    isActive?: BoolWithAggregatesFilter<"CaseFishboneCause"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseFishboneCause"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseFishboneCause"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseFishboneCause"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseFishboneCause"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseFishboneCause"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseFishboneCause"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseFishboneCause"> | string | null
+  }
+
+  export type CaseFishboneItemWhereInput = {
+    AND?: CaseFishboneItemWhereInput | CaseFishboneItemWhereInput[]
+    OR?: CaseFishboneItemWhereInput[]
+    NOT?: CaseFishboneItemWhereInput | CaseFishboneItemWhereInput[]
+    caseFishboneItemId?: StringFilter<"CaseFishboneItem"> | string
+    caseFishboneId?: StringFilter<"CaseFishboneItem"> | string
+    categoryCode?: StringFilter<"CaseFishboneItem"> | string
+    problemText?: StringFilter<"CaseFishboneItem"> | string
+    solutionText?: StringFilter<"CaseFishboneItem"> | string
+    isActive?: BoolFilter<"CaseFishboneItem"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneItem"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneItem"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    case_fishbone?: XOR<CaseFishboneMasterScalarRelationFilter, CaseFishboneMasterWhereInput>
+    category?: XOR<FishboneCategoryScalarRelationFilter, FishboneCategoryWhereInput>
+    causeLinks?: CaseFishboneItemCauseListRelationFilter
+  }
+
+  export type CaseFishboneItemOrderByWithRelationInput = {
+    caseFishboneItemId?: SortOrder
+    caseFishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case_fishbone?: CaseFishboneMasterOrderByWithRelationInput
+    category?: FishboneCategoryOrderByWithRelationInput
+    causeLinks?: CaseFishboneItemCauseOrderByRelationAggregateInput
+  }
+
+  export type CaseFishboneItemWhereUniqueInput = Prisma.AtLeast<{
+    caseFishboneItemId?: string
+    AND?: CaseFishboneItemWhereInput | CaseFishboneItemWhereInput[]
+    OR?: CaseFishboneItemWhereInput[]
+    NOT?: CaseFishboneItemWhereInput | CaseFishboneItemWhereInput[]
+    caseFishboneId?: StringFilter<"CaseFishboneItem"> | string
+    categoryCode?: StringFilter<"CaseFishboneItem"> | string
+    problemText?: StringFilter<"CaseFishboneItem"> | string
+    solutionText?: StringFilter<"CaseFishboneItem"> | string
+    isActive?: BoolFilter<"CaseFishboneItem"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneItem"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneItem"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    case_fishbone?: XOR<CaseFishboneMasterScalarRelationFilter, CaseFishboneMasterWhereInput>
+    category?: XOR<FishboneCategoryScalarRelationFilter, FishboneCategoryWhereInput>
+    causeLinks?: CaseFishboneItemCauseListRelationFilter
+  }, "caseFishboneItemId">
+
+  export type CaseFishboneItemOrderByWithAggregationInput = {
+    caseFishboneItemId?: SortOrder
+    caseFishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseFishboneItemCountOrderByAggregateInput
+    _max?: CaseFishboneItemMaxOrderByAggregateInput
+    _min?: CaseFishboneItemMinOrderByAggregateInput
+  }
+
+  export type CaseFishboneItemScalarWhereWithAggregatesInput = {
+    AND?: CaseFishboneItemScalarWhereWithAggregatesInput | CaseFishboneItemScalarWhereWithAggregatesInput[]
+    OR?: CaseFishboneItemScalarWhereWithAggregatesInput[]
+    NOT?: CaseFishboneItemScalarWhereWithAggregatesInput | CaseFishboneItemScalarWhereWithAggregatesInput[]
+    caseFishboneItemId?: StringWithAggregatesFilter<"CaseFishboneItem"> | string
+    caseFishboneId?: StringWithAggregatesFilter<"CaseFishboneItem"> | string
+    categoryCode?: StringWithAggregatesFilter<"CaseFishboneItem"> | string
+    problemText?: StringWithAggregatesFilter<"CaseFishboneItem"> | string
+    solutionText?: StringWithAggregatesFilter<"CaseFishboneItem"> | string
+    isActive?: BoolWithAggregatesFilter<"CaseFishboneItem"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseFishboneItem"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseFishboneItem"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseFishboneItem"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseFishboneItem"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseFishboneItem"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseFishboneItem"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseFishboneItem"> | string | null
+  }
+
+  export type CaseFishboneItemCauseWhereInput = {
+    AND?: CaseFishboneItemCauseWhereInput | CaseFishboneItemCauseWhereInput[]
+    OR?: CaseFishboneItemCauseWhereInput[]
+    NOT?: CaseFishboneItemCauseWhereInput | CaseFishboneItemCauseWhereInput[]
+    caseFishboneItemCauseId?: StringFilter<"CaseFishboneItemCause"> | string
+    caseFishboneItemId?: StringFilter<"CaseFishboneItemCause"> | string
+    caseFishboneCauseId?: StringFilter<"CaseFishboneItemCause"> | string
+    isActive?: BoolFilter<"CaseFishboneItemCause"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneItemCause"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneItemCause"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    item?: XOR<CaseFishboneItemScalarRelationFilter, CaseFishboneItemWhereInput>
+    cause?: XOR<CaseFishboneCauseScalarRelationFilter, CaseFishboneCauseWhereInput>
+  }
+
+  export type CaseFishboneItemCauseOrderByWithRelationInput = {
+    caseFishboneItemCauseId?: SortOrder
+    caseFishboneItemId?: SortOrder
+    caseFishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    item?: CaseFishboneItemOrderByWithRelationInput
+    cause?: CaseFishboneCauseOrderByWithRelationInput
+  }
+
+  export type CaseFishboneItemCauseWhereUniqueInput = Prisma.AtLeast<{
+    caseFishboneItemCauseId?: string
+    caseFishboneItemId_caseFishboneCauseId?: CaseFishboneItemCauseCaseFishboneItemIdCaseFishboneCauseIdCompoundUniqueInput
+    AND?: CaseFishboneItemCauseWhereInput | CaseFishboneItemCauseWhereInput[]
+    OR?: CaseFishboneItemCauseWhereInput[]
+    NOT?: CaseFishboneItemCauseWhereInput | CaseFishboneItemCauseWhereInput[]
+    caseFishboneItemId?: StringFilter<"CaseFishboneItemCause"> | string
+    caseFishboneCauseId?: StringFilter<"CaseFishboneItemCause"> | string
+    isActive?: BoolFilter<"CaseFishboneItemCause"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneItemCause"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneItemCause"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    item?: XOR<CaseFishboneItemScalarRelationFilter, CaseFishboneItemWhereInput>
+    cause?: XOR<CaseFishboneCauseScalarRelationFilter, CaseFishboneCauseWhereInput>
+  }, "caseFishboneItemCauseId" | "caseFishboneItemId_caseFishboneCauseId">
+
+  export type CaseFishboneItemCauseOrderByWithAggregationInput = {
+    caseFishboneItemCauseId?: SortOrder
+    caseFishboneItemId?: SortOrder
+    caseFishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseFishboneItemCauseCountOrderByAggregateInput
+    _max?: CaseFishboneItemCauseMaxOrderByAggregateInput
+    _min?: CaseFishboneItemCauseMinOrderByAggregateInput
+  }
+
+  export type CaseFishboneItemCauseScalarWhereWithAggregatesInput = {
+    AND?: CaseFishboneItemCauseScalarWhereWithAggregatesInput | CaseFishboneItemCauseScalarWhereWithAggregatesInput[]
+    OR?: CaseFishboneItemCauseScalarWhereWithAggregatesInput[]
+    NOT?: CaseFishboneItemCauseScalarWhereWithAggregatesInput | CaseFishboneItemCauseScalarWhereWithAggregatesInput[]
+    caseFishboneItemCauseId?: StringWithAggregatesFilter<"CaseFishboneItemCause"> | string
+    caseFishboneItemId?: StringWithAggregatesFilter<"CaseFishboneItemCause"> | string
+    caseFishboneCauseId?: StringWithAggregatesFilter<"CaseFishboneItemCause"> | string
+    isActive?: BoolWithAggregatesFilter<"CaseFishboneItemCause"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseFishboneItemCause"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseFishboneItemCause"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseFishboneItemCause"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseFishboneItemCause"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseFishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseFishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseFishboneItemCause"> | string | null
+  }
+
   export type FishboneCategoryWhereInput = {
     AND?: FishboneCategoryWhereInput | FishboneCategoryWhereInput[]
     OR?: FishboneCategoryWhereInput[]
@@ -20890,6 +34431,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"FishboneCategory"> | Date | string | null
     deletedBy?: StringNullableFilter<"FishboneCategory"> | string | null
     items?: FishboneItemListRelationFilter
+    caseFishboneItems?: CaseFishboneItemListRelationFilter
   }
 
   export type FishboneCategoryOrderByWithRelationInput = {
@@ -20906,6 +34448,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     items?: FishboneItemOrderByRelationAggregateInput
+    caseFishboneItems?: CaseFishboneItemOrderByRelationAggregateInput
   }
 
   export type FishboneCategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -20925,6 +34468,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"FishboneCategory"> | Date | string | null
     deletedBy?: StringNullableFilter<"FishboneCategory"> | string | null
     items?: FishboneItemListRelationFilter
+    caseFishboneItems?: CaseFishboneItemListRelationFilter
   }, "fishboneCategoryId" | "categoryCode">
 
   export type FishboneCategoryOrderByWithAggregationInput = {
@@ -22524,6 +36068,924 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type CaseHeaderCreateInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUpdateInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderCreateManyInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseHeaderUpdateManyMutationInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseHeaderUncheckedUpdateManyInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentCreateInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentUncheckedCreateInput = {
+    caseDepartmentId: string
+    caseId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentUpdateInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentUncheckedUpdateInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentCreateManyInput = {
+    caseDepartmentId: string
+    caseId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseDepartmentUpdateManyMutationInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentUncheckedUpdateManyInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxCreateInput = {
+    caseNotificationId: string
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case?: CaseHeaderCreateNestedOneWithoutNotificationsInput
+    department?: CaseDepartmentCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type CaseNotificationOutboxUncheckedCreateInput = {
+    caseNotificationId: string
+    caseId?: string | null
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationOutboxUpdateInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneWithoutNotificationsNestedInput
+    department?: CaseDepartmentUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxCreateManyInput = {
+    caseNotificationId: string
+    caseId?: string | null
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationOutboxUpdateManyMutationInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateManyInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageCreateInput = {
+    caseNotificationMessageId: string
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case?: CaseHeaderCreateNestedOneWithoutCaseNotificationMessagesInput
+    department?: CaseDepartmentCreateNestedOneWithoutCaseNotificationMessagesInput
+  }
+
+  export type CaseNotificationMessageUncheckedCreateInput = {
+    caseNotificationMessageId: string
+    caseId?: string | null
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationMessageUpdateInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneWithoutCaseNotificationMessagesNestedInput
+    department?: CaseDepartmentUpdateOneWithoutCaseNotificationMessagesNestedInput
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageCreateManyInput = {
+    caseNotificationMessageId: string
+    caseId?: string | null
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationMessageUpdateManyMutationInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateManyInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationTemplateCreateInput = {
+    caseNotificationTemplateId: string
+    templateName: string
+    channel: string
+    role: string
+    action?: string | null
+    caseType?: string | null
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationTemplateUncheckedCreateInput = {
+    caseNotificationTemplateId: string
+    templateName: string
+    channel: string
+    role: string
+    action?: string | null
+    caseType?: string | null
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationTemplateUpdateInput = {
+    caseNotificationTemplateId?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    action?: NullableStringFieldUpdateOperationsInput | string | null
+    caseType?: NullableStringFieldUpdateOperationsInput | string | null
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationTemplateUncheckedUpdateInput = {
+    caseNotificationTemplateId?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    action?: NullableStringFieldUpdateOperationsInput | string | null
+    caseType?: NullableStringFieldUpdateOperationsInput | string | null
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationTemplateCreateManyInput = {
+    caseNotificationTemplateId: string
+    templateName: string
+    channel: string
+    role: string
+    action?: string | null
+    caseType?: string | null
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationTemplateUpdateManyMutationInput = {
+    caseNotificationTemplateId?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    action?: NullableStringFieldUpdateOperationsInput | string | null
+    caseType?: NullableStringFieldUpdateOperationsInput | string | null
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationTemplateUncheckedUpdateManyInput = {
+    caseNotificationTemplateId?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    action?: NullableStringFieldUpdateOperationsInput | string | null
+    caseType?: NullableStringFieldUpdateOperationsInput | string | null
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseAttachmentCreateInput = {
+    caseAttachmentId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime?: string | null
+    fileSize?: number | null
+    caption?: string | null
+    locationDesc?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutAttachmentsInput
+  }
+
+  export type CaseAttachmentUncheckedCreateInput = {
+    caseAttachmentId: string
+    caseId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime?: string | null
+    fileSize?: number | null
+    caption?: string | null
+    locationDesc?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseAttachmentUpdateInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutAttachmentsNestedInput
+  }
+
+  export type CaseAttachmentUncheckedUpdateInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseAttachmentCreateManyInput = {
+    caseAttachmentId: string
+    caseId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime?: string | null
+    fileSize?: number | null
+    caption?: string | null
+    locationDesc?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseAttachmentUpdateManyMutationInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseAttachmentUncheckedUpdateManyInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type MasterFishboneCreateInput = {
     fishboneId: string
     sbuSubId: number
@@ -22637,6 +37099,443 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type CaseFishboneMasterCreateInput = {
+    caseFishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_header: CaseHeaderCreateNestedOneWithoutCaseFishbonesInput
+    causes?: CaseFishboneCauseCreateNestedManyWithoutCase_fishboneInput
+    items?: CaseFishboneItemCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterUncheckedCreateInput = {
+    caseFishboneId: string
+    caseId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: CaseFishboneCauseUncheckedCreateNestedManyWithoutCase_fishboneInput
+    items?: CaseFishboneItemUncheckedCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterUpdateInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_header?: CaseHeaderUpdateOneRequiredWithoutCaseFishbonesNestedInput
+    causes?: CaseFishboneCauseUpdateManyWithoutCase_fishboneNestedInput
+    items?: CaseFishboneItemUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: CaseFishboneCauseUncheckedUpdateManyWithoutCase_fishboneNestedInput
+    items?: CaseFishboneItemUncheckedUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneMasterCreateManyInput = {
+    caseFishboneId: string
+    caseId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneMasterUpdateManyMutationInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateManyInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneCauseCreateInput = {
+    caseFishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_fishbone: CaseFishboneMasterCreateNestedOneWithoutCausesInput
+    itemLinks?: CaseFishboneItemCauseCreateNestedManyWithoutCauseInput
+  }
+
+  export type CaseFishboneCauseUncheckedCreateInput = {
+    caseFishboneCauseId: string
+    caseFishboneId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    itemLinks?: CaseFishboneItemCauseUncheckedCreateNestedManyWithoutCauseInput
+  }
+
+  export type CaseFishboneCauseUpdateInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_fishbone?: CaseFishboneMasterUpdateOneRequiredWithoutCausesNestedInput
+    itemLinks?: CaseFishboneItemCauseUpdateManyWithoutCauseNestedInput
+  }
+
+  export type CaseFishboneCauseUncheckedUpdateInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    itemLinks?: CaseFishboneItemCauseUncheckedUpdateManyWithoutCauseNestedInput
+  }
+
+  export type CaseFishboneCauseCreateManyInput = {
+    caseFishboneCauseId: string
+    caseFishboneId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneCauseUpdateManyMutationInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneCauseUncheckedUpdateManyInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCreateInput = {
+    caseFishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_fishbone: CaseFishboneMasterCreateNestedOneWithoutItemsInput
+    category: FishboneCategoryCreateNestedOneWithoutCaseFishboneItemsInput
+    causeLinks?: CaseFishboneItemCauseCreateNestedManyWithoutItemInput
+  }
+
+  export type CaseFishboneItemUncheckedCreateInput = {
+    caseFishboneItemId: string
+    caseFishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causeLinks?: CaseFishboneItemCauseUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type CaseFishboneItemUpdateInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_fishbone?: CaseFishboneMasterUpdateOneRequiredWithoutItemsNestedInput
+    category?: FishboneCategoryUpdateOneRequiredWithoutCaseFishboneItemsNestedInput
+    causeLinks?: CaseFishboneItemCauseUpdateManyWithoutItemNestedInput
+  }
+
+  export type CaseFishboneItemUncheckedUpdateInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causeLinks?: CaseFishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type CaseFishboneItemCreateManyInput = {
+    caseFishboneItemId: string
+    caseFishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemUpdateManyMutationInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemUncheckedUpdateManyInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseCreateInput = {
+    caseFishboneItemCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    item: CaseFishboneItemCreateNestedOneWithoutCauseLinksInput
+    cause: CaseFishboneCauseCreateNestedOneWithoutItemLinksInput
+  }
+
+  export type CaseFishboneItemCauseUncheckedCreateInput = {
+    caseFishboneItemCauseId: string
+    caseFishboneItemId: string
+    caseFishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCauseUpdateInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    item?: CaseFishboneItemUpdateOneRequiredWithoutCauseLinksNestedInput
+    cause?: CaseFishboneCauseUpdateOneRequiredWithoutItemLinksNestedInput
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseCreateManyInput = {
+    caseFishboneItemCauseId: string
+    caseFishboneItemId: string
+    caseFishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCauseUpdateManyMutationInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateManyInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type FishboneCategoryCreateInput = {
     fishboneCategoryId: string
     categoryCode: string
@@ -22651,6 +37550,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     items?: FishboneItemCreateNestedManyWithoutCategoryInput
+    caseFishboneItems?: CaseFishboneItemCreateNestedManyWithoutCategoryInput
   }
 
   export type FishboneCategoryUncheckedCreateInput = {
@@ -22667,6 +37567,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     items?: FishboneItemUncheckedCreateNestedManyWithoutCategoryInput
+    caseFishboneItems?: CaseFishboneItemUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type FishboneCategoryUpdateInput = {
@@ -22683,6 +37584,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     items?: FishboneItemUpdateManyWithoutCategoryNestedInput
+    caseFishboneItems?: CaseFishboneItemUpdateManyWithoutCategoryNestedInput
   }
 
   export type FishboneCategoryUncheckedUpdateInput = {
@@ -22699,6 +37601,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     items?: FishboneItemUncheckedUpdateManyWithoutCategoryNestedInput
+    caseFishboneItems?: CaseFishboneItemUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type FishboneCategoryCreateManyInput = {
@@ -24206,6 +39109,508 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
+  export type CaseDepartmentListRelationFilter = {
+    every?: CaseDepartmentWhereInput
+    some?: CaseDepartmentWhereInput
+    none?: CaseDepartmentWhereInput
+  }
+
+  export type CaseAttachmentListRelationFilter = {
+    every?: CaseAttachmentWhereInput
+    some?: CaseAttachmentWhereInput
+    none?: CaseAttachmentWhereInput
+  }
+
+  export type CaseFishboneMasterListRelationFilter = {
+    every?: CaseFishboneMasterWhereInput
+    some?: CaseFishboneMasterWhereInput
+    none?: CaseFishboneMasterWhereInput
+  }
+
+  export type CaseNotificationOutboxListRelationFilter = {
+    every?: CaseNotificationOutboxWhereInput
+    some?: CaseNotificationOutboxWhereInput
+    none?: CaseNotificationOutboxWhereInput
+  }
+
+  export type CaseNotificationMessageListRelationFilter = {
+    every?: CaseNotificationMessageWhereInput
+    some?: CaseNotificationMessageWhereInput
+    none?: CaseNotificationMessageWhereInput
+  }
+
+  export type CaseDepartmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseAttachmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseFishboneMasterOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseNotificationOutboxOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseNotificationMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseHeaderCountOrderByAggregateInput = {
+    caseId?: SortOrder
+    caseType?: SortOrder
+    caseTitle?: SortOrder
+    background?: SortOrder
+    currentCondition?: SortOrder
+    projectDesc?: SortOrder
+    projectObjective?: SortOrder
+    locationDesc?: SortOrder
+    notes?: SortOrder
+    status?: SortOrder
+    requesterId?: SortOrder
+    requesterEmployeeId?: SortOrder
+    originSbuSubId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseHeaderAvgOrderByAggregateInput = {
+    requesterEmployeeId?: SortOrder
+    originSbuSubId?: SortOrder
+  }
+
+  export type CaseHeaderMaxOrderByAggregateInput = {
+    caseId?: SortOrder
+    caseType?: SortOrder
+    caseTitle?: SortOrder
+    background?: SortOrder
+    currentCondition?: SortOrder
+    projectDesc?: SortOrder
+    projectObjective?: SortOrder
+    locationDesc?: SortOrder
+    notes?: SortOrder
+    status?: SortOrder
+    requesterId?: SortOrder
+    requesterEmployeeId?: SortOrder
+    originSbuSubId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseHeaderMinOrderByAggregateInput = {
+    caseId?: SortOrder
+    caseType?: SortOrder
+    caseTitle?: SortOrder
+    background?: SortOrder
+    currentCondition?: SortOrder
+    projectDesc?: SortOrder
+    projectObjective?: SortOrder
+    locationDesc?: SortOrder
+    notes?: SortOrder
+    status?: SortOrder
+    requesterId?: SortOrder
+    requesterEmployeeId?: SortOrder
+    originSbuSubId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseHeaderSumOrderByAggregateInput = {
+    requesterEmployeeId?: SortOrder
+    originSbuSubId?: SortOrder
+  }
+
+  export type CaseHeaderScalarRelationFilter = {
+    is?: CaseHeaderWhereInput
+    isNot?: CaseHeaderWhereInput
+  }
+
+  export type CaseDepartmentCaseIdSbuSubIdCompoundUniqueInput = {
+    caseId: string
+    sbuSubId: number
+  }
+
+  export type CaseDepartmentCountOrderByAggregateInput = {
+    caseDepartmentId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    decisionStatus?: SortOrder
+    decisionAt?: SortOrder
+    decisionBy?: SortOrder
+    assigneeEmployeeId?: SortOrder
+    assignedAt?: SortOrder
+    assignedBy?: SortOrder
+    workStatus?: SortOrder
+    startDate?: SortOrder
+    targetDate?: SortOrder
+    endDate?: SortOrder
+    workNotes?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseDepartmentAvgOrderByAggregateInput = {
+    sbuSubId?: SortOrder
+    assigneeEmployeeId?: SortOrder
+  }
+
+  export type CaseDepartmentMaxOrderByAggregateInput = {
+    caseDepartmentId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    decisionStatus?: SortOrder
+    decisionAt?: SortOrder
+    decisionBy?: SortOrder
+    assigneeEmployeeId?: SortOrder
+    assignedAt?: SortOrder
+    assignedBy?: SortOrder
+    workStatus?: SortOrder
+    startDate?: SortOrder
+    targetDate?: SortOrder
+    endDate?: SortOrder
+    workNotes?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseDepartmentMinOrderByAggregateInput = {
+    caseDepartmentId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    decisionStatus?: SortOrder
+    decisionAt?: SortOrder
+    decisionBy?: SortOrder
+    assigneeEmployeeId?: SortOrder
+    assignedAt?: SortOrder
+    assignedBy?: SortOrder
+    workStatus?: SortOrder
+    startDate?: SortOrder
+    targetDate?: SortOrder
+    endDate?: SortOrder
+    workNotes?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseDepartmentSumOrderByAggregateInput = {
+    sbuSubId?: SortOrder
+    assigneeEmployeeId?: SortOrder
+  }
+
+  export type CaseHeaderNullableScalarRelationFilter = {
+    is?: CaseHeaderWhereInput | null
+    isNot?: CaseHeaderWhereInput | null
+  }
+
+  export type CaseDepartmentNullableScalarRelationFilter = {
+    is?: CaseDepartmentWhereInput | null
+    isNot?: CaseDepartmentWhereInput | null
+  }
+
+  export type CaseNotificationOutboxCountOrderByAggregateInput = {
+    caseNotificationId?: SortOrder
+    caseId?: SortOrder
+    caseDepartmentId?: SortOrder
+    recipientEmployeeId?: SortOrder
+    channel?: SortOrder
+    phoneNumber?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    provider?: SortOrder
+    meta?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationOutboxAvgOrderByAggregateInput = {
+    recipientEmployeeId?: SortOrder
+    attempts?: SortOrder
+  }
+
+  export type CaseNotificationOutboxMaxOrderByAggregateInput = {
+    caseNotificationId?: SortOrder
+    caseId?: SortOrder
+    caseDepartmentId?: SortOrder
+    recipientEmployeeId?: SortOrder
+    channel?: SortOrder
+    phoneNumber?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    provider?: SortOrder
+    meta?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationOutboxMinOrderByAggregateInput = {
+    caseNotificationId?: SortOrder
+    caseId?: SortOrder
+    caseDepartmentId?: SortOrder
+    recipientEmployeeId?: SortOrder
+    channel?: SortOrder
+    phoneNumber?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    provider?: SortOrder
+    meta?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationOutboxSumOrderByAggregateInput = {
+    recipientEmployeeId?: SortOrder
+    attempts?: SortOrder
+  }
+
+  export type CaseNotificationMessageCountOrderByAggregateInput = {
+    caseNotificationMessageId?: SortOrder
+    caseId?: SortOrder
+    caseDepartmentId?: SortOrder
+    recipientEmployeeId?: SortOrder
+    role?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationMessageAvgOrderByAggregateInput = {
+    recipientEmployeeId?: SortOrder
+  }
+
+  export type CaseNotificationMessageMaxOrderByAggregateInput = {
+    caseNotificationMessageId?: SortOrder
+    caseId?: SortOrder
+    caseDepartmentId?: SortOrder
+    recipientEmployeeId?: SortOrder
+    role?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationMessageMinOrderByAggregateInput = {
+    caseNotificationMessageId?: SortOrder
+    caseId?: SortOrder
+    caseDepartmentId?: SortOrder
+    recipientEmployeeId?: SortOrder
+    role?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationMessageSumOrderByAggregateInput = {
+    recipientEmployeeId?: SortOrder
+  }
+
+  export type CaseNotificationTemplateCountOrderByAggregateInput = {
+    caseNotificationTemplateId?: SortOrder
+    templateName?: SortOrder
+    channel?: SortOrder
+    role?: SortOrder
+    action?: SortOrder
+    caseType?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationTemplateMaxOrderByAggregateInput = {
+    caseNotificationTemplateId?: SortOrder
+    templateName?: SortOrder
+    channel?: SortOrder
+    role?: SortOrder
+    action?: SortOrder
+    caseType?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseNotificationTemplateMinOrderByAggregateInput = {
+    caseNotificationTemplateId?: SortOrder
+    templateName?: SortOrder
+    channel?: SortOrder
+    role?: SortOrder
+    action?: SortOrder
+    caseType?: SortOrder
+    messageTemplate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseAttachmentCountOrderByAggregateInput = {
+    caseAttachmentId?: SortOrder
+    caseId?: SortOrder
+    mediaType?: SortOrder
+    filePath?: SortOrder
+    fileName?: SortOrder
+    fileMime?: SortOrder
+    fileSize?: SortOrder
+    caption?: SortOrder
+    locationDesc?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseAttachmentAvgOrderByAggregateInput = {
+    fileSize?: SortOrder
+    orderIndex?: SortOrder
+  }
+
+  export type CaseAttachmentMaxOrderByAggregateInput = {
+    caseAttachmentId?: SortOrder
+    caseId?: SortOrder
+    mediaType?: SortOrder
+    filePath?: SortOrder
+    fileName?: SortOrder
+    fileMime?: SortOrder
+    fileSize?: SortOrder
+    caption?: SortOrder
+    locationDesc?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseAttachmentMinOrderByAggregateInput = {
+    caseAttachmentId?: SortOrder
+    caseId?: SortOrder
+    mediaType?: SortOrder
+    filePath?: SortOrder
+    fileName?: SortOrder
+    fileMime?: SortOrder
+    fileSize?: SortOrder
+    caption?: SortOrder
+    locationDesc?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseAttachmentSumOrderByAggregateInput = {
+    fileSize?: SortOrder
+    orderIndex?: SortOrder
+  }
+
   export type FishboneCauseListRelationFilter = {
     every?: FishboneCauseWhereInput
     some?: FishboneCauseWhereInput
@@ -24277,6 +39682,265 @@ export namespace Prisma {
 
   export type MasterFishboneSumOrderByAggregateInput = {
     sbuSubId?: SortOrder
+  }
+
+  export type CaseFishboneCauseListRelationFilter = {
+    every?: CaseFishboneCauseWhereInput
+    some?: CaseFishboneCauseWhereInput
+    none?: CaseFishboneCauseWhereInput
+  }
+
+  export type CaseFishboneItemListRelationFilter = {
+    every?: CaseFishboneItemWhereInput
+    some?: CaseFishboneItemWhereInput
+    none?: CaseFishboneItemWhereInput
+  }
+
+  export type CaseFishboneCauseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseFishboneItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseFishboneMasterCountOrderByAggregateInput = {
+    caseFishboneId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneMasterAvgOrderByAggregateInput = {
+    sbuSubId?: SortOrder
+  }
+
+  export type CaseFishboneMasterMaxOrderByAggregateInput = {
+    caseFishboneId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneMasterMinOrderByAggregateInput = {
+    caseFishboneId?: SortOrder
+    caseId?: SortOrder
+    sbuSubId?: SortOrder
+    fishboneName?: SortOrder
+    fishboneDesc?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneMasterSumOrderByAggregateInput = {
+    sbuSubId?: SortOrder
+  }
+
+  export type CaseFishboneMasterScalarRelationFilter = {
+    is?: CaseFishboneMasterWhereInput
+    isNot?: CaseFishboneMasterWhereInput
+  }
+
+  export type CaseFishboneItemCauseListRelationFilter = {
+    every?: CaseFishboneItemCauseWhereInput
+    some?: CaseFishboneItemCauseWhereInput
+    none?: CaseFishboneItemCauseWhereInput
+  }
+
+  export type CaseFishboneItemCauseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseFishboneCauseCaseFishboneIdCauseNoCompoundUniqueInput = {
+    caseFishboneId: string
+    causeNo: number
+  }
+
+  export type CaseFishboneCauseCountOrderByAggregateInput = {
+    caseFishboneCauseId?: SortOrder
+    caseFishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneCauseAvgOrderByAggregateInput = {
+    causeNo?: SortOrder
+  }
+
+  export type CaseFishboneCauseMaxOrderByAggregateInput = {
+    caseFishboneCauseId?: SortOrder
+    caseFishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneCauseMinOrderByAggregateInput = {
+    caseFishboneCauseId?: SortOrder
+    caseFishboneId?: SortOrder
+    causeNo?: SortOrder
+    causeText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneCauseSumOrderByAggregateInput = {
+    causeNo?: SortOrder
+  }
+
+  export type FishboneCategoryScalarRelationFilter = {
+    is?: FishboneCategoryWhereInput
+    isNot?: FishboneCategoryWhereInput
+  }
+
+  export type CaseFishboneItemCountOrderByAggregateInput = {
+    caseFishboneItemId?: SortOrder
+    caseFishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneItemMaxOrderByAggregateInput = {
+    caseFishboneItemId?: SortOrder
+    caseFishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneItemMinOrderByAggregateInput = {
+    caseFishboneItemId?: SortOrder
+    caseFishboneId?: SortOrder
+    categoryCode?: SortOrder
+    problemText?: SortOrder
+    solutionText?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneItemScalarRelationFilter = {
+    is?: CaseFishboneItemWhereInput
+    isNot?: CaseFishboneItemWhereInput
+  }
+
+  export type CaseFishboneCauseScalarRelationFilter = {
+    is?: CaseFishboneCauseWhereInput
+    isNot?: CaseFishboneCauseWhereInput
+  }
+
+  export type CaseFishboneItemCauseCaseFishboneItemIdCaseFishboneCauseIdCompoundUniqueInput = {
+    caseFishboneItemId: string
+    caseFishboneCauseId: string
+  }
+
+  export type CaseFishboneItemCauseCountOrderByAggregateInput = {
+    caseFishboneItemCauseId?: SortOrder
+    caseFishboneItemId?: SortOrder
+    caseFishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneItemCauseMaxOrderByAggregateInput = {
+    caseFishboneItemCauseId?: SortOrder
+    caseFishboneItemId?: SortOrder
+    caseFishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFishboneItemCauseMinOrderByAggregateInput = {
+    caseFishboneItemCauseId?: SortOrder
+    caseFishboneItemId?: SortOrder
+    caseFishboneCauseId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
   }
 
   export type FishboneCategoryCountOrderByAggregateInput = {
@@ -24395,11 +40059,6 @@ export namespace Prisma {
 
   export type FishboneCauseSumOrderByAggregateInput = {
     causeNo?: SortOrder
-  }
-
-  export type FishboneCategoryScalarRelationFilter = {
-    is?: FishboneCategoryWhereInput
-    isNot?: FishboneCategoryWhereInput
   }
 
   export type FishboneItemCountOrderByAggregateInput = {
@@ -25405,6 +41064,392 @@ export namespace Prisma {
     update?: XOR<XOR<MasterIKUpdateToOneWithWhereWithoutSopsInput, MasterIKUpdateWithoutSopsInput>, MasterIKUncheckedUpdateWithoutSopsInput>
   }
 
+  export type CaseDepartmentCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseDepartmentCreateWithoutCaseInput, CaseDepartmentUncheckedCreateWithoutCaseInput> | CaseDepartmentCreateWithoutCaseInput[] | CaseDepartmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutCaseInput | CaseDepartmentCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseDepartmentCreateManyCaseInputEnvelope
+    connect?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+  }
+
+  export type CaseAttachmentCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseAttachmentCreateWithoutCaseInput, CaseAttachmentUncheckedCreateWithoutCaseInput> | CaseAttachmentCreateWithoutCaseInput[] | CaseAttachmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseAttachmentCreateOrConnectWithoutCaseInput | CaseAttachmentCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseAttachmentCreateManyCaseInputEnvelope
+    connect?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+  }
+
+  export type CaseFishboneMasterCreateNestedManyWithoutCase_headerInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutCase_headerInput, CaseFishboneMasterUncheckedCreateWithoutCase_headerInput> | CaseFishboneMasterCreateWithoutCase_headerInput[] | CaseFishboneMasterUncheckedCreateWithoutCase_headerInput[]
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCase_headerInput | CaseFishboneMasterCreateOrConnectWithoutCase_headerInput[]
+    createMany?: CaseFishboneMasterCreateManyCase_headerInputEnvelope
+    connect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+  }
+
+  export type CaseNotificationOutboxCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput> | CaseNotificationOutboxCreateWithoutCaseInput[] | CaseNotificationOutboxUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutCaseInput | CaseNotificationOutboxCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseNotificationOutboxCreateManyCaseInputEnvelope
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+  }
+
+  export type CaseNotificationMessageCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutCaseInput, CaseNotificationMessageUncheckedCreateWithoutCaseInput> | CaseNotificationMessageCreateWithoutCaseInput[] | CaseNotificationMessageUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutCaseInput | CaseNotificationMessageCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseNotificationMessageCreateManyCaseInputEnvelope
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+  }
+
+  export type CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseDepartmentCreateWithoutCaseInput, CaseDepartmentUncheckedCreateWithoutCaseInput> | CaseDepartmentCreateWithoutCaseInput[] | CaseDepartmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutCaseInput | CaseDepartmentCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseDepartmentCreateManyCaseInputEnvelope
+    connect?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+  }
+
+  export type CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseAttachmentCreateWithoutCaseInput, CaseAttachmentUncheckedCreateWithoutCaseInput> | CaseAttachmentCreateWithoutCaseInput[] | CaseAttachmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseAttachmentCreateOrConnectWithoutCaseInput | CaseAttachmentCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseAttachmentCreateManyCaseInputEnvelope
+    connect?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+  }
+
+  export type CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutCase_headerInput, CaseFishboneMasterUncheckedCreateWithoutCase_headerInput> | CaseFishboneMasterCreateWithoutCase_headerInput[] | CaseFishboneMasterUncheckedCreateWithoutCase_headerInput[]
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCase_headerInput | CaseFishboneMasterCreateOrConnectWithoutCase_headerInput[]
+    createMany?: CaseFishboneMasterCreateManyCase_headerInputEnvelope
+    connect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+  }
+
+  export type CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput> | CaseNotificationOutboxCreateWithoutCaseInput[] | CaseNotificationOutboxUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutCaseInput | CaseNotificationOutboxCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseNotificationOutboxCreateManyCaseInputEnvelope
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+  }
+
+  export type CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutCaseInput, CaseNotificationMessageUncheckedCreateWithoutCaseInput> | CaseNotificationMessageCreateWithoutCaseInput[] | CaseNotificationMessageUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutCaseInput | CaseNotificationMessageCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseNotificationMessageCreateManyCaseInputEnvelope
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+  }
+
+  export type CaseDepartmentUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseDepartmentCreateWithoutCaseInput, CaseDepartmentUncheckedCreateWithoutCaseInput> | CaseDepartmentCreateWithoutCaseInput[] | CaseDepartmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutCaseInput | CaseDepartmentCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseDepartmentUpsertWithWhereUniqueWithoutCaseInput | CaseDepartmentUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseDepartmentCreateManyCaseInputEnvelope
+    set?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    disconnect?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    delete?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    connect?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    update?: CaseDepartmentUpdateWithWhereUniqueWithoutCaseInput | CaseDepartmentUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseDepartmentUpdateManyWithWhereWithoutCaseInput | CaseDepartmentUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseDepartmentScalarWhereInput | CaseDepartmentScalarWhereInput[]
+  }
+
+  export type CaseAttachmentUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseAttachmentCreateWithoutCaseInput, CaseAttachmentUncheckedCreateWithoutCaseInput> | CaseAttachmentCreateWithoutCaseInput[] | CaseAttachmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseAttachmentCreateOrConnectWithoutCaseInput | CaseAttachmentCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseAttachmentUpsertWithWhereUniqueWithoutCaseInput | CaseAttachmentUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseAttachmentCreateManyCaseInputEnvelope
+    set?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    disconnect?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    delete?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    connect?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    update?: CaseAttachmentUpdateWithWhereUniqueWithoutCaseInput | CaseAttachmentUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseAttachmentUpdateManyWithWhereWithoutCaseInput | CaseAttachmentUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseAttachmentScalarWhereInput | CaseAttachmentScalarWhereInput[]
+  }
+
+  export type CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutCase_headerInput, CaseFishboneMasterUncheckedCreateWithoutCase_headerInput> | CaseFishboneMasterCreateWithoutCase_headerInput[] | CaseFishboneMasterUncheckedCreateWithoutCase_headerInput[]
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCase_headerInput | CaseFishboneMasterCreateOrConnectWithoutCase_headerInput[]
+    upsert?: CaseFishboneMasterUpsertWithWhereUniqueWithoutCase_headerInput | CaseFishboneMasterUpsertWithWhereUniqueWithoutCase_headerInput[]
+    createMany?: CaseFishboneMasterCreateManyCase_headerInputEnvelope
+    set?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    disconnect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    delete?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    connect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    update?: CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput | CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput[]
+    updateMany?: CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput | CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput[]
+    deleteMany?: CaseFishboneMasterScalarWhereInput | CaseFishboneMasterScalarWhereInput[]
+  }
+
+  export type CaseNotificationOutboxUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput> | CaseNotificationOutboxCreateWithoutCaseInput[] | CaseNotificationOutboxUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutCaseInput | CaseNotificationOutboxCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseNotificationOutboxUpsertWithWhereUniqueWithoutCaseInput | CaseNotificationOutboxUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseNotificationOutboxCreateManyCaseInputEnvelope
+    set?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    disconnect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    delete?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    update?: CaseNotificationOutboxUpdateWithWhereUniqueWithoutCaseInput | CaseNotificationOutboxUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseNotificationOutboxUpdateManyWithWhereWithoutCaseInput | CaseNotificationOutboxUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseNotificationOutboxScalarWhereInput | CaseNotificationOutboxScalarWhereInput[]
+  }
+
+  export type CaseNotificationMessageUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutCaseInput, CaseNotificationMessageUncheckedCreateWithoutCaseInput> | CaseNotificationMessageCreateWithoutCaseInput[] | CaseNotificationMessageUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutCaseInput | CaseNotificationMessageCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseNotificationMessageUpsertWithWhereUniqueWithoutCaseInput | CaseNotificationMessageUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseNotificationMessageCreateManyCaseInputEnvelope
+    set?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    disconnect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    delete?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    update?: CaseNotificationMessageUpdateWithWhereUniqueWithoutCaseInput | CaseNotificationMessageUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseNotificationMessageUpdateManyWithWhereWithoutCaseInput | CaseNotificationMessageUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+  }
+
+  export type CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseDepartmentCreateWithoutCaseInput, CaseDepartmentUncheckedCreateWithoutCaseInput> | CaseDepartmentCreateWithoutCaseInput[] | CaseDepartmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutCaseInput | CaseDepartmentCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseDepartmentUpsertWithWhereUniqueWithoutCaseInput | CaseDepartmentUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseDepartmentCreateManyCaseInputEnvelope
+    set?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    disconnect?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    delete?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    connect?: CaseDepartmentWhereUniqueInput | CaseDepartmentWhereUniqueInput[]
+    update?: CaseDepartmentUpdateWithWhereUniqueWithoutCaseInput | CaseDepartmentUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseDepartmentUpdateManyWithWhereWithoutCaseInput | CaseDepartmentUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseDepartmentScalarWhereInput | CaseDepartmentScalarWhereInput[]
+  }
+
+  export type CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseAttachmentCreateWithoutCaseInput, CaseAttachmentUncheckedCreateWithoutCaseInput> | CaseAttachmentCreateWithoutCaseInput[] | CaseAttachmentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseAttachmentCreateOrConnectWithoutCaseInput | CaseAttachmentCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseAttachmentUpsertWithWhereUniqueWithoutCaseInput | CaseAttachmentUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseAttachmentCreateManyCaseInputEnvelope
+    set?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    disconnect?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    delete?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    connect?: CaseAttachmentWhereUniqueInput | CaseAttachmentWhereUniqueInput[]
+    update?: CaseAttachmentUpdateWithWhereUniqueWithoutCaseInput | CaseAttachmentUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseAttachmentUpdateManyWithWhereWithoutCaseInput | CaseAttachmentUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseAttachmentScalarWhereInput | CaseAttachmentScalarWhereInput[]
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutCase_headerInput, CaseFishboneMasterUncheckedCreateWithoutCase_headerInput> | CaseFishboneMasterCreateWithoutCase_headerInput[] | CaseFishboneMasterUncheckedCreateWithoutCase_headerInput[]
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCase_headerInput | CaseFishboneMasterCreateOrConnectWithoutCase_headerInput[]
+    upsert?: CaseFishboneMasterUpsertWithWhereUniqueWithoutCase_headerInput | CaseFishboneMasterUpsertWithWhereUniqueWithoutCase_headerInput[]
+    createMany?: CaseFishboneMasterCreateManyCase_headerInputEnvelope
+    set?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    disconnect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    delete?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    connect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+    update?: CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput | CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput[]
+    updateMany?: CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput | CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput[]
+    deleteMany?: CaseFishboneMasterScalarWhereInput | CaseFishboneMasterScalarWhereInput[]
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput> | CaseNotificationOutboxCreateWithoutCaseInput[] | CaseNotificationOutboxUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutCaseInput | CaseNotificationOutboxCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseNotificationOutboxUpsertWithWhereUniqueWithoutCaseInput | CaseNotificationOutboxUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseNotificationOutboxCreateManyCaseInputEnvelope
+    set?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    disconnect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    delete?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    update?: CaseNotificationOutboxUpdateWithWhereUniqueWithoutCaseInput | CaseNotificationOutboxUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseNotificationOutboxUpdateManyWithWhereWithoutCaseInput | CaseNotificationOutboxUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseNotificationOutboxScalarWhereInput | CaseNotificationOutboxScalarWhereInput[]
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutCaseInput, CaseNotificationMessageUncheckedCreateWithoutCaseInput> | CaseNotificationMessageCreateWithoutCaseInput[] | CaseNotificationMessageUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutCaseInput | CaseNotificationMessageCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseNotificationMessageUpsertWithWhereUniqueWithoutCaseInput | CaseNotificationMessageUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseNotificationMessageCreateManyCaseInputEnvelope
+    set?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    disconnect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    delete?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    update?: CaseNotificationMessageUpdateWithWhereUniqueWithoutCaseInput | CaseNotificationMessageUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseNotificationMessageUpdateManyWithWhereWithoutCaseInput | CaseNotificationMessageUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+  }
+
+  export type CaseHeaderCreateNestedOneWithoutDepartmentsInput = {
+    create?: XOR<CaseHeaderCreateWithoutDepartmentsInput, CaseHeaderUncheckedCreateWithoutDepartmentsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutDepartmentsInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput> | CaseNotificationOutboxCreateWithoutDepartmentInput[] | CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput | CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CaseNotificationOutboxCreateManyDepartmentInputEnvelope
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+  }
+
+  export type CaseNotificationMessageCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutDepartmentInput, CaseNotificationMessageUncheckedCreateWithoutDepartmentInput> | CaseNotificationMessageCreateWithoutDepartmentInput[] | CaseNotificationMessageUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutDepartmentInput | CaseNotificationMessageCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CaseNotificationMessageCreateManyDepartmentInputEnvelope
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+  }
+
+  export type CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput> | CaseNotificationOutboxCreateWithoutDepartmentInput[] | CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput | CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CaseNotificationOutboxCreateManyDepartmentInputEnvelope
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+  }
+
+  export type CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutDepartmentInput, CaseNotificationMessageUncheckedCreateWithoutDepartmentInput> | CaseNotificationMessageCreateWithoutDepartmentInput[] | CaseNotificationMessageUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutDepartmentInput | CaseNotificationMessageCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CaseNotificationMessageCreateManyDepartmentInputEnvelope
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+  }
+
+  export type CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutDepartmentsInput, CaseHeaderUncheckedCreateWithoutDepartmentsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutDepartmentsInput
+    upsert?: CaseHeaderUpsertWithoutDepartmentsInput
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutDepartmentsInput, CaseHeaderUpdateWithoutDepartmentsInput>, CaseHeaderUncheckedUpdateWithoutDepartmentsInput>
+  }
+
+  export type CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput> | CaseNotificationOutboxCreateWithoutDepartmentInput[] | CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput | CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CaseNotificationOutboxUpsertWithWhereUniqueWithoutDepartmentInput | CaseNotificationOutboxUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CaseNotificationOutboxCreateManyDepartmentInputEnvelope
+    set?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    disconnect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    delete?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    update?: CaseNotificationOutboxUpdateWithWhereUniqueWithoutDepartmentInput | CaseNotificationOutboxUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CaseNotificationOutboxUpdateManyWithWhereWithoutDepartmentInput | CaseNotificationOutboxUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CaseNotificationOutboxScalarWhereInput | CaseNotificationOutboxScalarWhereInput[]
+  }
+
+  export type CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutDepartmentInput, CaseNotificationMessageUncheckedCreateWithoutDepartmentInput> | CaseNotificationMessageCreateWithoutDepartmentInput[] | CaseNotificationMessageUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutDepartmentInput | CaseNotificationMessageCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CaseNotificationMessageUpsertWithWhereUniqueWithoutDepartmentInput | CaseNotificationMessageUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CaseNotificationMessageCreateManyDepartmentInputEnvelope
+    set?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    disconnect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    delete?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    update?: CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput | CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput | CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput> | CaseNotificationOutboxCreateWithoutDepartmentInput[] | CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput | CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CaseNotificationOutboxUpsertWithWhereUniqueWithoutDepartmentInput | CaseNotificationOutboxUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CaseNotificationOutboxCreateManyDepartmentInputEnvelope
+    set?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    disconnect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    delete?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    connect?: CaseNotificationOutboxWhereUniqueInput | CaseNotificationOutboxWhereUniqueInput[]
+    update?: CaseNotificationOutboxUpdateWithWhereUniqueWithoutDepartmentInput | CaseNotificationOutboxUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CaseNotificationOutboxUpdateManyWithWhereWithoutDepartmentInput | CaseNotificationOutboxUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CaseNotificationOutboxScalarWhereInput | CaseNotificationOutboxScalarWhereInput[]
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CaseNotificationMessageCreateWithoutDepartmentInput, CaseNotificationMessageUncheckedCreateWithoutDepartmentInput> | CaseNotificationMessageCreateWithoutDepartmentInput[] | CaseNotificationMessageUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutDepartmentInput | CaseNotificationMessageCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CaseNotificationMessageUpsertWithWhereUniqueWithoutDepartmentInput | CaseNotificationMessageUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CaseNotificationMessageCreateManyDepartmentInputEnvelope
+    set?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    disconnect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    delete?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+    update?: CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput | CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput | CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+  }
+
+  export type CaseHeaderCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<CaseHeaderCreateWithoutNotificationsInput, CaseHeaderUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutNotificationsInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseDepartmentCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<CaseDepartmentCreateWithoutNotificationsInput, CaseDepartmentUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutNotificationsInput
+    connect?: CaseDepartmentWhereUniqueInput
+  }
+
+  export type CaseHeaderUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutNotificationsInput, CaseHeaderUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutNotificationsInput
+    upsert?: CaseHeaderUpsertWithoutNotificationsInput
+    disconnect?: CaseHeaderWhereInput | boolean
+    delete?: CaseHeaderWhereInput | boolean
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutNotificationsInput, CaseHeaderUpdateWithoutNotificationsInput>, CaseHeaderUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type CaseDepartmentUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<CaseDepartmentCreateWithoutNotificationsInput, CaseDepartmentUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutNotificationsInput
+    upsert?: CaseDepartmentUpsertWithoutNotificationsInput
+    disconnect?: CaseDepartmentWhereInput | boolean
+    delete?: CaseDepartmentWhereInput | boolean
+    connect?: CaseDepartmentWhereUniqueInput
+    update?: XOR<XOR<CaseDepartmentUpdateToOneWithWhereWithoutNotificationsInput, CaseDepartmentUpdateWithoutNotificationsInput>, CaseDepartmentUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type CaseHeaderCreateNestedOneWithoutCaseNotificationMessagesInput = {
+    create?: XOR<CaseHeaderCreateWithoutCaseNotificationMessagesInput, CaseHeaderUncheckedCreateWithoutCaseNotificationMessagesInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCaseNotificationMessagesInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseDepartmentCreateNestedOneWithoutCaseNotificationMessagesInput = {
+    create?: XOR<CaseDepartmentCreateWithoutCaseNotificationMessagesInput, CaseDepartmentUncheckedCreateWithoutCaseNotificationMessagesInput>
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutCaseNotificationMessagesInput
+    connect?: CaseDepartmentWhereUniqueInput
+  }
+
+  export type CaseHeaderUpdateOneWithoutCaseNotificationMessagesNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutCaseNotificationMessagesInput, CaseHeaderUncheckedCreateWithoutCaseNotificationMessagesInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCaseNotificationMessagesInput
+    upsert?: CaseHeaderUpsertWithoutCaseNotificationMessagesInput
+    disconnect?: CaseHeaderWhereInput | boolean
+    delete?: CaseHeaderWhereInput | boolean
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutCaseNotificationMessagesInput, CaseHeaderUpdateWithoutCaseNotificationMessagesInput>, CaseHeaderUncheckedUpdateWithoutCaseNotificationMessagesInput>
+  }
+
+  export type CaseDepartmentUpdateOneWithoutCaseNotificationMessagesNestedInput = {
+    create?: XOR<CaseDepartmentCreateWithoutCaseNotificationMessagesInput, CaseDepartmentUncheckedCreateWithoutCaseNotificationMessagesInput>
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutCaseNotificationMessagesInput
+    upsert?: CaseDepartmentUpsertWithoutCaseNotificationMessagesInput
+    disconnect?: CaseDepartmentWhereInput | boolean
+    delete?: CaseDepartmentWhereInput | boolean
+    connect?: CaseDepartmentWhereUniqueInput
+    update?: XOR<XOR<CaseDepartmentUpdateToOneWithWhereWithoutCaseNotificationMessagesInput, CaseDepartmentUpdateWithoutCaseNotificationMessagesInput>, CaseDepartmentUncheckedUpdateWithoutCaseNotificationMessagesInput>
+  }
+
+  export type CaseHeaderCreateNestedOneWithoutAttachmentsInput = {
+    create?: XOR<CaseHeaderCreateWithoutAttachmentsInput, CaseHeaderUncheckedCreateWithoutAttachmentsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutAttachmentsInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseHeaderUpdateOneRequiredWithoutAttachmentsNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutAttachmentsInput, CaseHeaderUncheckedCreateWithoutAttachmentsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutAttachmentsInput
+    upsert?: CaseHeaderUpsertWithoutAttachmentsInput
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutAttachmentsInput, CaseHeaderUpdateWithoutAttachmentsInput>, CaseHeaderUncheckedUpdateWithoutAttachmentsInput>
+  }
+
   export type FishboneCauseCreateNestedManyWithoutMaster_fishboneInput = {
     create?: XOR<FishboneCauseCreateWithoutMaster_fishboneInput, FishboneCauseUncheckedCreateWithoutMaster_fishboneInput> | FishboneCauseCreateWithoutMaster_fishboneInput[] | FishboneCauseUncheckedCreateWithoutMaster_fishboneInput[]
     connectOrCreate?: FishboneCauseCreateOrConnectWithoutMaster_fishboneInput | FishboneCauseCreateOrConnectWithoutMaster_fishboneInput[]
@@ -25489,6 +41534,258 @@ export namespace Prisma {
     deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
   }
 
+  export type CaseHeaderCreateNestedOneWithoutCaseFishbonesInput = {
+    create?: XOR<CaseHeaderCreateWithoutCaseFishbonesInput, CaseHeaderUncheckedCreateWithoutCaseFishbonesInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCaseFishbonesInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseFishboneCauseCreateNestedManyWithoutCase_fishboneInput = {
+    create?: XOR<CaseFishboneCauseCreateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneCauseCreateWithoutCase_fishboneInput[] | CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput | CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneCauseCreateManyCase_fishboneInputEnvelope
+    connect?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+  }
+
+  export type CaseFishboneItemCreateNestedManyWithoutCase_fishboneInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCase_fishboneInput, CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneItemCreateWithoutCase_fishboneInput[] | CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput | CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneItemCreateManyCase_fishboneInputEnvelope
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+  }
+
+  export type CaseFishboneCauseUncheckedCreateNestedManyWithoutCase_fishboneInput = {
+    create?: XOR<CaseFishboneCauseCreateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneCauseCreateWithoutCase_fishboneInput[] | CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput | CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneCauseCreateManyCase_fishboneInputEnvelope
+    connect?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+  }
+
+  export type CaseFishboneItemUncheckedCreateNestedManyWithoutCase_fishboneInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCase_fishboneInput, CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneItemCreateWithoutCase_fishboneInput[] | CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput | CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneItemCreateManyCase_fishboneInputEnvelope
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+  }
+
+  export type CaseHeaderUpdateOneRequiredWithoutCaseFishbonesNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutCaseFishbonesInput, CaseHeaderUncheckedCreateWithoutCaseFishbonesInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCaseFishbonesInput
+    upsert?: CaseHeaderUpsertWithoutCaseFishbonesInput
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutCaseFishbonesInput, CaseHeaderUpdateWithoutCaseFishbonesInput>, CaseHeaderUncheckedUpdateWithoutCaseFishbonesInput>
+  }
+
+  export type CaseFishboneCauseUpdateManyWithoutCase_fishboneNestedInput = {
+    create?: XOR<CaseFishboneCauseCreateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneCauseCreateWithoutCase_fishboneInput[] | CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput | CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput[]
+    upsert?: CaseFishboneCauseUpsertWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneCauseUpsertWithWhereUniqueWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneCauseCreateManyCase_fishboneInputEnvelope
+    set?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    disconnect?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    delete?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    connect?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    update?: CaseFishboneCauseUpdateWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneCauseUpdateWithWhereUniqueWithoutCase_fishboneInput[]
+    updateMany?: CaseFishboneCauseUpdateManyWithWhereWithoutCase_fishboneInput | CaseFishboneCauseUpdateManyWithWhereWithoutCase_fishboneInput[]
+    deleteMany?: CaseFishboneCauseScalarWhereInput | CaseFishboneCauseScalarWhereInput[]
+  }
+
+  export type CaseFishboneItemUpdateManyWithoutCase_fishboneNestedInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCase_fishboneInput, CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneItemCreateWithoutCase_fishboneInput[] | CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput | CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput[]
+    upsert?: CaseFishboneItemUpsertWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneItemUpsertWithWhereUniqueWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneItemCreateManyCase_fishboneInputEnvelope
+    set?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    disconnect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    delete?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    update?: CaseFishboneItemUpdateWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneItemUpdateWithWhereUniqueWithoutCase_fishboneInput[]
+    updateMany?: CaseFishboneItemUpdateManyWithWhereWithoutCase_fishboneInput | CaseFishboneItemUpdateManyWithWhereWithoutCase_fishboneInput[]
+    deleteMany?: CaseFishboneItemScalarWhereInput | CaseFishboneItemScalarWhereInput[]
+  }
+
+  export type CaseFishboneCauseUncheckedUpdateManyWithoutCase_fishboneNestedInput = {
+    create?: XOR<CaseFishboneCauseCreateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneCauseCreateWithoutCase_fishboneInput[] | CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput | CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput[]
+    upsert?: CaseFishboneCauseUpsertWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneCauseUpsertWithWhereUniqueWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneCauseCreateManyCase_fishboneInputEnvelope
+    set?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    disconnect?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    delete?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    connect?: CaseFishboneCauseWhereUniqueInput | CaseFishboneCauseWhereUniqueInput[]
+    update?: CaseFishboneCauseUpdateWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneCauseUpdateWithWhereUniqueWithoutCase_fishboneInput[]
+    updateMany?: CaseFishboneCauseUpdateManyWithWhereWithoutCase_fishboneInput | CaseFishboneCauseUpdateManyWithWhereWithoutCase_fishboneInput[]
+    deleteMany?: CaseFishboneCauseScalarWhereInput | CaseFishboneCauseScalarWhereInput[]
+  }
+
+  export type CaseFishboneItemUncheckedUpdateManyWithoutCase_fishboneNestedInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCase_fishboneInput, CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput> | CaseFishboneItemCreateWithoutCase_fishboneInput[] | CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput | CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput[]
+    upsert?: CaseFishboneItemUpsertWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneItemUpsertWithWhereUniqueWithoutCase_fishboneInput[]
+    createMany?: CaseFishboneItemCreateManyCase_fishboneInputEnvelope
+    set?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    disconnect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    delete?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    update?: CaseFishboneItemUpdateWithWhereUniqueWithoutCase_fishboneInput | CaseFishboneItemUpdateWithWhereUniqueWithoutCase_fishboneInput[]
+    updateMany?: CaseFishboneItemUpdateManyWithWhereWithoutCase_fishboneInput | CaseFishboneItemUpdateManyWithWhereWithoutCase_fishboneInput[]
+    deleteMany?: CaseFishboneItemScalarWhereInput | CaseFishboneItemScalarWhereInput[]
+  }
+
+  export type CaseFishboneMasterCreateNestedOneWithoutCausesInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutCausesInput, CaseFishboneMasterUncheckedCreateWithoutCausesInput>
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCausesInput
+    connect?: CaseFishboneMasterWhereUniqueInput
+  }
+
+  export type CaseFishboneItemCauseCreateNestedManyWithoutCauseInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutCauseInput, CaseFishboneItemCauseUncheckedCreateWithoutCauseInput> | CaseFishboneItemCauseCreateWithoutCauseInput[] | CaseFishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutCauseInput | CaseFishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    createMany?: CaseFishboneItemCauseCreateManyCauseInputEnvelope
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type CaseFishboneItemCauseUncheckedCreateNestedManyWithoutCauseInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutCauseInput, CaseFishboneItemCauseUncheckedCreateWithoutCauseInput> | CaseFishboneItemCauseCreateWithoutCauseInput[] | CaseFishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutCauseInput | CaseFishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    createMany?: CaseFishboneItemCauseCreateManyCauseInputEnvelope
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type CaseFishboneMasterUpdateOneRequiredWithoutCausesNestedInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutCausesInput, CaseFishboneMasterUncheckedCreateWithoutCausesInput>
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCausesInput
+    upsert?: CaseFishboneMasterUpsertWithoutCausesInput
+    connect?: CaseFishboneMasterWhereUniqueInput
+    update?: XOR<XOR<CaseFishboneMasterUpdateToOneWithWhereWithoutCausesInput, CaseFishboneMasterUpdateWithoutCausesInput>, CaseFishboneMasterUncheckedUpdateWithoutCausesInput>
+  }
+
+  export type CaseFishboneItemCauseUpdateManyWithoutCauseNestedInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutCauseInput, CaseFishboneItemCauseUncheckedCreateWithoutCauseInput> | CaseFishboneItemCauseCreateWithoutCauseInput[] | CaseFishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutCauseInput | CaseFishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    upsert?: CaseFishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput | CaseFishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput[]
+    createMany?: CaseFishboneItemCauseCreateManyCauseInputEnvelope
+    set?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    disconnect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    delete?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    update?: CaseFishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput | CaseFishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput[]
+    updateMany?: CaseFishboneItemCauseUpdateManyWithWhereWithoutCauseInput | CaseFishboneItemCauseUpdateManyWithWhereWithoutCauseInput[]
+    deleteMany?: CaseFishboneItemCauseScalarWhereInput | CaseFishboneItemCauseScalarWhereInput[]
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateManyWithoutCauseNestedInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutCauseInput, CaseFishboneItemCauseUncheckedCreateWithoutCauseInput> | CaseFishboneItemCauseCreateWithoutCauseInput[] | CaseFishboneItemCauseUncheckedCreateWithoutCauseInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutCauseInput | CaseFishboneItemCauseCreateOrConnectWithoutCauseInput[]
+    upsert?: CaseFishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput | CaseFishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput[]
+    createMany?: CaseFishboneItemCauseCreateManyCauseInputEnvelope
+    set?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    disconnect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    delete?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    update?: CaseFishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput | CaseFishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput[]
+    updateMany?: CaseFishboneItemCauseUpdateManyWithWhereWithoutCauseInput | CaseFishboneItemCauseUpdateManyWithWhereWithoutCauseInput[]
+    deleteMany?: CaseFishboneItemCauseScalarWhereInput | CaseFishboneItemCauseScalarWhereInput[]
+  }
+
+  export type CaseFishboneMasterCreateNestedOneWithoutItemsInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutItemsInput, CaseFishboneMasterUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutItemsInput
+    connect?: CaseFishboneMasterWhereUniqueInput
+  }
+
+  export type FishboneCategoryCreateNestedOneWithoutCaseFishboneItemsInput = {
+    create?: XOR<FishboneCategoryCreateWithoutCaseFishboneItemsInput, FishboneCategoryUncheckedCreateWithoutCaseFishboneItemsInput>
+    connectOrCreate?: FishboneCategoryCreateOrConnectWithoutCaseFishboneItemsInput
+    connect?: FishboneCategoryWhereUniqueInput
+  }
+
+  export type CaseFishboneItemCauseCreateNestedManyWithoutItemInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutItemInput, CaseFishboneItemCauseUncheckedCreateWithoutItemInput> | CaseFishboneItemCauseCreateWithoutItemInput[] | CaseFishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutItemInput | CaseFishboneItemCauseCreateOrConnectWithoutItemInput[]
+    createMany?: CaseFishboneItemCauseCreateManyItemInputEnvelope
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type CaseFishboneItemCauseUncheckedCreateNestedManyWithoutItemInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutItemInput, CaseFishboneItemCauseUncheckedCreateWithoutItemInput> | CaseFishboneItemCauseCreateWithoutItemInput[] | CaseFishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutItemInput | CaseFishboneItemCauseCreateOrConnectWithoutItemInput[]
+    createMany?: CaseFishboneItemCauseCreateManyItemInputEnvelope
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+  }
+
+  export type CaseFishboneMasterUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<CaseFishboneMasterCreateWithoutItemsInput, CaseFishboneMasterUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutItemsInput
+    upsert?: CaseFishboneMasterUpsertWithoutItemsInput
+    connect?: CaseFishboneMasterWhereUniqueInput
+    update?: XOR<XOR<CaseFishboneMasterUpdateToOneWithWhereWithoutItemsInput, CaseFishboneMasterUpdateWithoutItemsInput>, CaseFishboneMasterUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type FishboneCategoryUpdateOneRequiredWithoutCaseFishboneItemsNestedInput = {
+    create?: XOR<FishboneCategoryCreateWithoutCaseFishboneItemsInput, FishboneCategoryUncheckedCreateWithoutCaseFishboneItemsInput>
+    connectOrCreate?: FishboneCategoryCreateOrConnectWithoutCaseFishboneItemsInput
+    upsert?: FishboneCategoryUpsertWithoutCaseFishboneItemsInput
+    connect?: FishboneCategoryWhereUniqueInput
+    update?: XOR<XOR<FishboneCategoryUpdateToOneWithWhereWithoutCaseFishboneItemsInput, FishboneCategoryUpdateWithoutCaseFishboneItemsInput>, FishboneCategoryUncheckedUpdateWithoutCaseFishboneItemsInput>
+  }
+
+  export type CaseFishboneItemCauseUpdateManyWithoutItemNestedInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutItemInput, CaseFishboneItemCauseUncheckedCreateWithoutItemInput> | CaseFishboneItemCauseCreateWithoutItemInput[] | CaseFishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutItemInput | CaseFishboneItemCauseCreateOrConnectWithoutItemInput[]
+    upsert?: CaseFishboneItemCauseUpsertWithWhereUniqueWithoutItemInput | CaseFishboneItemCauseUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: CaseFishboneItemCauseCreateManyItemInputEnvelope
+    set?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    disconnect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    delete?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    update?: CaseFishboneItemCauseUpdateWithWhereUniqueWithoutItemInput | CaseFishboneItemCauseUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: CaseFishboneItemCauseUpdateManyWithWhereWithoutItemInput | CaseFishboneItemCauseUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: CaseFishboneItemCauseScalarWhereInput | CaseFishboneItemCauseScalarWhereInput[]
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput = {
+    create?: XOR<CaseFishboneItemCauseCreateWithoutItemInput, CaseFishboneItemCauseUncheckedCreateWithoutItemInput> | CaseFishboneItemCauseCreateWithoutItemInput[] | CaseFishboneItemCauseUncheckedCreateWithoutItemInput[]
+    connectOrCreate?: CaseFishboneItemCauseCreateOrConnectWithoutItemInput | CaseFishboneItemCauseCreateOrConnectWithoutItemInput[]
+    upsert?: CaseFishboneItemCauseUpsertWithWhereUniqueWithoutItemInput | CaseFishboneItemCauseUpsertWithWhereUniqueWithoutItemInput[]
+    createMany?: CaseFishboneItemCauseCreateManyItemInputEnvelope
+    set?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    disconnect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    delete?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    connect?: CaseFishboneItemCauseWhereUniqueInput | CaseFishboneItemCauseWhereUniqueInput[]
+    update?: CaseFishboneItemCauseUpdateWithWhereUniqueWithoutItemInput | CaseFishboneItemCauseUpdateWithWhereUniqueWithoutItemInput[]
+    updateMany?: CaseFishboneItemCauseUpdateManyWithWhereWithoutItemInput | CaseFishboneItemCauseUpdateManyWithWhereWithoutItemInput[]
+    deleteMany?: CaseFishboneItemCauseScalarWhereInput | CaseFishboneItemCauseScalarWhereInput[]
+  }
+
+  export type CaseFishboneItemCreateNestedOneWithoutCauseLinksInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCauseLinksInput, CaseFishboneItemUncheckedCreateWithoutCauseLinksInput>
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCauseLinksInput
+    connect?: CaseFishboneItemWhereUniqueInput
+  }
+
+  export type CaseFishboneCauseCreateNestedOneWithoutItemLinksInput = {
+    create?: XOR<CaseFishboneCauseCreateWithoutItemLinksInput, CaseFishboneCauseUncheckedCreateWithoutItemLinksInput>
+    connectOrCreate?: CaseFishboneCauseCreateOrConnectWithoutItemLinksInput
+    connect?: CaseFishboneCauseWhereUniqueInput
+  }
+
+  export type CaseFishboneItemUpdateOneRequiredWithoutCauseLinksNestedInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCauseLinksInput, CaseFishboneItemUncheckedCreateWithoutCauseLinksInput>
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCauseLinksInput
+    upsert?: CaseFishboneItemUpsertWithoutCauseLinksInput
+    connect?: CaseFishboneItemWhereUniqueInput
+    update?: XOR<XOR<CaseFishboneItemUpdateToOneWithWhereWithoutCauseLinksInput, CaseFishboneItemUpdateWithoutCauseLinksInput>, CaseFishboneItemUncheckedUpdateWithoutCauseLinksInput>
+  }
+
+  export type CaseFishboneCauseUpdateOneRequiredWithoutItemLinksNestedInput = {
+    create?: XOR<CaseFishboneCauseCreateWithoutItemLinksInput, CaseFishboneCauseUncheckedCreateWithoutItemLinksInput>
+    connectOrCreate?: CaseFishboneCauseCreateOrConnectWithoutItemLinksInput
+    upsert?: CaseFishboneCauseUpsertWithoutItemLinksInput
+    connect?: CaseFishboneCauseWhereUniqueInput
+    update?: XOR<XOR<CaseFishboneCauseUpdateToOneWithWhereWithoutItemLinksInput, CaseFishboneCauseUpdateWithoutItemLinksInput>, CaseFishboneCauseUncheckedUpdateWithoutItemLinksInput>
+  }
+
   export type FishboneItemCreateNestedManyWithoutCategoryInput = {
     create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
@@ -25496,11 +41793,25 @@ export namespace Prisma {
     connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
   }
 
+  export type CaseFishboneItemCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCategoryInput, CaseFishboneItemUncheckedCreateWithoutCategoryInput> | CaseFishboneItemCreateWithoutCategoryInput[] | CaseFishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCategoryInput | CaseFishboneItemCreateOrConnectWithoutCategoryInput[]
+    createMany?: CaseFishboneItemCreateManyCategoryInputEnvelope
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+  }
+
   export type FishboneItemUncheckedCreateNestedManyWithoutCategoryInput = {
     create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
     createMany?: FishboneItemCreateManyCategoryInputEnvelope
     connect?: FishboneItemWhereUniqueInput | FishboneItemWhereUniqueInput[]
+  }
+
+  export type CaseFishboneItemUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCategoryInput, CaseFishboneItemUncheckedCreateWithoutCategoryInput> | CaseFishboneItemCreateWithoutCategoryInput[] | CaseFishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCategoryInput | CaseFishboneItemCreateOrConnectWithoutCategoryInput[]
+    createMany?: CaseFishboneItemCreateManyCategoryInputEnvelope
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
   }
 
   export type FishboneItemUpdateManyWithoutCategoryNestedInput = {
@@ -25517,6 +41828,20 @@ export namespace Prisma {
     deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
   }
 
+  export type CaseFishboneItemUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCategoryInput, CaseFishboneItemUncheckedCreateWithoutCategoryInput> | CaseFishboneItemCreateWithoutCategoryInput[] | CaseFishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCategoryInput | CaseFishboneItemCreateOrConnectWithoutCategoryInput[]
+    upsert?: CaseFishboneItemUpsertWithWhereUniqueWithoutCategoryInput | CaseFishboneItemUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: CaseFishboneItemCreateManyCategoryInputEnvelope
+    set?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    disconnect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    delete?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    update?: CaseFishboneItemUpdateWithWhereUniqueWithoutCategoryInput | CaseFishboneItemUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: CaseFishboneItemUpdateManyWithWhereWithoutCategoryInput | CaseFishboneItemUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: CaseFishboneItemScalarWhereInput | CaseFishboneItemScalarWhereInput[]
+  }
+
   export type FishboneItemUncheckedUpdateManyWithoutCategoryNestedInput = {
     create?: XOR<FishboneItemCreateWithoutCategoryInput, FishboneItemUncheckedCreateWithoutCategoryInput> | FishboneItemCreateWithoutCategoryInput[] | FishboneItemUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: FishboneItemCreateOrConnectWithoutCategoryInput | FishboneItemCreateOrConnectWithoutCategoryInput[]
@@ -25529,6 +41854,20 @@ export namespace Prisma {
     update?: FishboneItemUpdateWithWhereUniqueWithoutCategoryInput | FishboneItemUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: FishboneItemUpdateManyWithWhereWithoutCategoryInput | FishboneItemUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: FishboneItemScalarWhereInput | FishboneItemScalarWhereInput[]
+  }
+
+  export type CaseFishboneItemUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<CaseFishboneItemCreateWithoutCategoryInput, CaseFishboneItemUncheckedCreateWithoutCategoryInput> | CaseFishboneItemCreateWithoutCategoryInput[] | CaseFishboneItemUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: CaseFishboneItemCreateOrConnectWithoutCategoryInput | CaseFishboneItemCreateOrConnectWithoutCategoryInput[]
+    upsert?: CaseFishboneItemUpsertWithWhereUniqueWithoutCategoryInput | CaseFishboneItemUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: CaseFishboneItemCreateManyCategoryInputEnvelope
+    set?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    disconnect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    delete?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    connect?: CaseFishboneItemWhereUniqueInput | CaseFishboneItemWhereUniqueInput[]
+    update?: CaseFishboneItemUpdateWithWhereUniqueWithoutCategoryInput | CaseFishboneItemUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: CaseFishboneItemUpdateManyWithWhereWithoutCategoryInput | CaseFishboneItemUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: CaseFishboneItemScalarWhereInput | CaseFishboneItemScalarWhereInput[]
   }
 
   export type MasterFishboneCreateNestedOneWithoutCausesInput = {
@@ -27826,6 +44165,1328 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type CaseDepartmentCreateWithoutCaseInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentUncheckedCreateWithoutCaseInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentCreateOrConnectWithoutCaseInput = {
+    where: CaseDepartmentWhereUniqueInput
+    create: XOR<CaseDepartmentCreateWithoutCaseInput, CaseDepartmentUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseDepartmentCreateManyCaseInputEnvelope = {
+    data: CaseDepartmentCreateManyCaseInput | CaseDepartmentCreateManyCaseInput[]
+  }
+
+  export type CaseAttachmentCreateWithoutCaseInput = {
+    caseAttachmentId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime?: string | null
+    fileSize?: number | null
+    caption?: string | null
+    locationDesc?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseAttachmentUncheckedCreateWithoutCaseInput = {
+    caseAttachmentId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime?: string | null
+    fileSize?: number | null
+    caption?: string | null
+    locationDesc?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseAttachmentCreateOrConnectWithoutCaseInput = {
+    where: CaseAttachmentWhereUniqueInput
+    create: XOR<CaseAttachmentCreateWithoutCaseInput, CaseAttachmentUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseAttachmentCreateManyCaseInputEnvelope = {
+    data: CaseAttachmentCreateManyCaseInput | CaseAttachmentCreateManyCaseInput[]
+  }
+
+  export type CaseFishboneMasterCreateWithoutCase_headerInput = {
+    caseFishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: CaseFishboneCauseCreateNestedManyWithoutCase_fishboneInput
+    items?: CaseFishboneItemCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterUncheckedCreateWithoutCase_headerInput = {
+    caseFishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: CaseFishboneCauseUncheckedCreateNestedManyWithoutCase_fishboneInput
+    items?: CaseFishboneItemUncheckedCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterCreateOrConnectWithoutCase_headerInput = {
+    where: CaseFishboneMasterWhereUniqueInput
+    create: XOR<CaseFishboneMasterCreateWithoutCase_headerInput, CaseFishboneMasterUncheckedCreateWithoutCase_headerInput>
+  }
+
+  export type CaseFishboneMasterCreateManyCase_headerInputEnvelope = {
+    data: CaseFishboneMasterCreateManyCase_headerInput | CaseFishboneMasterCreateManyCase_headerInput[]
+  }
+
+  export type CaseNotificationOutboxCreateWithoutCaseInput = {
+    caseNotificationId: string
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    department?: CaseDepartmentCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type CaseNotificationOutboxUncheckedCreateWithoutCaseInput = {
+    caseNotificationId: string
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationOutboxCreateOrConnectWithoutCaseInput = {
+    where: CaseNotificationOutboxWhereUniqueInput
+    create: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseNotificationOutboxCreateManyCaseInputEnvelope = {
+    data: CaseNotificationOutboxCreateManyCaseInput | CaseNotificationOutboxCreateManyCaseInput[]
+  }
+
+  export type CaseNotificationMessageCreateWithoutCaseInput = {
+    caseNotificationMessageId: string
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    department?: CaseDepartmentCreateNestedOneWithoutCaseNotificationMessagesInput
+  }
+
+  export type CaseNotificationMessageUncheckedCreateWithoutCaseInput = {
+    caseNotificationMessageId: string
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationMessageCreateOrConnectWithoutCaseInput = {
+    where: CaseNotificationMessageWhereUniqueInput
+    create: XOR<CaseNotificationMessageCreateWithoutCaseInput, CaseNotificationMessageUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseNotificationMessageCreateManyCaseInputEnvelope = {
+    data: CaseNotificationMessageCreateManyCaseInput | CaseNotificationMessageCreateManyCaseInput[]
+  }
+
+  export type CaseDepartmentUpsertWithWhereUniqueWithoutCaseInput = {
+    where: CaseDepartmentWhereUniqueInput
+    update: XOR<CaseDepartmentUpdateWithoutCaseInput, CaseDepartmentUncheckedUpdateWithoutCaseInput>
+    create: XOR<CaseDepartmentCreateWithoutCaseInput, CaseDepartmentUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseDepartmentUpdateWithWhereUniqueWithoutCaseInput = {
+    where: CaseDepartmentWhereUniqueInput
+    data: XOR<CaseDepartmentUpdateWithoutCaseInput, CaseDepartmentUncheckedUpdateWithoutCaseInput>
+  }
+
+  export type CaseDepartmentUpdateManyWithWhereWithoutCaseInput = {
+    where: CaseDepartmentScalarWhereInput
+    data: XOR<CaseDepartmentUpdateManyMutationInput, CaseDepartmentUncheckedUpdateManyWithoutCaseInput>
+  }
+
+  export type CaseDepartmentScalarWhereInput = {
+    AND?: CaseDepartmentScalarWhereInput | CaseDepartmentScalarWhereInput[]
+    OR?: CaseDepartmentScalarWhereInput[]
+    NOT?: CaseDepartmentScalarWhereInput | CaseDepartmentScalarWhereInput[]
+    caseDepartmentId?: StringFilter<"CaseDepartment"> | string
+    caseId?: StringFilter<"CaseDepartment"> | string
+    sbuSubId?: IntFilter<"CaseDepartment"> | number
+    decisionStatus?: StringFilter<"CaseDepartment"> | string
+    decisionAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    decisionBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    assigneeEmployeeId?: IntNullableFilter<"CaseDepartment"> | number | null
+    assignedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    assignedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    workStatus?: StringNullableFilter<"CaseDepartment"> | string | null
+    startDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    targetDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    workNotes?: StringNullableFilter<"CaseDepartment"> | string | null
+    isActive?: BoolFilter<"CaseDepartment"> | boolean
+    createdAt?: DateTimeFilter<"CaseDepartment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseDepartment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    isDeleted?: BoolFilter<"CaseDepartment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseDepartment"> | string | null
+  }
+
+  export type CaseAttachmentUpsertWithWhereUniqueWithoutCaseInput = {
+    where: CaseAttachmentWhereUniqueInput
+    update: XOR<CaseAttachmentUpdateWithoutCaseInput, CaseAttachmentUncheckedUpdateWithoutCaseInput>
+    create: XOR<CaseAttachmentCreateWithoutCaseInput, CaseAttachmentUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseAttachmentUpdateWithWhereUniqueWithoutCaseInput = {
+    where: CaseAttachmentWhereUniqueInput
+    data: XOR<CaseAttachmentUpdateWithoutCaseInput, CaseAttachmentUncheckedUpdateWithoutCaseInput>
+  }
+
+  export type CaseAttachmentUpdateManyWithWhereWithoutCaseInput = {
+    where: CaseAttachmentScalarWhereInput
+    data: XOR<CaseAttachmentUpdateManyMutationInput, CaseAttachmentUncheckedUpdateManyWithoutCaseInput>
+  }
+
+  export type CaseAttachmentScalarWhereInput = {
+    AND?: CaseAttachmentScalarWhereInput | CaseAttachmentScalarWhereInput[]
+    OR?: CaseAttachmentScalarWhereInput[]
+    NOT?: CaseAttachmentScalarWhereInput | CaseAttachmentScalarWhereInput[]
+    caseAttachmentId?: StringFilter<"CaseAttachment"> | string
+    caseId?: StringFilter<"CaseAttachment"> | string
+    mediaType?: StringFilter<"CaseAttachment"> | string
+    filePath?: StringFilter<"CaseAttachment"> | string
+    fileName?: StringFilter<"CaseAttachment"> | string
+    fileMime?: StringNullableFilter<"CaseAttachment"> | string | null
+    fileSize?: IntNullableFilter<"CaseAttachment"> | number | null
+    caption?: StringNullableFilter<"CaseAttachment"> | string | null
+    locationDesc?: StringNullableFilter<"CaseAttachment"> | string | null
+    orderIndex?: IntFilter<"CaseAttachment"> | number
+    isActive?: BoolFilter<"CaseAttachment"> | boolean
+    createdAt?: DateTimeFilter<"CaseAttachment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseAttachment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseAttachment"> | string | null
+    isDeleted?: BoolFilter<"CaseAttachment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseAttachment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseAttachment"> | string | null
+  }
+
+  export type CaseFishboneMasterUpsertWithWhereUniqueWithoutCase_headerInput = {
+    where: CaseFishboneMasterWhereUniqueInput
+    update: XOR<CaseFishboneMasterUpdateWithoutCase_headerInput, CaseFishboneMasterUncheckedUpdateWithoutCase_headerInput>
+    create: XOR<CaseFishboneMasterCreateWithoutCase_headerInput, CaseFishboneMasterUncheckedCreateWithoutCase_headerInput>
+  }
+
+  export type CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput = {
+    where: CaseFishboneMasterWhereUniqueInput
+    data: XOR<CaseFishboneMasterUpdateWithoutCase_headerInput, CaseFishboneMasterUncheckedUpdateWithoutCase_headerInput>
+  }
+
+  export type CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput = {
+    where: CaseFishboneMasterScalarWhereInput
+    data: XOR<CaseFishboneMasterUpdateManyMutationInput, CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerInput>
+  }
+
+  export type CaseFishboneMasterScalarWhereInput = {
+    AND?: CaseFishboneMasterScalarWhereInput | CaseFishboneMasterScalarWhereInput[]
+    OR?: CaseFishboneMasterScalarWhereInput[]
+    NOT?: CaseFishboneMasterScalarWhereInput | CaseFishboneMasterScalarWhereInput[]
+    caseFishboneId?: StringFilter<"CaseFishboneMaster"> | string
+    caseId?: StringFilter<"CaseFishboneMaster"> | string
+    sbuSubId?: IntFilter<"CaseFishboneMaster"> | number
+    fishboneName?: StringFilter<"CaseFishboneMaster"> | string
+    fishboneDesc?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    isActive?: BoolFilter<"CaseFishboneMaster"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneMaster"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneMaster"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneMaster"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneMaster"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
+  }
+
+  export type CaseNotificationOutboxUpsertWithWhereUniqueWithoutCaseInput = {
+    where: CaseNotificationOutboxWhereUniqueInput
+    update: XOR<CaseNotificationOutboxUpdateWithoutCaseInput, CaseNotificationOutboxUncheckedUpdateWithoutCaseInput>
+    create: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseNotificationOutboxUpdateWithWhereUniqueWithoutCaseInput = {
+    where: CaseNotificationOutboxWhereUniqueInput
+    data: XOR<CaseNotificationOutboxUpdateWithoutCaseInput, CaseNotificationOutboxUncheckedUpdateWithoutCaseInput>
+  }
+
+  export type CaseNotificationOutboxUpdateManyWithWhereWithoutCaseInput = {
+    where: CaseNotificationOutboxScalarWhereInput
+    data: XOR<CaseNotificationOutboxUpdateManyMutationInput, CaseNotificationOutboxUncheckedUpdateManyWithoutCaseInput>
+  }
+
+  export type CaseNotificationOutboxScalarWhereInput = {
+    AND?: CaseNotificationOutboxScalarWhereInput | CaseNotificationOutboxScalarWhereInput[]
+    OR?: CaseNotificationOutboxScalarWhereInput[]
+    NOT?: CaseNotificationOutboxScalarWhereInput | CaseNotificationOutboxScalarWhereInput[]
+    caseNotificationId?: StringFilter<"CaseNotificationOutbox"> | string
+    caseId?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    caseDepartmentId?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    recipientEmployeeId?: IntNullableFilter<"CaseNotificationOutbox"> | number | null
+    channel?: StringFilter<"CaseNotificationOutbox"> | string
+    phoneNumber?: StringFilter<"CaseNotificationOutbox"> | string
+    message?: StringFilter<"CaseNotificationOutbox"> | string
+    status?: StringFilter<"CaseNotificationOutbox"> | string
+    attempts?: IntFilter<"CaseNotificationOutbox"> | number
+    lastError?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    provider?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    meta?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    isActive?: BoolFilter<"CaseNotificationOutbox"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationOutbox"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationOutbox"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationOutbox"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationOutbox"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationOutbox"> | string | null
+  }
+
+  export type CaseNotificationMessageUpsertWithWhereUniqueWithoutCaseInput = {
+    where: CaseNotificationMessageWhereUniqueInput
+    update: XOR<CaseNotificationMessageUpdateWithoutCaseInput, CaseNotificationMessageUncheckedUpdateWithoutCaseInput>
+    create: XOR<CaseNotificationMessageCreateWithoutCaseInput, CaseNotificationMessageUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseNotificationMessageUpdateWithWhereUniqueWithoutCaseInput = {
+    where: CaseNotificationMessageWhereUniqueInput
+    data: XOR<CaseNotificationMessageUpdateWithoutCaseInput, CaseNotificationMessageUncheckedUpdateWithoutCaseInput>
+  }
+
+  export type CaseNotificationMessageUpdateManyWithWhereWithoutCaseInput = {
+    where: CaseNotificationMessageScalarWhereInput
+    data: XOR<CaseNotificationMessageUpdateManyMutationInput, CaseNotificationMessageUncheckedUpdateManyWithoutCaseInput>
+  }
+
+  export type CaseNotificationMessageScalarWhereInput = {
+    AND?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+    OR?: CaseNotificationMessageScalarWhereInput[]
+    NOT?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+    caseNotificationMessageId?: StringFilter<"CaseNotificationMessage"> | string
+    caseId?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    caseDepartmentId?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    recipientEmployeeId?: IntNullableFilter<"CaseNotificationMessage"> | number | null
+    role?: StringFilter<"CaseNotificationMessage"> | string
+    messageTemplate?: StringFilter<"CaseNotificationMessage"> | string
+    isActive?: BoolFilter<"CaseNotificationMessage"> | boolean
+    createdAt?: DateTimeFilter<"CaseNotificationMessage"> | Date | string
+    createdBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    updatedAt?: DateTimeFilter<"CaseNotificationMessage"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+    isDeleted?: BoolFilter<"CaseNotificationMessage"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseNotificationMessage"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseNotificationMessage"> | string | null
+  }
+
+  export type CaseHeaderCreateWithoutDepartmentsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutDepartmentsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutDepartmentsInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutDepartmentsInput, CaseHeaderUncheckedCreateWithoutDepartmentsInput>
+  }
+
+  export type CaseNotificationOutboxCreateWithoutDepartmentInput = {
+    caseNotificationId: string
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case?: CaseHeaderCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput = {
+    caseNotificationId: string
+    caseId?: string | null
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput = {
+    where: CaseNotificationOutboxWhereUniqueInput
+    create: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationOutboxCreateManyDepartmentInputEnvelope = {
+    data: CaseNotificationOutboxCreateManyDepartmentInput | CaseNotificationOutboxCreateManyDepartmentInput[]
+  }
+
+  export type CaseNotificationMessageCreateWithoutDepartmentInput = {
+    caseNotificationMessageId: string
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case?: CaseHeaderCreateNestedOneWithoutCaseNotificationMessagesInput
+  }
+
+  export type CaseNotificationMessageUncheckedCreateWithoutDepartmentInput = {
+    caseNotificationMessageId: string
+    caseId?: string | null
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationMessageCreateOrConnectWithoutDepartmentInput = {
+    where: CaseNotificationMessageWhereUniqueInput
+    create: XOR<CaseNotificationMessageCreateWithoutDepartmentInput, CaseNotificationMessageUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationMessageCreateManyDepartmentInputEnvelope = {
+    data: CaseNotificationMessageCreateManyDepartmentInput | CaseNotificationMessageCreateManyDepartmentInput[]
+  }
+
+  export type CaseHeaderUpsertWithoutDepartmentsInput = {
+    update: XOR<CaseHeaderUpdateWithoutDepartmentsInput, CaseHeaderUncheckedUpdateWithoutDepartmentsInput>
+    create: XOR<CaseHeaderCreateWithoutDepartmentsInput, CaseHeaderUncheckedCreateWithoutDepartmentsInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutDepartmentsInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutDepartmentsInput, CaseHeaderUncheckedUpdateWithoutDepartmentsInput>
+  }
+
+  export type CaseHeaderUpdateWithoutDepartmentsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutDepartmentsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseNotificationOutboxUpsertWithWhereUniqueWithoutDepartmentInput = {
+    where: CaseNotificationOutboxWhereUniqueInput
+    update: XOR<CaseNotificationOutboxUpdateWithoutDepartmentInput, CaseNotificationOutboxUncheckedUpdateWithoutDepartmentInput>
+    create: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationOutboxUpdateWithWhereUniqueWithoutDepartmentInput = {
+    where: CaseNotificationOutboxWhereUniqueInput
+    data: XOR<CaseNotificationOutboxUpdateWithoutDepartmentInput, CaseNotificationOutboxUncheckedUpdateWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationOutboxUpdateManyWithWhereWithoutDepartmentInput = {
+    where: CaseNotificationOutboxScalarWhereInput
+    data: XOR<CaseNotificationOutboxUpdateManyMutationInput, CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationMessageUpsertWithWhereUniqueWithoutDepartmentInput = {
+    where: CaseNotificationMessageWhereUniqueInput
+    update: XOR<CaseNotificationMessageUpdateWithoutDepartmentInput, CaseNotificationMessageUncheckedUpdateWithoutDepartmentInput>
+    create: XOR<CaseNotificationMessageCreateWithoutDepartmentInput, CaseNotificationMessageUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput = {
+    where: CaseNotificationMessageWhereUniqueInput
+    data: XOR<CaseNotificationMessageUpdateWithoutDepartmentInput, CaseNotificationMessageUncheckedUpdateWithoutDepartmentInput>
+  }
+
+  export type CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput = {
+    where: CaseNotificationMessageScalarWhereInput
+    data: XOR<CaseNotificationMessageUpdateManyMutationInput, CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentInput>
+  }
+
+  export type CaseHeaderCreateWithoutNotificationsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutNotificationsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutNotificationsInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutNotificationsInput, CaseHeaderUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type CaseDepartmentCreateWithoutNotificationsInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentUncheckedCreateWithoutNotificationsInput = {
+    caseDepartmentId: string
+    caseId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentCreateOrConnectWithoutNotificationsInput = {
+    where: CaseDepartmentWhereUniqueInput
+    create: XOR<CaseDepartmentCreateWithoutNotificationsInput, CaseDepartmentUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type CaseHeaderUpsertWithoutNotificationsInput = {
+    update: XOR<CaseHeaderUpdateWithoutNotificationsInput, CaseHeaderUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<CaseHeaderCreateWithoutNotificationsInput, CaseHeaderUncheckedCreateWithoutNotificationsInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutNotificationsInput, CaseHeaderUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type CaseHeaderUpdateWithoutNotificationsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutNotificationsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseDepartmentUpsertWithoutNotificationsInput = {
+    update: XOR<CaseDepartmentUpdateWithoutNotificationsInput, CaseDepartmentUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<CaseDepartmentCreateWithoutNotificationsInput, CaseDepartmentUncheckedCreateWithoutNotificationsInput>
+    where?: CaseDepartmentWhereInput
+  }
+
+  export type CaseDepartmentUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: CaseDepartmentWhereInput
+    data: XOR<CaseDepartmentUpdateWithoutNotificationsInput, CaseDepartmentUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type CaseDepartmentUpdateWithoutNotificationsInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentUncheckedUpdateWithoutNotificationsInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseHeaderCreateWithoutCaseNotificationMessagesInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutCaseNotificationMessagesInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutCaseNotificationMessagesInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutCaseNotificationMessagesInput, CaseHeaderUncheckedCreateWithoutCaseNotificationMessagesInput>
+  }
+
+  export type CaseDepartmentCreateWithoutCaseNotificationMessagesInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentUncheckedCreateWithoutCaseNotificationMessagesInput = {
+    caseDepartmentId: string
+    caseId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentCreateOrConnectWithoutCaseNotificationMessagesInput = {
+    where: CaseDepartmentWhereUniqueInput
+    create: XOR<CaseDepartmentCreateWithoutCaseNotificationMessagesInput, CaseDepartmentUncheckedCreateWithoutCaseNotificationMessagesInput>
+  }
+
+  export type CaseHeaderUpsertWithoutCaseNotificationMessagesInput = {
+    update: XOR<CaseHeaderUpdateWithoutCaseNotificationMessagesInput, CaseHeaderUncheckedUpdateWithoutCaseNotificationMessagesInput>
+    create: XOR<CaseHeaderCreateWithoutCaseNotificationMessagesInput, CaseHeaderUncheckedCreateWithoutCaseNotificationMessagesInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutCaseNotificationMessagesInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutCaseNotificationMessagesInput, CaseHeaderUncheckedUpdateWithoutCaseNotificationMessagesInput>
+  }
+
+  export type CaseHeaderUpdateWithoutCaseNotificationMessagesInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutCaseNotificationMessagesInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseDepartmentUpsertWithoutCaseNotificationMessagesInput = {
+    update: XOR<CaseDepartmentUpdateWithoutCaseNotificationMessagesInput, CaseDepartmentUncheckedUpdateWithoutCaseNotificationMessagesInput>
+    create: XOR<CaseDepartmentCreateWithoutCaseNotificationMessagesInput, CaseDepartmentUncheckedCreateWithoutCaseNotificationMessagesInput>
+    where?: CaseDepartmentWhereInput
+  }
+
+  export type CaseDepartmentUpdateToOneWithWhereWithoutCaseNotificationMessagesInput = {
+    where?: CaseDepartmentWhereInput
+    data: XOR<CaseDepartmentUpdateWithoutCaseNotificationMessagesInput, CaseDepartmentUncheckedUpdateWithoutCaseNotificationMessagesInput>
+  }
+
+  export type CaseDepartmentUpdateWithoutCaseNotificationMessagesInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentUncheckedUpdateWithoutCaseNotificationMessagesInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseHeaderCreateWithoutAttachmentsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutAttachmentsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutAttachmentsInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutAttachmentsInput, CaseHeaderUncheckedCreateWithoutAttachmentsInput>
+  }
+
+  export type CaseHeaderUpsertWithoutAttachmentsInput = {
+    update: XOR<CaseHeaderUpdateWithoutAttachmentsInput, CaseHeaderUncheckedUpdateWithoutAttachmentsInput>
+    create: XOR<CaseHeaderCreateWithoutAttachmentsInput, CaseHeaderUncheckedCreateWithoutAttachmentsInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutAttachmentsInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutAttachmentsInput, CaseHeaderUncheckedUpdateWithoutAttachmentsInput>
+  }
+
+  export type CaseHeaderUpdateWithoutAttachmentsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutAttachmentsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
   export type FishboneCauseCreateWithoutMaster_fishboneInput = {
     fishboneCauseId: string
     causeNo: number
@@ -27975,6 +45636,806 @@ export namespace Prisma {
     deletedBy?: StringNullableFilter<"FishboneItem"> | string | null
   }
 
+  export type CaseHeaderCreateWithoutCaseFishbonesInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutCaseFishbonesInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutCaseFishbonesInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutCaseFishbonesInput, CaseHeaderUncheckedCreateWithoutCaseFishbonesInput>
+  }
+
+  export type CaseFishboneCauseCreateWithoutCase_fishboneInput = {
+    caseFishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    itemLinks?: CaseFishboneItemCauseCreateNestedManyWithoutCauseInput
+  }
+
+  export type CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput = {
+    caseFishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    itemLinks?: CaseFishboneItemCauseUncheckedCreateNestedManyWithoutCauseInput
+  }
+
+  export type CaseFishboneCauseCreateOrConnectWithoutCase_fishboneInput = {
+    where: CaseFishboneCauseWhereUniqueInput
+    create: XOR<CaseFishboneCauseCreateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneCauseCreateManyCase_fishboneInputEnvelope = {
+    data: CaseFishboneCauseCreateManyCase_fishboneInput | CaseFishboneCauseCreateManyCase_fishboneInput[]
+  }
+
+  export type CaseFishboneItemCreateWithoutCase_fishboneInput = {
+    caseFishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    category: FishboneCategoryCreateNestedOneWithoutCaseFishboneItemsInput
+    causeLinks?: CaseFishboneItemCauseCreateNestedManyWithoutItemInput
+  }
+
+  export type CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput = {
+    caseFishboneItemId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causeLinks?: CaseFishboneItemCauseUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type CaseFishboneItemCreateOrConnectWithoutCase_fishboneInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    create: XOR<CaseFishboneItemCreateWithoutCase_fishboneInput, CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneItemCreateManyCase_fishboneInputEnvelope = {
+    data: CaseFishboneItemCreateManyCase_fishboneInput | CaseFishboneItemCreateManyCase_fishboneInput[]
+  }
+
+  export type CaseHeaderUpsertWithoutCaseFishbonesInput = {
+    update: XOR<CaseHeaderUpdateWithoutCaseFishbonesInput, CaseHeaderUncheckedUpdateWithoutCaseFishbonesInput>
+    create: XOR<CaseHeaderCreateWithoutCaseFishbonesInput, CaseHeaderUncheckedCreateWithoutCaseFishbonesInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutCaseFishbonesInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutCaseFishbonesInput, CaseHeaderUncheckedUpdateWithoutCaseFishbonesInput>
+  }
+
+  export type CaseHeaderUpdateWithoutCaseFishbonesInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutCaseFishbonesInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseFishboneCauseUpsertWithWhereUniqueWithoutCase_fishboneInput = {
+    where: CaseFishboneCauseWhereUniqueInput
+    update: XOR<CaseFishboneCauseUpdateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedUpdateWithoutCase_fishboneInput>
+    create: XOR<CaseFishboneCauseCreateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedCreateWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneCauseUpdateWithWhereUniqueWithoutCase_fishboneInput = {
+    where: CaseFishboneCauseWhereUniqueInput
+    data: XOR<CaseFishboneCauseUpdateWithoutCase_fishboneInput, CaseFishboneCauseUncheckedUpdateWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneCauseUpdateManyWithWhereWithoutCase_fishboneInput = {
+    where: CaseFishboneCauseScalarWhereInput
+    data: XOR<CaseFishboneCauseUpdateManyMutationInput, CaseFishboneCauseUncheckedUpdateManyWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneCauseScalarWhereInput = {
+    AND?: CaseFishboneCauseScalarWhereInput | CaseFishboneCauseScalarWhereInput[]
+    OR?: CaseFishboneCauseScalarWhereInput[]
+    NOT?: CaseFishboneCauseScalarWhereInput | CaseFishboneCauseScalarWhereInput[]
+    caseFishboneCauseId?: StringFilter<"CaseFishboneCause"> | string
+    caseFishboneId?: StringFilter<"CaseFishboneCause"> | string
+    causeNo?: IntFilter<"CaseFishboneCause"> | number
+    causeText?: StringFilter<"CaseFishboneCause"> | string
+    isActive?: BoolFilter<"CaseFishboneCause"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneCause"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneCause"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneCause"> | string | null
+  }
+
+  export type CaseFishboneItemUpsertWithWhereUniqueWithoutCase_fishboneInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    update: XOR<CaseFishboneItemUpdateWithoutCase_fishboneInput, CaseFishboneItemUncheckedUpdateWithoutCase_fishboneInput>
+    create: XOR<CaseFishboneItemCreateWithoutCase_fishboneInput, CaseFishboneItemUncheckedCreateWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneItemUpdateWithWhereUniqueWithoutCase_fishboneInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    data: XOR<CaseFishboneItemUpdateWithoutCase_fishboneInput, CaseFishboneItemUncheckedUpdateWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneItemUpdateManyWithWhereWithoutCase_fishboneInput = {
+    where: CaseFishboneItemScalarWhereInput
+    data: XOR<CaseFishboneItemUpdateManyMutationInput, CaseFishboneItemUncheckedUpdateManyWithoutCase_fishboneInput>
+  }
+
+  export type CaseFishboneItemScalarWhereInput = {
+    AND?: CaseFishboneItemScalarWhereInput | CaseFishboneItemScalarWhereInput[]
+    OR?: CaseFishboneItemScalarWhereInput[]
+    NOT?: CaseFishboneItemScalarWhereInput | CaseFishboneItemScalarWhereInput[]
+    caseFishboneItemId?: StringFilter<"CaseFishboneItem"> | string
+    caseFishboneId?: StringFilter<"CaseFishboneItem"> | string
+    categoryCode?: StringFilter<"CaseFishboneItem"> | string
+    problemText?: StringFilter<"CaseFishboneItem"> | string
+    solutionText?: StringFilter<"CaseFishboneItem"> | string
+    isActive?: BoolFilter<"CaseFishboneItem"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneItem"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneItem"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneItem"> | string | null
+  }
+
+  export type CaseFishboneMasterCreateWithoutCausesInput = {
+    caseFishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_header: CaseHeaderCreateNestedOneWithoutCaseFishbonesInput
+    items?: CaseFishboneItemCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterUncheckedCreateWithoutCausesInput = {
+    caseFishboneId: string
+    caseId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: CaseFishboneItemUncheckedCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterCreateOrConnectWithoutCausesInput = {
+    where: CaseFishboneMasterWhereUniqueInput
+    create: XOR<CaseFishboneMasterCreateWithoutCausesInput, CaseFishboneMasterUncheckedCreateWithoutCausesInput>
+  }
+
+  export type CaseFishboneItemCauseCreateWithoutCauseInput = {
+    caseFishboneItemCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    item: CaseFishboneItemCreateNestedOneWithoutCauseLinksInput
+  }
+
+  export type CaseFishboneItemCauseUncheckedCreateWithoutCauseInput = {
+    caseFishboneItemCauseId: string
+    caseFishboneItemId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCauseCreateOrConnectWithoutCauseInput = {
+    where: CaseFishboneItemCauseWhereUniqueInput
+    create: XOR<CaseFishboneItemCauseCreateWithoutCauseInput, CaseFishboneItemCauseUncheckedCreateWithoutCauseInput>
+  }
+
+  export type CaseFishboneItemCauseCreateManyCauseInputEnvelope = {
+    data: CaseFishboneItemCauseCreateManyCauseInput | CaseFishboneItemCauseCreateManyCauseInput[]
+  }
+
+  export type CaseFishboneMasterUpsertWithoutCausesInput = {
+    update: XOR<CaseFishboneMasterUpdateWithoutCausesInput, CaseFishboneMasterUncheckedUpdateWithoutCausesInput>
+    create: XOR<CaseFishboneMasterCreateWithoutCausesInput, CaseFishboneMasterUncheckedCreateWithoutCausesInput>
+    where?: CaseFishboneMasterWhereInput
+  }
+
+  export type CaseFishboneMasterUpdateToOneWithWhereWithoutCausesInput = {
+    where?: CaseFishboneMasterWhereInput
+    data: XOR<CaseFishboneMasterUpdateWithoutCausesInput, CaseFishboneMasterUncheckedUpdateWithoutCausesInput>
+  }
+
+  export type CaseFishboneMasterUpdateWithoutCausesInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_header?: CaseHeaderUpdateOneRequiredWithoutCaseFishbonesNestedInput
+    items?: CaseFishboneItemUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateWithoutCausesInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: CaseFishboneItemUncheckedUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneItemCauseUpsertWithWhereUniqueWithoutCauseInput = {
+    where: CaseFishboneItemCauseWhereUniqueInput
+    update: XOR<CaseFishboneItemCauseUpdateWithoutCauseInput, CaseFishboneItemCauseUncheckedUpdateWithoutCauseInput>
+    create: XOR<CaseFishboneItemCauseCreateWithoutCauseInput, CaseFishboneItemCauseUncheckedCreateWithoutCauseInput>
+  }
+
+  export type CaseFishboneItemCauseUpdateWithWhereUniqueWithoutCauseInput = {
+    where: CaseFishboneItemCauseWhereUniqueInput
+    data: XOR<CaseFishboneItemCauseUpdateWithoutCauseInput, CaseFishboneItemCauseUncheckedUpdateWithoutCauseInput>
+  }
+
+  export type CaseFishboneItemCauseUpdateManyWithWhereWithoutCauseInput = {
+    where: CaseFishboneItemCauseScalarWhereInput
+    data: XOR<CaseFishboneItemCauseUpdateManyMutationInput, CaseFishboneItemCauseUncheckedUpdateManyWithoutCauseInput>
+  }
+
+  export type CaseFishboneItemCauseScalarWhereInput = {
+    AND?: CaseFishboneItemCauseScalarWhereInput | CaseFishboneItemCauseScalarWhereInput[]
+    OR?: CaseFishboneItemCauseScalarWhereInput[]
+    NOT?: CaseFishboneItemCauseScalarWhereInput | CaseFishboneItemCauseScalarWhereInput[]
+    caseFishboneItemCauseId?: StringFilter<"CaseFishboneItemCause"> | string
+    caseFishboneItemId?: StringFilter<"CaseFishboneItemCause"> | string
+    caseFishboneCauseId?: StringFilter<"CaseFishboneItemCause"> | string
+    isActive?: BoolFilter<"CaseFishboneItemCause"> | boolean
+    createdAt?: DateTimeFilter<"CaseFishboneItemCause"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFishboneItemCause"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+    isDeleted?: BoolFilter<"CaseFishboneItemCause"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFishboneItemCause"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFishboneItemCause"> | string | null
+  }
+
+  export type CaseFishboneMasterCreateWithoutItemsInput = {
+    caseFishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_header: CaseHeaderCreateNestedOneWithoutCaseFishbonesInput
+    causes?: CaseFishboneCauseCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterUncheckedCreateWithoutItemsInput = {
+    caseFishboneId: string
+    caseId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causes?: CaseFishboneCauseUncheckedCreateNestedManyWithoutCase_fishboneInput
+  }
+
+  export type CaseFishboneMasterCreateOrConnectWithoutItemsInput = {
+    where: CaseFishboneMasterWhereUniqueInput
+    create: XOR<CaseFishboneMasterCreateWithoutItemsInput, CaseFishboneMasterUncheckedCreateWithoutItemsInput>
+  }
+
+  export type FishboneCategoryCreateWithoutCaseFishboneItemsInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: FishboneItemCreateNestedManyWithoutCategoryInput
+  }
+
+  export type FishboneCategoryUncheckedCreateWithoutCaseFishboneItemsInput = {
+    fishboneCategoryId: string
+    categoryCode: string
+    categoryName: string
+    categoryDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    items?: FishboneItemUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type FishboneCategoryCreateOrConnectWithoutCaseFishboneItemsInput = {
+    where: FishboneCategoryWhereUniqueInput
+    create: XOR<FishboneCategoryCreateWithoutCaseFishboneItemsInput, FishboneCategoryUncheckedCreateWithoutCaseFishboneItemsInput>
+  }
+
+  export type CaseFishboneItemCauseCreateWithoutItemInput = {
+    caseFishboneItemCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    cause: CaseFishboneCauseCreateNestedOneWithoutItemLinksInput
+  }
+
+  export type CaseFishboneItemCauseUncheckedCreateWithoutItemInput = {
+    caseFishboneItemCauseId: string
+    caseFishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCauseCreateOrConnectWithoutItemInput = {
+    where: CaseFishboneItemCauseWhereUniqueInput
+    create: XOR<CaseFishboneItemCauseCreateWithoutItemInput, CaseFishboneItemCauseUncheckedCreateWithoutItemInput>
+  }
+
+  export type CaseFishboneItemCauseCreateManyItemInputEnvelope = {
+    data: CaseFishboneItemCauseCreateManyItemInput | CaseFishboneItemCauseCreateManyItemInput[]
+  }
+
+  export type CaseFishboneMasterUpsertWithoutItemsInput = {
+    update: XOR<CaseFishboneMasterUpdateWithoutItemsInput, CaseFishboneMasterUncheckedUpdateWithoutItemsInput>
+    create: XOR<CaseFishboneMasterCreateWithoutItemsInput, CaseFishboneMasterUncheckedCreateWithoutItemsInput>
+    where?: CaseFishboneMasterWhereInput
+  }
+
+  export type CaseFishboneMasterUpdateToOneWithWhereWithoutItemsInput = {
+    where?: CaseFishboneMasterWhereInput
+    data: XOR<CaseFishboneMasterUpdateWithoutItemsInput, CaseFishboneMasterUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type CaseFishboneMasterUpdateWithoutItemsInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_header?: CaseHeaderUpdateOneRequiredWithoutCaseFishbonesNestedInput
+    causes?: CaseFishboneCauseUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateWithoutItemsInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: CaseFishboneCauseUncheckedUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type FishboneCategoryUpsertWithoutCaseFishboneItemsInput = {
+    update: XOR<FishboneCategoryUpdateWithoutCaseFishboneItemsInput, FishboneCategoryUncheckedUpdateWithoutCaseFishboneItemsInput>
+    create: XOR<FishboneCategoryCreateWithoutCaseFishboneItemsInput, FishboneCategoryUncheckedCreateWithoutCaseFishboneItemsInput>
+    where?: FishboneCategoryWhereInput
+  }
+
+  export type FishboneCategoryUpdateToOneWithWhereWithoutCaseFishboneItemsInput = {
+    where?: FishboneCategoryWhereInput
+    data: XOR<FishboneCategoryUpdateWithoutCaseFishboneItemsInput, FishboneCategoryUncheckedUpdateWithoutCaseFishboneItemsInput>
+  }
+
+  export type FishboneCategoryUpdateWithoutCaseFishboneItemsInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: FishboneItemUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type FishboneCategoryUncheckedUpdateWithoutCaseFishboneItemsInput = {
+    fishboneCategoryId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    categoryName?: StringFieldUpdateOperationsInput | string
+    categoryDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: FishboneItemUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CaseFishboneItemCauseUpsertWithWhereUniqueWithoutItemInput = {
+    where: CaseFishboneItemCauseWhereUniqueInput
+    update: XOR<CaseFishboneItemCauseUpdateWithoutItemInput, CaseFishboneItemCauseUncheckedUpdateWithoutItemInput>
+    create: XOR<CaseFishboneItemCauseCreateWithoutItemInput, CaseFishboneItemCauseUncheckedCreateWithoutItemInput>
+  }
+
+  export type CaseFishboneItemCauseUpdateWithWhereUniqueWithoutItemInput = {
+    where: CaseFishboneItemCauseWhereUniqueInput
+    data: XOR<CaseFishboneItemCauseUpdateWithoutItemInput, CaseFishboneItemCauseUncheckedUpdateWithoutItemInput>
+  }
+
+  export type CaseFishboneItemCauseUpdateManyWithWhereWithoutItemInput = {
+    where: CaseFishboneItemCauseScalarWhereInput
+    data: XOR<CaseFishboneItemCauseUpdateManyMutationInput, CaseFishboneItemCauseUncheckedUpdateManyWithoutItemInput>
+  }
+
+  export type CaseFishboneItemCreateWithoutCauseLinksInput = {
+    caseFishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_fishbone: CaseFishboneMasterCreateNestedOneWithoutItemsInput
+    category: FishboneCategoryCreateNestedOneWithoutCaseFishboneItemsInput
+  }
+
+  export type CaseFishboneItemUncheckedCreateWithoutCauseLinksInput = {
+    caseFishboneItemId: string
+    caseFishboneId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCreateOrConnectWithoutCauseLinksInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    create: XOR<CaseFishboneItemCreateWithoutCauseLinksInput, CaseFishboneItemUncheckedCreateWithoutCauseLinksInput>
+  }
+
+  export type CaseFishboneCauseCreateWithoutItemLinksInput = {
+    caseFishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_fishbone: CaseFishboneMasterCreateNestedOneWithoutCausesInput
+  }
+
+  export type CaseFishboneCauseUncheckedCreateWithoutItemLinksInput = {
+    caseFishboneCauseId: string
+    caseFishboneId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneCauseCreateOrConnectWithoutItemLinksInput = {
+    where: CaseFishboneCauseWhereUniqueInput
+    create: XOR<CaseFishboneCauseCreateWithoutItemLinksInput, CaseFishboneCauseUncheckedCreateWithoutItemLinksInput>
+  }
+
+  export type CaseFishboneItemUpsertWithoutCauseLinksInput = {
+    update: XOR<CaseFishboneItemUpdateWithoutCauseLinksInput, CaseFishboneItemUncheckedUpdateWithoutCauseLinksInput>
+    create: XOR<CaseFishboneItemCreateWithoutCauseLinksInput, CaseFishboneItemUncheckedCreateWithoutCauseLinksInput>
+    where?: CaseFishboneItemWhereInput
+  }
+
+  export type CaseFishboneItemUpdateToOneWithWhereWithoutCauseLinksInput = {
+    where?: CaseFishboneItemWhereInput
+    data: XOR<CaseFishboneItemUpdateWithoutCauseLinksInput, CaseFishboneItemUncheckedUpdateWithoutCauseLinksInput>
+  }
+
+  export type CaseFishboneItemUpdateWithoutCauseLinksInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_fishbone?: CaseFishboneMasterUpdateOneRequiredWithoutItemsNestedInput
+    category?: FishboneCategoryUpdateOneRequiredWithoutCaseFishboneItemsNestedInput
+  }
+
+  export type CaseFishboneItemUncheckedUpdateWithoutCauseLinksInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneCauseUpsertWithoutItemLinksInput = {
+    update: XOR<CaseFishboneCauseUpdateWithoutItemLinksInput, CaseFishboneCauseUncheckedUpdateWithoutItemLinksInput>
+    create: XOR<CaseFishboneCauseCreateWithoutItemLinksInput, CaseFishboneCauseUncheckedCreateWithoutItemLinksInput>
+    where?: CaseFishboneCauseWhereInput
+  }
+
+  export type CaseFishboneCauseUpdateToOneWithWhereWithoutItemLinksInput = {
+    where?: CaseFishboneCauseWhereInput
+    data: XOR<CaseFishboneCauseUpdateWithoutItemLinksInput, CaseFishboneCauseUncheckedUpdateWithoutItemLinksInput>
+  }
+
+  export type CaseFishboneCauseUpdateWithoutItemLinksInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_fishbone?: CaseFishboneMasterUpdateOneRequiredWithoutCausesNestedInput
+  }
+
+  export type CaseFishboneCauseUncheckedUpdateWithoutItemLinksInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type FishboneItemCreateWithoutCategoryInput = {
     fishboneItemId: string
     problemText: string
@@ -28016,6 +46477,47 @@ export namespace Prisma {
     data: FishboneItemCreateManyCategoryInput | FishboneItemCreateManyCategoryInput[]
   }
 
+  export type CaseFishboneItemCreateWithoutCategoryInput = {
+    caseFishboneItemId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case_fishbone: CaseFishboneMasterCreateNestedOneWithoutItemsInput
+    causeLinks?: CaseFishboneItemCauseCreateNestedManyWithoutItemInput
+  }
+
+  export type CaseFishboneItemUncheckedCreateWithoutCategoryInput = {
+    caseFishboneItemId: string
+    caseFishboneId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    causeLinks?: CaseFishboneItemCauseUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type CaseFishboneItemCreateOrConnectWithoutCategoryInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    create: XOR<CaseFishboneItemCreateWithoutCategoryInput, CaseFishboneItemUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type CaseFishboneItemCreateManyCategoryInputEnvelope = {
+    data: CaseFishboneItemCreateManyCategoryInput | CaseFishboneItemCreateManyCategoryInput[]
+  }
+
   export type FishboneItemUpsertWithWhereUniqueWithoutCategoryInput = {
     where: FishboneItemWhereUniqueInput
     update: XOR<FishboneItemUpdateWithoutCategoryInput, FishboneItemUncheckedUpdateWithoutCategoryInput>
@@ -28030,6 +46532,22 @@ export namespace Prisma {
   export type FishboneItemUpdateManyWithWhereWithoutCategoryInput = {
     where: FishboneItemScalarWhereInput
     data: XOR<FishboneItemUpdateManyMutationInput, FishboneItemUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type CaseFishboneItemUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    update: XOR<CaseFishboneItemUpdateWithoutCategoryInput, CaseFishboneItemUncheckedUpdateWithoutCategoryInput>
+    create: XOR<CaseFishboneItemCreateWithoutCategoryInput, CaseFishboneItemUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type CaseFishboneItemUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: CaseFishboneItemWhereUniqueInput
+    data: XOR<CaseFishboneItemUpdateWithoutCategoryInput, CaseFishboneItemUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type CaseFishboneItemUpdateManyWithWhereWithoutCategoryInput = {
+    where: CaseFishboneItemScalarWhereInput
+    data: XOR<CaseFishboneItemUpdateManyMutationInput, CaseFishboneItemUncheckedUpdateManyWithoutCategoryInput>
   }
 
   export type MasterFishboneCreateWithoutCausesInput = {
@@ -28230,6 +46748,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    caseFishboneItems?: CaseFishboneItemCreateNestedManyWithoutCategoryInput
   }
 
   export type FishboneCategoryUncheckedCreateWithoutItemsInput = {
@@ -28245,6 +46764,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    caseFishboneItems?: CaseFishboneItemUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type FishboneCategoryCreateOrConnectWithoutItemsInput = {
@@ -28354,6 +46874,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    caseFishboneItems?: CaseFishboneItemUpdateManyWithoutCategoryNestedInput
   }
 
   export type FishboneCategoryUncheckedUpdateWithoutItemsInput = {
@@ -28369,6 +46890,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    caseFishboneItems?: CaseFishboneItemUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type FishboneItemCauseUpsertWithWhereUniqueWithoutItemInput = {
@@ -29301,6 +47823,554 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type CaseDepartmentCreateManyCaseInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseAttachmentCreateManyCaseInput = {
+    caseAttachmentId: string
+    mediaType: string
+    filePath: string
+    fileName: string
+    fileMime?: string | null
+    fileSize?: number | null
+    caption?: string | null
+    locationDesc?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneMasterCreateManyCase_headerInput = {
+    caseFishboneId: string
+    sbuSubId: number
+    fishboneName: string
+    fishboneDesc?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationOutboxCreateManyCaseInput = {
+    caseNotificationId: string
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationMessageCreateManyCaseInput = {
+    caseNotificationMessageId: string
+    caseDepartmentId?: string | null
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseDepartmentUpdateWithoutCaseInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentUncheckedUpdateWithoutCaseInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentUncheckedUpdateManyWithoutCaseInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseAttachmentUpdateWithoutCaseInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseAttachmentUncheckedUpdateWithoutCaseInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseAttachmentUncheckedUpdateManyWithoutCaseInput = {
+    caseAttachmentId?: StringFieldUpdateOperationsInput | string
+    mediaType?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileMime?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneMasterUpdateWithoutCase_headerInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: CaseFishboneCauseUpdateManyWithoutCase_fishboneNestedInput
+    items?: CaseFishboneItemUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateWithoutCase_headerInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causes?: CaseFishboneCauseUncheckedUpdateManyWithoutCase_fishboneNestedInput
+    items?: CaseFishboneItemUncheckedUpdateManyWithoutCase_fishboneNestedInput
+  }
+
+  export type CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerInput = {
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    fishboneName?: StringFieldUpdateOperationsInput | string
+    fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxUpdateWithoutCaseInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: CaseDepartmentUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateWithoutCaseInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateManyWithoutCaseInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageUpdateWithoutCaseInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: CaseDepartmentUpdateOneWithoutCaseNotificationMessagesNestedInput
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateWithoutCaseInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateManyWithoutCaseInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    caseDepartmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxCreateManyDepartmentInput = {
+    caseNotificationId: string
+    caseId?: string | null
+    recipientEmployeeId?: number | null
+    channel: string
+    phoneNumber: string
+    message: string
+    status?: string
+    attempts?: number
+    lastError?: string | null
+    provider?: string | null
+    meta?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationMessageCreateManyDepartmentInput = {
+    caseNotificationMessageId: string
+    caseId?: string | null
+    recipientEmployeeId?: number | null
+    role: string
+    messageTemplate: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseNotificationOutboxUpdateWithoutDepartmentInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateWithoutDepartmentInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentInput = {
+    caseNotificationId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    channel?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageUpdateWithoutDepartmentInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneWithoutCaseNotificationMessagesNestedInput
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateWithoutDepartmentInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentInput = {
+    caseNotificationMessageId?: StringFieldUpdateOperationsInput | string
+    caseId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: StringFieldUpdateOperationsInput | string
+    messageTemplate?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type FishboneCauseCreateManyMaster_fishboneInput = {
     fishboneCauseId: string
     causeNo: number
@@ -29421,9 +48491,248 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type CaseFishboneCauseCreateManyCase_fishboneInput = {
+    caseFishboneCauseId: string
+    causeNo: number
+    causeText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCreateManyCase_fishboneInput = {
+    caseFishboneItemId: string
+    categoryCode: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneCauseUpdateWithoutCase_fishboneInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    itemLinks?: CaseFishboneItemCauseUpdateManyWithoutCauseNestedInput
+  }
+
+  export type CaseFishboneCauseUncheckedUpdateWithoutCase_fishboneInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    itemLinks?: CaseFishboneItemCauseUncheckedUpdateManyWithoutCauseNestedInput
+  }
+
+  export type CaseFishboneCauseUncheckedUpdateManyWithoutCase_fishboneInput = {
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    causeNo?: IntFieldUpdateOperationsInput | number
+    causeText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemUpdateWithoutCase_fishboneInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: FishboneCategoryUpdateOneRequiredWithoutCaseFishboneItemsNestedInput
+    causeLinks?: CaseFishboneItemCauseUpdateManyWithoutItemNestedInput
+  }
+
+  export type CaseFishboneItemUncheckedUpdateWithoutCase_fishboneInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causeLinks?: CaseFishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type CaseFishboneItemUncheckedUpdateManyWithoutCase_fishboneInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    categoryCode?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseCreateManyCauseInput = {
+    caseFishboneItemCauseId: string
+    caseFishboneItemId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCauseUpdateWithoutCauseInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    item?: CaseFishboneItemUpdateOneRequiredWithoutCauseLinksNestedInput
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateWithoutCauseInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateManyWithoutCauseInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseCreateManyItemInput = {
+    caseFishboneItemCauseId: string
+    caseFishboneCauseId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCauseUpdateWithoutItemInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cause?: CaseFishboneCauseUpdateOneRequiredWithoutItemLinksNestedInput
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateWithoutItemInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemCauseUncheckedUpdateManyWithoutItemInput = {
+    caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
+    caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type FishboneItemCreateManyCategoryInput = {
     fishboneItemId: string
     fishboneId: string
+    problemText: string
+    solutionText: string
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFishboneItemCreateManyCategoryInput = {
+    caseFishboneItemId: string
+    caseFishboneId: string
     problemText: string
     solutionText: string
     isActive?: boolean
@@ -29471,6 +48780,53 @@ export namespace Prisma {
   export type FishboneItemUncheckedUpdateManyWithoutCategoryInput = {
     fishboneItemId?: StringFieldUpdateOperationsInput | string
     fishboneId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFishboneItemUpdateWithoutCategoryInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case_fishbone?: CaseFishboneMasterUpdateOneRequiredWithoutItemsNestedInput
+    causeLinks?: CaseFishboneItemCauseUpdateManyWithoutItemNestedInput
+  }
+
+  export type CaseFishboneItemUncheckedUpdateWithoutCategoryInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
+    problemText?: StringFieldUpdateOperationsInput | string
+    solutionText?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    causeLinks?: CaseFishboneItemCauseUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type CaseFishboneItemUncheckedUpdateManyWithoutCategoryInput = {
+    caseFishboneItemId?: StringFieldUpdateOperationsInput | string
+    caseFishboneId?: StringFieldUpdateOperationsInput | string
     problemText?: StringFieldUpdateOperationsInput | string
     solutionText?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean

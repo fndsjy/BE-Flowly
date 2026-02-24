@@ -214,7 +214,182 @@ model ProcedureSopIK {
   @@map("procedure_sop_ik")
 }
 
-/// Fishbone header
+/// Case header (problem/project)
+model CaseHeader {
+  /// e.g., "CAS260211-0001"
+  caseId                   String                    @id @db.NVarChar(20)
+  caseType                 String                    @db.NVarChar(20)
+  caseTitle                String                    @db.NVarChar(200)
+  background               String?                   @db.NVarChar(1000)
+  currentCondition         String?                   @db.NVarChar(2000)
+  projectDesc              String?                   @db.NVarChar(2000)
+  projectObjective         String?                   @db.NVarChar(1000)
+  locationDesc             String?                   @db.NVarChar(255)
+  notes                    String?                   @db.NVarChar(1000)
+  status                   String                    @default("NEW") @db.NVarChar(20)
+  requesterId              String?                   @db.NVarChar(20)
+  requesterEmployeeId      Int?
+  originSbuSubId           Int?
+  isActive                 Boolean                   @default(true)
+  createdAt                DateTime                  @default(now())
+  createdBy                String?                   @db.NVarChar(20)
+  updatedAt                DateTime                  @updatedAt
+  updatedBy                String?                   @db.NVarChar(20)
+  isDeleted                Boolean                   @default(false)
+  deletedAt                DateTime?
+  deletedBy                String?                   @db.NVarChar(20)
+  departments              CaseDepartment[]
+  attachments              CaseAttachment[]
+  caseFishbones            CaseFishboneMaster[]
+  notifications            CaseNotificationOutbox[]
+  caseNotificationMessages CaseNotificationMessage[]
+
+  @@index([status])
+  @@index([requesterId])
+  @@index([requesterEmployeeId])
+  @@index([originSbuSubId])
+  @@map("case_header")
+}
+
+/// Case -> target departments (SBU sub) with decision + PIC assignment
+model CaseDepartment {
+  caseDepartmentId         String                    @id @db.NVarChar(20)
+  caseId                   String                    @db.NVarChar(20)
+  sbuSubId                 Int
+  decisionStatus           String                    @default("PENDING") @db.NVarChar(20)
+  decisionAt               DateTime?
+  decisionBy               String?                   @db.NVarChar(20)
+  assigneeEmployeeId       Int?
+  assignedAt               DateTime?
+  assignedBy               String?                   @db.NVarChar(20)
+  workStatus               String?                   @db.NVarChar(20)
+  startDate                DateTime?
+  targetDate               DateTime?
+  endDate                  DateTime?
+  workNotes                String?                   @db.NVarChar(500)
+  isActive                 Boolean                   @default(true)
+  createdAt                DateTime                  @default(now())
+  createdBy                String?                   @db.NVarChar(20)
+  updatedAt                DateTime                  @updatedAt
+  updatedBy                String?                   @db.NVarChar(20)
+  isDeleted                Boolean                   @default(false)
+  deletedAt                DateTime?
+  deletedBy                String?                   @db.NVarChar(20)
+  case                     CaseHeader                @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+  notifications            CaseNotificationOutbox[]
+  caseNotificationMessages CaseNotificationMessage[]
+
+  @@unique([caseId, sbuSubId])
+  @@index([caseId, decisionStatus])
+  @@index([sbuSubId])
+  @@map("case_department")
+}
+
+/// Case notification outbox (WhatsApp, etc.)
+model CaseNotificationOutbox {
+  caseNotificationId  String          @id @db.NVarChar(20)
+  caseId              String?         @db.NVarChar(20)
+  caseDepartmentId    String?         @db.NVarChar(20)
+  recipientEmployeeId Int?
+  channel             String          @db.NVarChar(20)
+  phoneNumber         String          @db.NVarChar(20)
+  message             String          @db.NVarChar(1000)
+  status              String          @default("PENDING") @db.NVarChar(20)
+  attempts            Int             @default(0)
+  lastError           String?         @db.NVarChar(500)
+  provider            String?         @db.NVarChar(50)
+  meta                String?         @db.NVarChar(Max)
+  isActive            Boolean         @default(true)
+  createdAt           DateTime        @default(now())
+  createdBy           String?         @db.NVarChar(20)
+  updatedAt           DateTime        @updatedAt
+  updatedBy           String?         @db.NVarChar(20)
+  isDeleted           Boolean         @default(false)
+  deletedAt           DateTime?
+  deletedBy           String?         @db.NVarChar(20)
+  case                CaseHeader?     @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+  department          CaseDepartment? @relation(fields: [caseDepartmentId], references: [caseDepartmentId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([caseId])
+  @@index([caseDepartmentId])
+  @@index([status, isDeleted])
+  @@map("case_notification_outbox")
+}
+
+/// Custom notification message template (per case/person/role)
+model CaseNotificationMessage {
+  caseNotificationMessageId String          @id @db.NVarChar(20)
+  caseId                    String?         @db.NVarChar(20)
+  caseDepartmentId          String?         @db.NVarChar(20)
+  recipientEmployeeId       Int?
+  role                      String          @db.NVarChar(20)
+  messageTemplate           String          @db.NVarChar(1000)
+  isActive                  Boolean         @default(true)
+  createdAt                 DateTime        @default(now())
+  createdBy                 String?         @db.NVarChar(20)
+  updatedAt                 DateTime        @updatedAt
+  updatedBy                 String?         @db.NVarChar(20)
+  isDeleted                 Boolean         @default(false)
+  deletedAt                 DateTime?
+  deletedBy                 String?         @db.NVarChar(20)
+  case                      CaseHeader?     @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+  department                CaseDepartment? @relation(fields: [caseDepartmentId], references: [caseDepartmentId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([caseId])
+  @@index([caseDepartmentId])
+  @@index([recipientEmployeeId, role])
+  @@map("case_notification_message")
+}
+
+/// Default notification template for outbox
+model CaseNotificationTemplate {
+  caseNotificationTemplateId String    @id @db.NVarChar(20)
+  templateName               String    @db.NVarChar(100)
+  channel                    String    @db.NVarChar(20)
+  role                       String    @db.NVarChar(20)
+  action                     String?   @db.NVarChar(30)
+  caseType                   String?   @db.NVarChar(20)
+  messageTemplate            String    @db.NVarChar(1000)
+  isActive                   Boolean   @default(true)
+  createdAt                  DateTime  @default(now())
+  createdBy                  String?   @db.NVarChar(20)
+  updatedAt                  DateTime  @updatedAt
+  updatedBy                  String?   @db.NVarChar(20)
+  isDeleted                  Boolean   @default(false)
+  deletedAt                  DateTime?
+  deletedBy                  String?   @db.NVarChar(20)
+
+  @@index([channel, role, action, caseType, isActive, isDeleted])
+  @@map("case_notification_template")
+}
+
+/// Case attachments (photo/video documentation)
+model CaseAttachment {
+  caseAttachmentId String     @id @db.NVarChar(20)
+  caseId           String     @db.NVarChar(20)
+  mediaType        String     @db.NVarChar(10)
+  filePath         String     @db.NVarChar(500)
+  fileName         String     @db.NVarChar(255)
+  fileMime         String?    @db.NVarChar(100)
+  fileSize         Int?
+  caption          String?    @db.NVarChar(255)
+  locationDesc     String?    @db.NVarChar(255)
+  orderIndex       Int        @default(0)
+  isActive         Boolean    @default(true)
+  createdAt        DateTime   @default(now())
+  createdBy        String?    @db.NVarChar(20)
+  updatedAt        DateTime   @updatedAt
+  updatedBy        String?    @db.NVarChar(20)
+  isDeleted        Boolean    @default(false)
+  deletedAt        DateTime?
+  deletedBy        String?    @db.NVarChar(20)
+  case             CaseHeader @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([caseId, isDeleted])
+  @@map("case_attachment")
+}
+
+/// Fishbone master
 model MasterFishbone {
   fishboneId   String          @id @db.NVarChar(20)
   sbuSubId     Int
@@ -235,21 +410,114 @@ model MasterFishbone {
   @@map("master_fishbone")
 }
 
+/// Case fishbone header (per case)
+model CaseFishboneMaster {
+  caseFishboneId String              @id @db.NVarChar(20)
+  caseId         String              @db.NVarChar(20)
+  sbuSubId       Int
+  fishboneName   String              @db.NVarChar(150)
+  fishboneDesc   String?             @db.NVarChar(1000)
+  isActive       Boolean             @default(true)
+  createdAt      DateTime            @default(now())
+  createdBy      String?             @db.NVarChar(20)
+  updatedAt      DateTime            @updatedAt
+  updatedBy      String?             @db.NVarChar(20)
+  isDeleted      Boolean             @default(false)
+  deletedAt      DateTime?
+  deletedBy      String?             @db.NVarChar(20)
+  case_header    CaseHeader          @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+  causes         CaseFishboneCause[]
+  items          CaseFishboneItem[]
+
+  @@index([caseId, isActive, isDeleted])
+  @@index([sbuSubId])
+  @@map("case_fishbone_master")
+}
+
+/// Case fishbone root causes
+model CaseFishboneCause {
+  caseFishboneCauseId String                  @id @db.NVarChar(20)
+  caseFishboneId      String                  @db.NVarChar(20)
+  causeNo             Int
+  causeText           String                  @db.NVarChar(1000)
+  isActive            Boolean                 @default(true)
+  createdAt           DateTime                @default(now())
+  createdBy           String?                 @db.NVarChar(20)
+  updatedAt           DateTime                @updatedAt
+  updatedBy           String?                 @db.NVarChar(20)
+  isDeleted           Boolean                 @default(false)
+  deletedAt           DateTime?
+  deletedBy           String?                 @db.NVarChar(20)
+  case_fishbone       CaseFishboneMaster      @relation(fields: [caseFishboneId], references: [caseFishboneId], onDelete: NoAction, onUpdate: NoAction)
+  itemLinks           CaseFishboneItemCause[]
+
+  @@unique([caseFishboneId, causeNo])
+  @@index([caseFishboneId, isActive, isDeleted])
+  @@map("case_fishbone_cause")
+}
+
+/// Case fishbone problem + solution per category (6M)
+model CaseFishboneItem {
+  caseFishboneItemId String                  @id @db.NVarChar(20)
+  caseFishboneId     String                  @db.NVarChar(20)
+  categoryCode       String                  @db.NVarChar(20)
+  problemText        String                  @db.NVarChar(1000)
+  solutionText       String                  @db.NVarChar(1000)
+  isActive           Boolean                 @default(true)
+  createdAt          DateTime                @default(now())
+  createdBy          String?                 @db.NVarChar(20)
+  updatedAt          DateTime                @updatedAt
+  updatedBy          String?                 @db.NVarChar(20)
+  isDeleted          Boolean                 @default(false)
+  deletedAt          DateTime?
+  deletedBy          String?                 @db.NVarChar(20)
+  case_fishbone      CaseFishboneMaster      @relation(fields: [caseFishboneId], references: [caseFishboneId], onDelete: NoAction, onUpdate: NoAction)
+  category           FishboneCategory        @relation(fields: [categoryCode], references: [categoryCode], onDelete: NoAction, onUpdate: NoAction)
+  causeLinks         CaseFishboneItemCause[]
+
+  @@index([caseFishboneId, categoryCode])
+  @@index([caseFishboneId, isActive, isDeleted])
+  @@map("case_fishbone_item")
+}
+
+/// Case fishbone item to cause mapping
+model CaseFishboneItemCause {
+  caseFishboneItemCauseId String            @id @db.NVarChar(20)
+  caseFishboneItemId      String            @db.NVarChar(20)
+  caseFishboneCauseId     String            @db.NVarChar(20)
+  isActive                Boolean           @default(true)
+  createdAt               DateTime          @default(now())
+  createdBy               String?           @db.NVarChar(20)
+  updatedAt               DateTime          @updatedAt
+  updatedBy               String?           @db.NVarChar(20)
+  isDeleted               Boolean           @default(false)
+  deletedAt               DateTime?
+  deletedBy               String?           @db.NVarChar(20)
+  item                    CaseFishboneItem  @relation(fields: [caseFishboneItemId], references: [caseFishboneItemId], onDelete: NoAction, onUpdate: NoAction)
+  cause                   CaseFishboneCause @relation(fields: [caseFishboneCauseId], references: [caseFishboneCauseId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([caseFishboneItemId, caseFishboneCauseId])
+  @@index([caseFishboneItemId, isActive, isDeleted])
+  @@index([caseFishboneCauseId, isActive, isDeleted])
+  @@map("case_fishbone_item_cause")
+}
+
 /// Fishbone category master (6M, etc.)
 model FishboneCategory {
-  fishboneCategoryId String         @id @db.NVarChar(20)
-  categoryCode       String         @unique @db.NVarChar(20)
-  categoryName       String         @db.NVarChar(100)
-  categoryDesc       String?        @db.NVarChar(255)
-  isActive           Boolean        @default(true)
-  createdAt          DateTime       @default(now())
-  createdBy          String?        @db.NVarChar(20)
-  updatedAt          DateTime       @updatedAt
-  updatedBy          String?        @db.NVarChar(20)
-  isDeleted          Boolean        @default(false)
+  fishboneCategoryId String             @id @db.NVarChar(20)
+  categoryCode       String             @unique @db.NVarChar(20)
+  categoryName       String             @db.NVarChar(100)
+  categoryDesc       String?            @db.NVarChar(255)
+  isActive           Boolean            @default(true)
+  createdAt          DateTime           @default(now())
+  createdBy          String?            @db.NVarChar(20)
+  updatedAt          DateTime           @updatedAt
+  updatedBy          String?            @db.NVarChar(20)
+  isDeleted          Boolean            @default(false)
   deletedAt          DateTime?
-  deletedBy          String?        @db.NVarChar(20)
+  deletedBy          String?            @db.NVarChar(20)
   items              FishboneItem[]
+  caseFishboneItems  CaseFishboneItem[]
 
   @@index([isActive, isDeleted])
   @@map("fishbone_category")
