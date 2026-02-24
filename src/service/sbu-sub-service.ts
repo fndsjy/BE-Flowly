@@ -440,14 +440,14 @@ export class SbuSubService {
     }
 
     // Cek apakah sbu masih aktif
-      const sbu = await prismaEmployee.em_sbu.findFirst({
-        where: { id: sbuId },
-      });
+    const sbu = await prismaEmployee.em_sbu.findFirst({
+      where: { id: sbuId },
+    });
 
-      // Jika sbu tidak ada atau isDeleted true → return [] langsung
-      if (!sbu || sbu.isDeleted === true) {
-        return [];
-      }
+    // Jika sbu tidak ada / isDeleted true / status bukan A -> return [] langsung
+    if (!sbu || sbu.isDeleted === true || sbu.status !== "A") {
+      return [];
+    }
 
     const exists = await prismaEmployee.em_sbu.findFirst({
       where: { id: sbuId, OR: [{ isDeleted: false }, { isDeleted: null }] }
@@ -458,6 +458,7 @@ export class SbuSubService {
       where: {
         sbu_id: sbuId,
         OR: [{ isDeleted: false }, { isDeleted: null }],
+        status: "A",
         ...(accessContext.isAdmin
           ? {}
           : { id: { in: Array.from(accessContext.sbuSub.read) } })
@@ -480,14 +481,14 @@ export class SbuSubService {
     }
 
     // Cek apakah pilar masih aktif
-      const pilar = await prismaEmployee.em_pilar.findUnique({
-        where: { id: pilarId },
-      });
+    const pilar = await prismaEmployee.em_pilar.findUnique({
+      where: { id: pilarId },
+    });
 
-      // Jika pilar tidak ada atau isDeleted true → return [] langsung
-      if (!pilar || pilar.isDeleted === true) {
-        return [];
-      }
+    // Jika pilar tidak ada / isDeleted true / status bukan A -> return [] langsung
+    if (!pilar || pilar.isDeleted === true || pilar.status !== "A") {
+      return [];
+    }
 
     const exists = await prismaEmployee.em_pilar.findFirst({
       where: { id: pilarId, OR: [{ isDeleted: false }, { isDeleted: null }] }
@@ -498,6 +499,7 @@ export class SbuSubService {
       where: {
         sbu_pilar: pilarId,
         OR: [{ isDeleted: false }, { isDeleted: null }],
+        status: "A",
         ...(accessContext.isAdmin
           ? {}
           : { id: { in: Array.from(accessContext.sbuSub.read) } })
@@ -508,3 +510,5 @@ export class SbuSubService {
     return list.map(toSbuSubListResponse);
   }
 }
+
+

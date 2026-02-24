@@ -245,4 +245,154 @@ export async function generateFishboneItemCauseId() {
 export async function generateProcedureIkId() {
     return generateMasterIkId();
 }
+export async function generateCaseId() {
+    const today = getDDMMYY();
+    const prefix = `CAS${today}`;
+    const existing = await prisma.caseHeader.findFirst({
+        where: { caseId: { startsWith: prefix } },
+        select: { caseId: true },
+        orderBy: { caseId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseId) {
+        const currentSeq = extractSeqFromId(existing.caseId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+}
+export async function generateCaseDepartmentId() {
+    const today = getDDMMYY();
+    const prefix = `CSD${today}`;
+    const existing = await prisma.caseDepartment.findFirst({
+        where: { caseDepartmentId: { startsWith: prefix } },
+        select: { caseDepartmentId: true },
+        orderBy: { caseDepartmentId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseDepartmentId) {
+        const currentSeq = extractSeqFromId(existing.caseDepartmentId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseAttachmentId() {
+    const today = getDDMMYY();
+    const prefix = `CAD${today}`;
+    const existing = await prisma.caseAttachment.findFirst({
+        where: { caseAttachmentId: { startsWith: prefix } },
+        select: { caseAttachmentId: true },
+        orderBy: { caseAttachmentId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseAttachmentId) {
+        const currentSeq = extractSeqFromId(existing.caseAttachmentId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseFishboneId() {
+    const today = getDDMMYY();
+    const prefix = `CFB${today}`;
+    const existing = await prisma.caseFishboneMaster.findFirst({
+        where: { caseFishboneId: { startsWith: prefix } },
+        select: { caseFishboneId: true },
+        orderBy: { caseFishboneId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseFishboneId) {
+        const currentSeq = extractSeqFromId(existing.caseFishboneId);
+        nextSeq = currentSeq + 1;
+    }
+    return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+}
+export async function generateCaseFishboneCauseId() {
+    const today = getDDMMYY();
+    const prefix = `CFC${today}`;
+    const existing = await prisma.caseFishboneCause.findFirst({
+        where: { caseFishboneCauseId: { startsWith: prefix } },
+        select: { caseFishboneCauseId: true },
+        orderBy: { caseFishboneCauseId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseFishboneCauseId) {
+        const currentSeq = extractSeqFromId(existing.caseFishboneCauseId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseFishboneItemId() {
+    const today = getDDMMYY();
+    const prefix = `CFI${today}`;
+    const existing = await prisma.caseFishboneItem.findFirst({
+        where: { caseFishboneItemId: { startsWith: prefix } },
+        select: { caseFishboneItemId: true },
+        orderBy: { caseFishboneItemId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseFishboneItemId) {
+        const currentSeq = extractSeqFromId(existing.caseFishboneItemId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseFishboneItemCauseId() {
+    const today = getDDMMYY();
+    const prefix = `CFIC${today}`;
+    const existing = await prisma.caseFishboneItemCause.findFirst({
+        where: { caseFishboneItemCauseId: { startsWith: prefix } },
+        select: { caseFishboneItemCauseId: true },
+        orderBy: { caseFishboneItemCauseId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseFishboneItemCauseId) {
+        const currentSeq = extractSeqFromId(existing.caseFishboneItemCauseId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseNotificationId() {
+    const today = getDDMMYY();
+    const prefix = `CNO${today}`;
+    const existing = await prisma.caseNotificationOutbox.findFirst({
+        where: { caseNotificationId: { startsWith: prefix } },
+        select: { caseNotificationId: true },
+        orderBy: { caseNotificationId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseNotificationId) {
+        const currentSeq = extractSeqFromId(existing.caseNotificationId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseNotificationMessageId() {
+    const today = getDDMMYY();
+    const prefix = `CNM${today}`;
+    const existing = await prisma.caseNotificationMessage.findFirst({
+        where: { caseNotificationMessageId: { startsWith: prefix } },
+        select: { caseNotificationMessageId: true },
+        orderBy: { caseNotificationMessageId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseNotificationMessageId) {
+        const currentSeq = extractSeqFromId(existing.caseNotificationMessageId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+export async function generateCaseNotificationTemplateId() {
+    const today = getDDMMYY();
+    const prefix = `CNT${today}`;
+    const existing = await prisma.caseNotificationTemplate.findFirst({
+        where: { caseNotificationTemplateId: { startsWith: prefix } },
+        select: { caseNotificationTemplateId: true },
+        orderBy: { caseNotificationTemplateId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.caseNotificationTemplateId) {
+        const currentSeq = extractSeqFromId(existing.caseNotificationTemplateId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
 //# sourceMappingURL=id-generator.js.map

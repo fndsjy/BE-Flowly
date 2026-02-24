@@ -507,6 +507,7 @@ export class AccessRoleService {
             if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
                 applyEmployeeMenuRead("ORGANISASI");
             }
+            applyEmployeeMenuRead("A3");
             if (orgScope.pilarRead || orgScope.pilarCrud) {
                 applyEmployeeRead("MODULE", "PILAR");
             }
@@ -520,6 +521,7 @@ export class AccessRoleService {
                 applyEmployeeRead("MODULE", "CHART");
                 applyEmployeeRead("MODULE", "CHART_MEMBER");
             }
+            applyEmployeeRead("MODULE", "CASE");
             return {
                 isAdmin,
                 menuAccess,

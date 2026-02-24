@@ -368,8 +368,8 @@ export class SbuSubService {
         const sbu = await prismaEmployee.em_sbu.findFirst({
             where: { id: sbuId },
         });
-        // Jika sbu tidak ada atau isDeleted true → return [] langsung
-        if (!sbu || sbu.isDeleted === true) {
+        // Jika sbu tidak ada / isDeleted true / status bukan A -> return [] langsung
+        if (!sbu || sbu.isDeleted === true || sbu.status !== "A") {
             return [];
         }
         const exists = await prismaEmployee.em_sbu.findFirst({
@@ -381,6 +381,7 @@ export class SbuSubService {
             where: {
                 sbu_id: sbuId,
                 OR: [{ isDeleted: false }, { isDeleted: null }],
+                status: "A",
                 ...(accessContext.isAdmin
                     ? {}
                     : { id: { in: Array.from(accessContext.sbuSub.read) } })
@@ -403,8 +404,8 @@ export class SbuSubService {
         const pilar = await prismaEmployee.em_pilar.findUnique({
             where: { id: pilarId },
         });
-        // Jika pilar tidak ada atau isDeleted true → return [] langsung
-        if (!pilar || pilar.isDeleted === true) {
+        // Jika pilar tidak ada / isDeleted true / status bukan A -> return [] langsung
+        if (!pilar || pilar.isDeleted === true || pilar.status !== "A") {
             return [];
         }
         const exists = await prismaEmployee.em_pilar.findFirst({
@@ -416,6 +417,7 @@ export class SbuSubService {
             where: {
                 sbu_pilar: pilarId,
                 OR: [{ isDeleted: false }, { isDeleted: null }],
+                status: "A",
                 ...(accessContext.isAdmin
                     ? {}
                     : { id: { in: Array.from(accessContext.sbuSub.read) } })

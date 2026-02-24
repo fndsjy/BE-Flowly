@@ -1,0 +1,17 @@
+export declare class CaseNotificationService {
+    static enqueuePicNotifications(params: {
+        caseId: string;
+        caseTitle: string;
+        caseType: string;
+        departmentMap: Map<number, string>;
+        requesterId: string;
+    }): Promise<void>;
+    static enqueueAssigneeNotification(params: {
+        caseId: string;
+        caseDepartmentId: string;
+        sbuSubId: number;
+        assigneeEmployeeId: number;
+        requesterId: string;
+    }): Promise<void>;
+}
+//# sourceMappingURL=case-notification-service.d.ts.map

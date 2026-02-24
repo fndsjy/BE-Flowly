@@ -1,5 +1,4 @@
 import express from "express";
-import path from "path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { requestLogger } from "../middleware/reqlog-middleware.js";

@@ -14,4 +14,14 @@ export declare function generateFishboneCauseId(): Promise<() => string>;
 export declare function generateFishboneItemId(): Promise<() => string>;
 export declare function generateFishboneItemCauseId(): Promise<() => string>;
 export declare function generateProcedureIkId(): Promise<string>;
+export declare function generateCaseId(): Promise<string>;
+export declare function generateCaseDepartmentId(): Promise<() => string>;
+export declare function generateCaseAttachmentId(): Promise<() => string>;
+export declare function generateCaseFishboneId(): Promise<string>;
+export declare function generateCaseFishboneCauseId(): Promise<() => string>;
+export declare function generateCaseFishboneItemId(): Promise<() => string>;
+export declare function generateCaseFishboneItemCauseId(): Promise<() => string>;
+export declare function generateCaseNotificationId(): Promise<() => string>;
+export declare function generateCaseNotificationMessageId(): Promise<() => string>;
+export declare function generateCaseNotificationTemplateId(): Promise<() => string>;
 //# sourceMappingURL=id-generator.d.ts.map

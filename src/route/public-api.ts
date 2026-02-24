@@ -18,6 +18,14 @@ import { FishboneController } from "../controller/fishbone-controller.js";
 import { FishboneCauseController } from "../controller/fishbone-cause-controller.js";
 import { FishboneItemController } from "../controller/fishbone-item-controller.js";
 import { FishboneCategoryController } from "../controller/fishbone-category-controller.js";
+import { CaseHeaderController } from "../controller/case-header-controller.js";
+import { CaseDepartmentController } from "../controller/case-department-controller.js";
+import { CaseAttachmentController } from "../controller/case-attachment-controller.js";
+import { CaseFishboneController } from "../controller/case-fishbone-controller.js";
+import { CaseFishboneCauseController } from "../controller/case-fishbone-cause-controller.js";
+import { CaseFishboneItemController } from "../controller/case-fishbone-item-controller.js";
+import { CaseNotificationMessageController } from "../controller/case-notification-message-controller.js";
+import { CaseNotificationTemplateController } from "../controller/case-notification-template-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -97,6 +105,53 @@ v1.post("/fishbone-item", FishboneItemController.create);
 v1.put("/fishbone-item", FishboneItemController.update);
 v1.delete("/fishbone-item", FishboneItemController.softDelete);
 v1.get("/fishbone-item", FishboneItemController.list);
+
+v1.post("/case", CaseHeaderController.create);
+v1.put("/case", CaseHeaderController.update);
+v1.delete("/case", CaseHeaderController.softDelete);
+v1.get("/case", CaseHeaderController.list);
+
+v1.post("/case-department", CaseDepartmentController.create);
+v1.put("/case-department", CaseDepartmentController.update);
+v1.delete("/case-department", CaseDepartmentController.softDelete);
+v1.get("/case-department", CaseDepartmentController.list);
+
+v1.post("/case-attachment", CaseAttachmentController.create);
+v1.put("/case-attachment", CaseAttachmentController.update);
+v1.delete("/case-attachment", CaseAttachmentController.softDelete);
+v1.get("/case-attachment", CaseAttachmentController.list);
+v1.get(
+  "/case-attachment/file/:caseAttachmentId",
+  CaseAttachmentController.download
+);
+
+v1.post("/case-notification-template", CaseNotificationTemplateController.create);
+v1.put("/case-notification-template", CaseNotificationTemplateController.update);
+v1.delete(
+  "/case-notification-template",
+  CaseNotificationTemplateController.softDelete
+);
+v1.get("/case-notification-template", CaseNotificationTemplateController.list);
+
+v1.post("/case-notification-message", CaseNotificationMessageController.create);
+v1.put("/case-notification-message", CaseNotificationMessageController.update);
+v1.delete("/case-notification-message", CaseNotificationMessageController.softDelete);
+v1.get("/case-notification-message", CaseNotificationMessageController.list);
+
+v1.post("/case-fishbone", CaseFishboneController.create);
+v1.put("/case-fishbone", CaseFishboneController.update);
+v1.delete("/case-fishbone", CaseFishboneController.softDelete);
+v1.get("/case-fishbone", CaseFishboneController.list);
+
+v1.post("/case-fishbone-cause", CaseFishboneCauseController.create);
+v1.put("/case-fishbone-cause", CaseFishboneCauseController.update);
+v1.delete("/case-fishbone-cause", CaseFishboneCauseController.softDelete);
+v1.get("/case-fishbone-cause", CaseFishboneCauseController.list);
+
+v1.post("/case-fishbone-item", CaseFishboneItemController.create);
+v1.put("/case-fishbone-item", CaseFishboneItemController.update);
+v1.delete("/case-fishbone-item", CaseFishboneItemController.softDelete);
+v1.get("/case-fishbone-item", CaseFishboneItemController.list);
 
 v1.post("/procedure-sop-ik", ProcedureSopIkController.create);
 v1.put("/procedure-sop-ik", ProcedureSopIkController.update);
