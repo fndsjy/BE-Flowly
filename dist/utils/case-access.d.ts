@@ -9,4 +9,5 @@ export declare const resolveCaseAccess: (requesterId: string) => Promise<CaseAcc
 export declare const assertCaseRead: (access: CaseAccess) => void;
 export declare const assertCaseCrud: (access: CaseAccess) => void;
 export declare const isPicForSbuSub: (employeeId: number, sbuSubId: number) => Promise<boolean>;
+export declare const getEmployeeChartSbuSubIds: (employeeId: number) => Promise<number[]>;
 //# sourceMappingURL=case-access.d.ts.map

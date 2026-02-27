@@ -164,6 +164,34 @@ const buildTemplateContext = async (item) => {
     const meta = parseMeta(item.meta);
     const role = normalizeRole(typeof meta.role === "string" ? meta.role : undefined);
     const action = normalizeAction(typeof meta.action === "string" ? meta.action : undefined);
+    const resolveNameByIds = async (userId, employeeId) => {
+        if (employeeId) {
+            const employee = await prismaEmployee.em_employee.findUnique({
+                where: { UserId: employeeId },
+                select: { Name: true },
+            });
+            if (employee?.Name)
+                return employee.Name;
+        }
+        if (userId) {
+            const user = await prismaFlowly.user.findUnique({
+                where: { userId },
+                select: { name: true },
+            });
+            if (user?.name)
+                return user.name;
+            const numericId = Number(userId);
+            if (Number.isFinite(numericId)) {
+                const employee = await prismaEmployee.em_employee.findUnique({
+                    where: { UserId: numericId },
+                    select: { Name: true },
+                });
+                if (employee?.Name)
+                    return employee.Name;
+            }
+        }
+        return "";
+    };
     const caseHeader = item.caseId
         ? await prismaFlowly.caseHeader.findUnique({
             where: { caseId: item.caseId },
@@ -172,22 +200,38 @@ const buildTemplateContext = async (item) => {
                 caseType: true,
                 requesterId: true,
                 requesterEmployeeId: true,
+                originSbuSubId: true,
             },
         })
         : null;
     let sbuSubName = typeof meta.sbuSubName === "string" ? meta.sbuSubName : "";
     let sbuSubCode = typeof meta.sbuSubCode === "string" ? meta.sbuSubCode : "";
     let sbuSubId = typeof meta.sbuSubId === "number" ? meta.sbuSubId : null;
-    let assignedBy = null;
     let departmentSbuSubId = null;
+    let assignedBy = null;
+    let departmentCreatedBy = null;
+    let decisionStatus = null;
+    let decisionNotes = null;
+    let decisionBy = null;
     if (item.caseDepartmentId) {
         const dept = await prismaFlowly.caseDepartment.findUnique({
             where: { caseDepartmentId: item.caseDepartmentId },
-            select: { sbuSubId: true, assignedBy: true },
+            select: {
+                sbuSubId: true,
+                assignedBy: true,
+                createdBy: true,
+                decisionStatus: true,
+                decisionNotes: true,
+                decisionBy: true,
+            },
         });
         if (dept) {
             departmentSbuSubId = dept.sbuSubId;
             assignedBy = dept.assignedBy ?? null;
+            departmentCreatedBy = dept.createdBy ?? null;
+            decisionStatus = dept.decisionStatus ?? null;
+            decisionNotes = dept.decisionNotes ?? null;
+            decisionBy = dept.decisionBy ?? null;
             if (!sbuSubId) {
                 sbuSubId = dept.sbuSubId;
             }
@@ -209,6 +253,31 @@ const buildTemplateContext = async (item) => {
             }
             if (!sbuSubCode) {
                 sbuSubCode = sbuSub.sbu_sub_code ?? "";
+            }
+        }
+    }
+    const originSbuSubId = typeof caseHeader?.originSbuSubId === "number"
+        ? caseHeader.originSbuSubId
+        : null;
+    let originSbuSubName = "";
+    let originSbuSubCode = "";
+    if (originSbuSubId) {
+        if (originSbuSubId === resolvedSbuSubId && (sbuSubName || sbuSubCode)) {
+            originSbuSubName = sbuSubName;
+            originSbuSubCode = sbuSubCode;
+        }
+        else {
+            const originSbuSub = await prismaEmployee.em_sbu_sub.findFirst({
+                where: {
+                    id: originSbuSubId,
+                    status: "A",
+                    OR: [{ isDeleted: false }, { isDeleted: null }],
+                },
+                select: { sbu_sub_name: true, sbu_sub_code: true },
+            });
+            if (originSbuSub) {
+                originSbuSubName = originSbuSub.sbu_sub_name;
+                originSbuSubCode = originSbuSub.sbu_sub_code ?? "";
             }
         }
     }
@@ -236,22 +305,42 @@ const buildTemplateContext = async (item) => {
         requesterName = requesterUser?.name ?? "";
     }
     const assignerUserId = assignedBy ?? "";
-    let assignerName = "";
-    if (assignerUserId) {
-        const assignerUser = await prismaFlowly.user.findUnique({
-            where: { userId: assignerUserId },
-            select: { name: true },
-        });
-        assignerName = assignerUser?.name ?? "";
+    const assignerName = assignerUserId
+        ? await resolveNameByIds(assignerUserId, null)
+        : "";
+    const adderUserId = departmentCreatedBy ?? "";
+    const adderName = adderUserId
+        ? await resolveNameByIds(adderUserId, null)
+        : "";
+    const decisionByUserId = decisionBy ?? "";
+    const decisionByName = decisionByUserId
+        ? await resolveNameByIds(decisionByUserId, null)
+        : "";
+    const decisionStatusValue = decisionStatus ?? "";
+    const decisionNotesValue = decisionNotes ?? "";
+    let senderUserId = requesterUserId;
+    let senderName = requesterName;
+    if (action === "ASSIGN_TASK") {
+        senderUserId = assignerUserId || requesterUserId;
+        senderName = assignerName || requesterName;
     }
-    const senderUserId = action === "ASSIGN_TASK" ? assignerUserId : requesterUserId;
-    const senderName = action === "ASSIGN_TASK" ? assignerName : requesterName;
+    else if (action === "ADD_DEPARTMENT") {
+        senderUserId = adderUserId || requesterUserId;
+        senderName = adderName || requesterName;
+    }
+    else if (action === "DECISION") {
+        senderUserId = decisionByUserId || requesterUserId;
+        senderName = decisionByName || requesterName;
+    }
     return {
         caseId: item.caseId ?? "",
         caseDepartmentId: item.caseDepartmentId ?? "",
         caseTitle: caseHeader?.caseTitle ?? "",
         caseType: caseHeader?.caseType ?? "",
         caseTypeLabel: buildCaseLabel(caseHeader?.caseType),
+        originSbuSubId: originSbuSubId ?? "",
+        originSbuSubName,
+        originSbuSubCode,
         sbuSubId: resolvedSbuSubId ?? "",
         sbuSubName,
         sbuSubCode,
@@ -260,11 +349,17 @@ const buildTemplateContext = async (item) => {
         requesterUserId,
         requesterEmployeeId: requesterEmployeeId ?? "",
         requesterName,
+        adderUserId,
+        adderName,
         assignerUserId,
         assignerName,
         assignerSbuSubId: resolvedSbuSubId ?? "",
         assignerSbuSubName: sbuSubName,
         assignerSbuSubCode: sbuSubCode,
+        decisionStatus: decisionStatusValue,
+        decisionNotes: decisionNotesValue,
+        decisionByUserId,
+        decisionByName,
         senderUserId,
         senderName,
         role,

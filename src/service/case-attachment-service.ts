@@ -15,6 +15,7 @@ import {
 import {
   assertCaseCrud,
   assertCaseRead,
+  getEmployeeChartSbuSubIds,
   resolveCaseAccess,
 } from "../utils/case-access.js";
 import { CASE_MEDIA_TYPES, normalizeUpper } from "../utils/case-constants.js";
@@ -192,6 +193,105 @@ const ensureEmployeeCaseAccess = async (employeeId: number, caseId: string) => {
   if (!hasDept) {
     throw new ResponseError(403, "No access to this case");
   }
+};
+
+const ensureEmployeeCaseReadAccess = async (
+  employeeId: number,
+  caseId: string
+) => {
+  const caseHeader = (await prismaFlowly.caseHeader.findUnique({
+    where: { caseId },
+    select: {
+      requesterEmployeeId: true,
+      originSbuSubId: true,
+      visibility: true,
+      isDeleted: true,
+    } as any,
+  })) as
+    | {
+        requesterEmployeeId: number | null;
+        originSbuSubId: number | null;
+        visibility?: string | null;
+        isDeleted: boolean;
+      }
+    | null;
+
+  if (!caseHeader || caseHeader.isDeleted) {
+    throw new ResponseError(404, "Case not found");
+  }
+
+  if (caseHeader.requesterEmployeeId === employeeId) {
+    return;
+  }
+
+  const assigned = await prismaFlowly.caseDepartment.findFirst({
+    where: {
+      caseId,
+      assigneeEmployeeId: employeeId,
+      isDeleted: false,
+    },
+    select: { caseDepartmentId: true },
+  });
+
+  if (assigned) {
+    return;
+  }
+
+  const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+    where: {
+      pic: employeeId,
+      status: "A",
+      OR: [{ isDeleted: false }, { isDeleted: null }],
+    },
+    select: { id: true },
+  });
+  const picIds = picSubs.map((sub) => sub.id);
+
+  if (picIds.length > 0) {
+    const hasDept = await prismaFlowly.caseDepartment.findFirst({
+      where: {
+        caseId,
+        sbuSubId: { in: picIds },
+        isDeleted: false,
+      },
+      select: { caseDepartmentId: true },
+    });
+
+    if (hasDept) {
+      return;
+    }
+  }
+
+  const visibility = String(
+    (caseHeader as { visibility?: string | null }).visibility ?? "PRIVATE"
+  ).toUpperCase();
+
+  if (visibility === "PUBLIC") {
+    const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+    if (chartSbuSubIds.length > 0) {
+      if (
+        caseHeader.originSbuSubId &&
+        chartSbuSubIds.includes(caseHeader.originSbuSubId)
+      ) {
+        return;
+      }
+
+      const hasDept = await prismaFlowly.caseDepartment.findFirst({
+        where: {
+          caseId,
+          sbuSubId: { in: chartSbuSubIds },
+          isDeleted: false,
+        },
+        select: { caseDepartmentId: true },
+      });
+
+      if (hasDept) {
+        return;
+      }
+    }
+  }
+
+  throw new ResponseError(403, "No access to this case");
 };
 
 export class CaseAttachmentService {
@@ -519,7 +619,7 @@ export class CaseAttachmentService {
       if (!filters?.caseId) {
         return [];
       }
-      await ensureEmployeeCaseAccess(access.employeeId, filters.caseId);
+      await ensureEmployeeCaseReadAccess(access.employeeId, filters.caseId);
     }
 
     const whereClause: Prisma.CaseAttachmentWhereInput = {
@@ -556,7 +656,7 @@ export class CaseAttachmentService {
     }
 
     if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-      await ensureEmployeeCaseAccess(access.employeeId, attachment.caseId);
+      await ensureEmployeeCaseReadAccess(access.employeeId, attachment.caseId);
     }
 
     const fileFullPath = path.join(CASE_UPLOAD_DIR, attachment.fileName);

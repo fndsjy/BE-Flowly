@@ -67,4 +67,20 @@ export const isPicForSbuSub = async (employeeId, sbuSubId) => {
     });
     return Boolean(pic);
 };
+export const getEmployeeChartSbuSubIds = async (employeeId) => {
+    const members = await prismaFlowly.chartMember.findMany({
+        where: {
+            userId: employeeId,
+            isDeleted: false,
+            node: { isDeleted: false },
+        },
+        select: {
+            node: { select: { sbuSubId: true } },
+        },
+    });
+    const ids = members
+        .map((member) => member.node?.sbuSubId)
+        .filter((id) => Number.isFinite(id));
+    return Array.from(new Set(ids));
+};
 //# sourceMappingURL=case-access.js.map

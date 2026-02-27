@@ -90,3 +90,22 @@ export const isPicForSbuSub = async (
 
   return Boolean(pic);
 };
+
+export const getEmployeeChartSbuSubIds = async (employeeId: number) => {
+  const members = await prismaFlowly.chartMember.findMany({
+    where: {
+      userId: employeeId,
+      isDeleted: false,
+      node: { isDeleted: false },
+    },
+    select: {
+      node: { select: { sbuSubId: true } },
+    },
+  });
+
+  const ids = members
+    .map((member) => member.node?.sbuSubId)
+    .filter((id): id is number => Number.isFinite(id));
+
+  return Array.from(new Set(ids));
+};

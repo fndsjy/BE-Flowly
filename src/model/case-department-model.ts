@@ -7,6 +7,7 @@ export type CaseDepartmentResponse = {
   decisionStatus: string;
   decisionAt: Date | null;
   decisionBy: string | null;
+  decisionNotes: string | null;
   assigneeEmployeeId: number | null;
   assignedAt: Date | null;
   assignedBy: string | null;
@@ -31,6 +32,7 @@ export type CreateCaseDepartmentRequest = {
 export type UpdateCaseDepartmentRequest = {
   caseDepartmentId: string;
   decisionStatus?: string;
+  decisionNotes?: string | null;
   assigneeEmployeeId?: number | null;
   workStatus?: string | null;
   startDate?: Date | string | null;
@@ -54,6 +56,7 @@ export function toCaseDepartmentResponse(
     decisionStatus: department.decisionStatus,
     decisionAt: department.decisionAt ?? null,
     decisionBy: department.decisionBy ?? null,
+    decisionNotes: department.decisionNotes ?? null,
     assigneeEmployeeId: department.assigneeEmployeeId ?? null,
     assignedAt: department.assignedAt ?? null,
     assignedBy: department.assignedBy ?? null,

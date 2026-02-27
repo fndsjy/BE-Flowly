@@ -1,7 +1,7 @@
 import { type CreateCaseHeaderRequest, type UpdateCaseHeaderRequest, type DeleteCaseHeaderRequest } from "../model/case-header-model.js";
 export declare class CaseHeaderService {
     static create(requesterId: string, reqBody: CreateCaseHeaderRequest): Promise<import("../model/case-header-model.js").CaseHeaderResponse>;
-    static update(requesterId: string, reqBody: UpdateCaseHeaderRequest): Promise<import("../model/case-header-model.js").CaseHeaderResponse>;
+    static update(requesterId: string, reqBody: UpdateCaseHeaderRequest): Promise<void>;
     static softDelete(requesterId: string, reqBody: DeleteCaseHeaderRequest): Promise<{
         message: string;
     }>;

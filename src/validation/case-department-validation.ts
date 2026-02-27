@@ -38,6 +38,7 @@ export class CaseDepartmentValidation {
   static readonly UPDATE: ZodType = z.object({
     caseDepartmentId: z.string().min(1).max(20),
     decisionStatus: decisionStatusSchema.optional(),
+    decisionNotes: z.string().max(500).optional().nullable(),
     assigneeEmployeeId: z.number().int().min(1).optional().nullable(),
     workStatus: workStatusSchema.optional().nullable(),
     startDate: z.union([z.string(), z.date()]).optional().nullable(),

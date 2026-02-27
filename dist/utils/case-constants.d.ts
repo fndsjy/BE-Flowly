@@ -1,5 +1,7 @@
 export declare const CASE_TYPES: readonly ["PROJECT", "PROBLEM"];
 export type CaseType = (typeof CASE_TYPES)[number];
+export declare const CASE_VISIBILITIES: readonly ["PRIVATE", "PUBLIC"];
+export type CaseVisibility = (typeof CASE_VISIBILITIES)[number];
 export declare const CASE_STATUSES: readonly ["NEW", "PENDING", "IN_PROGRESS", "DONE", "CANCEL"];
 export type CaseStatus = (typeof CASE_STATUSES)[number];
 export declare const CASE_DECISION_STATUSES: readonly ["PENDING", "ACCEPT", "REJECT"];

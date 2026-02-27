@@ -227,6 +227,7 @@ model CaseHeader {
   locationDesc             String?                   @db.NVarChar(255)
   notes                    String?                   @db.NVarChar(1000)
   status                   String                    @default("NEW") @db.NVarChar(20)
+  visibility               String                    @default("PRIVATE") @db.NVarChar(20)
   requesterId              String?                   @db.NVarChar(20)
   requesterEmployeeId      Int?
   originSbuSubId           Int?
@@ -259,6 +260,7 @@ model CaseDepartment {
   decisionStatus           String                    @default("PENDING") @db.NVarChar(20)
   decisionAt               DateTime?
   decisionBy               String?                   @db.NVarChar(20)
+  decisionNotes            String?                   @db.NVarChar(500)
   assigneeEmployeeId       Int?
   assignedAt               DateTime?
   assignedBy               String?                   @db.NVarChar(20)

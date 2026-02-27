@@ -5,7 +5,7 @@ const roleSchema = z
     .min(1)
     .max(20)
     .transform(normalizeUpper)
-    .refine((value) => ["PIC", "ASSIGNEE"].includes(value), {
+    .refine((value) => ["PIC", "ASSIGNEE", "REQUESTER"].includes(value), {
     message: "Invalid role",
 });
 const channelSchema = z.string().min(1).max(20).transform(normalizeUpper);

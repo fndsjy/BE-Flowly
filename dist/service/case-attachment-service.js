@@ -7,7 +7,7 @@ import { CaseAttachmentValidation } from "../validation/case-attachment-validati
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseAttachmentId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, getEmployeeChartSbuSubIds, resolveCaseAccess, } from "../utils/case-access.js";
 import { CASE_MEDIA_TYPES, normalizeUpper } from "../utils/case-constants.js";
 import { toCaseAttachmentResponse, toCaseAttachmentListResponse, } from "../model/case-attachment-model.js";
 const CASE_ATTACHMENT_FIELDS = [
@@ -154,6 +154,78 @@ const ensureEmployeeCaseAccess = async (employeeId, caseId) => {
     if (!hasDept) {
         throw new ResponseError(403, "No access to this case");
     }
+};
+const ensureEmployeeCaseReadAccess = async (employeeId, caseId) => {
+    const caseHeader = (await prismaFlowly.caseHeader.findUnique({
+        where: { caseId },
+        select: {
+            requesterEmployeeId: true,
+            originSbuSubId: true,
+            visibility: true,
+            isDeleted: true,
+        },
+    }));
+    if (!caseHeader || caseHeader.isDeleted) {
+        throw new ResponseError(404, "Case not found");
+    }
+    if (caseHeader.requesterEmployeeId === employeeId) {
+        return;
+    }
+    const assigned = await prismaFlowly.caseDepartment.findFirst({
+        where: {
+            caseId,
+            assigneeEmployeeId: employeeId,
+            isDeleted: false,
+        },
+        select: { caseDepartmentId: true },
+    });
+    if (assigned) {
+        return;
+    }
+    const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+        where: {
+            pic: employeeId,
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+        },
+        select: { id: true },
+    });
+    const picIds = picSubs.map((sub) => sub.id);
+    if (picIds.length > 0) {
+        const hasDept = await prismaFlowly.caseDepartment.findFirst({
+            where: {
+                caseId,
+                sbuSubId: { in: picIds },
+                isDeleted: false,
+            },
+            select: { caseDepartmentId: true },
+        });
+        if (hasDept) {
+            return;
+        }
+    }
+    const visibility = String(caseHeader.visibility ?? "PRIVATE").toUpperCase();
+    if (visibility === "PUBLIC") {
+        const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+        if (chartSbuSubIds.length > 0) {
+            if (caseHeader.originSbuSubId &&
+                chartSbuSubIds.includes(caseHeader.originSbuSubId)) {
+                return;
+            }
+            const hasDept = await prismaFlowly.caseDepartment.findFirst({
+                where: {
+                    caseId,
+                    sbuSubId: { in: chartSbuSubIds },
+                    isDeleted: false,
+                },
+                select: { caseDepartmentId: true },
+            });
+            if (hasDept) {
+                return;
+            }
+        }
+    }
+    throw new ResponseError(403, "No access to this case");
 };
 export class CaseAttachmentService {
     static async create(requesterId, reqBody) {
@@ -419,7 +491,7 @@ export class CaseAttachmentService {
             if (!filters?.caseId) {
                 return [];
             }
-            await ensureEmployeeCaseAccess(access.employeeId, filters.caseId);
+            await ensureEmployeeCaseReadAccess(access.employeeId, filters.caseId);
         }
         const whereClause = {
             isDeleted: false,
@@ -449,7 +521,7 @@ export class CaseAttachmentService {
             throw new ResponseError(404, "Case attachment not found");
         }
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-            await ensureEmployeeCaseAccess(access.employeeId, attachment.caseId);
+            await ensureEmployeeCaseReadAccess(access.employeeId, attachment.caseId);
         }
         const fileFullPath = path.join(CASE_UPLOAD_DIR, attachment.fileName);
         try {

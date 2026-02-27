@@ -11469,6 +11469,7 @@ export namespace Prisma {
     locationDesc: string | null
     notes: string | null
     status: string | null
+    visibility: string | null
     requesterId: string | null
     requesterEmployeeId: number | null
     originSbuSubId: number | null
@@ -11493,6 +11494,7 @@ export namespace Prisma {
     locationDesc: string | null
     notes: string | null
     status: string | null
+    visibility: string | null
     requesterId: string | null
     requesterEmployeeId: number | null
     originSbuSubId: number | null
@@ -11517,6 +11519,7 @@ export namespace Prisma {
     locationDesc: number
     notes: number
     status: number
+    visibility: number
     requesterId: number
     requesterEmployeeId: number
     originSbuSubId: number
@@ -11553,6 +11556,7 @@ export namespace Prisma {
     locationDesc?: true
     notes?: true
     status?: true
+    visibility?: true
     requesterId?: true
     requesterEmployeeId?: true
     originSbuSubId?: true
@@ -11577,6 +11581,7 @@ export namespace Prisma {
     locationDesc?: true
     notes?: true
     status?: true
+    visibility?: true
     requesterId?: true
     requesterEmployeeId?: true
     originSbuSubId?: true
@@ -11601,6 +11606,7 @@ export namespace Prisma {
     locationDesc?: true
     notes?: true
     status?: true
+    visibility?: true
     requesterId?: true
     requesterEmployeeId?: true
     originSbuSubId?: true
@@ -11712,6 +11718,7 @@ export namespace Prisma {
     locationDesc: string | null
     notes: string | null
     status: string
+    visibility: string
     requesterId: string | null
     requesterEmployeeId: number | null
     originSbuSubId: number | null
@@ -11755,6 +11762,7 @@ export namespace Prisma {
     locationDesc?: boolean
     notes?: boolean
     status?: boolean
+    visibility?: boolean
     requesterId?: boolean
     requesterEmployeeId?: boolean
     originSbuSubId?: boolean
@@ -11787,6 +11795,7 @@ export namespace Prisma {
     locationDesc?: boolean
     notes?: boolean
     status?: boolean
+    visibility?: boolean
     requesterId?: boolean
     requesterEmployeeId?: boolean
     originSbuSubId?: boolean
@@ -11800,7 +11809,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type CaseHeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseId" | "caseType" | "caseTitle" | "background" | "currentCondition" | "projectDesc" | "projectObjective" | "locationDesc" | "notes" | "status" | "requesterId" | "requesterEmployeeId" | "originSbuSubId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseHeader"]>
+  export type CaseHeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseId" | "caseType" | "caseTitle" | "background" | "currentCondition" | "projectDesc" | "projectObjective" | "locationDesc" | "notes" | "status" | "visibility" | "requesterId" | "requesterEmployeeId" | "originSbuSubId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseHeader"]>
   export type CaseHeaderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     departments?: boolean | CaseHeader$departmentsArgs<ExtArgs>
     attachments?: boolean | CaseHeader$attachmentsArgs<ExtArgs>
@@ -11833,6 +11842,7 @@ export namespace Prisma {
       locationDesc: string | null
       notes: string | null
       status: string
+      visibility: string
       requesterId: string | null
       requesterEmployeeId: number | null
       originSbuSubId: number | null
@@ -12228,6 +12238,7 @@ export namespace Prisma {
     readonly locationDesc: FieldRef<"CaseHeader", 'String'>
     readonly notes: FieldRef<"CaseHeader", 'String'>
     readonly status: FieldRef<"CaseHeader", 'String'>
+    readonly visibility: FieldRef<"CaseHeader", 'String'>
     readonly requesterId: FieldRef<"CaseHeader", 'String'>
     readonly requesterEmployeeId: FieldRef<"CaseHeader", 'Int'>
     readonly originSbuSubId: FieldRef<"CaseHeader", 'Int'>
@@ -12748,6 +12759,7 @@ export namespace Prisma {
     decisionStatus: string | null
     decisionAt: Date | null
     decisionBy: string | null
+    decisionNotes: string | null
     assigneeEmployeeId: number | null
     assignedAt: Date | null
     assignedBy: string | null
@@ -12773,6 +12785,7 @@ export namespace Prisma {
     decisionStatus: string | null
     decisionAt: Date | null
     decisionBy: string | null
+    decisionNotes: string | null
     assigneeEmployeeId: number | null
     assignedAt: Date | null
     assignedBy: string | null
@@ -12798,6 +12811,7 @@ export namespace Prisma {
     decisionStatus: number
     decisionAt: number
     decisionBy: number
+    decisionNotes: number
     assigneeEmployeeId: number
     assignedAt: number
     assignedBy: number
@@ -12835,6 +12849,7 @@ export namespace Prisma {
     decisionStatus?: true
     decisionAt?: true
     decisionBy?: true
+    decisionNotes?: true
     assigneeEmployeeId?: true
     assignedAt?: true
     assignedBy?: true
@@ -12860,6 +12875,7 @@ export namespace Prisma {
     decisionStatus?: true
     decisionAt?: true
     decisionBy?: true
+    decisionNotes?: true
     assigneeEmployeeId?: true
     assignedAt?: true
     assignedBy?: true
@@ -12885,6 +12901,7 @@ export namespace Prisma {
     decisionStatus?: true
     decisionAt?: true
     decisionBy?: true
+    decisionNotes?: true
     assigneeEmployeeId?: true
     assignedAt?: true
     assignedBy?: true
@@ -12997,6 +13014,7 @@ export namespace Prisma {
     decisionStatus: string
     decisionAt: Date | null
     decisionBy: string | null
+    decisionNotes: string | null
     assigneeEmployeeId: number | null
     assignedAt: Date | null
     assignedBy: string | null
@@ -13041,6 +13059,7 @@ export namespace Prisma {
     decisionStatus?: boolean
     decisionAt?: boolean
     decisionBy?: boolean
+    decisionNotes?: boolean
     assigneeEmployeeId?: boolean
     assignedAt?: boolean
     assignedBy?: boolean
@@ -13072,6 +13091,7 @@ export namespace Prisma {
     decisionStatus?: boolean
     decisionAt?: boolean
     decisionBy?: boolean
+    decisionNotes?: boolean
     assigneeEmployeeId?: boolean
     assignedAt?: boolean
     assignedBy?: boolean
@@ -13090,7 +13110,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type CaseDepartmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseDepartmentId" | "caseId" | "sbuSubId" | "decisionStatus" | "decisionAt" | "decisionBy" | "assigneeEmployeeId" | "assignedAt" | "assignedBy" | "workStatus" | "startDate" | "targetDate" | "endDate" | "workNotes" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseDepartment"]>
+  export type CaseDepartmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseDepartmentId" | "caseId" | "sbuSubId" | "decisionStatus" | "decisionAt" | "decisionBy" | "decisionNotes" | "assigneeEmployeeId" | "assignedAt" | "assignedBy" | "workStatus" | "startDate" | "targetDate" | "endDate" | "workNotes" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseDepartment"]>
   export type CaseDepartmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
     notifications?: boolean | CaseDepartment$notificationsArgs<ExtArgs>
@@ -13112,6 +13132,7 @@ export namespace Prisma {
       decisionStatus: string
       decisionAt: Date | null
       decisionBy: string | null
+      decisionNotes: string | null
       assigneeEmployeeId: number | null
       assignedAt: Date | null
       assignedBy: string | null
@@ -13506,6 +13527,7 @@ export namespace Prisma {
     readonly decisionStatus: FieldRef<"CaseDepartment", 'String'>
     readonly decisionAt: FieldRef<"CaseDepartment", 'DateTime'>
     readonly decisionBy: FieldRef<"CaseDepartment", 'String'>
+    readonly decisionNotes: FieldRef<"CaseDepartment", 'String'>
     readonly assigneeEmployeeId: FieldRef<"CaseDepartment", 'Int'>
     readonly assignedAt: FieldRef<"CaseDepartment", 'DateTime'>
     readonly assignedBy: FieldRef<"CaseDepartment", 'String'>
@@ -31959,6 +31981,7 @@ export namespace Prisma {
     locationDesc: 'locationDesc',
     notes: 'notes',
     status: 'status',
+    visibility: 'visibility',
     requesterId: 'requesterId',
     requesterEmployeeId: 'requesterEmployeeId',
     originSbuSubId: 'originSbuSubId',
@@ -31982,6 +32005,7 @@ export namespace Prisma {
     decisionStatus: 'decisionStatus',
     decisionAt: 'decisionAt',
     decisionBy: 'decisionBy',
+    decisionNotes: 'decisionNotes',
     assigneeEmployeeId: 'assigneeEmployeeId',
     assignedAt: 'assignedAt',
     assignedBy: 'assignedBy',
@@ -33182,6 +33206,7 @@ export namespace Prisma {
     locationDesc?: StringNullableFilter<"CaseHeader"> | string | null
     notes?: StringNullableFilter<"CaseHeader"> | string | null
     status?: StringFilter<"CaseHeader"> | string
+    visibility?: StringFilter<"CaseHeader"> | string
     requesterId?: StringNullableFilter<"CaseHeader"> | string | null
     requesterEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
     originSbuSubId?: IntNullableFilter<"CaseHeader"> | number | null
@@ -33211,6 +33236,7 @@ export namespace Prisma {
     locationDesc?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     requesterId?: SortOrderInput | SortOrder
     requesterEmployeeId?: SortOrderInput | SortOrder
     originSbuSubId?: SortOrderInput | SortOrder
@@ -33243,6 +33269,7 @@ export namespace Prisma {
     locationDesc?: StringNullableFilter<"CaseHeader"> | string | null
     notes?: StringNullableFilter<"CaseHeader"> | string | null
     status?: StringFilter<"CaseHeader"> | string
+    visibility?: StringFilter<"CaseHeader"> | string
     requesterId?: StringNullableFilter<"CaseHeader"> | string | null
     requesterEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
     originSbuSubId?: IntNullableFilter<"CaseHeader"> | number | null
@@ -33272,6 +33299,7 @@ export namespace Prisma {
     locationDesc?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     requesterId?: SortOrderInput | SortOrder
     requesterEmployeeId?: SortOrderInput | SortOrder
     originSbuSubId?: SortOrderInput | SortOrder
@@ -33304,6 +33332,7 @@ export namespace Prisma {
     locationDesc?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
     notes?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
     status?: StringWithAggregatesFilter<"CaseHeader"> | string
+    visibility?: StringWithAggregatesFilter<"CaseHeader"> | string
     requesterId?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
     requesterEmployeeId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
     originSbuSubId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
@@ -33327,6 +33356,7 @@ export namespace Prisma {
     decisionStatus?: StringFilter<"CaseDepartment"> | string
     decisionAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     decisionBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    decisionNotes?: StringNullableFilter<"CaseDepartment"> | string | null
     assigneeEmployeeId?: IntNullableFilter<"CaseDepartment"> | number | null
     assignedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     assignedBy?: StringNullableFilter<"CaseDepartment"> | string | null
@@ -33355,6 +33385,7 @@ export namespace Prisma {
     decisionStatus?: SortOrder
     decisionAt?: SortOrderInput | SortOrder
     decisionBy?: SortOrderInput | SortOrder
+    decisionNotes?: SortOrderInput | SortOrder
     assigneeEmployeeId?: SortOrderInput | SortOrder
     assignedAt?: SortOrderInput | SortOrder
     assignedBy?: SortOrderInput | SortOrder
@@ -33387,6 +33418,7 @@ export namespace Prisma {
     decisionStatus?: StringFilter<"CaseDepartment"> | string
     decisionAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     decisionBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    decisionNotes?: StringNullableFilter<"CaseDepartment"> | string | null
     assigneeEmployeeId?: IntNullableFilter<"CaseDepartment"> | number | null
     assignedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     assignedBy?: StringNullableFilter<"CaseDepartment"> | string | null
@@ -33415,6 +33447,7 @@ export namespace Prisma {
     decisionStatus?: SortOrder
     decisionAt?: SortOrderInput | SortOrder
     decisionBy?: SortOrderInput | SortOrder
+    decisionNotes?: SortOrderInput | SortOrder
     assigneeEmployeeId?: SortOrderInput | SortOrder
     assignedAt?: SortOrderInput | SortOrder
     assignedBy?: SortOrderInput | SortOrder
@@ -33448,6 +33481,7 @@ export namespace Prisma {
     decisionStatus?: StringWithAggregatesFilter<"CaseDepartment"> | string
     decisionAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
     decisionBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+    decisionNotes?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
     assigneeEmployeeId?: IntNullableWithAggregatesFilter<"CaseDepartment"> | number | null
     assignedAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
     assignedBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
@@ -36079,6 +36113,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -36108,6 +36143,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -36137,6 +36173,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -36166,6 +36203,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -36195,6 +36233,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -36219,6 +36258,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -36243,6 +36283,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -36262,6 +36303,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -36290,6 +36332,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -36316,6 +36359,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36344,6 +36388,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36371,6 +36416,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -36395,6 +36441,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36420,6 +36467,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39170,6 +39218,7 @@ export namespace Prisma {
     locationDesc?: SortOrder
     notes?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     requesterId?: SortOrder
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
@@ -39199,6 +39248,7 @@ export namespace Prisma {
     locationDesc?: SortOrder
     notes?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     requesterId?: SortOrder
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
@@ -39223,6 +39273,7 @@ export namespace Prisma {
     locationDesc?: SortOrder
     notes?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     requesterId?: SortOrder
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
@@ -39258,6 +39309,7 @@ export namespace Prisma {
     decisionStatus?: SortOrder
     decisionAt?: SortOrder
     decisionBy?: SortOrder
+    decisionNotes?: SortOrder
     assigneeEmployeeId?: SortOrder
     assignedAt?: SortOrder
     assignedBy?: SortOrder
@@ -39288,6 +39340,7 @@ export namespace Prisma {
     decisionStatus?: SortOrder
     decisionAt?: SortOrder
     decisionBy?: SortOrder
+    decisionNotes?: SortOrder
     assigneeEmployeeId?: SortOrder
     assignedAt?: SortOrder
     assignedBy?: SortOrder
@@ -39313,6 +39366,7 @@ export namespace Prisma {
     decisionStatus?: SortOrder
     decisionAt?: SortOrder
     decisionBy?: SortOrder
+    decisionNotes?: SortOrder
     assigneeEmployeeId?: SortOrder
     assignedAt?: SortOrder
     assignedBy?: SortOrder
@@ -44171,6 +44225,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -44197,6 +44252,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -44438,6 +44494,7 @@ export namespace Prisma {
     decisionStatus?: StringFilter<"CaseDepartment"> | string
     decisionAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     decisionBy?: StringNullableFilter<"CaseDepartment"> | string | null
+    decisionNotes?: StringNullableFilter<"CaseDepartment"> | string | null
     assigneeEmployeeId?: IntNullableFilter<"CaseDepartment"> | number | null
     assignedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     assignedBy?: StringNullableFilter<"CaseDepartment"> | string | null
@@ -44620,6 +44677,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -44648,6 +44706,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -44786,6 +44845,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -44814,6 +44874,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -44874,6 +44935,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -44902,6 +44964,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -44930,6 +44993,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -44957,6 +45021,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -45003,6 +45068,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45031,6 +45097,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45065,6 +45132,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45092,6 +45160,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45122,6 +45191,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -45150,6 +45220,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -45178,6 +45249,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -45205,6 +45277,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -45251,6 +45324,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45279,6 +45353,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45313,6 +45388,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45340,6 +45416,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45370,6 +45447,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -45398,6 +45476,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -45442,6 +45521,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45470,6 +45550,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45647,6 +45728,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -45675,6 +45757,7 @@ export namespace Prisma {
     locationDesc?: string | null
     notes?: string | null
     status?: string
+    visibility?: string
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
@@ -45799,6 +45882,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45827,6 +45911,7 @@ export namespace Prisma {
     locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -47829,6 +47914,7 @@ export namespace Prisma {
     decisionStatus?: string
     decisionAt?: Date | string | null
     decisionBy?: string | null
+    decisionNotes?: string | null
     assigneeEmployeeId?: number | null
     assignedAt?: Date | string | null
     assignedBy?: string | null
@@ -47926,6 +48012,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47952,6 +48039,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47978,6 +48066,7 @@ export namespace Prisma {
     decisionStatus?: StringFieldUpdateOperationsInput | string
     decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
     assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null

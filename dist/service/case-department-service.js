@@ -5,7 +5,7 @@ import { CaseDepartmentValidation } from "../validation/case-department-validati
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseDepartmentId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, resolveCaseAccess, isPicForSbuSub, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, getEmployeeChartSbuSubIds, resolveCaseAccess, isPicForSbuSub, } from "../utils/case-access.js";
 import { CASE_DECISION_STATUSES, CASE_WORK_STATUSES, normalizeUpper, } from "../utils/case-constants.js";
 import { toCaseDepartmentResponse, toCaseDepartmentListResponse, } from "../model/case-department-model.js";
 import { CaseNotificationService } from "./case-notification-service.js";
@@ -15,6 +15,7 @@ const CASE_DEPARTMENT_FIELDS = [
     "decisionStatus",
     "decisionAt",
     "decisionBy",
+    "decisionNotes",
     "assigneeEmployeeId",
     "assignedAt",
     "assignedBy",
@@ -37,6 +38,12 @@ const parseDate = (value) => {
         throw new ResponseError(400, "Invalid date format");
     }
     return parsed;
+};
+const normalizeNotes = (value) => {
+    if (value === null)
+        return null;
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : null;
 };
 const ensureDecisionStatus = (value) => {
     const normalized = normalizeUpper(value);
@@ -137,10 +144,33 @@ export class CaseDepartmentService {
         if (!caseHeader || caseHeader.isDeleted) {
             throw new ResponseError(404, "Case not found");
         }
-        if (access.actorType === "EMPLOYEE" &&
-            access.employeeId !== undefined &&
-            caseHeader.requesterEmployeeId !== access.employeeId) {
-            throw new ResponseError(403, "Only requester can add department");
+        if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
+            const employeeId = access.employeeId;
+            const isRequester = caseHeader.requesterEmployeeId === employeeId;
+            if (!isRequester) {
+                const departments = await prismaFlowly.caseDepartment.findMany({
+                    where: { caseId: request.caseId, isDeleted: false },
+                    select: { sbuSubId: true, assigneeEmployeeId: true },
+                });
+                const isAssignee = departments.some((dept) => dept.assigneeEmployeeId === employeeId);
+                let isPic = false;
+                if (!isAssignee && departments.length > 0) {
+                    const sbuSubIds = Array.from(new Set(departments.map((dept) => dept.sbuSubId)));
+                    const pic = await prismaEmployee.em_sbu_sub.findFirst({
+                        where: {
+                            id: { in: sbuSubIds },
+                            pic: employeeId,
+                            status: "A",
+                            OR: [{ isDeleted: false }, { isDeleted: null }],
+                        },
+                        select: { id: true },
+                    });
+                    isPic = Boolean(pic);
+                }
+                if (!isAssignee && !isPic) {
+                    throw new ResponseError(403, "Only requester, PIC, or assignee can add department");
+                }
+            }
         }
         await ensureSbuSubExists(request.sbuSubId);
         const existing = await prismaFlowly.caseDepartment.findFirst({
@@ -177,6 +207,20 @@ export class CaseDepartmentService {
             meta: { caseId: created.caseId },
         });
         await syncCaseHeaderStatus(created.caseId, requesterId);
+        try {
+            await CaseNotificationService.enqueueDepartmentAddedNotification({
+                caseId: created.caseId,
+                caseDepartmentId: created.caseDepartmentId,
+                sbuSubId: created.sbuSubId,
+                requesterId,
+            });
+        }
+        catch (error) {
+            logger.warn("Failed to enqueue case add-department notification", {
+                caseDepartmentId: created.caseDepartmentId,
+                error: error?.message ?? error,
+            });
+        }
         return toCaseDepartmentResponse(created);
     }
     static async update(requesterId, reqBody) {
@@ -198,7 +242,7 @@ export class CaseDepartmentService {
             const employeeId = access.employeeId;
             const isPic = await isPicForSbuSub(employeeId, existing.sbuSubId);
             const isAssignee = existing.assigneeEmployeeId === employeeId;
-            const hasDecisionUpdate = request.decisionStatus !== undefined;
+            const hasDecisionUpdate = request.decisionStatus !== undefined || request.decisionNotes !== undefined;
             const hasAssignmentUpdate = request.assigneeEmployeeId !== undefined;
             const hasWorkUpdate = request.workStatus !== undefined ||
                 request.startDate !== undefined ||
@@ -218,6 +262,13 @@ export class CaseDepartmentService {
         const nextDecisionStatus = request.decisionStatus !== undefined
             ? ensureDecisionStatus(request.decisionStatus)
             : existing.decisionStatus;
+        const existingDecisionNotes = normalizeNotes(existing.decisionNotes ?? null);
+        const nextDecisionNotes = request.decisionNotes !== undefined
+            ? normalizeNotes(request.decisionNotes)
+            : existingDecisionNotes;
+        const shouldNotifyDecision = request.decisionStatus !== undefined &&
+            nextDecisionStatus !== existing.decisionStatus &&
+            (nextDecisionStatus === "ACCEPT" || nextDecisionStatus === "REJECT");
         const nextWorkStatus = request.workStatus !== undefined
             ? request.workStatus === null
                 ? null
@@ -233,6 +284,9 @@ export class CaseDepartmentService {
             if (!(request.decisionStatus && nextDecisionStatus === "REJECT")) {
                 throw new ResponseError(400, "Case must be accepted before assignment");
             }
+        }
+        if (nextDecisionStatus === "REJECT" && !nextDecisionNotes) {
+            throw new ResponseError(400, "Komentar wajib diisi sebelum REJECT");
         }
         if (request.assigneeEmployeeId !== undefined && request.assigneeEmployeeId !== null) {
             await ensureEmployeeInSbuSub(request.assigneeEmployeeId, existing.sbuSubId);
@@ -255,8 +309,13 @@ export class CaseDepartmentService {
             updatedAt: now,
             updatedBy: requesterId,
         };
-        if (request.decisionStatus !== undefined) {
-            updateData.decisionStatus = nextDecisionStatus;
+        if (request.decisionStatus !== undefined || request.decisionNotes !== undefined) {
+            if (request.decisionStatus !== undefined) {
+                updateData.decisionStatus = nextDecisionStatus;
+            }
+            if (request.decisionNotes !== undefined) {
+                updateData.decisionNotes = nextDecisionNotes;
+            }
             updateData.decisionAt = now;
             updateData.decisionBy = requesterId;
         }
@@ -306,6 +365,21 @@ export class CaseDepartmentService {
             }
             catch (error) {
                 logger.warn("Failed to enqueue case assignee notification", {
+                    caseDepartmentId: updated.caseDepartmentId,
+                    error: error?.message ?? error,
+                });
+            }
+        }
+        if (shouldNotifyDecision) {
+            try {
+                await CaseNotificationService.enqueueRequesterDecisionNotification({
+                    caseId: updated.caseId,
+                    caseDepartmentId: updated.caseDepartmentId,
+                    requesterId,
+                });
+            }
+            catch (error) {
+                logger.warn("Failed to enqueue case decision notification", {
                     caseDepartmentId: updated.caseDepartmentId,
                     error: error?.message ?? error,
                 });
@@ -377,13 +451,33 @@ export class CaseDepartmentService {
                 select: { id: true },
             });
             const picSbuSubIds = picSubs.map((sub) => sub.id);
-            whereClause.OR = [
+            const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+            const orFilters = [
                 { assigneeEmployeeId: employeeId },
                 { case: { requesterEmployeeId: employeeId } },
                 ...(picSbuSubIds.length > 0
                     ? [{ sbuSubId: { in: picSbuSubIds } }]
                     : []),
             ];
+            if (chartSbuSubIds.length > 0) {
+                orFilters.push({
+                    case: {
+                        visibility: "PUBLIC",
+                        OR: [
+                            { originSbuSubId: { in: chartSbuSubIds } },
+                            {
+                                departments: {
+                                    some: {
+                                        sbuSubId: { in: chartSbuSubIds },
+                                        isDeleted: false,
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                });
+            }
+            whereClause.OR = orFilters;
         }
         const list = await prismaFlowly.caseDepartment.findMany({
             where: whereClause,

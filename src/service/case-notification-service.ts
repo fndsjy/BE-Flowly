@@ -169,4 +169,122 @@ export class CaseNotificationService {
       },
     });
   }
+
+  static async enqueueDepartmentAddedNotification(params: {
+    caseId: string;
+    caseDepartmentId: string;
+    sbuSubId: number;
+    requesterId: string;
+  }) {
+    const [caseHeader, sbuSub] = await Promise.all([
+      prismaFlowly.caseHeader.findUnique({
+        where: { caseId: params.caseId },
+        select: { caseTitle: true, caseType: true, isDeleted: true },
+      }),
+      prismaEmployee.em_sbu_sub.findFirst({
+        where: {
+          id: params.sbuSubId,
+          status: "A",
+          OR: [{ isDeleted: false }, { isDeleted: null }],
+        },
+        select: { sbu_sub_name: true, pic: true },
+      }),
+    ]);
+
+    if (!caseHeader || caseHeader.isDeleted) return;
+    if (!sbuSub?.pic) return;
+
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: sbuSub.pic },
+      select: { Phone: true },
+    });
+    const phone = normalizePhone(employee?.Phone ?? null);
+    if (!phone) return;
+
+    const createId = await generateCaseNotificationId();
+    const now = new Date();
+    await notificationClient.caseNotificationOutbox.create({
+      data: {
+        caseNotificationId: createId(),
+        caseId: params.caseId,
+        caseDepartmentId: params.caseDepartmentId,
+        recipientEmployeeId: sbuSub.pic,
+        channel: "WHATSAPP",
+        phoneNumber: phone,
+        message: "",
+        status: "PENDING",
+        attempts: 0,
+        provider: "SYSTEM",
+        meta: JSON.stringify({
+          sbuSubId: params.sbuSubId,
+          sbuSubName: sbuSub.sbu_sub_name,
+          role: "PIC",
+          action: "ADD_DEPARTMENT",
+        }),
+        isActive: true,
+        isDeleted: false,
+        createdAt: now,
+        updatedAt: now,
+        createdBy: params.requesterId,
+        updatedBy: params.requesterId,
+      },
+    });
+  }
+
+  static async enqueueRequesterDecisionNotification(params: {
+    caseId: string;
+    caseDepartmentId: string;
+    requesterId: string;
+  }) {
+    const caseHeader = await prismaFlowly.caseHeader.findUnique({
+      where: { caseId: params.caseId },
+      select: { requesterId: true, requesterEmployeeId: true, isDeleted: true },
+    });
+
+    if (!caseHeader || caseHeader.isDeleted) return;
+
+    let recipientEmployeeId = caseHeader.requesterEmployeeId ?? null;
+    if (!recipientEmployeeId && caseHeader.requesterId) {
+      const numericId = Number(caseHeader.requesterId);
+      if (Number.isFinite(numericId)) {
+        recipientEmployeeId = numericId;
+      }
+    }
+
+    if (!recipientEmployeeId) return;
+
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: recipientEmployeeId },
+      select: { Phone: true },
+    });
+    const phone = normalizePhone(employee?.Phone ?? null);
+    if (!phone) return;
+
+    const createId = await generateCaseNotificationId();
+    const now = new Date();
+    await notificationClient.caseNotificationOutbox.create({
+      data: {
+        caseNotificationId: createId(),
+        caseId: params.caseId,
+        caseDepartmentId: params.caseDepartmentId,
+        recipientEmployeeId,
+        channel: "WHATSAPP",
+        phoneNumber: phone,
+        message: "",
+        status: "PENDING",
+        attempts: 0,
+        provider: "SYSTEM",
+        meta: JSON.stringify({
+          role: "REQUESTER",
+          action: "DECISION",
+        }),
+        isActive: true,
+        isDeleted: false,
+        createdAt: now,
+        updatedAt: now,
+        createdBy: params.requesterId,
+        updatedBy: params.requesterId,
+      },
+    });
+  }
 }

@@ -11,6 +11,7 @@ export type CaseHeaderResponse = {
   locationDesc: string | null;
   notes: string | null;
   status: string;
+  visibility: string;
   requesterId: string | null;
   requesterEmployeeId: number | null;
   originSbuSubId: number | null;
@@ -32,6 +33,7 @@ export type CreateCaseHeaderRequest = {
   locationDesc?: string | null;
   notes?: string | null;
   originSbuSubId?: number;
+  visibility?: string;
   departmentSbuSubIds: number[];
 };
 
@@ -47,6 +49,7 @@ export type UpdateCaseHeaderRequest = {
   notes?: string | null;
   status?: string;
   originSbuSubId?: number | null;
+  visibility?: string;
   isActive?: boolean;
 };
 
@@ -68,6 +71,9 @@ export function toCaseHeaderResponse(caseHeader: CaseHeader): CaseHeaderResponse
     locationDesc: caseHeader.locationDesc ?? null,
     notes: caseHeader.notes ?? null,
     status: caseHeader.status,
+    visibility:
+      (caseHeader as CaseHeader & { visibility?: string | null }).visibility ??
+      "PRIVATE",
     requesterId: caseHeader.requesterId ?? null,
     requesterEmployeeId: caseHeader.requesterEmployeeId ?? null,
     originSbuSubId: caseHeader.originSbuSubId ?? null,

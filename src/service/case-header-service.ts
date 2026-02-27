@@ -16,12 +16,14 @@ import {
 import {
   assertCaseCrud,
   assertCaseRead,
+  getEmployeeChartSbuSubIds,
   resolveCaseAccess,
   type CaseAccess,
 } from "../utils/case-access.js";
 import {
   CASE_STATUSES,
   CASE_TYPES,
+  CASE_VISIBILITIES,
   normalizeUpper,
 } from "../utils/case-constants.js";
 import type { Prisma } from "../generated/flowly/client.js";
@@ -44,6 +46,7 @@ const CASE_AUDIT_FIELDS = [
   "locationDesc",
   "notes",
   "status",
+  "visibility",
   "requesterId",
   "requesterEmployeeId",
   "originSbuSubId",
@@ -73,6 +76,18 @@ const ensureCaseStatus = (value: string) => {
   const normalized = normalizeUpper(value);
   if (!CASE_STATUSES.includes(normalized as (typeof CASE_STATUSES)[number])) {
     throw new ResponseError(400, "Invalid status");
+  }
+  return normalized;
+};
+
+const ensureCaseVisibility = (value: string) => {
+  const normalized = normalizeUpper(value);
+  if (
+    !CASE_VISIBILITIES.includes(
+      normalized as (typeof CASE_VISIBILITIES)[number]
+    )
+  ) {
+    throw new ResponseError(400, "Invalid visibility");
   }
   return normalized;
 };
@@ -135,6 +150,7 @@ const buildEmployeeCaseFilter = async (access: CaseAccess) => {
     select: { id: true },
   });
   const picSbuSubIds = picSubs.map((sub) => sub.id);
+  const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
 
   const orFilters: Prisma.CaseHeaderWhereInput[] = [
     { requesterEmployeeId: employeeId },
@@ -157,6 +173,23 @@ const buildEmployeeCaseFilter = async (access: CaseAccess) => {
         },
       },
     });
+  }
+
+  if (chartSbuSubIds.length > 0) {
+    orFilters.push({
+      visibility: "PUBLIC",
+      OR: [
+        { originSbuSubId: { in: chartSbuSubIds } },
+        {
+          departments: {
+            some: {
+              sbuSubId: { in: chartSbuSubIds },
+              isDeleted: false,
+            },
+          },
+        },
+      ],
+    } as Prisma.CaseHeaderWhereInput);
   }
 
   return orFilters;
@@ -184,6 +217,9 @@ export class CaseHeaderService {
 
     const caseId = await generateCaseId();
     const now = new Date();
+    const visibility = request.visibility
+      ? ensureCaseVisibility(request.visibility)
+      : "PRIVATE";
 
     const background = normalizeNullableText(request.background) ?? null;
     const currentCondition =
@@ -222,6 +258,7 @@ export class CaseHeaderService {
       const headerData: Prisma.CaseHeaderCreateInput & {
         projectDesc?: string | null;
         projectObjective?: string | null;
+        visibility?: string;
       } = {
         caseId,
         caseType,
@@ -233,6 +270,7 @@ export class CaseHeaderService {
         locationDesc: normalizeNullableText(request.locationDesc) ?? null,
         notes: normalizeNullableText(request.notes) ?? null,
         status: "NEW",
+        visibility,
         originSbuSubId: request.originSbuSubId ?? null,
         isActive: true,
         isDeleted: false,
@@ -289,119 +327,10 @@ export class CaseHeaderService {
   }
 
   static async update(requesterId: string, reqBody: UpdateCaseHeaderRequest) {
-    const request = Validation.validate(CaseHeaderValidation.UPDATE, reqBody);
-
-    const access = await resolveCaseAccess(requesterId);
-    if (access.actorType === "FLOWLY") {
-      assertCaseCrud(access);
-    }
-
-    const existing = await prismaFlowly.caseHeader.findUnique({
-      where: { caseId: request.caseId },
-    });
-
-    if (!existing || existing.isDeleted) {
-      throw new ResponseError(404, "Case not found");
-    }
-
-    if (
-      access.actorType === "EMPLOYEE" &&
-      access.employeeId !== undefined &&
-      existing.requesterEmployeeId !== access.employeeId
-    ) {
-      throw new ResponseError(403, "Only requester can update this case");
-    }
-
-    if (request.originSbuSubId !== undefined && request.originSbuSubId !== null) {
-      await ensureSbuSubsExist([request.originSbuSubId]);
-    }
-
-    const nextCaseType = request.caseType
-      ? ensureCaseType(request.caseType)
-      : existing.caseType;
-
-    const nextBackground =
-      request.background !== undefined
-        ? normalizeNullableText(request.background) ?? null
-        : existing.background ?? null;
-    const nextCurrentCondition =
-      request.currentCondition !== undefined
-        ? normalizeNullableText(request.currentCondition) ?? null
-        : existing.currentCondition ?? null;
-    const nextProjectDesc =
-      request.projectDesc !== undefined
-        ? normalizeNullableText(request.projectDesc) ?? null
-        : (existing as typeof existing & { projectDesc?: string | null })
-            .projectDesc ?? null;
-
-    ensureCaseRequirements({
-      caseType: nextCaseType,
-      background: nextBackground,
-      currentCondition: nextCurrentCondition,
-      projectDesc: nextProjectDesc,
-    });
-
-    const before = { ...existing } as Record<string, unknown>;
-    const updateData: Prisma.CaseHeaderUpdateInput & {
-      projectDesc?: string | null;
-      projectObjective?: string | null;
-    } = {
-      caseType: nextCaseType,
-      caseTitle: request.caseTitle?.trim() ?? existing.caseTitle,
-      status: request.status ? ensureCaseStatus(request.status) : existing.status,
-      isActive: request.isActive ?? existing.isActive,
-      updatedAt: new Date(),
-      updatedBy: requesterId,
-    };
-
-    if (request.background !== undefined) {
-      updateData.background = nextBackground;
-    }
-    if (request.currentCondition !== undefined) {
-      updateData.currentCondition = nextCurrentCondition;
-    }
-    if (request.projectDesc !== undefined) {
-      updateData.projectDesc = nextProjectDesc;
-    }
-    if (request.projectObjective !== undefined) {
-      updateData.projectObjective =
-        normalizeNullableText(request.projectObjective) ?? null;
-    }
-    if (request.locationDesc !== undefined) {
-      updateData.locationDesc =
-        normalizeNullableText(request.locationDesc) ?? null;
-    }
-    if (request.notes !== undefined) {
-      updateData.notes = normalizeNullableText(request.notes) ?? null;
-    }
-    if (request.originSbuSubId !== undefined) {
-      updateData.originSbuSubId = request.originSbuSubId ?? null;
-    }
-
-    const updated = await prismaFlowly.caseHeader.update({
-      where: { caseId: request.caseId },
-      data: updateData,
-    });
-
-    const changes = buildChanges(
-      before,
-      updated as unknown as Record<string, unknown>,
-      CASE_AUDIT_FIELDS as unknown as string[]
-    );
-
-    if (changes.length > 0) {
-      await writeAuditLog({
-        module: "CASE",
-        entity: "CASE_HEADER",
-        entityId: updated.caseId,
-        action: "UPDATE",
-        actorId: requesterId,
-        actorType: resolveActorType(requesterId),
-        changes,
-      });
-    }
-
-    return toCaseHeaderResponse(updated);
+    void requesterId;
+    void reqBody;
+    // Editing cases is disabled for all roles.
+    throw new ResponseError(403, "Case editing is disabled");
   }
 
   static async softDelete(
