@@ -11,6 +11,8 @@ export function toCaseHeaderResponse(caseHeader) {
         locationDesc: caseHeader.locationDesc ?? null,
         notes: caseHeader.notes ?? null,
         status: caseHeader.status,
+        visibility: caseHeader.visibility ??
+            "PRIVATE",
         requesterId: caseHeader.requesterId ?? null,
         requesterEmployeeId: caseHeader.requesterEmployeeId ?? null,
         originSbuSubId: caseHeader.originSbuSubId ?? null,

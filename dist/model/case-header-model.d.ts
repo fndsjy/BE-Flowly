@@ -10,6 +10,7 @@ export type CaseHeaderResponse = {
     locationDesc: string | null;
     notes: string | null;
     status: string;
+    visibility: string;
     requesterId: string | null;
     requesterEmployeeId: number | null;
     originSbuSubId: number | null;
@@ -29,6 +30,7 @@ export type CreateCaseHeaderRequest = {
     locationDesc?: string | null;
     notes?: string | null;
     originSbuSubId?: number;
+    visibility?: string;
     departmentSbuSubIds: number[];
 };
 export type UpdateCaseHeaderRequest = {
@@ -43,6 +45,7 @@ export type UpdateCaseHeaderRequest = {
     notes?: string | null;
     status?: string;
     originSbuSubId?: number | null;
+    visibility?: string;
     isActive?: boolean;
 };
 export type DeleteCaseHeaderRequest = {

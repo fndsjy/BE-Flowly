@@ -13,5 +13,16 @@ export declare class CaseNotificationService {
         assigneeEmployeeId: number;
         requesterId: string;
     }): Promise<void>;
+    static enqueueDepartmentAddedNotification(params: {
+        caseId: string;
+        caseDepartmentId: string;
+        sbuSubId: number;
+        requesterId: string;
+    }): Promise<void>;
+    static enqueueRequesterDecisionNotification(params: {
+        caseId: string;
+        caseDepartmentId: string;
+        requesterId: string;
+    }): Promise<void>;
 }
 //# sourceMappingURL=case-notification-service.d.ts.map

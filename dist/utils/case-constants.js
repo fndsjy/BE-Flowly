@@ -1,4 +1,5 @@
 export const CASE_TYPES = ["PROJECT", "PROBLEM"];
+export const CASE_VISIBILITIES = ["PRIVATE", "PUBLIC"];
 export const CASE_STATUSES = [
     "NEW",
     "PENDING",

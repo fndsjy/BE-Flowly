@@ -6,6 +6,7 @@ export function toCaseDepartmentResponse(department) {
         decisionStatus: department.decisionStatus,
         decisionAt: department.decisionAt ?? null,
         decisionBy: department.decisionBy ?? null,
+        decisionNotes: department.decisionNotes ?? null,
         assigneeEmployeeId: department.assigneeEmployeeId ?? null,
         assignedAt: department.assignedAt ?? null,
         assignedBy: department.assignedBy ?? null,

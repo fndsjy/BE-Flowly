@@ -1,6 +1,9 @@
 export const CASE_TYPES = ["PROJECT", "PROBLEM"] as const;
 export type CaseType = (typeof CASE_TYPES)[number];
 
+export const CASE_VISIBILITIES = ["PRIVATE", "PUBLIC"] as const;
+export type CaseVisibility = (typeof CASE_VISIBILITIES)[number];
+
 export const CASE_STATUSES = [
   "NEW",
   "PENDING",

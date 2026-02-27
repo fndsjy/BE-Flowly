@@ -1,5 +1,5 @@
 import { z, ZodType } from "zod";
-import { CASE_STATUSES, CASE_TYPES, normalizeUpper } from "../utils/case-constants.js";
+import { CASE_STATUSES, CASE_TYPES, CASE_VISIBILITIES, normalizeUpper, } from "../utils/case-constants.js";
 const caseTypeSchema = z
     .string()
     .min(1)
@@ -16,6 +16,12 @@ const caseStatusSchema = z
     .refine((value) => CASE_STATUSES.includes(value), {
     message: "Invalid status",
 });
+const caseVisibilitySchema = z
+    .string()
+    .min(1)
+    .max(20)
+    .transform(normalizeUpper)
+    .refine((value) => CASE_VISIBILITIES.includes(value), { message: "Invalid visibility" });
 export class CaseHeaderValidation {
     static CREATE = z.object({
         caseType: caseTypeSchema,
@@ -27,6 +33,7 @@ export class CaseHeaderValidation {
         locationDesc: z.string().max(255).optional().nullable(),
         notes: z.string().max(1000).optional().nullable(),
         originSbuSubId: z.number().int().min(1).optional(),
+        visibility: caseVisibilitySchema.optional(),
         departmentSbuSubIds: z.array(z.number().int().min(1)).min(1),
     });
     static UPDATE = z.object({
@@ -41,6 +48,7 @@ export class CaseHeaderValidation {
         notes: z.string().max(1000).optional().nullable(),
         status: caseStatusSchema.optional(),
         originSbuSubId: z.number().int().min(1).optional().nullable(),
+        visibility: caseVisibilitySchema.optional(),
         isActive: z.boolean().optional(),
     });
     static DELETE = z.object({
