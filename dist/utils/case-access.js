@@ -1,6 +1,27 @@
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { canCrudModule, canReadModule, getModuleAccessMap } from "./access-scope.js";
+const resolveEmployeeId = async (userId, flowlyUser) => {
+    const numericId = Number(userId);
+    if (!Number.isNaN(numericId)) {
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: { UserId: numericId },
+            select: { UserId: true },
+        });
+        if (employee) {
+            return employee.UserId;
+        }
+    }
+    const badgeNumber = flowlyUser?.badgeNumber?.trim();
+    if (!badgeNumber) {
+        return null;
+    }
+    const employee = await prismaEmployee.em_employee.findFirst({
+        where: { BadgeNum: badgeNumber },
+        select: { UserId: true },
+    });
+    return employee?.UserId ?? null;
+};
 export const resolveCaseAccess = async (requesterId) => {
     const flowlyUser = await prismaFlowly.user.findUnique({
         where: { userId: requesterId, isDeleted: false },
@@ -19,6 +40,18 @@ export const resolveCaseAccess = async (requesterId) => {
         const moduleAccessMap = await getModuleAccessMap(requesterId);
         const canCrud = canCrudModule(moduleAccessMap, "CASE");
         const canRead = canReadModule(moduleAccessMap, "CASE") || canCrud;
+        if (!canRead) {
+            const employeeId = await resolveEmployeeId(requesterId, flowlyUser);
+            if (employeeId !== null) {
+                return {
+                    actorType: "EMPLOYEE",
+                    requesterId,
+                    employeeId,
+                    canRead: true,
+                    canCrud: false,
+                };
+            }
+        }
         return {
             actorType: "FLOWLY",
             requesterId,
@@ -26,15 +59,8 @@ export const resolveCaseAccess = async (requesterId) => {
             canCrud,
         };
     }
-    const employeeId = Number(requesterId);
-    if (Number.isNaN(employeeId)) {
-        throw new ResponseError(401, "Unauthorized");
-    }
-    const employee = await prismaEmployee.em_employee.findUnique({
-        where: { UserId: employeeId },
-        select: { UserId: true },
-    });
-    if (!employee) {
+    const employeeId = await resolveEmployeeId(requesterId, null);
+    if (employeeId === null) {
         throw new ResponseError(401, "Unauthorized");
     }
     return {
@@ -82,5 +108,22 @@ export const getEmployeeChartSbuSubIds = async (employeeId) => {
         .map((member) => member.node?.sbuSubId)
         .filter((id) => Number.isFinite(id));
     return Array.from(new Set(ids));
+};
+export const ensureCaseNotClosed = async (caseId) => {
+    const caseHeader = await prismaFlowly.caseHeader.findUnique({
+        where: { caseId },
+        select: {
+            caseId: true,
+            isDeleted: true,
+            feedbackApprovedAt: true,
+        },
+    });
+    if (!caseHeader || caseHeader.isDeleted) {
+        throw new ResponseError(404, "Case not found");
+    }
+    if (caseHeader.feedbackApprovedAt) {
+        throw new ResponseError(400, "Case already closed");
+    }
+    return caseHeader;
 };
 //# sourceMappingURL=case-access.js.map

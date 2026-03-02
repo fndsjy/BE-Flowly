@@ -14,6 +14,9 @@ export type CaseHeaderResponse = {
     requesterId: string | null;
     requesterEmployeeId: number | null;
     originSbuSubId: number | null;
+    feedbackApprovedAt: Date | null;
+    feedbackApprovedBy: string | null;
+    feedbackApprovedByEmployeeId: number | null;
     isActive: boolean;
     isDeleted: boolean;
     createdAt: Date;

@@ -4,7 +4,7 @@ import { CaseFishboneItemValidation } from "../validation/case-fishbone-item-val
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFishboneItemId, generateCaseFishboneItemCauseId, } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFishboneItemResponse, toCaseFishboneItemListResponse, } from "../model/case-fishbone-item-model.js";
 const normalizeCategoryCode = (value) => value.trim().toUpperCase();
 const ensureCategoryExists = async (categoryCode, requireActive = true) => {
@@ -251,15 +251,19 @@ export class CaseFishboneItemService {
     static async create(requesterId, reqBody) {
         const request = Validation.validate(CaseFishboneItemValidation.CREATE, reqBody);
         const access = await resolveCaseAccess(requesterId);
+        let fishbone = null;
         if (access.actorType === "FLOWLY") {
             assertCaseCrud(access);
-            await ensureCaseFishboneAccess(request.caseFishboneId);
+            fishbone = await ensureCaseFishboneAccess(request.caseFishboneId);
         }
         else if (access.employeeId !== undefined) {
-            await ensureCaseFishboneAccess(request.caseFishboneId, access.employeeId);
+            fishbone = await ensureCaseFishboneAccess(request.caseFishboneId, access.employeeId);
         }
         else {
-            await ensureCaseFishboneAccess(request.caseFishboneId);
+            fishbone = await ensureCaseFishboneAccess(request.caseFishboneId);
+        }
+        if (fishbone) {
+            await ensureCaseNotClosed(fishbone.caseId);
         }
         const normalizedCauseIds = await ensureCausesExist(request.caseFishboneId, request.causeIds);
         const caseFishboneItemId = (await generateCaseFishboneItemId())();
@@ -366,9 +370,8 @@ export class CaseFishboneItemService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case fishbone item not found");
         }
-        if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-            await ensureCaseFishboneAccess(existing.caseFishboneId, access.employeeId);
-        }
+        const fishbone = await ensureCaseFishboneAccess(existing.caseFishboneId, access.actorType === "EMPLOYEE" ? access.employeeId : undefined);
+        await ensureCaseNotClosed(fishbone.caseId);
         let normalizedCauseIds;
         if (request.causeIds !== undefined) {
             normalizedCauseIds = await ensureCausesExist(existing.caseFishboneId, request.causeIds);
@@ -450,9 +453,8 @@ export class CaseFishboneItemService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case fishbone item not found");
         }
-        if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-            await ensureCaseFishboneAccess(existing.caseFishboneId, access.employeeId);
-        }
+        const fishbone = await ensureCaseFishboneAccess(existing.caseFishboneId, access.actorType === "EMPLOYEE" ? access.employeeId : undefined);
+        await ensureCaseNotClosed(fishbone.caseId);
         const now = new Date();
         const { linkCount } = await prismaFlowly.$transaction(async (tx) => {
             const linkResult = await tx.caseFishboneItemCause.updateMany({

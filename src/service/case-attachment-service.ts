@@ -15,6 +15,7 @@ import {
 import {
   assertCaseCrud,
   assertCaseRead,
+  ensureCaseNotClosed,
   getEmployeeChartSbuSubIds,
   resolveCaseAccess,
 } from "../utils/case-access.js";
@@ -248,6 +249,9 @@ const ensureEmployeeCaseReadAccess = async (
   const picIds = picSubs.map((sub) => sub.id);
 
   if (picIds.length > 0) {
+    if (caseHeader.originSbuSubId && picIds.includes(caseHeader.originSbuSubId)) {
+      return;
+    }
     const hasDept = await prismaFlowly.caseDepartment.findFirst({
       where: {
         caseId,
@@ -316,6 +320,8 @@ export class CaseAttachmentService {
     if (!caseHeader || caseHeader.isDeleted) {
       throw new ResponseError(404, "Case not found");
     }
+
+    await ensureCaseNotClosed(request.caseId);
 
     const createId = await generateCaseAttachmentId();
     const now = new Date();
@@ -428,6 +434,8 @@ export class CaseAttachmentService {
     if (!existing || existing.isDeleted) {
       throw new ResponseError(404, "Case attachment not found");
     }
+
+    await ensureCaseNotClosed(existing.caseId);
 
     if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
       await ensureEmployeeCaseAccess(access.employeeId, existing.caseId);
@@ -576,6 +584,8 @@ export class CaseAttachmentService {
     if (!existing || existing.isDeleted) {
       throw new ResponseError(404, "Case attachment not found");
     }
+
+    await ensureCaseNotClosed(existing.caseId);
 
     if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
       await ensureEmployeeCaseAccess(access.employeeId, existing.caseId);

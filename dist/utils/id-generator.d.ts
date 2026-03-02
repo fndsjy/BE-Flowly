@@ -21,6 +21,8 @@ export declare function generateCaseFishboneId(): Promise<string>;
 export declare function generateCaseFishboneCauseId(): Promise<() => string>;
 export declare function generateCaseFishboneItemId(): Promise<() => string>;
 export declare function generateCaseFishboneItemCauseId(): Promise<() => string>;
+export declare function generateCasePdcaItemId(): Promise<() => string>;
+export declare function generateCaseFeedbackCommentId(): Promise<() => string>;
 export declare function generateCaseNotificationId(): Promise<() => string>;
 export declare function generateCaseNotificationMessageId(): Promise<() => string>;
 export declare function generateCaseNotificationTemplateId(): Promise<() => string>;

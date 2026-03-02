@@ -105,6 +105,16 @@ export type CaseFishboneItem = $Result.DefaultSelection<Prisma.$CaseFishboneItem
  */
 export type CaseFishboneItemCause = $Result.DefaultSelection<Prisma.$CaseFishboneItemCausePayload>
 /**
+ * Model CasePdcaItem
+ * Case PDCA items (Plan-Do-Check-Act)
+ */
+export type CasePdcaItem = $Result.DefaultSelection<Prisma.$CasePdcaItemPayload>
+/**
+ * Model CaseFeedbackComment
+ * Case feedback comments (after implementation)
+ */
+export type CaseFeedbackComment = $Result.DefaultSelection<Prisma.$CaseFeedbackCommentPayload>
+/**
  * Model FishboneCategory
  * Fishbone category master (6M, etc.)
  */
@@ -442,6 +452,26 @@ export class PrismaClient<
     * ```
     */
   get caseFishboneItemCause(): Prisma.CaseFishboneItemCauseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.casePdcaItem`: Exposes CRUD operations for the **CasePdcaItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CasePdcaItems
+    * const casePdcaItems = await prisma.casePdcaItem.findMany()
+    * ```
+    */
+  get casePdcaItem(): Prisma.CasePdcaItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseFeedbackComment`: Exposes CRUD operations for the **CaseFeedbackComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseFeedbackComments
+    * const caseFeedbackComments = await prisma.caseFeedbackComment.findMany()
+    * ```
+    */
+  get caseFeedbackComment(): Prisma.CaseFeedbackCommentDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.fishboneCategory`: Exposes CRUD operations for the **FishboneCategory** model.
@@ -981,6 +1011,8 @@ export namespace Prisma {
     CaseFishboneCause: 'CaseFishboneCause',
     CaseFishboneItem: 'CaseFishboneItem',
     CaseFishboneItemCause: 'CaseFishboneItemCause',
+    CasePdcaItem: 'CasePdcaItem',
+    CaseFeedbackComment: 'CaseFeedbackComment',
     FishboneCategory: 'FishboneCategory',
     FishboneCause: 'FishboneCause',
     FishboneItem: 'FishboneItem',
@@ -1007,7 +1039,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "casePdcaItem" | "caseFeedbackComment" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2199,6 +2231,138 @@ export namespace Prisma {
           }
         }
       }
+      CasePdcaItem: {
+        payload: Prisma.$CasePdcaItemPayload<ExtArgs>
+        fields: Prisma.CasePdcaItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CasePdcaItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CasePdcaItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>
+          }
+          findFirst: {
+            args: Prisma.CasePdcaItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CasePdcaItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>
+          }
+          findMany: {
+            args: Prisma.CasePdcaItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>[]
+          }
+          create: {
+            args: Prisma.CasePdcaItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>
+          }
+          createMany: {
+            args: Prisma.CasePdcaItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CasePdcaItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>
+          }
+          update: {
+            args: Prisma.CasePdcaItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.CasePdcaItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CasePdcaItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CasePdcaItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CasePdcaItemPayload>
+          }
+          aggregate: {
+            args: Prisma.CasePdcaItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCasePdcaItem>
+          }
+          groupBy: {
+            args: Prisma.CasePdcaItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CasePdcaItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CasePdcaItemCountArgs<ExtArgs>
+            result: $Utils.Optional<CasePdcaItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseFeedbackComment: {
+        payload: Prisma.$CaseFeedbackCommentPayload<ExtArgs>
+        fields: Prisma.CaseFeedbackCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseFeedbackCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseFeedbackCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.CaseFeedbackCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseFeedbackCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>
+          }
+          findMany: {
+            args: Prisma.CaseFeedbackCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>[]
+          }
+          create: {
+            args: Prisma.CaseFeedbackCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>
+          }
+          createMany: {
+            args: Prisma.CaseFeedbackCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseFeedbackCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>
+          }
+          update: {
+            args: Prisma.CaseFeedbackCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseFeedbackCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseFeedbackCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseFeedbackCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseFeedbackCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.CaseFeedbackCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseFeedbackComment>
+          }
+          groupBy: {
+            args: Prisma.CaseFeedbackCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseFeedbackCommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseFeedbackCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseFeedbackCommentCountAggregateOutputType> | number
+          }
+        }
+      }
       FishboneCategory: {
         payload: Prisma.$FishboneCategoryPayload<ExtArgs>
         fields: Prisma.FishboneCategoryFieldRefs
@@ -2841,6 +3005,8 @@ export namespace Prisma {
     caseFishboneCause?: CaseFishboneCauseOmit
     caseFishboneItem?: CaseFishboneItemOmit
     caseFishboneItemCause?: CaseFishboneItemCauseOmit
+    casePdcaItem?: CasePdcaItemOmit
+    caseFeedbackComment?: CaseFeedbackCommentOmit
     fishboneCategory?: FishboneCategoryOmit
     fishboneCause?: FishboneCauseOmit
     fishboneItem?: FishboneItemOmit
@@ -3141,6 +3307,8 @@ export namespace Prisma {
     departments: number
     attachments: number
     caseFishbones: number
+    casePdcaItems: number
+    caseFeedbackComments: number
     notifications: number
     caseNotificationMessages: number
   }
@@ -3149,6 +3317,8 @@ export namespace Prisma {
     departments?: boolean | CaseHeaderCountOutputTypeCountDepartmentsArgs
     attachments?: boolean | CaseHeaderCountOutputTypeCountAttachmentsArgs
     caseFishbones?: boolean | CaseHeaderCountOutputTypeCountCaseFishbonesArgs
+    casePdcaItems?: boolean | CaseHeaderCountOutputTypeCountCasePdcaItemsArgs
+    caseFeedbackComments?: boolean | CaseHeaderCountOutputTypeCountCaseFeedbackCommentsArgs
     notifications?: boolean | CaseHeaderCountOutputTypeCountNotificationsArgs
     caseNotificationMessages?: boolean | CaseHeaderCountOutputTypeCountCaseNotificationMessagesArgs
   }
@@ -3183,6 +3353,20 @@ export namespace Prisma {
    */
   export type CaseHeaderCountOutputTypeCountCaseFishbonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CaseFishboneMasterWhereInput
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountCasePdcaItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CasePdcaItemWhereInput
+  }
+
+  /**
+   * CaseHeaderCountOutputType without action
+   */
+  export type CaseHeaderCountOutputTypeCountCaseFeedbackCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFeedbackCommentWhereInput
   }
 
   /**
@@ -11451,11 +11635,13 @@ export namespace Prisma {
   export type CaseHeaderAvgAggregateOutputType = {
     requesterEmployeeId: number | null
     originSbuSubId: number | null
+    feedbackApprovedByEmployeeId: number | null
   }
 
   export type CaseHeaderSumAggregateOutputType = {
     requesterEmployeeId: number | null
     originSbuSubId: number | null
+    feedbackApprovedByEmployeeId: number | null
   }
 
   export type CaseHeaderMinAggregateOutputType = {
@@ -11473,6 +11659,9 @@ export namespace Prisma {
     requesterId: string | null
     requesterEmployeeId: number | null
     originSbuSubId: number | null
+    feedbackApprovedAt: Date | null
+    feedbackApprovedBy: string | null
+    feedbackApprovedByEmployeeId: number | null
     isActive: boolean | null
     createdAt: Date | null
     createdBy: string | null
@@ -11498,6 +11687,9 @@ export namespace Prisma {
     requesterId: string | null
     requesterEmployeeId: number | null
     originSbuSubId: number | null
+    feedbackApprovedAt: Date | null
+    feedbackApprovedBy: string | null
+    feedbackApprovedByEmployeeId: number | null
     isActive: boolean | null
     createdAt: Date | null
     createdBy: string | null
@@ -11523,6 +11715,9 @@ export namespace Prisma {
     requesterId: number
     requesterEmployeeId: number
     originSbuSubId: number
+    feedbackApprovedAt: number
+    feedbackApprovedBy: number
+    feedbackApprovedByEmployeeId: number
     isActive: number
     createdAt: number
     createdBy: number
@@ -11538,11 +11733,13 @@ export namespace Prisma {
   export type CaseHeaderAvgAggregateInputType = {
     requesterEmployeeId?: true
     originSbuSubId?: true
+    feedbackApprovedByEmployeeId?: true
   }
 
   export type CaseHeaderSumAggregateInputType = {
     requesterEmployeeId?: true
     originSbuSubId?: true
+    feedbackApprovedByEmployeeId?: true
   }
 
   export type CaseHeaderMinAggregateInputType = {
@@ -11560,6 +11757,9 @@ export namespace Prisma {
     requesterId?: true
     requesterEmployeeId?: true
     originSbuSubId?: true
+    feedbackApprovedAt?: true
+    feedbackApprovedBy?: true
+    feedbackApprovedByEmployeeId?: true
     isActive?: true
     createdAt?: true
     createdBy?: true
@@ -11585,6 +11785,9 @@ export namespace Prisma {
     requesterId?: true
     requesterEmployeeId?: true
     originSbuSubId?: true
+    feedbackApprovedAt?: true
+    feedbackApprovedBy?: true
+    feedbackApprovedByEmployeeId?: true
     isActive?: true
     createdAt?: true
     createdBy?: true
@@ -11610,6 +11813,9 @@ export namespace Prisma {
     requesterId?: true
     requesterEmployeeId?: true
     originSbuSubId?: true
+    feedbackApprovedAt?: true
+    feedbackApprovedBy?: true
+    feedbackApprovedByEmployeeId?: true
     isActive?: true
     createdAt?: true
     createdBy?: true
@@ -11722,6 +11928,9 @@ export namespace Prisma {
     requesterId: string | null
     requesterEmployeeId: number | null
     originSbuSubId: number | null
+    feedbackApprovedAt: Date | null
+    feedbackApprovedBy: string | null
+    feedbackApprovedByEmployeeId: number | null
     isActive: boolean
     createdAt: Date
     createdBy: string | null
@@ -11766,6 +11975,9 @@ export namespace Prisma {
     requesterId?: boolean
     requesterEmployeeId?: boolean
     originSbuSubId?: boolean
+    feedbackApprovedAt?: boolean
+    feedbackApprovedBy?: boolean
+    feedbackApprovedByEmployeeId?: boolean
     isActive?: boolean
     createdAt?: boolean
     createdBy?: boolean
@@ -11777,6 +11989,8 @@ export namespace Prisma {
     departments?: boolean | CaseHeader$departmentsArgs<ExtArgs>
     attachments?: boolean | CaseHeader$attachmentsArgs<ExtArgs>
     caseFishbones?: boolean | CaseHeader$caseFishbonesArgs<ExtArgs>
+    casePdcaItems?: boolean | CaseHeader$casePdcaItemsArgs<ExtArgs>
+    caseFeedbackComments?: boolean | CaseHeader$caseFeedbackCommentsArgs<ExtArgs>
     notifications?: boolean | CaseHeader$notificationsArgs<ExtArgs>
     caseNotificationMessages?: boolean | CaseHeader$caseNotificationMessagesArgs<ExtArgs>
     _count?: boolean | CaseHeaderCountOutputTypeDefaultArgs<ExtArgs>
@@ -11799,6 +12013,9 @@ export namespace Prisma {
     requesterId?: boolean
     requesterEmployeeId?: boolean
     originSbuSubId?: boolean
+    feedbackApprovedAt?: boolean
+    feedbackApprovedBy?: boolean
+    feedbackApprovedByEmployeeId?: boolean
     isActive?: boolean
     createdAt?: boolean
     createdBy?: boolean
@@ -11809,11 +12026,13 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type CaseHeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseId" | "caseType" | "caseTitle" | "background" | "currentCondition" | "projectDesc" | "projectObjective" | "locationDesc" | "notes" | "status" | "visibility" | "requesterId" | "requesterEmployeeId" | "originSbuSubId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseHeader"]>
+  export type CaseHeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseId" | "caseType" | "caseTitle" | "background" | "currentCondition" | "projectDesc" | "projectObjective" | "locationDesc" | "notes" | "status" | "visibility" | "requesterId" | "requesterEmployeeId" | "originSbuSubId" | "feedbackApprovedAt" | "feedbackApprovedBy" | "feedbackApprovedByEmployeeId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseHeader"]>
   export type CaseHeaderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     departments?: boolean | CaseHeader$departmentsArgs<ExtArgs>
     attachments?: boolean | CaseHeader$attachmentsArgs<ExtArgs>
     caseFishbones?: boolean | CaseHeader$caseFishbonesArgs<ExtArgs>
+    casePdcaItems?: boolean | CaseHeader$casePdcaItemsArgs<ExtArgs>
+    caseFeedbackComments?: boolean | CaseHeader$caseFeedbackCommentsArgs<ExtArgs>
     notifications?: boolean | CaseHeader$notificationsArgs<ExtArgs>
     caseNotificationMessages?: boolean | CaseHeader$caseNotificationMessagesArgs<ExtArgs>
     _count?: boolean | CaseHeaderCountOutputTypeDefaultArgs<ExtArgs>
@@ -11825,6 +12044,8 @@ export namespace Prisma {
       departments: Prisma.$CaseDepartmentPayload<ExtArgs>[]
       attachments: Prisma.$CaseAttachmentPayload<ExtArgs>[]
       caseFishbones: Prisma.$CaseFishboneMasterPayload<ExtArgs>[]
+      casePdcaItems: Prisma.$CasePdcaItemPayload<ExtArgs>[]
+      caseFeedbackComments: Prisma.$CaseFeedbackCommentPayload<ExtArgs>[]
       notifications: Prisma.$CaseNotificationOutboxPayload<ExtArgs>[]
       caseNotificationMessages: Prisma.$CaseNotificationMessagePayload<ExtArgs>[]
     }
@@ -11846,6 +12067,9 @@ export namespace Prisma {
       requesterId: string | null
       requesterEmployeeId: number | null
       originSbuSubId: number | null
+      feedbackApprovedAt: Date | null
+      feedbackApprovedBy: string | null
+      feedbackApprovedByEmployeeId: number | null
       isActive: boolean
       createdAt: Date
       createdBy: string | null
@@ -12197,6 +12421,8 @@ export namespace Prisma {
     departments<T extends CaseHeader$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attachments<T extends CaseHeader$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     caseFishbones<T extends CaseHeader$caseFishbonesArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$caseFishbonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFishboneMasterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    casePdcaItems<T extends CaseHeader$casePdcaItemsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$casePdcaItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    caseFeedbackComments<T extends CaseHeader$caseFeedbackCommentsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$caseFeedbackCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends CaseHeader$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     caseNotificationMessages<T extends CaseHeader$caseNotificationMessagesArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeader$caseNotificationMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -12242,6 +12468,9 @@ export namespace Prisma {
     readonly requesterId: FieldRef<"CaseHeader", 'String'>
     readonly requesterEmployeeId: FieldRef<"CaseHeader", 'Int'>
     readonly originSbuSubId: FieldRef<"CaseHeader", 'Int'>
+    readonly feedbackApprovedAt: FieldRef<"CaseHeader", 'DateTime'>
+    readonly feedbackApprovedBy: FieldRef<"CaseHeader", 'String'>
+    readonly feedbackApprovedByEmployeeId: FieldRef<"CaseHeader", 'Int'>
     readonly isActive: FieldRef<"CaseHeader", 'Boolean'>
     readonly createdAt: FieldRef<"CaseHeader", 'DateTime'>
     readonly createdBy: FieldRef<"CaseHeader", 'String'>
@@ -12661,6 +12890,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CaseFishboneMasterScalarFieldEnum | CaseFishboneMasterScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader.casePdcaItems
+   */
+  export type CaseHeader$casePdcaItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    where?: CasePdcaItemWhereInput
+    orderBy?: CasePdcaItemOrderByWithRelationInput | CasePdcaItemOrderByWithRelationInput[]
+    cursor?: CasePdcaItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CasePdcaItemScalarFieldEnum | CasePdcaItemScalarFieldEnum[]
+  }
+
+  /**
+   * CaseHeader.caseFeedbackComments
+   */
+  export type CaseHeader$caseFeedbackCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    where?: CaseFeedbackCommentWhereInput
+    orderBy?: CaseFeedbackCommentOrderByWithRelationInput | CaseFeedbackCommentOrderByWithRelationInput[]
+    cursor?: CaseFeedbackCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseFeedbackCommentScalarFieldEnum | CaseFeedbackCommentScalarFieldEnum[]
   }
 
   /**
@@ -23647,6 +23924,2238 @@ export namespace Prisma {
 
 
   /**
+   * Model CasePdcaItem
+   */
+
+  export type AggregateCasePdcaItem = {
+    _count: CasePdcaItemCountAggregateOutputType | null
+    _avg: CasePdcaItemAvgAggregateOutputType | null
+    _sum: CasePdcaItemSumAggregateOutputType | null
+    _min: CasePdcaItemMinAggregateOutputType | null
+    _max: CasePdcaItemMaxAggregateOutputType | null
+  }
+
+  export type CasePdcaItemAvgAggregateOutputType = {
+    itemNo: number | null
+  }
+
+  export type CasePdcaItemSumAggregateOutputType = {
+    itemNo: number | null
+  }
+
+  export type CasePdcaItemMinAggregateOutputType = {
+    casePdcaItemId: string | null
+    caseId: string | null
+    itemNo: number | null
+    planText: string | null
+    doText: string | null
+    doStartDate: Date | null
+    doEndDate: Date | null
+    checkText: string | null
+    checkStartDate: Date | null
+    checkEndDate: Date | null
+    checkBy: string | null
+    checkComment: string | null
+    actText: string | null
+    actStartDate: Date | null
+    actEndDate: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CasePdcaItemMaxAggregateOutputType = {
+    casePdcaItemId: string | null
+    caseId: string | null
+    itemNo: number | null
+    planText: string | null
+    doText: string | null
+    doStartDate: Date | null
+    doEndDate: Date | null
+    checkText: string | null
+    checkStartDate: Date | null
+    checkEndDate: Date | null
+    checkBy: string | null
+    checkComment: string | null
+    actText: string | null
+    actStartDate: Date | null
+    actEndDate: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CasePdcaItemCountAggregateOutputType = {
+    casePdcaItemId: number
+    caseId: number
+    itemNo: number
+    planText: number
+    doText: number
+    doStartDate: number
+    doEndDate: number
+    checkText: number
+    checkStartDate: number
+    checkEndDate: number
+    checkBy: number
+    checkComment: number
+    actText: number
+    actStartDate: number
+    actEndDate: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CasePdcaItemAvgAggregateInputType = {
+    itemNo?: true
+  }
+
+  export type CasePdcaItemSumAggregateInputType = {
+    itemNo?: true
+  }
+
+  export type CasePdcaItemMinAggregateInputType = {
+    casePdcaItemId?: true
+    caseId?: true
+    itemNo?: true
+    planText?: true
+    doText?: true
+    doStartDate?: true
+    doEndDate?: true
+    checkText?: true
+    checkStartDate?: true
+    checkEndDate?: true
+    checkBy?: true
+    checkComment?: true
+    actText?: true
+    actStartDate?: true
+    actEndDate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CasePdcaItemMaxAggregateInputType = {
+    casePdcaItemId?: true
+    caseId?: true
+    itemNo?: true
+    planText?: true
+    doText?: true
+    doStartDate?: true
+    doEndDate?: true
+    checkText?: true
+    checkStartDate?: true
+    checkEndDate?: true
+    checkBy?: true
+    checkComment?: true
+    actText?: true
+    actStartDate?: true
+    actEndDate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CasePdcaItemCountAggregateInputType = {
+    casePdcaItemId?: true
+    caseId?: true
+    itemNo?: true
+    planText?: true
+    doText?: true
+    doStartDate?: true
+    doEndDate?: true
+    checkText?: true
+    checkStartDate?: true
+    checkEndDate?: true
+    checkBy?: true
+    checkComment?: true
+    actText?: true
+    actStartDate?: true
+    actEndDate?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CasePdcaItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CasePdcaItem to aggregate.
+     */
+    where?: CasePdcaItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CasePdcaItems to fetch.
+     */
+    orderBy?: CasePdcaItemOrderByWithRelationInput | CasePdcaItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CasePdcaItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CasePdcaItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CasePdcaItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CasePdcaItems
+    **/
+    _count?: true | CasePdcaItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CasePdcaItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CasePdcaItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CasePdcaItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CasePdcaItemMaxAggregateInputType
+  }
+
+  export type GetCasePdcaItemAggregateType<T extends CasePdcaItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateCasePdcaItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCasePdcaItem[P]>
+      : GetScalarType<T[P], AggregateCasePdcaItem[P]>
+  }
+
+
+
+
+  export type CasePdcaItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CasePdcaItemWhereInput
+    orderBy?: CasePdcaItemOrderByWithAggregationInput | CasePdcaItemOrderByWithAggregationInput[]
+    by: CasePdcaItemScalarFieldEnum[] | CasePdcaItemScalarFieldEnum
+    having?: CasePdcaItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CasePdcaItemCountAggregateInputType | true
+    _avg?: CasePdcaItemAvgAggregateInputType
+    _sum?: CasePdcaItemSumAggregateInputType
+    _min?: CasePdcaItemMinAggregateInputType
+    _max?: CasePdcaItemMaxAggregateInputType
+  }
+
+  export type CasePdcaItemGroupByOutputType = {
+    casePdcaItemId: string
+    caseId: string
+    itemNo: number
+    planText: string | null
+    doText: string | null
+    doStartDate: Date | null
+    doEndDate: Date | null
+    checkText: string | null
+    checkStartDate: Date | null
+    checkEndDate: Date | null
+    checkBy: string | null
+    checkComment: string | null
+    actText: string | null
+    actStartDate: Date | null
+    actEndDate: Date | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CasePdcaItemCountAggregateOutputType | null
+    _avg: CasePdcaItemAvgAggregateOutputType | null
+    _sum: CasePdcaItemSumAggregateOutputType | null
+    _min: CasePdcaItemMinAggregateOutputType | null
+    _max: CasePdcaItemMaxAggregateOutputType | null
+  }
+
+  type GetCasePdcaItemGroupByPayload<T extends CasePdcaItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CasePdcaItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CasePdcaItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CasePdcaItemGroupByOutputType[P]>
+            : GetScalarType<T[P], CasePdcaItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CasePdcaItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    casePdcaItemId?: boolean
+    caseId?: boolean
+    itemNo?: boolean
+    planText?: boolean
+    doText?: boolean
+    doStartDate?: boolean
+    doEndDate?: boolean
+    checkText?: boolean
+    checkStartDate?: boolean
+    checkEndDate?: boolean
+    checkBy?: boolean
+    checkComment?: boolean
+    actText?: boolean
+    actStartDate?: boolean
+    actEndDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["casePdcaItem"]>
+
+
+
+  export type CasePdcaItemSelectScalar = {
+    casePdcaItemId?: boolean
+    caseId?: boolean
+    itemNo?: boolean
+    planText?: boolean
+    doText?: boolean
+    doStartDate?: boolean
+    doEndDate?: boolean
+    checkText?: boolean
+    checkStartDate?: boolean
+    checkEndDate?: boolean
+    checkBy?: boolean
+    checkComment?: boolean
+    actText?: boolean
+    actStartDate?: boolean
+    actEndDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CasePdcaItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"casePdcaItemId" | "caseId" | "itemNo" | "planText" | "doText" | "doStartDate" | "doEndDate" | "checkText" | "checkStartDate" | "checkEndDate" | "checkBy" | "checkComment" | "actText" | "actStartDate" | "actEndDate" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["casePdcaItem"]>
+  export type CasePdcaItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+  }
+
+  export type $CasePdcaItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CasePdcaItem"
+    objects: {
+      case: Prisma.$CaseHeaderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      casePdcaItemId: string
+      caseId: string
+      itemNo: number
+      planText: string | null
+      doText: string | null
+      doStartDate: Date | null
+      doEndDate: Date | null
+      checkText: string | null
+      checkStartDate: Date | null
+      checkEndDate: Date | null
+      checkBy: string | null
+      checkComment: string | null
+      actText: string | null
+      actStartDate: Date | null
+      actEndDate: Date | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["casePdcaItem"]>
+    composites: {}
+  }
+
+  type CasePdcaItemGetPayload<S extends boolean | null | undefined | CasePdcaItemDefaultArgs> = $Result.GetResult<Prisma.$CasePdcaItemPayload, S>
+
+  type CasePdcaItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CasePdcaItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CasePdcaItemCountAggregateInputType | true
+    }
+
+  export interface CasePdcaItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CasePdcaItem'], meta: { name: 'CasePdcaItem' } }
+    /**
+     * Find zero or one CasePdcaItem that matches the filter.
+     * @param {CasePdcaItemFindUniqueArgs} args - Arguments to find a CasePdcaItem
+     * @example
+     * // Get one CasePdcaItem
+     * const casePdcaItem = await prisma.casePdcaItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CasePdcaItemFindUniqueArgs>(args: SelectSubset<T, CasePdcaItemFindUniqueArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CasePdcaItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CasePdcaItemFindUniqueOrThrowArgs} args - Arguments to find a CasePdcaItem
+     * @example
+     * // Get one CasePdcaItem
+     * const casePdcaItem = await prisma.casePdcaItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CasePdcaItemFindUniqueOrThrowArgs>(args: SelectSubset<T, CasePdcaItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CasePdcaItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemFindFirstArgs} args - Arguments to find a CasePdcaItem
+     * @example
+     * // Get one CasePdcaItem
+     * const casePdcaItem = await prisma.casePdcaItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CasePdcaItemFindFirstArgs>(args?: SelectSubset<T, CasePdcaItemFindFirstArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CasePdcaItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemFindFirstOrThrowArgs} args - Arguments to find a CasePdcaItem
+     * @example
+     * // Get one CasePdcaItem
+     * const casePdcaItem = await prisma.casePdcaItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CasePdcaItemFindFirstOrThrowArgs>(args?: SelectSubset<T, CasePdcaItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CasePdcaItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CasePdcaItems
+     * const casePdcaItems = await prisma.casePdcaItem.findMany()
+     * 
+     * // Get first 10 CasePdcaItems
+     * const casePdcaItems = await prisma.casePdcaItem.findMany({ take: 10 })
+     * 
+     * // Only select the `casePdcaItemId`
+     * const casePdcaItemWithCasePdcaItemIdOnly = await prisma.casePdcaItem.findMany({ select: { casePdcaItemId: true } })
+     * 
+     */
+    findMany<T extends CasePdcaItemFindManyArgs>(args?: SelectSubset<T, CasePdcaItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CasePdcaItem.
+     * @param {CasePdcaItemCreateArgs} args - Arguments to create a CasePdcaItem.
+     * @example
+     * // Create one CasePdcaItem
+     * const CasePdcaItem = await prisma.casePdcaItem.create({
+     *   data: {
+     *     // ... data to create a CasePdcaItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends CasePdcaItemCreateArgs>(args: SelectSubset<T, CasePdcaItemCreateArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CasePdcaItems.
+     * @param {CasePdcaItemCreateManyArgs} args - Arguments to create many CasePdcaItems.
+     * @example
+     * // Create many CasePdcaItems
+     * const casePdcaItem = await prisma.casePdcaItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CasePdcaItemCreateManyArgs>(args?: SelectSubset<T, CasePdcaItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CasePdcaItem.
+     * @param {CasePdcaItemDeleteArgs} args - Arguments to delete one CasePdcaItem.
+     * @example
+     * // Delete one CasePdcaItem
+     * const CasePdcaItem = await prisma.casePdcaItem.delete({
+     *   where: {
+     *     // ... filter to delete one CasePdcaItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CasePdcaItemDeleteArgs>(args: SelectSubset<T, CasePdcaItemDeleteArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CasePdcaItem.
+     * @param {CasePdcaItemUpdateArgs} args - Arguments to update one CasePdcaItem.
+     * @example
+     * // Update one CasePdcaItem
+     * const casePdcaItem = await prisma.casePdcaItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CasePdcaItemUpdateArgs>(args: SelectSubset<T, CasePdcaItemUpdateArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CasePdcaItems.
+     * @param {CasePdcaItemDeleteManyArgs} args - Arguments to filter CasePdcaItems to delete.
+     * @example
+     * // Delete a few CasePdcaItems
+     * const { count } = await prisma.casePdcaItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CasePdcaItemDeleteManyArgs>(args?: SelectSubset<T, CasePdcaItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CasePdcaItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CasePdcaItems
+     * const casePdcaItem = await prisma.casePdcaItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CasePdcaItemUpdateManyArgs>(args: SelectSubset<T, CasePdcaItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CasePdcaItem.
+     * @param {CasePdcaItemUpsertArgs} args - Arguments to update or create a CasePdcaItem.
+     * @example
+     * // Update or create a CasePdcaItem
+     * const casePdcaItem = await prisma.casePdcaItem.upsert({
+     *   create: {
+     *     // ... data to create a CasePdcaItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CasePdcaItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CasePdcaItemUpsertArgs>(args: SelectSubset<T, CasePdcaItemUpsertArgs<ExtArgs>>): Prisma__CasePdcaItemClient<$Result.GetResult<Prisma.$CasePdcaItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CasePdcaItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemCountArgs} args - Arguments to filter CasePdcaItems to count.
+     * @example
+     * // Count the number of CasePdcaItems
+     * const count = await prisma.casePdcaItem.count({
+     *   where: {
+     *     // ... the filter for the CasePdcaItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends CasePdcaItemCountArgs>(
+      args?: Subset<T, CasePdcaItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CasePdcaItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CasePdcaItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CasePdcaItemAggregateArgs>(args: Subset<T, CasePdcaItemAggregateArgs>): Prisma.PrismaPromise<GetCasePdcaItemAggregateType<T>>
+
+    /**
+     * Group by CasePdcaItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CasePdcaItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CasePdcaItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CasePdcaItemGroupByArgs['orderBy'] }
+        : { orderBy?: CasePdcaItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CasePdcaItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCasePdcaItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CasePdcaItem model
+   */
+  readonly fields: CasePdcaItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CasePdcaItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CasePdcaItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case<T extends CaseHeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeaderDefaultArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CasePdcaItem model
+   */
+  interface CasePdcaItemFieldRefs {
+    readonly casePdcaItemId: FieldRef<"CasePdcaItem", 'String'>
+    readonly caseId: FieldRef<"CasePdcaItem", 'String'>
+    readonly itemNo: FieldRef<"CasePdcaItem", 'Int'>
+    readonly planText: FieldRef<"CasePdcaItem", 'String'>
+    readonly doText: FieldRef<"CasePdcaItem", 'String'>
+    readonly doStartDate: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly doEndDate: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly checkText: FieldRef<"CasePdcaItem", 'String'>
+    readonly checkStartDate: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly checkEndDate: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly checkBy: FieldRef<"CasePdcaItem", 'String'>
+    readonly checkComment: FieldRef<"CasePdcaItem", 'String'>
+    readonly actText: FieldRef<"CasePdcaItem", 'String'>
+    readonly actStartDate: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly actEndDate: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly isActive: FieldRef<"CasePdcaItem", 'Boolean'>
+    readonly createdAt: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly createdBy: FieldRef<"CasePdcaItem", 'String'>
+    readonly updatedAt: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly updatedBy: FieldRef<"CasePdcaItem", 'String'>
+    readonly isDeleted: FieldRef<"CasePdcaItem", 'Boolean'>
+    readonly deletedAt: FieldRef<"CasePdcaItem", 'DateTime'>
+    readonly deletedBy: FieldRef<"CasePdcaItem", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CasePdcaItem findUnique
+   */
+  export type CasePdcaItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CasePdcaItem to fetch.
+     */
+    where: CasePdcaItemWhereUniqueInput
+  }
+
+  /**
+   * CasePdcaItem findUniqueOrThrow
+   */
+  export type CasePdcaItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CasePdcaItem to fetch.
+     */
+    where: CasePdcaItemWhereUniqueInput
+  }
+
+  /**
+   * CasePdcaItem findFirst
+   */
+  export type CasePdcaItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CasePdcaItem to fetch.
+     */
+    where?: CasePdcaItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CasePdcaItems to fetch.
+     */
+    orderBy?: CasePdcaItemOrderByWithRelationInput | CasePdcaItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CasePdcaItems.
+     */
+    cursor?: CasePdcaItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CasePdcaItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CasePdcaItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CasePdcaItems.
+     */
+    distinct?: CasePdcaItemScalarFieldEnum | CasePdcaItemScalarFieldEnum[]
+  }
+
+  /**
+   * CasePdcaItem findFirstOrThrow
+   */
+  export type CasePdcaItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CasePdcaItem to fetch.
+     */
+    where?: CasePdcaItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CasePdcaItems to fetch.
+     */
+    orderBy?: CasePdcaItemOrderByWithRelationInput | CasePdcaItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CasePdcaItems.
+     */
+    cursor?: CasePdcaItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CasePdcaItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CasePdcaItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CasePdcaItems.
+     */
+    distinct?: CasePdcaItemScalarFieldEnum | CasePdcaItemScalarFieldEnum[]
+  }
+
+  /**
+   * CasePdcaItem findMany
+   */
+  export type CasePdcaItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CasePdcaItems to fetch.
+     */
+    where?: CasePdcaItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CasePdcaItems to fetch.
+     */
+    orderBy?: CasePdcaItemOrderByWithRelationInput | CasePdcaItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CasePdcaItems.
+     */
+    cursor?: CasePdcaItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CasePdcaItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CasePdcaItems.
+     */
+    skip?: number
+    distinct?: CasePdcaItemScalarFieldEnum | CasePdcaItemScalarFieldEnum[]
+  }
+
+  /**
+   * CasePdcaItem create
+   */
+  export type CasePdcaItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CasePdcaItem.
+     */
+    data: XOR<CasePdcaItemCreateInput, CasePdcaItemUncheckedCreateInput>
+  }
+
+  /**
+   * CasePdcaItem createMany
+   */
+  export type CasePdcaItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CasePdcaItems.
+     */
+    data: CasePdcaItemCreateManyInput | CasePdcaItemCreateManyInput[]
+  }
+
+  /**
+   * CasePdcaItem update
+   */
+  export type CasePdcaItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CasePdcaItem.
+     */
+    data: XOR<CasePdcaItemUpdateInput, CasePdcaItemUncheckedUpdateInput>
+    /**
+     * Choose, which CasePdcaItem to update.
+     */
+    where: CasePdcaItemWhereUniqueInput
+  }
+
+  /**
+   * CasePdcaItem updateMany
+   */
+  export type CasePdcaItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CasePdcaItems.
+     */
+    data: XOR<CasePdcaItemUpdateManyMutationInput, CasePdcaItemUncheckedUpdateManyInput>
+    /**
+     * Filter which CasePdcaItems to update
+     */
+    where?: CasePdcaItemWhereInput
+    /**
+     * Limit how many CasePdcaItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CasePdcaItem upsert
+   */
+  export type CasePdcaItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CasePdcaItem to update in case it exists.
+     */
+    where: CasePdcaItemWhereUniqueInput
+    /**
+     * In case the CasePdcaItem found by the `where` argument doesn't exist, create a new CasePdcaItem with this data.
+     */
+    create: XOR<CasePdcaItemCreateInput, CasePdcaItemUncheckedCreateInput>
+    /**
+     * In case the CasePdcaItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CasePdcaItemUpdateInput, CasePdcaItemUncheckedUpdateInput>
+  }
+
+  /**
+   * CasePdcaItem delete
+   */
+  export type CasePdcaItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+    /**
+     * Filter which CasePdcaItem to delete.
+     */
+    where: CasePdcaItemWhereUniqueInput
+  }
+
+  /**
+   * CasePdcaItem deleteMany
+   */
+  export type CasePdcaItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CasePdcaItems to delete
+     */
+    where?: CasePdcaItemWhereInput
+    /**
+     * Limit how many CasePdcaItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CasePdcaItem without action
+   */
+  export type CasePdcaItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CasePdcaItem
+     */
+    select?: CasePdcaItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CasePdcaItem
+     */
+    omit?: CasePdcaItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CasePdcaItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseFeedbackComment
+   */
+
+  export type AggregateCaseFeedbackComment = {
+    _count: CaseFeedbackCommentCountAggregateOutputType | null
+    _avg: CaseFeedbackCommentAvgAggregateOutputType | null
+    _sum: CaseFeedbackCommentSumAggregateOutputType | null
+    _min: CaseFeedbackCommentMinAggregateOutputType | null
+    _max: CaseFeedbackCommentMaxAggregateOutputType | null
+  }
+
+  export type CaseFeedbackCommentAvgAggregateOutputType = {
+    commenterEmployeeId: number | null
+  }
+
+  export type CaseFeedbackCommentSumAggregateOutputType = {
+    commenterEmployeeId: number | null
+  }
+
+  export type CaseFeedbackCommentMinAggregateOutputType = {
+    caseFeedbackCommentId: string | null
+    caseId: string | null
+    commentText: string | null
+    commenterName: string | null
+    commenterType: string | null
+    commenterId: string | null
+    commenterEmployeeId: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFeedbackCommentMaxAggregateOutputType = {
+    caseFeedbackCommentId: string | null
+    caseId: string | null
+    commentText: string | null
+    commenterName: string | null
+    commenterType: string | null
+    commenterId: string | null
+    commenterEmployeeId: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseFeedbackCommentCountAggregateOutputType = {
+    caseFeedbackCommentId: number
+    caseId: number
+    commentText: number
+    commenterName: number
+    commenterType: number
+    commenterId: number
+    commenterEmployeeId: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseFeedbackCommentAvgAggregateInputType = {
+    commenterEmployeeId?: true
+  }
+
+  export type CaseFeedbackCommentSumAggregateInputType = {
+    commenterEmployeeId?: true
+  }
+
+  export type CaseFeedbackCommentMinAggregateInputType = {
+    caseFeedbackCommentId?: true
+    caseId?: true
+    commentText?: true
+    commenterName?: true
+    commenterType?: true
+    commenterId?: true
+    commenterEmployeeId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFeedbackCommentMaxAggregateInputType = {
+    caseFeedbackCommentId?: true
+    caseId?: true
+    commentText?: true
+    commenterName?: true
+    commenterType?: true
+    commenterId?: true
+    commenterEmployeeId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseFeedbackCommentCountAggregateInputType = {
+    caseFeedbackCommentId?: true
+    caseId?: true
+    commentText?: true
+    commenterName?: true
+    commenterType?: true
+    commenterId?: true
+    commenterEmployeeId?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseFeedbackCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFeedbackComment to aggregate.
+     */
+    where?: CaseFeedbackCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFeedbackComments to fetch.
+     */
+    orderBy?: CaseFeedbackCommentOrderByWithRelationInput | CaseFeedbackCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseFeedbackCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFeedbackComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFeedbackComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseFeedbackComments
+    **/
+    _count?: true | CaseFeedbackCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseFeedbackCommentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseFeedbackCommentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseFeedbackCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseFeedbackCommentMaxAggregateInputType
+  }
+
+  export type GetCaseFeedbackCommentAggregateType<T extends CaseFeedbackCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseFeedbackComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseFeedbackComment[P]>
+      : GetScalarType<T[P], AggregateCaseFeedbackComment[P]>
+  }
+
+
+
+
+  export type CaseFeedbackCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseFeedbackCommentWhereInput
+    orderBy?: CaseFeedbackCommentOrderByWithAggregationInput | CaseFeedbackCommentOrderByWithAggregationInput[]
+    by: CaseFeedbackCommentScalarFieldEnum[] | CaseFeedbackCommentScalarFieldEnum
+    having?: CaseFeedbackCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseFeedbackCommentCountAggregateInputType | true
+    _avg?: CaseFeedbackCommentAvgAggregateInputType
+    _sum?: CaseFeedbackCommentSumAggregateInputType
+    _min?: CaseFeedbackCommentMinAggregateInputType
+    _max?: CaseFeedbackCommentMaxAggregateInputType
+  }
+
+  export type CaseFeedbackCommentGroupByOutputType = {
+    caseFeedbackCommentId: string
+    caseId: string
+    commentText: string
+    commenterName: string
+    commenterType: string | null
+    commenterId: string | null
+    commenterEmployeeId: number | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseFeedbackCommentCountAggregateOutputType | null
+    _avg: CaseFeedbackCommentAvgAggregateOutputType | null
+    _sum: CaseFeedbackCommentSumAggregateOutputType | null
+    _min: CaseFeedbackCommentMinAggregateOutputType | null
+    _max: CaseFeedbackCommentMaxAggregateOutputType | null
+  }
+
+  type GetCaseFeedbackCommentGroupByPayload<T extends CaseFeedbackCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseFeedbackCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseFeedbackCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseFeedbackCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseFeedbackCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseFeedbackCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseFeedbackCommentId?: boolean
+    caseId?: boolean
+    commentText?: boolean
+    commenterName?: boolean
+    commenterType?: boolean
+    commenterId?: boolean
+    commenterEmployeeId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseFeedbackComment"]>
+
+
+
+  export type CaseFeedbackCommentSelectScalar = {
+    caseFeedbackCommentId?: boolean
+    caseId?: boolean
+    commentText?: boolean
+    commenterName?: boolean
+    commenterType?: boolean
+    commenterId?: boolean
+    commenterEmployeeId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseFeedbackCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseFeedbackCommentId" | "caseId" | "commentText" | "commenterName" | "commenterType" | "commenterId" | "commenterEmployeeId" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseFeedbackComment"]>
+  export type CaseFeedbackCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseFeedbackCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseFeedbackComment"
+    objects: {
+      case: Prisma.$CaseHeaderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseFeedbackCommentId: string
+      caseId: string
+      commentText: string
+      commenterName: string
+      commenterType: string | null
+      commenterId: string | null
+      commenterEmployeeId: number | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseFeedbackComment"]>
+    composites: {}
+  }
+
+  type CaseFeedbackCommentGetPayload<S extends boolean | null | undefined | CaseFeedbackCommentDefaultArgs> = $Result.GetResult<Prisma.$CaseFeedbackCommentPayload, S>
+
+  type CaseFeedbackCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseFeedbackCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseFeedbackCommentCountAggregateInputType | true
+    }
+
+  export interface CaseFeedbackCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseFeedbackComment'], meta: { name: 'CaseFeedbackComment' } }
+    /**
+     * Find zero or one CaseFeedbackComment that matches the filter.
+     * @param {CaseFeedbackCommentFindUniqueArgs} args - Arguments to find a CaseFeedbackComment
+     * @example
+     * // Get one CaseFeedbackComment
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseFeedbackCommentFindUniqueArgs>(args: SelectSubset<T, CaseFeedbackCommentFindUniqueArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseFeedbackComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseFeedbackCommentFindUniqueOrThrowArgs} args - Arguments to find a CaseFeedbackComment
+     * @example
+     * // Get one CaseFeedbackComment
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseFeedbackCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseFeedbackCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFeedbackComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentFindFirstArgs} args - Arguments to find a CaseFeedbackComment
+     * @example
+     * // Get one CaseFeedbackComment
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseFeedbackCommentFindFirstArgs>(args?: SelectSubset<T, CaseFeedbackCommentFindFirstArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseFeedbackComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentFindFirstOrThrowArgs} args - Arguments to find a CaseFeedbackComment
+     * @example
+     * // Get one CaseFeedbackComment
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseFeedbackCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseFeedbackCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseFeedbackComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseFeedbackComments
+     * const caseFeedbackComments = await prisma.caseFeedbackComment.findMany()
+     * 
+     * // Get first 10 CaseFeedbackComments
+     * const caseFeedbackComments = await prisma.caseFeedbackComment.findMany({ take: 10 })
+     * 
+     * // Only select the `caseFeedbackCommentId`
+     * const caseFeedbackCommentWithCaseFeedbackCommentIdOnly = await prisma.caseFeedbackComment.findMany({ select: { caseFeedbackCommentId: true } })
+     * 
+     */
+    findMany<T extends CaseFeedbackCommentFindManyArgs>(args?: SelectSubset<T, CaseFeedbackCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseFeedbackComment.
+     * @param {CaseFeedbackCommentCreateArgs} args - Arguments to create a CaseFeedbackComment.
+     * @example
+     * // Create one CaseFeedbackComment
+     * const CaseFeedbackComment = await prisma.caseFeedbackComment.create({
+     *   data: {
+     *     // ... data to create a CaseFeedbackComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseFeedbackCommentCreateArgs>(args: SelectSubset<T, CaseFeedbackCommentCreateArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseFeedbackComments.
+     * @param {CaseFeedbackCommentCreateManyArgs} args - Arguments to create many CaseFeedbackComments.
+     * @example
+     * // Create many CaseFeedbackComments
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseFeedbackCommentCreateManyArgs>(args?: SelectSubset<T, CaseFeedbackCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseFeedbackComment.
+     * @param {CaseFeedbackCommentDeleteArgs} args - Arguments to delete one CaseFeedbackComment.
+     * @example
+     * // Delete one CaseFeedbackComment
+     * const CaseFeedbackComment = await prisma.caseFeedbackComment.delete({
+     *   where: {
+     *     // ... filter to delete one CaseFeedbackComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseFeedbackCommentDeleteArgs>(args: SelectSubset<T, CaseFeedbackCommentDeleteArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseFeedbackComment.
+     * @param {CaseFeedbackCommentUpdateArgs} args - Arguments to update one CaseFeedbackComment.
+     * @example
+     * // Update one CaseFeedbackComment
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseFeedbackCommentUpdateArgs>(args: SelectSubset<T, CaseFeedbackCommentUpdateArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseFeedbackComments.
+     * @param {CaseFeedbackCommentDeleteManyArgs} args - Arguments to filter CaseFeedbackComments to delete.
+     * @example
+     * // Delete a few CaseFeedbackComments
+     * const { count } = await prisma.caseFeedbackComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseFeedbackCommentDeleteManyArgs>(args?: SelectSubset<T, CaseFeedbackCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseFeedbackComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseFeedbackComments
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseFeedbackCommentUpdateManyArgs>(args: SelectSubset<T, CaseFeedbackCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseFeedbackComment.
+     * @param {CaseFeedbackCommentUpsertArgs} args - Arguments to update or create a CaseFeedbackComment.
+     * @example
+     * // Update or create a CaseFeedbackComment
+     * const caseFeedbackComment = await prisma.caseFeedbackComment.upsert({
+     *   create: {
+     *     // ... data to create a CaseFeedbackComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseFeedbackComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseFeedbackCommentUpsertArgs>(args: SelectSubset<T, CaseFeedbackCommentUpsertArgs<ExtArgs>>): Prisma__CaseFeedbackCommentClient<$Result.GetResult<Prisma.$CaseFeedbackCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseFeedbackComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentCountArgs} args - Arguments to filter CaseFeedbackComments to count.
+     * @example
+     * // Count the number of CaseFeedbackComments
+     * const count = await prisma.caseFeedbackComment.count({
+     *   where: {
+     *     // ... the filter for the CaseFeedbackComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseFeedbackCommentCountArgs>(
+      args?: Subset<T, CaseFeedbackCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseFeedbackCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseFeedbackComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseFeedbackCommentAggregateArgs>(args: Subset<T, CaseFeedbackCommentAggregateArgs>): Prisma.PrismaPromise<GetCaseFeedbackCommentAggregateType<T>>
+
+    /**
+     * Group by CaseFeedbackComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseFeedbackCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseFeedbackCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseFeedbackCommentGroupByArgs['orderBy'] }
+        : { orderBy?: CaseFeedbackCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseFeedbackCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseFeedbackCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseFeedbackComment model
+   */
+  readonly fields: CaseFeedbackCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseFeedbackComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseFeedbackCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    case<T extends CaseHeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeaderDefaultArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseFeedbackComment model
+   */
+  interface CaseFeedbackCommentFieldRefs {
+    readonly caseFeedbackCommentId: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly caseId: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly commentText: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly commenterName: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly commenterType: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly commenterId: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly commenterEmployeeId: FieldRef<"CaseFeedbackComment", 'Int'>
+    readonly isActive: FieldRef<"CaseFeedbackComment", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseFeedbackComment", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly updatedAt: FieldRef<"CaseFeedbackComment", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseFeedbackComment", 'String'>
+    readonly isDeleted: FieldRef<"CaseFeedbackComment", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseFeedbackComment", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseFeedbackComment", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseFeedbackComment findUnique
+   */
+  export type CaseFeedbackCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFeedbackComment to fetch.
+     */
+    where: CaseFeedbackCommentWhereUniqueInput
+  }
+
+  /**
+   * CaseFeedbackComment findUniqueOrThrow
+   */
+  export type CaseFeedbackCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFeedbackComment to fetch.
+     */
+    where: CaseFeedbackCommentWhereUniqueInput
+  }
+
+  /**
+   * CaseFeedbackComment findFirst
+   */
+  export type CaseFeedbackCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFeedbackComment to fetch.
+     */
+    where?: CaseFeedbackCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFeedbackComments to fetch.
+     */
+    orderBy?: CaseFeedbackCommentOrderByWithRelationInput | CaseFeedbackCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFeedbackComments.
+     */
+    cursor?: CaseFeedbackCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFeedbackComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFeedbackComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFeedbackComments.
+     */
+    distinct?: CaseFeedbackCommentScalarFieldEnum | CaseFeedbackCommentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFeedbackComment findFirstOrThrow
+   */
+  export type CaseFeedbackCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFeedbackComment to fetch.
+     */
+    where?: CaseFeedbackCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFeedbackComments to fetch.
+     */
+    orderBy?: CaseFeedbackCommentOrderByWithRelationInput | CaseFeedbackCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseFeedbackComments.
+     */
+    cursor?: CaseFeedbackCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFeedbackComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFeedbackComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseFeedbackComments.
+     */
+    distinct?: CaseFeedbackCommentScalarFieldEnum | CaseFeedbackCommentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFeedbackComment findMany
+   */
+  export type CaseFeedbackCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseFeedbackComments to fetch.
+     */
+    where?: CaseFeedbackCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseFeedbackComments to fetch.
+     */
+    orderBy?: CaseFeedbackCommentOrderByWithRelationInput | CaseFeedbackCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseFeedbackComments.
+     */
+    cursor?: CaseFeedbackCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseFeedbackComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseFeedbackComments.
+     */
+    skip?: number
+    distinct?: CaseFeedbackCommentScalarFieldEnum | CaseFeedbackCommentScalarFieldEnum[]
+  }
+
+  /**
+   * CaseFeedbackComment create
+   */
+  export type CaseFeedbackCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseFeedbackComment.
+     */
+    data: XOR<CaseFeedbackCommentCreateInput, CaseFeedbackCommentUncheckedCreateInput>
+  }
+
+  /**
+   * CaseFeedbackComment createMany
+   */
+  export type CaseFeedbackCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseFeedbackComments.
+     */
+    data: CaseFeedbackCommentCreateManyInput | CaseFeedbackCommentCreateManyInput[]
+  }
+
+  /**
+   * CaseFeedbackComment update
+   */
+  export type CaseFeedbackCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseFeedbackComment.
+     */
+    data: XOR<CaseFeedbackCommentUpdateInput, CaseFeedbackCommentUncheckedUpdateInput>
+    /**
+     * Choose, which CaseFeedbackComment to update.
+     */
+    where: CaseFeedbackCommentWhereUniqueInput
+  }
+
+  /**
+   * CaseFeedbackComment updateMany
+   */
+  export type CaseFeedbackCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseFeedbackComments.
+     */
+    data: XOR<CaseFeedbackCommentUpdateManyMutationInput, CaseFeedbackCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseFeedbackComments to update
+     */
+    where?: CaseFeedbackCommentWhereInput
+    /**
+     * Limit how many CaseFeedbackComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFeedbackComment upsert
+   */
+  export type CaseFeedbackCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseFeedbackComment to update in case it exists.
+     */
+    where: CaseFeedbackCommentWhereUniqueInput
+    /**
+     * In case the CaseFeedbackComment found by the `where` argument doesn't exist, create a new CaseFeedbackComment with this data.
+     */
+    create: XOR<CaseFeedbackCommentCreateInput, CaseFeedbackCommentUncheckedCreateInput>
+    /**
+     * In case the CaseFeedbackComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseFeedbackCommentUpdateInput, CaseFeedbackCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseFeedbackComment delete
+   */
+  export type CaseFeedbackCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+    /**
+     * Filter which CaseFeedbackComment to delete.
+     */
+    where: CaseFeedbackCommentWhereUniqueInput
+  }
+
+  /**
+   * CaseFeedbackComment deleteMany
+   */
+  export type CaseFeedbackCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseFeedbackComments to delete
+     */
+    where?: CaseFeedbackCommentWhereInput
+    /**
+     * Limit how many CaseFeedbackComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseFeedbackComment without action
+   */
+  export type CaseFeedbackCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseFeedbackComment
+     */
+    select?: CaseFeedbackCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseFeedbackComment
+     */
+    omit?: CaseFeedbackCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseFeedbackCommentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model FishboneCategory
    */
 
@@ -31985,6 +34494,9 @@ export namespace Prisma {
     requesterId: 'requesterId',
     requesterEmployeeId: 'requesterEmployeeId',
     originSbuSubId: 'originSbuSubId',
+    feedbackApprovedAt: 'feedbackApprovedAt',
+    feedbackApprovedBy: 'feedbackApprovedBy',
+    feedbackApprovedByEmployeeId: 'feedbackApprovedByEmployeeId',
     isActive: 'isActive',
     createdAt: 'createdAt',
     createdBy: 'createdBy',
@@ -32207,6 +34719,56 @@ export namespace Prisma {
   };
 
   export type CaseFishboneItemCauseScalarFieldEnum = (typeof CaseFishboneItemCauseScalarFieldEnum)[keyof typeof CaseFishboneItemCauseScalarFieldEnum]
+
+
+  export const CasePdcaItemScalarFieldEnum: {
+    casePdcaItemId: 'casePdcaItemId',
+    caseId: 'caseId',
+    itemNo: 'itemNo',
+    planText: 'planText',
+    doText: 'doText',
+    doStartDate: 'doStartDate',
+    doEndDate: 'doEndDate',
+    checkText: 'checkText',
+    checkStartDate: 'checkStartDate',
+    checkEndDate: 'checkEndDate',
+    checkBy: 'checkBy',
+    checkComment: 'checkComment',
+    actText: 'actText',
+    actStartDate: 'actStartDate',
+    actEndDate: 'actEndDate',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CasePdcaItemScalarFieldEnum = (typeof CasePdcaItemScalarFieldEnum)[keyof typeof CasePdcaItemScalarFieldEnum]
+
+
+  export const CaseFeedbackCommentScalarFieldEnum: {
+    caseFeedbackCommentId: 'caseFeedbackCommentId',
+    caseId: 'caseId',
+    commentText: 'commentText',
+    commenterName: 'commenterName',
+    commenterType: 'commenterType',
+    commenterId: 'commenterId',
+    commenterEmployeeId: 'commenterEmployeeId',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseFeedbackCommentScalarFieldEnum = (typeof CaseFeedbackCommentScalarFieldEnum)[keyof typeof CaseFeedbackCommentScalarFieldEnum]
 
 
   export const FishboneCategoryScalarFieldEnum: {
@@ -33210,6 +35772,9 @@ export namespace Prisma {
     requesterId?: StringNullableFilter<"CaseHeader"> | string | null
     requesterEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
     originSbuSubId?: IntNullableFilter<"CaseHeader"> | number | null
+    feedbackApprovedAt?: DateTimeNullableFilter<"CaseHeader"> | Date | string | null
+    feedbackApprovedBy?: StringNullableFilter<"CaseHeader"> | string | null
+    feedbackApprovedByEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
     isActive?: BoolFilter<"CaseHeader"> | boolean
     createdAt?: DateTimeFilter<"CaseHeader"> | Date | string
     createdBy?: StringNullableFilter<"CaseHeader"> | string | null
@@ -33221,6 +35786,8 @@ export namespace Prisma {
     departments?: CaseDepartmentListRelationFilter
     attachments?: CaseAttachmentListRelationFilter
     caseFishbones?: CaseFishboneMasterListRelationFilter
+    casePdcaItems?: CasePdcaItemListRelationFilter
+    caseFeedbackComments?: CaseFeedbackCommentListRelationFilter
     notifications?: CaseNotificationOutboxListRelationFilter
     caseNotificationMessages?: CaseNotificationMessageListRelationFilter
   }
@@ -33240,6 +35807,9 @@ export namespace Prisma {
     requesterId?: SortOrderInput | SortOrder
     requesterEmployeeId?: SortOrderInput | SortOrder
     originSbuSubId?: SortOrderInput | SortOrder
+    feedbackApprovedAt?: SortOrderInput | SortOrder
+    feedbackApprovedBy?: SortOrderInput | SortOrder
+    feedbackApprovedByEmployeeId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -33251,6 +35821,8 @@ export namespace Prisma {
     departments?: CaseDepartmentOrderByRelationAggregateInput
     attachments?: CaseAttachmentOrderByRelationAggregateInput
     caseFishbones?: CaseFishboneMasterOrderByRelationAggregateInput
+    casePdcaItems?: CasePdcaItemOrderByRelationAggregateInput
+    caseFeedbackComments?: CaseFeedbackCommentOrderByRelationAggregateInput
     notifications?: CaseNotificationOutboxOrderByRelationAggregateInput
     caseNotificationMessages?: CaseNotificationMessageOrderByRelationAggregateInput
   }
@@ -33273,6 +35845,9 @@ export namespace Prisma {
     requesterId?: StringNullableFilter<"CaseHeader"> | string | null
     requesterEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
     originSbuSubId?: IntNullableFilter<"CaseHeader"> | number | null
+    feedbackApprovedAt?: DateTimeNullableFilter<"CaseHeader"> | Date | string | null
+    feedbackApprovedBy?: StringNullableFilter<"CaseHeader"> | string | null
+    feedbackApprovedByEmployeeId?: IntNullableFilter<"CaseHeader"> | number | null
     isActive?: BoolFilter<"CaseHeader"> | boolean
     createdAt?: DateTimeFilter<"CaseHeader"> | Date | string
     createdBy?: StringNullableFilter<"CaseHeader"> | string | null
@@ -33284,6 +35859,8 @@ export namespace Prisma {
     departments?: CaseDepartmentListRelationFilter
     attachments?: CaseAttachmentListRelationFilter
     caseFishbones?: CaseFishboneMasterListRelationFilter
+    casePdcaItems?: CasePdcaItemListRelationFilter
+    caseFeedbackComments?: CaseFeedbackCommentListRelationFilter
     notifications?: CaseNotificationOutboxListRelationFilter
     caseNotificationMessages?: CaseNotificationMessageListRelationFilter
   }, "caseId">
@@ -33303,6 +35880,9 @@ export namespace Prisma {
     requesterId?: SortOrderInput | SortOrder
     requesterEmployeeId?: SortOrderInput | SortOrder
     originSbuSubId?: SortOrderInput | SortOrder
+    feedbackApprovedAt?: SortOrderInput | SortOrder
+    feedbackApprovedBy?: SortOrderInput | SortOrder
+    feedbackApprovedByEmployeeId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -33336,6 +35916,9 @@ export namespace Prisma {
     requesterId?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
     requesterEmployeeId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
     originSbuSubId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
+    feedbackApprovedAt?: DateTimeNullableWithAggregatesFilter<"CaseHeader"> | Date | string | null
+    feedbackApprovedBy?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
+    feedbackApprovedByEmployeeId?: IntNullableWithAggregatesFilter<"CaseHeader"> | number | null
     isActive?: BoolWithAggregatesFilter<"CaseHeader"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"CaseHeader"> | Date | string
     createdBy?: StringNullableWithAggregatesFilter<"CaseHeader"> | string | null
@@ -34446,6 +37029,261 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"CaseFishboneItemCause"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseFishboneItemCause"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"CaseFishboneItemCause"> | string | null
+  }
+
+  export type CasePdcaItemWhereInput = {
+    AND?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
+    OR?: CasePdcaItemWhereInput[]
+    NOT?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
+    casePdcaItemId?: StringFilter<"CasePdcaItem"> | string
+    caseId?: StringFilter<"CasePdcaItem"> | string
+    itemNo?: IntFilter<"CasePdcaItem"> | number
+    planText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    doText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    doStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    doEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    checkStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    checkComment?: StringNullableFilter<"CasePdcaItem"> | string | null
+    actText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    actStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    actEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    isActive?: BoolFilter<"CasePdcaItem"> | boolean
+    createdAt?: DateTimeFilter<"CasePdcaItem"> | Date | string
+    createdBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    updatedAt?: DateTimeFilter<"CasePdcaItem"> | Date | string
+    updatedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    isDeleted?: BoolFilter<"CasePdcaItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+  }
+
+  export type CasePdcaItemOrderByWithRelationInput = {
+    casePdcaItemId?: SortOrder
+    caseId?: SortOrder
+    itemNo?: SortOrder
+    planText?: SortOrderInput | SortOrder
+    doText?: SortOrderInput | SortOrder
+    doStartDate?: SortOrderInput | SortOrder
+    doEndDate?: SortOrderInput | SortOrder
+    checkText?: SortOrderInput | SortOrder
+    checkStartDate?: SortOrderInput | SortOrder
+    checkEndDate?: SortOrderInput | SortOrder
+    checkBy?: SortOrderInput | SortOrder
+    checkComment?: SortOrderInput | SortOrder
+    actText?: SortOrderInput | SortOrder
+    actStartDate?: SortOrderInput | SortOrder
+    actEndDate?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case?: CaseHeaderOrderByWithRelationInput
+  }
+
+  export type CasePdcaItemWhereUniqueInput = Prisma.AtLeast<{
+    casePdcaItemId?: string
+    caseId_itemNo_isDeleted?: CasePdcaItemCaseIdItemNoIsDeletedCompoundUniqueInput
+    AND?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
+    OR?: CasePdcaItemWhereInput[]
+    NOT?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
+    caseId?: StringFilter<"CasePdcaItem"> | string
+    itemNo?: IntFilter<"CasePdcaItem"> | number
+    planText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    doText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    doStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    doEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    checkStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    checkComment?: StringNullableFilter<"CasePdcaItem"> | string | null
+    actText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    actStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    actEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    isActive?: BoolFilter<"CasePdcaItem"> | boolean
+    createdAt?: DateTimeFilter<"CasePdcaItem"> | Date | string
+    createdBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    updatedAt?: DateTimeFilter<"CasePdcaItem"> | Date | string
+    updatedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    isDeleted?: BoolFilter<"CasePdcaItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+  }, "casePdcaItemId" | "caseId_itemNo_isDeleted">
+
+  export type CasePdcaItemOrderByWithAggregationInput = {
+    casePdcaItemId?: SortOrder
+    caseId?: SortOrder
+    itemNo?: SortOrder
+    planText?: SortOrderInput | SortOrder
+    doText?: SortOrderInput | SortOrder
+    doStartDate?: SortOrderInput | SortOrder
+    doEndDate?: SortOrderInput | SortOrder
+    checkText?: SortOrderInput | SortOrder
+    checkStartDate?: SortOrderInput | SortOrder
+    checkEndDate?: SortOrderInput | SortOrder
+    checkBy?: SortOrderInput | SortOrder
+    checkComment?: SortOrderInput | SortOrder
+    actText?: SortOrderInput | SortOrder
+    actStartDate?: SortOrderInput | SortOrder
+    actEndDate?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CasePdcaItemCountOrderByAggregateInput
+    _avg?: CasePdcaItemAvgOrderByAggregateInput
+    _max?: CasePdcaItemMaxOrderByAggregateInput
+    _min?: CasePdcaItemMinOrderByAggregateInput
+    _sum?: CasePdcaItemSumOrderByAggregateInput
+  }
+
+  export type CasePdcaItemScalarWhereWithAggregatesInput = {
+    AND?: CasePdcaItemScalarWhereWithAggregatesInput | CasePdcaItemScalarWhereWithAggregatesInput[]
+    OR?: CasePdcaItemScalarWhereWithAggregatesInput[]
+    NOT?: CasePdcaItemScalarWhereWithAggregatesInput | CasePdcaItemScalarWhereWithAggregatesInput[]
+    casePdcaItemId?: StringWithAggregatesFilter<"CasePdcaItem"> | string
+    caseId?: StringWithAggregatesFilter<"CasePdcaItem"> | string
+    itemNo?: IntWithAggregatesFilter<"CasePdcaItem"> | number
+    planText?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    doText?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    doStartDate?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    doEndDate?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    checkText?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    checkStartDate?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    checkEndDate?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    checkBy?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    checkComment?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    actText?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    actStartDate?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    actEndDate?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    isActive?: BoolWithAggregatesFilter<"CasePdcaItem"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CasePdcaItem"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CasePdcaItem"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CasePdcaItem"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CasePdcaItem"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
+  }
+
+  export type CaseFeedbackCommentWhereInput = {
+    AND?: CaseFeedbackCommentWhereInput | CaseFeedbackCommentWhereInput[]
+    OR?: CaseFeedbackCommentWhereInput[]
+    NOT?: CaseFeedbackCommentWhereInput | CaseFeedbackCommentWhereInput[]
+    caseFeedbackCommentId?: StringFilter<"CaseFeedbackComment"> | string
+    caseId?: StringFilter<"CaseFeedbackComment"> | string
+    commentText?: StringFilter<"CaseFeedbackComment"> | string
+    commenterName?: StringFilter<"CaseFeedbackComment"> | string
+    commenterType?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    commenterId?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    commenterEmployeeId?: IntNullableFilter<"CaseFeedbackComment"> | number | null
+    isActive?: BoolFilter<"CaseFeedbackComment"> | boolean
+    createdAt?: DateTimeFilter<"CaseFeedbackComment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFeedbackComment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    isDeleted?: BoolFilter<"CaseFeedbackComment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFeedbackComment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+  }
+
+  export type CaseFeedbackCommentOrderByWithRelationInput = {
+    caseFeedbackCommentId?: SortOrder
+    caseId?: SortOrder
+    commentText?: SortOrder
+    commenterName?: SortOrder
+    commenterType?: SortOrderInput | SortOrder
+    commenterId?: SortOrderInput | SortOrder
+    commenterEmployeeId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    case?: CaseHeaderOrderByWithRelationInput
+  }
+
+  export type CaseFeedbackCommentWhereUniqueInput = Prisma.AtLeast<{
+    caseFeedbackCommentId?: string
+    AND?: CaseFeedbackCommentWhereInput | CaseFeedbackCommentWhereInput[]
+    OR?: CaseFeedbackCommentWhereInput[]
+    NOT?: CaseFeedbackCommentWhereInput | CaseFeedbackCommentWhereInput[]
+    caseId?: StringFilter<"CaseFeedbackComment"> | string
+    commentText?: StringFilter<"CaseFeedbackComment"> | string
+    commenterName?: StringFilter<"CaseFeedbackComment"> | string
+    commenterType?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    commenterId?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    commenterEmployeeId?: IntNullableFilter<"CaseFeedbackComment"> | number | null
+    isActive?: BoolFilter<"CaseFeedbackComment"> | boolean
+    createdAt?: DateTimeFilter<"CaseFeedbackComment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFeedbackComment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    isDeleted?: BoolFilter<"CaseFeedbackComment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFeedbackComment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+  }, "caseFeedbackCommentId">
+
+  export type CaseFeedbackCommentOrderByWithAggregationInput = {
+    caseFeedbackCommentId?: SortOrder
+    caseId?: SortOrder
+    commentText?: SortOrder
+    commenterName?: SortOrder
+    commenterType?: SortOrderInput | SortOrder
+    commenterId?: SortOrderInput | SortOrder
+    commenterEmployeeId?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseFeedbackCommentCountOrderByAggregateInput
+    _avg?: CaseFeedbackCommentAvgOrderByAggregateInput
+    _max?: CaseFeedbackCommentMaxOrderByAggregateInput
+    _min?: CaseFeedbackCommentMinOrderByAggregateInput
+    _sum?: CaseFeedbackCommentSumOrderByAggregateInput
+  }
+
+  export type CaseFeedbackCommentScalarWhereWithAggregatesInput = {
+    AND?: CaseFeedbackCommentScalarWhereWithAggregatesInput | CaseFeedbackCommentScalarWhereWithAggregatesInput[]
+    OR?: CaseFeedbackCommentScalarWhereWithAggregatesInput[]
+    NOT?: CaseFeedbackCommentScalarWhereWithAggregatesInput | CaseFeedbackCommentScalarWhereWithAggregatesInput[]
+    caseFeedbackCommentId?: StringWithAggregatesFilter<"CaseFeedbackComment"> | string
+    caseId?: StringWithAggregatesFilter<"CaseFeedbackComment"> | string
+    commentText?: StringWithAggregatesFilter<"CaseFeedbackComment"> | string
+    commenterName?: StringWithAggregatesFilter<"CaseFeedbackComment"> | string
+    commenterType?: StringNullableWithAggregatesFilter<"CaseFeedbackComment"> | string | null
+    commenterId?: StringNullableWithAggregatesFilter<"CaseFeedbackComment"> | string | null
+    commenterEmployeeId?: IntNullableWithAggregatesFilter<"CaseFeedbackComment"> | number | null
+    isActive?: BoolWithAggregatesFilter<"CaseFeedbackComment"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseFeedbackComment"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseFeedbackComment"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseFeedbackComment"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseFeedbackComment"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseFeedbackComment"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseFeedbackComment"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseFeedbackComment"> | string | null
   }
 
   export type FishboneCategoryWhereInput = {
@@ -36117,6 +38955,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -36128,6 +38969,8 @@ export namespace Prisma {
     departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
   }
@@ -36147,6 +38990,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -36158,6 +39004,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
   }
@@ -36177,6 +39025,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36188,6 +39039,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
   }
@@ -36207,6 +39060,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36218,6 +39074,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
@@ -36237,6 +39095,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -36262,6 +39123,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36287,6 +39151,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37574,6 +40441,312 @@ export namespace Prisma {
     caseFishboneItemCauseId?: StringFieldUpdateOperationsInput | string
     caseFishboneItemId?: StringFieldUpdateOperationsInput | string
     caseFishboneCauseId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CasePdcaItemCreateInput = {
+    casePdcaItemId: string
+    itemNo: number
+    planText?: string | null
+    doText?: string | null
+    doStartDate?: Date | string | null
+    doEndDate?: Date | string | null
+    checkText?: string | null
+    checkStartDate?: Date | string | null
+    checkEndDate?: Date | string | null
+    checkBy?: string | null
+    checkComment?: string | null
+    actText?: string | null
+    actStartDate?: Date | string | null
+    actEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutCasePdcaItemsInput
+  }
+
+  export type CasePdcaItemUncheckedCreateInput = {
+    casePdcaItemId: string
+    caseId: string
+    itemNo: number
+    planText?: string | null
+    doText?: string | null
+    doStartDate?: Date | string | null
+    doEndDate?: Date | string | null
+    checkText?: string | null
+    checkStartDate?: Date | string | null
+    checkEndDate?: Date | string | null
+    checkBy?: string | null
+    checkComment?: string | null
+    actText?: string | null
+    actStartDate?: Date | string | null
+    actEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CasePdcaItemUpdateInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutCasePdcaItemsNestedInput
+  }
+
+  export type CasePdcaItemUncheckedUpdateInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CasePdcaItemCreateManyInput = {
+    casePdcaItemId: string
+    caseId: string
+    itemNo: number
+    planText?: string | null
+    doText?: string | null
+    doStartDate?: Date | string | null
+    doEndDate?: Date | string | null
+    checkText?: string | null
+    checkStartDate?: Date | string | null
+    checkEndDate?: Date | string | null
+    checkBy?: string | null
+    checkComment?: string | null
+    actText?: string | null
+    actStartDate?: Date | string | null
+    actEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CasePdcaItemUpdateManyMutationInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CasePdcaItemUncheckedUpdateManyInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFeedbackCommentCreateInput = {
+    caseFeedbackCommentId: string
+    commentText: string
+    commenterName: string
+    commenterType?: string | null
+    commenterId?: string | null
+    commenterEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutCaseFeedbackCommentsInput
+  }
+
+  export type CaseFeedbackCommentUncheckedCreateInput = {
+    caseFeedbackCommentId: string
+    caseId: string
+    commentText: string
+    commenterName: string
+    commenterType?: string | null
+    commenterId?: string | null
+    commenterEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFeedbackCommentUpdateInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutCaseFeedbackCommentsNestedInput
+  }
+
+  export type CaseFeedbackCommentUncheckedUpdateInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFeedbackCommentCreateManyInput = {
+    caseFeedbackCommentId: string
+    caseId: string
+    commentText: string
+    commenterName: string
+    commenterType?: string | null
+    commenterId?: string | null
+    commenterEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFeedbackCommentUpdateManyMutationInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFeedbackCommentUncheckedUpdateManyInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39175,6 +42348,18 @@ export namespace Prisma {
     none?: CaseFishboneMasterWhereInput
   }
 
+  export type CasePdcaItemListRelationFilter = {
+    every?: CasePdcaItemWhereInput
+    some?: CasePdcaItemWhereInput
+    none?: CasePdcaItemWhereInput
+  }
+
+  export type CaseFeedbackCommentListRelationFilter = {
+    every?: CaseFeedbackCommentWhereInput
+    some?: CaseFeedbackCommentWhereInput
+    none?: CaseFeedbackCommentWhereInput
+  }
+
   export type CaseNotificationOutboxListRelationFilter = {
     every?: CaseNotificationOutboxWhereInput
     some?: CaseNotificationOutboxWhereInput
@@ -39196,6 +42381,14 @@ export namespace Prisma {
   }
 
   export type CaseFishboneMasterOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CasePdcaItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CaseFeedbackCommentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39222,6 +42415,9 @@ export namespace Prisma {
     requesterId?: SortOrder
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
+    feedbackApprovedAt?: SortOrder
+    feedbackApprovedBy?: SortOrder
+    feedbackApprovedByEmployeeId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
@@ -39235,6 +42431,7 @@ export namespace Prisma {
   export type CaseHeaderAvgOrderByAggregateInput = {
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
+    feedbackApprovedByEmployeeId?: SortOrder
   }
 
   export type CaseHeaderMaxOrderByAggregateInput = {
@@ -39252,6 +42449,9 @@ export namespace Prisma {
     requesterId?: SortOrder
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
+    feedbackApprovedAt?: SortOrder
+    feedbackApprovedBy?: SortOrder
+    feedbackApprovedByEmployeeId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
@@ -39277,6 +42477,9 @@ export namespace Prisma {
     requesterId?: SortOrder
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
+    feedbackApprovedAt?: SortOrder
+    feedbackApprovedBy?: SortOrder
+    feedbackApprovedByEmployeeId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
@@ -39290,6 +42493,7 @@ export namespace Prisma {
   export type CaseHeaderSumOrderByAggregateInput = {
     requesterEmployeeId?: SortOrder
     originSbuSubId?: SortOrder
+    feedbackApprovedByEmployeeId?: SortOrder
   }
 
   export type CaseHeaderScalarRelationFilter = {
@@ -39995,6 +43199,160 @@ export namespace Prisma {
     isDeleted?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
+  }
+
+  export type CasePdcaItemCaseIdItemNoIsDeletedCompoundUniqueInput = {
+    caseId: string
+    itemNo: number
+    isDeleted: boolean
+  }
+
+  export type CasePdcaItemCountOrderByAggregateInput = {
+    casePdcaItemId?: SortOrder
+    caseId?: SortOrder
+    itemNo?: SortOrder
+    planText?: SortOrder
+    doText?: SortOrder
+    doStartDate?: SortOrder
+    doEndDate?: SortOrder
+    checkText?: SortOrder
+    checkStartDate?: SortOrder
+    checkEndDate?: SortOrder
+    checkBy?: SortOrder
+    checkComment?: SortOrder
+    actText?: SortOrder
+    actStartDate?: SortOrder
+    actEndDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CasePdcaItemAvgOrderByAggregateInput = {
+    itemNo?: SortOrder
+  }
+
+  export type CasePdcaItemMaxOrderByAggregateInput = {
+    casePdcaItemId?: SortOrder
+    caseId?: SortOrder
+    itemNo?: SortOrder
+    planText?: SortOrder
+    doText?: SortOrder
+    doStartDate?: SortOrder
+    doEndDate?: SortOrder
+    checkText?: SortOrder
+    checkStartDate?: SortOrder
+    checkEndDate?: SortOrder
+    checkBy?: SortOrder
+    checkComment?: SortOrder
+    actText?: SortOrder
+    actStartDate?: SortOrder
+    actEndDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CasePdcaItemMinOrderByAggregateInput = {
+    casePdcaItemId?: SortOrder
+    caseId?: SortOrder
+    itemNo?: SortOrder
+    planText?: SortOrder
+    doText?: SortOrder
+    doStartDate?: SortOrder
+    doEndDate?: SortOrder
+    checkText?: SortOrder
+    checkStartDate?: SortOrder
+    checkEndDate?: SortOrder
+    checkBy?: SortOrder
+    checkComment?: SortOrder
+    actText?: SortOrder
+    actStartDate?: SortOrder
+    actEndDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CasePdcaItemSumOrderByAggregateInput = {
+    itemNo?: SortOrder
+  }
+
+  export type CaseFeedbackCommentCountOrderByAggregateInput = {
+    caseFeedbackCommentId?: SortOrder
+    caseId?: SortOrder
+    commentText?: SortOrder
+    commenterName?: SortOrder
+    commenterType?: SortOrder
+    commenterId?: SortOrder
+    commenterEmployeeId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFeedbackCommentAvgOrderByAggregateInput = {
+    commenterEmployeeId?: SortOrder
+  }
+
+  export type CaseFeedbackCommentMaxOrderByAggregateInput = {
+    caseFeedbackCommentId?: SortOrder
+    caseId?: SortOrder
+    commentText?: SortOrder
+    commenterName?: SortOrder
+    commenterType?: SortOrder
+    commenterId?: SortOrder
+    commenterEmployeeId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFeedbackCommentMinOrderByAggregateInput = {
+    caseFeedbackCommentId?: SortOrder
+    caseId?: SortOrder
+    commentText?: SortOrder
+    commenterName?: SortOrder
+    commenterType?: SortOrder
+    commenterId?: SortOrder
+    commenterEmployeeId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseFeedbackCommentSumOrderByAggregateInput = {
+    commenterEmployeeId?: SortOrder
   }
 
   export type FishboneCategoryCountOrderByAggregateInput = {
@@ -41139,6 +44497,20 @@ export namespace Prisma {
     connect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
   }
 
+  export type CasePdcaItemCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CasePdcaItemCreateWithoutCaseInput, CasePdcaItemUncheckedCreateWithoutCaseInput> | CasePdcaItemCreateWithoutCaseInput[] | CasePdcaItemUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CasePdcaItemCreateOrConnectWithoutCaseInput | CasePdcaItemCreateOrConnectWithoutCaseInput[]
+    createMany?: CasePdcaItemCreateManyCaseInputEnvelope
+    connect?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+  }
+
+  export type CaseFeedbackCommentCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseFeedbackCommentCreateWithoutCaseInput, CaseFeedbackCommentUncheckedCreateWithoutCaseInput> | CaseFeedbackCommentCreateWithoutCaseInput[] | CaseFeedbackCommentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseFeedbackCommentCreateOrConnectWithoutCaseInput | CaseFeedbackCommentCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseFeedbackCommentCreateManyCaseInputEnvelope
+    connect?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+  }
+
   export type CaseNotificationOutboxCreateNestedManyWithoutCaseInput = {
     create?: XOR<CaseNotificationOutboxCreateWithoutCaseInput, CaseNotificationOutboxUncheckedCreateWithoutCaseInput> | CaseNotificationOutboxCreateWithoutCaseInput[] | CaseNotificationOutboxUncheckedCreateWithoutCaseInput[]
     connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutCaseInput | CaseNotificationOutboxCreateOrConnectWithoutCaseInput[]
@@ -41172,6 +44544,20 @@ export namespace Prisma {
     connectOrCreate?: CaseFishboneMasterCreateOrConnectWithoutCase_headerInput | CaseFishboneMasterCreateOrConnectWithoutCase_headerInput[]
     createMany?: CaseFishboneMasterCreateManyCase_headerInputEnvelope
     connect?: CaseFishboneMasterWhereUniqueInput | CaseFishboneMasterWhereUniqueInput[]
+  }
+
+  export type CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CasePdcaItemCreateWithoutCaseInput, CasePdcaItemUncheckedCreateWithoutCaseInput> | CasePdcaItemCreateWithoutCaseInput[] | CasePdcaItemUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CasePdcaItemCreateOrConnectWithoutCaseInput | CasePdcaItemCreateOrConnectWithoutCaseInput[]
+    createMany?: CasePdcaItemCreateManyCaseInputEnvelope
+    connect?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+  }
+
+  export type CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput = {
+    create?: XOR<CaseFeedbackCommentCreateWithoutCaseInput, CaseFeedbackCommentUncheckedCreateWithoutCaseInput> | CaseFeedbackCommentCreateWithoutCaseInput[] | CaseFeedbackCommentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseFeedbackCommentCreateOrConnectWithoutCaseInput | CaseFeedbackCommentCreateOrConnectWithoutCaseInput[]
+    createMany?: CaseFeedbackCommentCreateManyCaseInputEnvelope
+    connect?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
   }
 
   export type CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput = {
@@ -41228,6 +44614,34 @@ export namespace Prisma {
     update?: CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput | CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput[]
     updateMany?: CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput | CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput[]
     deleteMany?: CaseFishboneMasterScalarWhereInput | CaseFishboneMasterScalarWhereInput[]
+  }
+
+  export type CasePdcaItemUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CasePdcaItemCreateWithoutCaseInput, CasePdcaItemUncheckedCreateWithoutCaseInput> | CasePdcaItemCreateWithoutCaseInput[] | CasePdcaItemUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CasePdcaItemCreateOrConnectWithoutCaseInput | CasePdcaItemCreateOrConnectWithoutCaseInput[]
+    upsert?: CasePdcaItemUpsertWithWhereUniqueWithoutCaseInput | CasePdcaItemUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CasePdcaItemCreateManyCaseInputEnvelope
+    set?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    disconnect?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    delete?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    connect?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    update?: CasePdcaItemUpdateWithWhereUniqueWithoutCaseInput | CasePdcaItemUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CasePdcaItemUpdateManyWithWhereWithoutCaseInput | CasePdcaItemUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CasePdcaItemScalarWhereInput | CasePdcaItemScalarWhereInput[]
+  }
+
+  export type CaseFeedbackCommentUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseFeedbackCommentCreateWithoutCaseInput, CaseFeedbackCommentUncheckedCreateWithoutCaseInput> | CaseFeedbackCommentCreateWithoutCaseInput[] | CaseFeedbackCommentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseFeedbackCommentCreateOrConnectWithoutCaseInput | CaseFeedbackCommentCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseFeedbackCommentUpsertWithWhereUniqueWithoutCaseInput | CaseFeedbackCommentUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseFeedbackCommentCreateManyCaseInputEnvelope
+    set?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    disconnect?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    delete?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    connect?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    update?: CaseFeedbackCommentUpdateWithWhereUniqueWithoutCaseInput | CaseFeedbackCommentUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseFeedbackCommentUpdateManyWithWhereWithoutCaseInput | CaseFeedbackCommentUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseFeedbackCommentScalarWhereInput | CaseFeedbackCommentScalarWhereInput[]
   }
 
   export type CaseNotificationOutboxUpdateManyWithoutCaseNestedInput = {
@@ -41298,6 +44712,34 @@ export namespace Prisma {
     update?: CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput | CaseFishboneMasterUpdateWithWhereUniqueWithoutCase_headerInput[]
     updateMany?: CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput | CaseFishboneMasterUpdateManyWithWhereWithoutCase_headerInput[]
     deleteMany?: CaseFishboneMasterScalarWhereInput | CaseFishboneMasterScalarWhereInput[]
+  }
+
+  export type CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CasePdcaItemCreateWithoutCaseInput, CasePdcaItemUncheckedCreateWithoutCaseInput> | CasePdcaItemCreateWithoutCaseInput[] | CasePdcaItemUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CasePdcaItemCreateOrConnectWithoutCaseInput | CasePdcaItemCreateOrConnectWithoutCaseInput[]
+    upsert?: CasePdcaItemUpsertWithWhereUniqueWithoutCaseInput | CasePdcaItemUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CasePdcaItemCreateManyCaseInputEnvelope
+    set?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    disconnect?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    delete?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    connect?: CasePdcaItemWhereUniqueInput | CasePdcaItemWhereUniqueInput[]
+    update?: CasePdcaItemUpdateWithWhereUniqueWithoutCaseInput | CasePdcaItemUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CasePdcaItemUpdateManyWithWhereWithoutCaseInput | CasePdcaItemUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CasePdcaItemScalarWhereInput | CasePdcaItemScalarWhereInput[]
+  }
+
+  export type CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput = {
+    create?: XOR<CaseFeedbackCommentCreateWithoutCaseInput, CaseFeedbackCommentUncheckedCreateWithoutCaseInput> | CaseFeedbackCommentCreateWithoutCaseInput[] | CaseFeedbackCommentUncheckedCreateWithoutCaseInput[]
+    connectOrCreate?: CaseFeedbackCommentCreateOrConnectWithoutCaseInput | CaseFeedbackCommentCreateOrConnectWithoutCaseInput[]
+    upsert?: CaseFeedbackCommentUpsertWithWhereUniqueWithoutCaseInput | CaseFeedbackCommentUpsertWithWhereUniqueWithoutCaseInput[]
+    createMany?: CaseFeedbackCommentCreateManyCaseInputEnvelope
+    set?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    disconnect?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    delete?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    connect?: CaseFeedbackCommentWhereUniqueInput | CaseFeedbackCommentWhereUniqueInput[]
+    update?: CaseFeedbackCommentUpdateWithWhereUniqueWithoutCaseInput | CaseFeedbackCommentUpdateWithWhereUniqueWithoutCaseInput[]
+    updateMany?: CaseFeedbackCommentUpdateManyWithWhereWithoutCaseInput | CaseFeedbackCommentUpdateManyWithWhereWithoutCaseInput[]
+    deleteMany?: CaseFeedbackCommentScalarWhereInput | CaseFeedbackCommentScalarWhereInput[]
   }
 
   export type CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput = {
@@ -41838,6 +45280,34 @@ export namespace Prisma {
     upsert?: CaseFishboneCauseUpsertWithoutItemLinksInput
     connect?: CaseFishboneCauseWhereUniqueInput
     update?: XOR<XOR<CaseFishboneCauseUpdateToOneWithWhereWithoutItemLinksInput, CaseFishboneCauseUpdateWithoutItemLinksInput>, CaseFishboneCauseUncheckedUpdateWithoutItemLinksInput>
+  }
+
+  export type CaseHeaderCreateNestedOneWithoutCasePdcaItemsInput = {
+    create?: XOR<CaseHeaderCreateWithoutCasePdcaItemsInput, CaseHeaderUncheckedCreateWithoutCasePdcaItemsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCasePdcaItemsInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseHeaderUpdateOneRequiredWithoutCasePdcaItemsNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutCasePdcaItemsInput, CaseHeaderUncheckedCreateWithoutCasePdcaItemsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCasePdcaItemsInput
+    upsert?: CaseHeaderUpsertWithoutCasePdcaItemsInput
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutCasePdcaItemsInput, CaseHeaderUpdateWithoutCasePdcaItemsInput>, CaseHeaderUncheckedUpdateWithoutCasePdcaItemsInput>
+  }
+
+  export type CaseHeaderCreateNestedOneWithoutCaseFeedbackCommentsInput = {
+    create?: XOR<CaseHeaderCreateWithoutCaseFeedbackCommentsInput, CaseHeaderUncheckedCreateWithoutCaseFeedbackCommentsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCaseFeedbackCommentsInput
+    connect?: CaseHeaderWhereUniqueInput
+  }
+
+  export type CaseHeaderUpdateOneRequiredWithoutCaseFeedbackCommentsNestedInput = {
+    create?: XOR<CaseHeaderCreateWithoutCaseFeedbackCommentsInput, CaseHeaderUncheckedCreateWithoutCaseFeedbackCommentsInput>
+    connectOrCreate?: CaseHeaderCreateOrConnectWithoutCaseFeedbackCommentsInput
+    upsert?: CaseHeaderUpsertWithoutCaseFeedbackCommentsInput
+    connect?: CaseHeaderWhereUniqueInput
+    update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutCaseFeedbackCommentsInput, CaseHeaderUpdateWithoutCaseFeedbackCommentsInput>, CaseHeaderUncheckedUpdateWithoutCaseFeedbackCommentsInput>
   }
 
   export type FishboneItemCreateNestedManyWithoutCategoryInput = {
@@ -44374,6 +47844,108 @@ export namespace Prisma {
     data: CaseFishboneMasterCreateManyCase_headerInput | CaseFishboneMasterCreateManyCase_headerInput[]
   }
 
+  export type CasePdcaItemCreateWithoutCaseInput = {
+    casePdcaItemId: string
+    itemNo: number
+    planText?: string | null
+    doText?: string | null
+    doStartDate?: Date | string | null
+    doEndDate?: Date | string | null
+    checkText?: string | null
+    checkStartDate?: Date | string | null
+    checkEndDate?: Date | string | null
+    checkBy?: string | null
+    checkComment?: string | null
+    actText?: string | null
+    actStartDate?: Date | string | null
+    actEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CasePdcaItemUncheckedCreateWithoutCaseInput = {
+    casePdcaItemId: string
+    itemNo: number
+    planText?: string | null
+    doText?: string | null
+    doStartDate?: Date | string | null
+    doEndDate?: Date | string | null
+    checkText?: string | null
+    checkStartDate?: Date | string | null
+    checkEndDate?: Date | string | null
+    checkBy?: string | null
+    checkComment?: string | null
+    actText?: string | null
+    actStartDate?: Date | string | null
+    actEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CasePdcaItemCreateOrConnectWithoutCaseInput = {
+    where: CasePdcaItemWhereUniqueInput
+    create: XOR<CasePdcaItemCreateWithoutCaseInput, CasePdcaItemUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CasePdcaItemCreateManyCaseInputEnvelope = {
+    data: CasePdcaItemCreateManyCaseInput | CasePdcaItemCreateManyCaseInput[]
+  }
+
+  export type CaseFeedbackCommentCreateWithoutCaseInput = {
+    caseFeedbackCommentId: string
+    commentText: string
+    commenterName: string
+    commenterType?: string | null
+    commenterId?: string | null
+    commenterEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFeedbackCommentUncheckedCreateWithoutCaseInput = {
+    caseFeedbackCommentId: string
+    commentText: string
+    commenterName: string
+    commenterType?: string | null
+    commenterId?: string | null
+    commenterEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFeedbackCommentCreateOrConnectWithoutCaseInput = {
+    where: CaseFeedbackCommentWhereUniqueInput
+    create: XOR<CaseFeedbackCommentCreateWithoutCaseInput, CaseFeedbackCommentUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseFeedbackCommentCreateManyCaseInputEnvelope = {
+    data: CaseFeedbackCommentCreateManyCaseInput | CaseFeedbackCommentCreateManyCaseInput[]
+  }
+
   export type CaseNotificationOutboxCreateWithoutCaseInput = {
     caseNotificationId: string
     recipientEmployeeId?: number | null
@@ -44588,6 +48160,88 @@ export namespace Prisma {
     deletedBy?: StringNullableFilter<"CaseFishboneMaster"> | string | null
   }
 
+  export type CasePdcaItemUpsertWithWhereUniqueWithoutCaseInput = {
+    where: CasePdcaItemWhereUniqueInput
+    update: XOR<CasePdcaItemUpdateWithoutCaseInput, CasePdcaItemUncheckedUpdateWithoutCaseInput>
+    create: XOR<CasePdcaItemCreateWithoutCaseInput, CasePdcaItemUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CasePdcaItemUpdateWithWhereUniqueWithoutCaseInput = {
+    where: CasePdcaItemWhereUniqueInput
+    data: XOR<CasePdcaItemUpdateWithoutCaseInput, CasePdcaItemUncheckedUpdateWithoutCaseInput>
+  }
+
+  export type CasePdcaItemUpdateManyWithWhereWithoutCaseInput = {
+    where: CasePdcaItemScalarWhereInput
+    data: XOR<CasePdcaItemUpdateManyMutationInput, CasePdcaItemUncheckedUpdateManyWithoutCaseInput>
+  }
+
+  export type CasePdcaItemScalarWhereInput = {
+    AND?: CasePdcaItemScalarWhereInput | CasePdcaItemScalarWhereInput[]
+    OR?: CasePdcaItemScalarWhereInput[]
+    NOT?: CasePdcaItemScalarWhereInput | CasePdcaItemScalarWhereInput[]
+    casePdcaItemId?: StringFilter<"CasePdcaItem"> | string
+    caseId?: StringFilter<"CasePdcaItem"> | string
+    itemNo?: IntFilter<"CasePdcaItem"> | number
+    planText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    doText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    doStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    doEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    checkStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    checkBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    checkComment?: StringNullableFilter<"CasePdcaItem"> | string | null
+    actText?: StringNullableFilter<"CasePdcaItem"> | string | null
+    actStartDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    actEndDate?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    isActive?: BoolFilter<"CasePdcaItem"> | boolean
+    createdAt?: DateTimeFilter<"CasePdcaItem"> | Date | string
+    createdBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    updatedAt?: DateTimeFilter<"CasePdcaItem"> | Date | string
+    updatedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+    isDeleted?: BoolFilter<"CasePdcaItem"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
+  }
+
+  export type CaseFeedbackCommentUpsertWithWhereUniqueWithoutCaseInput = {
+    where: CaseFeedbackCommentWhereUniqueInput
+    update: XOR<CaseFeedbackCommentUpdateWithoutCaseInput, CaseFeedbackCommentUncheckedUpdateWithoutCaseInput>
+    create: XOR<CaseFeedbackCommentCreateWithoutCaseInput, CaseFeedbackCommentUncheckedCreateWithoutCaseInput>
+  }
+
+  export type CaseFeedbackCommentUpdateWithWhereUniqueWithoutCaseInput = {
+    where: CaseFeedbackCommentWhereUniqueInput
+    data: XOR<CaseFeedbackCommentUpdateWithoutCaseInput, CaseFeedbackCommentUncheckedUpdateWithoutCaseInput>
+  }
+
+  export type CaseFeedbackCommentUpdateManyWithWhereWithoutCaseInput = {
+    where: CaseFeedbackCommentScalarWhereInput
+    data: XOR<CaseFeedbackCommentUpdateManyMutationInput, CaseFeedbackCommentUncheckedUpdateManyWithoutCaseInput>
+  }
+
+  export type CaseFeedbackCommentScalarWhereInput = {
+    AND?: CaseFeedbackCommentScalarWhereInput | CaseFeedbackCommentScalarWhereInput[]
+    OR?: CaseFeedbackCommentScalarWhereInput[]
+    NOT?: CaseFeedbackCommentScalarWhereInput | CaseFeedbackCommentScalarWhereInput[]
+    caseFeedbackCommentId?: StringFilter<"CaseFeedbackComment"> | string
+    caseId?: StringFilter<"CaseFeedbackComment"> | string
+    commentText?: StringFilter<"CaseFeedbackComment"> | string
+    commenterName?: StringFilter<"CaseFeedbackComment"> | string
+    commenterType?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    commenterId?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    commenterEmployeeId?: IntNullableFilter<"CaseFeedbackComment"> | number | null
+    isActive?: BoolFilter<"CaseFeedbackComment"> | boolean
+    createdAt?: DateTimeFilter<"CaseFeedbackComment"> | Date | string
+    createdBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    updatedAt?: DateTimeFilter<"CaseFeedbackComment"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+    isDeleted?: BoolFilter<"CaseFeedbackComment"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseFeedbackComment"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseFeedbackComment"> | string | null
+  }
+
   export type CaseNotificationOutboxUpsertWithWhereUniqueWithoutCaseInput = {
     where: CaseNotificationOutboxWhereUniqueInput
     update: XOR<CaseNotificationOutboxUpdateWithoutCaseInput, CaseNotificationOutboxUncheckedUpdateWithoutCaseInput>
@@ -44681,6 +48335,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -44691,6 +48348,8 @@ export namespace Prisma {
     deletedBy?: string | null
     attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
   }
@@ -44710,6 +48369,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -44720,6 +48382,8 @@ export namespace Prisma {
     deletedBy?: string | null
     attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
   }
@@ -44849,6 +48513,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44859,6 +48526,8 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
   }
@@ -44878,6 +48547,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44888,6 +48560,8 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
@@ -44939,6 +48613,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -44950,6 +48627,8 @@ export namespace Prisma {
     departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
   }
 
@@ -44968,6 +48647,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -44979,6 +48661,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
   }
 
@@ -45072,6 +48756,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45083,6 +48770,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
   }
 
@@ -45101,6 +48790,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45112,6 +48804,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
 
@@ -45195,6 +48889,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -45206,6 +48903,8 @@ export namespace Prisma {
     departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
   }
 
@@ -45224,6 +48923,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -45235,6 +48937,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
   }
 
@@ -45328,6 +49032,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45339,6 +49046,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
   }
 
@@ -45357,6 +49066,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45368,6 +49080,8 @@ export namespace Prisma {
     departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
   }
 
@@ -45451,6 +49165,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -45461,6 +49178,8 @@ export namespace Prisma {
     deletedBy?: string | null
     departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
   }
@@ -45480,6 +49199,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -45490,6 +49212,8 @@ export namespace Prisma {
     deletedBy?: string | null
     departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
     caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
   }
@@ -45525,6 +49249,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45535,6 +49262,8 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
   }
@@ -45554,6 +49283,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45564,6 +49296,8 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
     caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
@@ -45732,6 +49466,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -45742,6 +49479,8 @@ export namespace Prisma {
     deletedBy?: string | null
     departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
   }
@@ -45761,6 +49500,9 @@ export namespace Prisma {
     requesterId?: string | null
     requesterEmployeeId?: number | null
     originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
     isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
@@ -45771,6 +49513,8 @@ export namespace Prisma {
     deletedBy?: string | null
     departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
     attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
   }
@@ -45886,6 +49630,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45896,6 +49643,8 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
   }
@@ -45915,6 +49664,9 @@ export namespace Prisma {
     requesterId?: NullableStringFieldUpdateOperationsInput | string | null
     requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45925,6 +49677,8 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
     attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
@@ -46519,6 +50273,310 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseHeaderCreateWithoutCasePdcaItemsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    visibility?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    caseFeedbackComments?: CaseFeedbackCommentCreateNestedManyWithoutCaseInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutCasePdcaItemsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    visibility?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedCreateNestedManyWithoutCaseInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutCasePdcaItemsInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutCasePdcaItemsInput, CaseHeaderUncheckedCreateWithoutCasePdcaItemsInput>
+  }
+
+  export type CaseHeaderUpsertWithoutCasePdcaItemsInput = {
+    update: XOR<CaseHeaderUpdateWithoutCasePdcaItemsInput, CaseHeaderUncheckedUpdateWithoutCasePdcaItemsInput>
+    create: XOR<CaseHeaderCreateWithoutCasePdcaItemsInput, CaseHeaderUncheckedCreateWithoutCasePdcaItemsInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutCasePdcaItemsInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutCasePdcaItemsInput, CaseHeaderUncheckedUpdateWithoutCasePdcaItemsInput>
+  }
+
+  export type CaseHeaderUpdateWithoutCasePdcaItemsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUpdateManyWithoutCaseNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutCasePdcaItemsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    caseFeedbackComments?: CaseFeedbackCommentUncheckedUpdateManyWithoutCaseNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderCreateWithoutCaseFeedbackCommentsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    visibility?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemCreateNestedManyWithoutCaseInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderUncheckedCreateWithoutCaseFeedbackCommentsInput = {
+    caseId: string
+    caseType: string
+    caseTitle: string
+    background?: string | null
+    currentCondition?: string | null
+    projectDesc?: string | null
+    projectObjective?: string | null
+    locationDesc?: string | null
+    notes?: string | null
+    status?: string
+    visibility?: string
+    requesterId?: string | null
+    requesterEmployeeId?: number | null
+    originSbuSubId?: number | null
+    feedbackApprovedAt?: Date | string | null
+    feedbackApprovedBy?: string | null
+    feedbackApprovedByEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    departments?: CaseDepartmentUncheckedCreateNestedManyWithoutCaseInput
+    attachments?: CaseAttachmentUncheckedCreateNestedManyWithoutCaseInput
+    caseFishbones?: CaseFishboneMasterUncheckedCreateNestedManyWithoutCase_headerInput
+    casePdcaItems?: CasePdcaItemUncheckedCreateNestedManyWithoutCaseInput
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutCaseInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutCaseInput
+  }
+
+  export type CaseHeaderCreateOrConnectWithoutCaseFeedbackCommentsInput = {
+    where: CaseHeaderWhereUniqueInput
+    create: XOR<CaseHeaderCreateWithoutCaseFeedbackCommentsInput, CaseHeaderUncheckedCreateWithoutCaseFeedbackCommentsInput>
+  }
+
+  export type CaseHeaderUpsertWithoutCaseFeedbackCommentsInput = {
+    update: XOR<CaseHeaderUpdateWithoutCaseFeedbackCommentsInput, CaseHeaderUncheckedUpdateWithoutCaseFeedbackCommentsInput>
+    create: XOR<CaseHeaderCreateWithoutCaseFeedbackCommentsInput, CaseHeaderUncheckedCreateWithoutCaseFeedbackCommentsInput>
+    where?: CaseHeaderWhereInput
+  }
+
+  export type CaseHeaderUpdateToOneWithWhereWithoutCaseFeedbackCommentsInput = {
+    where?: CaseHeaderWhereInput
+    data: XOR<CaseHeaderUpdateWithoutCaseFeedbackCommentsInput, CaseHeaderUncheckedUpdateWithoutCaseFeedbackCommentsInput>
+  }
+
+  export type CaseHeaderUpdateWithoutCaseFeedbackCommentsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUpdateManyWithoutCaseNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutCaseNestedInput
+  }
+
+  export type CaseHeaderUncheckedUpdateWithoutCaseFeedbackCommentsInput = {
+    caseId?: StringFieldUpdateOperationsInput | string
+    caseType?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    currentCondition?: NullableStringFieldUpdateOperationsInput | string | null
+    projectDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    projectObjective?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    visibility?: StringFieldUpdateOperationsInput | string
+    requesterId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    originSbuSubId?: NullableIntFieldUpdateOperationsInput | number | null
+    feedbackApprovedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    feedbackApprovedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    feedbackApprovedByEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: CaseDepartmentUncheckedUpdateManyWithoutCaseNestedInput
+    attachments?: CaseAttachmentUncheckedUpdateManyWithoutCaseNestedInput
+    caseFishbones?: CaseFishboneMasterUncheckedUpdateManyWithoutCase_headerNestedInput
+    casePdcaItems?: CasePdcaItemUncheckedUpdateManyWithoutCaseNestedInput
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutCaseNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
 
   export type FishboneItemCreateWithoutCategoryInput = {
@@ -47968,6 +52026,48 @@ export namespace Prisma {
     deletedBy?: string | null
   }
 
+  export type CasePdcaItemCreateManyCaseInput = {
+    casePdcaItemId: string
+    itemNo: number
+    planText?: string | null
+    doText?: string | null
+    doStartDate?: Date | string | null
+    doEndDate?: Date | string | null
+    checkText?: string | null
+    checkStartDate?: Date | string | null
+    checkEndDate?: Date | string | null
+    checkBy?: string | null
+    checkComment?: string | null
+    actText?: string | null
+    actStartDate?: Date | string | null
+    actEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseFeedbackCommentCreateManyCaseInput = {
+    caseFeedbackCommentId: string
+    commentText: string
+    commenterName: string
+    commenterType?: string | null
+    commenterId?: string | null
+    commenterEmployeeId?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
   export type CaseNotificationOutboxCreateManyCaseInput = {
     caseNotificationId: string
     caseDepartmentId?: string | null
@@ -48184,6 +52284,132 @@ export namespace Prisma {
     sbuSubId?: IntFieldUpdateOperationsInput | number
     fishboneName?: StringFieldUpdateOperationsInput | string
     fishboneDesc?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CasePdcaItemUpdateWithoutCaseInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CasePdcaItemUncheckedUpdateWithoutCaseInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CasePdcaItemUncheckedUpdateManyWithoutCaseInput = {
+    casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    itemNo?: IntFieldUpdateOperationsInput | number
+    planText?: NullableStringFieldUpdateOperationsInput | string | null
+    doText?: NullableStringFieldUpdateOperationsInput | string | null
+    doStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    doEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkText?: NullableStringFieldUpdateOperationsInput | string | null
+    checkStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkBy?: NullableStringFieldUpdateOperationsInput | string | null
+    checkComment?: NullableStringFieldUpdateOperationsInput | string | null
+    actText?: NullableStringFieldUpdateOperationsInput | string | null
+    actStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFeedbackCommentUpdateWithoutCaseInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFeedbackCommentUncheckedUpdateWithoutCaseInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseFeedbackCommentUncheckedUpdateManyWithoutCaseInput = {
+    caseFeedbackCommentId?: StringFieldUpdateOperationsInput | string
+    commentText?: StringFieldUpdateOperationsInput | string
+    commenterName?: StringFieldUpdateOperationsInput | string
+    commenterType?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterId?: NullableStringFieldUpdateOperationsInput | string | null
+    commenterEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null

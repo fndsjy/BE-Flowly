@@ -16,6 +16,11 @@ export function toCaseHeaderResponse(caseHeader) {
         requesterId: caseHeader.requesterId ?? null,
         requesterEmployeeId: caseHeader.requesterEmployeeId ?? null,
         originSbuSubId: caseHeader.originSbuSubId ?? null,
+        feedbackApprovedAt: caseHeader
+            .feedbackApprovedAt ?? null,
+        feedbackApprovedBy: caseHeader
+            .feedbackApprovedBy ?? null,
+        feedbackApprovedByEmployeeId: caseHeader.feedbackApprovedByEmployeeId ?? null,
         isActive: caseHeader.isActive,
         isDeleted: caseHeader.isDeleted,
         createdAt: caseHeader.createdAt,

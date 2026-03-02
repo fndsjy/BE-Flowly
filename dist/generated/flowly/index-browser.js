@@ -260,6 +260,9 @@ exports.Prisma.CaseHeaderScalarFieldEnum = {
   requesterId: 'requesterId',
   requesterEmployeeId: 'requesterEmployeeId',
   originSbuSubId: 'originSbuSubId',
+  feedbackApprovedAt: 'feedbackApprovedAt',
+  feedbackApprovedBy: 'feedbackApprovedBy',
+  feedbackApprovedByEmployeeId: 'feedbackApprovedByEmployeeId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
@@ -451,6 +454,50 @@ exports.Prisma.CaseFishboneItemCauseScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.CasePdcaItemScalarFieldEnum = {
+  casePdcaItemId: 'casePdcaItemId',
+  caseId: 'caseId',
+  itemNo: 'itemNo',
+  planText: 'planText',
+  doText: 'doText',
+  doStartDate: 'doStartDate',
+  doEndDate: 'doEndDate',
+  checkText: 'checkText',
+  checkStartDate: 'checkStartDate',
+  checkEndDate: 'checkEndDate',
+  checkBy: 'checkBy',
+  checkComment: 'checkComment',
+  actText: 'actText',
+  actStartDate: 'actStartDate',
+  actEndDate: 'actEndDate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.CaseFeedbackCommentScalarFieldEnum = {
+  caseFeedbackCommentId: 'caseFeedbackCommentId',
+  caseId: 'caseId',
+  commentText: 'commentText',
+  commenterName: 'commenterName',
+  commenterType: 'commenterType',
+  commenterId: 'commenterId',
+  commenterEmployeeId: 'commenterEmployeeId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.FishboneCategoryScalarFieldEnum = {
   fishboneCategoryId: 'fishboneCategoryId',
   categoryCode: 'categoryCode',
@@ -606,6 +653,8 @@ exports.Prisma.ModelName = {
   CaseFishboneCause: 'CaseFishboneCause',
   CaseFishboneItem: 'CaseFishboneItem',
   CaseFishboneItemCause: 'CaseFishboneItemCause',
+  CasePdcaItem: 'CasePdcaItem',
+  CaseFeedbackComment: 'CaseFeedbackComment',
   FishboneCategory: 'FishboneCategory',
   FishboneCause: 'FishboneCause',
   FishboneItem: 'FishboneItem',

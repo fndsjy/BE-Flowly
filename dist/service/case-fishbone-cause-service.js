@@ -4,7 +4,7 @@ import { CaseFishboneCauseValidation } from "../validation/case-fishbone-cause-v
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFishboneCauseId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFishboneCauseResponse, toCaseFishboneCauseListResponse, } from "../model/case-fishbone-cause-model.js";
 const CAUSE_AUDIT_FIELDS = [
     "caseFishboneId",
@@ -47,15 +47,19 @@ export class CaseFishboneCauseService {
     static async create(requesterId, reqBody) {
         const request = Validation.validate(CaseFishboneCauseValidation.CREATE, reqBody);
         const access = await resolveCaseAccess(requesterId);
+        let fishbone = null;
         if (access.actorType === "FLOWLY") {
             assertCaseCrud(access);
-            await ensureCaseFishboneAccess(request.caseFishboneId);
+            fishbone = await ensureCaseFishboneAccess(request.caseFishboneId);
         }
         else if (access.employeeId !== undefined) {
-            await ensureCaseFishboneAccess(request.caseFishboneId, access.employeeId);
+            fishbone = await ensureCaseFishboneAccess(request.caseFishboneId, access.employeeId);
         }
         else {
-            await ensureCaseFishboneAccess(request.caseFishboneId);
+            fishbone = await ensureCaseFishboneAccess(request.caseFishboneId);
+        }
+        if (fishbone) {
+            await ensureCaseNotClosed(fishbone.caseId);
         }
         const existingNumber = await prismaFlowly.caseFishboneCause.findFirst({
             where: {
@@ -108,9 +112,8 @@ export class CaseFishboneCauseService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case fishbone cause not found");
         }
-        if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-            await ensureCaseFishboneAccess(existing.caseFishboneId, access.employeeId);
-        }
+        const fishbone = await ensureCaseFishboneAccess(existing.caseFishboneId, access.actorType === "EMPLOYEE" ? access.employeeId : undefined);
+        await ensureCaseNotClosed(fishbone.caseId);
         if (request.causeNo !== undefined &&
             request.causeNo !== existing.causeNo) {
             const duplicate = await prismaFlowly.caseFishboneCause.findFirst({
@@ -166,9 +169,8 @@ export class CaseFishboneCauseService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case fishbone cause not found");
         }
-        if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-            await ensureCaseFishboneAccess(existing.caseFishboneId, access.employeeId);
-        }
+        const fishbone = await ensureCaseFishboneAccess(existing.caseFishboneId, access.actorType === "EMPLOYEE" ? access.employeeId : undefined);
+        await ensureCaseNotClosed(fishbone.caseId);
         const now = new Date();
         const { linkCount } = await prismaFlowly.$transaction(async (tx) => {
             const linkResult = await tx.caseFishboneItemCause.updateMany({

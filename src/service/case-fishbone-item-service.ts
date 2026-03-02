@@ -15,6 +15,7 @@ import {
 import {
   assertCaseCrud,
   assertCaseRead,
+  ensureCaseNotClosed,
   isPicForSbuSub,
   resolveCaseAccess,
 } from "../utils/case-access.js";
@@ -351,13 +352,21 @@ export class CaseFishboneItemService {
     const request = Validation.validate(CaseFishboneItemValidation.CREATE, reqBody);
 
     const access = await resolveCaseAccess(requesterId);
+    let fishbone = null;
     if (access.actorType === "FLOWLY") {
       assertCaseCrud(access);
-      await ensureCaseFishboneAccess(request.caseFishboneId);
+      fishbone = await ensureCaseFishboneAccess(request.caseFishboneId);
     } else if (access.employeeId !== undefined) {
-      await ensureCaseFishboneAccess(request.caseFishboneId, access.employeeId);
+      fishbone = await ensureCaseFishboneAccess(
+        request.caseFishboneId,
+        access.employeeId
+      );
     } else {
-      await ensureCaseFishboneAccess(request.caseFishboneId);
+      fishbone = await ensureCaseFishboneAccess(request.caseFishboneId);
+    }
+
+    if (fishbone) {
+      await ensureCaseNotClosed(fishbone.caseId);
     }
 
     const normalizedCauseIds = await ensureCausesExist(
@@ -482,9 +491,12 @@ export class CaseFishboneItemService {
       throw new ResponseError(404, "Case fishbone item not found");
     }
 
-    if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-      await ensureCaseFishboneAccess(existing.caseFishboneId, access.employeeId);
-    }
+    const fishbone = await ensureCaseFishboneAccess(
+      existing.caseFishboneId,
+      access.actorType === "EMPLOYEE" ? access.employeeId : undefined
+    );
+
+    await ensureCaseNotClosed(fishbone.caseId);
 
     let normalizedCauseIds: string[] | undefined;
     if (request.causeIds !== undefined) {
@@ -600,9 +612,12 @@ export class CaseFishboneItemService {
       throw new ResponseError(404, "Case fishbone item not found");
     }
 
-    if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-      await ensureCaseFishboneAccess(existing.caseFishboneId, access.employeeId);
-    }
+    const fishbone = await ensureCaseFishboneAccess(
+      existing.caseFishboneId,
+      access.actorType === "EMPLOYEE" ? access.employeeId : undefined
+    );
+
+    await ensureCaseNotClosed(fishbone.caseId);
 
     const now = new Date();
 

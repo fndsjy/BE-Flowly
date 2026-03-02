@@ -15,6 +15,9 @@ export type CaseHeaderResponse = {
   requesterId: string | null;
   requesterEmployeeId: number | null;
   originSbuSubId: number | null;
+  feedbackApprovedAt: Date | null;
+  feedbackApprovedBy: string | null;
+  feedbackApprovedByEmployeeId: number | null;
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -77,6 +80,16 @@ export function toCaseHeaderResponse(caseHeader: CaseHeader): CaseHeaderResponse
     requesterId: caseHeader.requesterId ?? null,
     requesterEmployeeId: caseHeader.requesterEmployeeId ?? null,
     originSbuSubId: caseHeader.originSbuSubId ?? null,
+    feedbackApprovedAt:
+      (caseHeader as CaseHeader & { feedbackApprovedAt?: Date | null })
+        .feedbackApprovedAt ?? null,
+    feedbackApprovedBy:
+      (caseHeader as CaseHeader & { feedbackApprovedBy?: string | null })
+        .feedbackApprovedBy ?? null,
+    feedbackApprovedByEmployeeId:
+      (caseHeader as CaseHeader & {
+        feedbackApprovedByEmployeeId?: number | null;
+      }).feedbackApprovedByEmployeeId ?? null,
     isActive: caseHeader.isActive,
     isDeleted: caseHeader.isDeleted,
     createdAt: caseHeader.createdAt,
