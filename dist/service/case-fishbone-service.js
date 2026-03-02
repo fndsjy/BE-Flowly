@@ -4,7 +4,7 @@ import { CaseFishboneValidation } from "../validation/case-fishbone-validation.j
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFishboneId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFishboneResponse, toCaseFishboneListResponse, } from "../model/case-fishbone-model.js";
 const FISHBONE_AUDIT_FIELDS = [
     "caseId",
@@ -60,6 +60,7 @@ export class CaseFishboneService {
         else {
             await ensureCaseDepartmentAccess(request.caseId, request.sbuSubId);
         }
+        await ensureCaseNotClosed(request.caseId);
         const fishboneId = await generateCaseFishboneId();
         const now = new Date();
         const created = await prismaFlowly.caseFishboneMaster.create({
@@ -101,6 +102,7 @@ export class CaseFishboneService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case fishbone not found");
         }
+        await ensureCaseNotClosed(existing.caseId);
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             await ensureCaseDepartmentAccess(existing.caseId, existing.sbuSubId, access.employeeId);
         }
@@ -145,6 +147,7 @@ export class CaseFishboneService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case fishbone not found");
         }
+        await ensureCaseNotClosed(existing.caseId);
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             await ensureCaseDepartmentAccess(existing.caseId, existing.sbuSubId, access.employeeId);
         }

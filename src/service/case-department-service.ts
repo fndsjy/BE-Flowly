@@ -13,6 +13,7 @@ import {
 import {
   assertCaseCrud,
   assertCaseRead,
+  ensureCaseNotClosed,
   getEmployeeChartSbuSubIds,
   resolveCaseAccess,
   isPicForSbuSub,
@@ -202,6 +203,13 @@ const canEmployeeViewCase = async (employeeId: number, caseId: string) => {
     select: { id: true },
   });
   const picSbuSubIds = picSubs.map((sub) => sub.id);
+  if (
+    picSbuSubIds.length > 0 &&
+    caseHeader.originSbuSubId &&
+    picSbuSubIds.includes(caseHeader.originSbuSubId)
+  ) {
+    return true;
+  }
   if (picSbuSubIds.length > 0) {
     const picDept = await prismaFlowly.caseDepartment.findFirst({
       where: {
@@ -255,6 +263,8 @@ export class CaseDepartmentService {
     if (!caseHeader || caseHeader.isDeleted) {
       throw new ResponseError(404, "Case not found");
     }
+
+    await ensureCaseNotClosed(caseHeader.caseId);
 
     if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
       const employeeId = access.employeeId;
@@ -373,6 +383,8 @@ export class CaseDepartmentService {
     if (!existing || existing.isDeleted) {
       throw new ResponseError(404, "Case department not found");
     }
+
+    await ensureCaseNotClosed(existing.caseId);
 
     if (access.actorType === "EMPLOYEE") {
       if (access.employeeId === undefined) {

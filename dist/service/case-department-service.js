@@ -5,7 +5,7 @@ import { CaseDepartmentValidation } from "../validation/case-department-validati
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseDepartmentId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, getEmployeeChartSbuSubIds, resolveCaseAccess, isPicForSbuSub, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, resolveCaseAccess, isPicForSbuSub, } from "../utils/case-access.js";
 import { CASE_DECISION_STATUSES, CASE_WORK_STATUSES, normalizeUpper, } from "../utils/case-constants.js";
 import { toCaseDepartmentResponse, toCaseDepartmentListResponse, } from "../model/case-department-model.js";
 import { CaseNotificationService } from "./case-notification-service.js";
@@ -130,6 +130,74 @@ const syncCaseHeaderStatus = async (caseId, requesterId) => {
         },
     });
 };
+const canEmployeeViewCase = async (employeeId, caseId) => {
+    const caseHeader = await prismaFlowly.caseHeader.findUnique({
+        where: { caseId },
+        select: {
+            caseId: true,
+            requesterEmployeeId: true,
+            visibility: true,
+            originSbuSubId: true,
+            isDeleted: true,
+        },
+    });
+    if (!caseHeader || caseHeader.isDeleted)
+        return false;
+    if (caseHeader.requesterEmployeeId === employeeId)
+        return true;
+    const hasAssignment = await prismaFlowly.caseDepartment.findFirst({
+        where: { caseId, assigneeEmployeeId: employeeId, isDeleted: false },
+        select: { caseDepartmentId: true },
+    });
+    if (hasAssignment)
+        return true;
+    const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+        where: {
+            pic: employeeId,
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+        },
+        select: { id: true },
+    });
+    const picSbuSubIds = picSubs.map((sub) => sub.id);
+    if (picSbuSubIds.length > 0 &&
+        caseHeader.originSbuSubId &&
+        picSbuSubIds.includes(caseHeader.originSbuSubId)) {
+        return true;
+    }
+    if (picSbuSubIds.length > 0) {
+        const picDept = await prismaFlowly.caseDepartment.findFirst({
+            where: {
+                caseId,
+                isDeleted: false,
+                sbuSubId: { in: picSbuSubIds },
+            },
+            select: { caseDepartmentId: true },
+        });
+        if (picDept)
+            return true;
+    }
+    if (caseHeader.visibility === "PUBLIC") {
+        const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+        if (chartSbuSubIds.length > 0) {
+            if (caseHeader.originSbuSubId &&
+                chartSbuSubIds.includes(caseHeader.originSbuSubId)) {
+                return true;
+            }
+            const chartDept = await prismaFlowly.caseDepartment.findFirst({
+                where: {
+                    caseId,
+                    isDeleted: false,
+                    sbuSubId: { in: chartSbuSubIds },
+                },
+                select: { caseDepartmentId: true },
+            });
+            if (chartDept)
+                return true;
+        }
+    }
+    return false;
+};
 export class CaseDepartmentService {
     static async create(requesterId, reqBody) {
         const request = Validation.validate(CaseDepartmentValidation.CREATE, reqBody);
@@ -144,6 +212,7 @@ export class CaseDepartmentService {
         if (!caseHeader || caseHeader.isDeleted) {
             throw new ResponseError(404, "Case not found");
         }
+        await ensureCaseNotClosed(caseHeader.caseId);
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             const employeeId = access.employeeId;
             const isRequester = caseHeader.requesterEmployeeId === employeeId;
@@ -235,6 +304,7 @@ export class CaseDepartmentService {
         if (!existing || existing.isDeleted) {
             throw new ResponseError(404, "Case department not found");
         }
+        await ensureCaseNotClosed(existing.caseId);
         if (access.actorType === "EMPLOYEE") {
             if (access.employeeId === undefined) {
                 throw new ResponseError(401, "Unauthorized");
@@ -442,42 +512,49 @@ export class CaseDepartmentService {
         };
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             const employeeId = access.employeeId;
-            const picSubs = await prismaEmployee.em_sbu_sub.findMany({
-                where: {
-                    pic: employeeId,
-                    status: "A",
-                    OR: [{ isDeleted: false }, { isDeleted: null }],
-                },
-                select: { id: true },
-            });
-            const picSbuSubIds = picSubs.map((sub) => sub.id);
-            const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
-            const orFilters = [
-                { assigneeEmployeeId: employeeId },
-                { case: { requesterEmployeeId: employeeId } },
-                ...(picSbuSubIds.length > 0
-                    ? [{ sbuSubId: { in: picSbuSubIds } }]
-                    : []),
-            ];
-            if (chartSbuSubIds.length > 0) {
-                orFilters.push({
-                    case: {
-                        visibility: "PUBLIC",
-                        OR: [
-                            { originSbuSubId: { in: chartSbuSubIds } },
-                            {
-                                departments: {
-                                    some: {
-                                        sbuSubId: { in: chartSbuSubIds },
-                                        isDeleted: false,
+            if (filters?.caseId) {
+                const canView = await canEmployeeViewCase(employeeId, filters.caseId);
+                if (!canView)
+                    return [];
+            }
+            else {
+                const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+                    where: {
+                        pic: employeeId,
+                        status: "A",
+                        OR: [{ isDeleted: false }, { isDeleted: null }],
+                    },
+                    select: { id: true },
+                });
+                const picSbuSubIds = picSubs.map((sub) => sub.id);
+                const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+                const orFilters = [
+                    { assigneeEmployeeId: employeeId },
+                    { case: { requesterEmployeeId: employeeId } },
+                    ...(picSbuSubIds.length > 0
+                        ? [{ sbuSubId: { in: picSbuSubIds } }]
+                        : []),
+                ];
+                if (chartSbuSubIds.length > 0) {
+                    orFilters.push({
+                        case: {
+                            visibility: "PUBLIC",
+                            OR: [
+                                { originSbuSubId: { in: chartSbuSubIds } },
+                                {
+                                    departments: {
+                                        some: {
+                                            sbuSubId: { in: chartSbuSubIds },
+                                            isDeleted: false,
+                                        },
                                     },
                                 },
-                            },
-                        ],
-                    },
-                });
+                            ],
+                        },
+                    });
+                }
+                whereClause.OR = orFilters;
             }
-            whereClause.OR = orFilters;
         }
         const list = await prismaFlowly.caseDepartment.findMany({
             where: whereClause,

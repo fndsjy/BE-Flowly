@@ -443,6 +443,54 @@ export async function generateCaseFishboneItemCauseId(): Promise<() => string> {
   return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
 }
 
+export async function generateCasePdcaItemId(): Promise<() => string> {
+  const today = getDDMMYY();
+  const prefix = `CPD${today}`;
+
+  const existing = await (prisma as typeof prisma & {
+    casePdcaItem: {
+      findFirst: (args: unknown) => Promise<{ casePdcaItemId: string } | null>;
+    };
+  }).casePdcaItem.findFirst({
+    where: { casePdcaItemId: { startsWith: prefix } },
+    select: { casePdcaItemId: true },
+    orderBy: { casePdcaItemId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.casePdcaItemId) {
+    const currentSeq = extractSeqFromId(existing.casePdcaItemId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+
+export async function generateCaseFeedbackCommentId(): Promise<() => string> {
+  const today = getDDMMYY();
+  const prefix = `CFC${today}`;
+
+  const existing = await (prisma as typeof prisma & {
+    caseFeedbackComment: {
+      findFirst: (
+        args: unknown
+      ) => Promise<{ caseFeedbackCommentId: string } | null>;
+    };
+  }).caseFeedbackComment.findFirst({
+    where: { caseFeedbackCommentId: { startsWith: prefix } },
+    select: { caseFeedbackCommentId: true },
+    orderBy: { caseFeedbackCommentId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.caseFeedbackCommentId) {
+    const currentSeq = extractSeqFromId(existing.caseFeedbackCommentId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+
 export async function generateCaseNotificationId(): Promise<() => string> {
   const today = getDDMMYY();
   const prefix = `CNO${today}`;

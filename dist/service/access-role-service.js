@@ -427,36 +427,21 @@ export class AccessRoleService {
         let isAdmin = false;
         let requesterRoleId = null;
         let isEmployeeUser = false;
-        let shouldCheckEmployee = false;
         if (requester) {
             isAdmin = requester.role.roleLevel === 1;
             requesterRoleId = requester.roleId;
-            shouldCheckEmployee = !isAdmin;
         }
         else {
-            const employeeId = Number(requesterId);
-            if (Number.isNaN(employeeId)) {
-                throw new ResponseError(401, "Unauthorized");
-            }
-            const employee = await prismaEmployee.em_employee.findUnique({
-                where: { UserId: employeeId },
-                select: { UserId: true }
-            });
-            if (!employee) {
+            const employeeId = await resolveEmployeeIdForFocus(requesterId, null);
+            if (!employeeId) {
                 throw new ResponseError(401, "Unauthorized");
             }
             isEmployeeUser = true;
         }
-        if (shouldCheckEmployee) {
-            const employeeId = Number(requesterId);
-            if (!Number.isNaN(employeeId)) {
-                const employee = await prismaEmployee.em_employee.findUnique({
-                    where: { UserId: employeeId },
-                    select: { UserId: true }
-                });
-                if (employee) {
-                    isEmployeeUser = true;
-                }
+        if (!isAdmin && !isEmployeeUser) {
+            const employeeId = await resolveEmployeeIdForFocus(requesterId, requester);
+            if (employeeId) {
+                isEmployeeUser = true;
             }
         }
         const accessContext = await getAccessContext(requesterId);

@@ -12,6 +12,7 @@ import {
 import {
   assertCaseCrud,
   assertCaseRead,
+  ensureCaseNotClosed,
   isPicForSbuSub,
   resolveCaseAccess,
 } from "../utils/case-access.js";
@@ -92,6 +93,8 @@ export class CaseFishboneService {
       await ensureCaseDepartmentAccess(request.caseId, request.sbuSubId);
     }
 
+    await ensureCaseNotClosed(request.caseId);
+
     const fishboneId = await generateCaseFishboneId();
     const now = new Date();
 
@@ -140,6 +143,8 @@ export class CaseFishboneService {
     if (!existing || existing.isDeleted) {
       throw new ResponseError(404, "Case fishbone not found");
     }
+
+    await ensureCaseNotClosed(existing.caseId);
 
     if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
       await ensureCaseDepartmentAccess(
@@ -206,6 +211,8 @@ export class CaseFishboneService {
     if (!existing || existing.isDeleted) {
       throw new ResponseError(404, "Case fishbone not found");
     }
+
+    await ensureCaseNotClosed(existing.caseId);
 
     if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
       await ensureCaseDepartmentAccess(

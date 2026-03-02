@@ -19,6 +19,27 @@ const addAllow = (targetRead, targetCrud, id, level) => {
         targetCrud.add(id);
     }
 };
+const resolveEmployeeId = async (userId, flowlyUser) => {
+    const numericId = Number(userId);
+    if (!Number.isNaN(numericId)) {
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: { UserId: numericId },
+            select: { UserId: true }
+        });
+        if (employee) {
+            return employee.UserId;
+        }
+    }
+    const badgeNumber = flowlyUser?.badgeNumber?.trim();
+    if (!badgeNumber) {
+        return null;
+    }
+    const employee = await prismaEmployee.em_employee.findFirst({
+        where: { BadgeNum: badgeNumber },
+        select: { UserId: true }
+    });
+    return employee?.UserId ?? null;
+};
 export const getAccessContext = async (userId) => {
     const flowlyUser = await prismaFlowly.user.findUnique({
         where: { userId },
@@ -40,12 +61,12 @@ export const getAccessContext = async (userId) => {
     const pilarCrud = new Set();
     const pilarPicIds = new Set();
     const sbuPicIds = new Set();
-    const userIdNumber = Number(userId);
-    const isEmployeeUser = !Number.isNaN(userIdNumber);
+    const employeeId = await resolveEmployeeId(userId, flowlyUser);
+    const isEmployeeUser = employeeId !== null;
     if (isEmployeeUser) {
         const chartMembers = await prismaFlowly.chartMember.findMany({
             where: {
-                userId: userIdNumber,
+                userId: employeeId,
                 isDeleted: false
             },
             select: {
@@ -70,7 +91,7 @@ export const getAccessContext = async (userId) => {
         const [pilarPics, sbuPics, sbuSubPics] = await Promise.all([
             prismaEmployee.em_pilar.findMany({
                 where: {
-                    pic: userIdNumber,
+                    pic: employeeId,
                     status: "A",
                     OR: [{ isDeleted: false }, { isDeleted: null }]
                 },
@@ -78,7 +99,7 @@ export const getAccessContext = async (userId) => {
             }),
             prismaEmployee.em_sbu.findMany({
                 where: {
-                    pic: userIdNumber,
+                    pic: employeeId,
                     status: "A",
                     OR: [{ isDeleted: false }, { isDeleted: null }]
                 },
@@ -86,7 +107,7 @@ export const getAccessContext = async (userId) => {
             }),
             prismaEmployee.em_sbu_sub.findMany({
                 where: {
-                    pic: userIdNumber,
+                    pic: employeeId,
                     status: "A",
                     OR: [{ isDeleted: false }, { isDeleted: null }]
                 },
@@ -166,6 +187,22 @@ export const getAccessContext = async (userId) => {
             });
             for (const sbuSub of sbuSubs) {
                 sbuSubRead.add(sbuSub.id);
+            }
+        }
+        if (sbuRead.size > 0) {
+            const sbuIds = Array.from(sbuRead);
+            const sbuParents = await prismaEmployee.em_sbu.findMany({
+                where: {
+                    id: { in: sbuIds },
+                    status: "A",
+                    OR: [{ isDeleted: false }, { isDeleted: null }]
+                },
+                select: { sbu_pilar: true }
+            });
+            for (const sbu of sbuParents) {
+                if (sbu.sbu_pilar !== null && sbu.sbu_pilar !== undefined) {
+                    pilarRead.add(sbu.sbu_pilar);
+                }
             }
         }
     }
@@ -379,29 +416,16 @@ export const getModuleAccessMap = async (userId) => {
         shouldCheckEmployee = !isAdmin;
     }
     else {
-        const employeeId = Number(userId);
-        if (Number.isNaN(employeeId)) {
-            throw new ResponseError(401, "Unauthorized");
-        }
-        const employee = await prismaEmployee.em_employee.findUnique({
-            where: { UserId: employeeId },
-            select: { UserId: true }
-        });
-        if (!employee) {
+        const employeeId = await resolveEmployeeId(userId, null);
+        if (employeeId === null) {
             throw new ResponseError(401, "Unauthorized");
         }
         isEmployeeUser = true;
     }
     if (shouldCheckEmployee) {
-        const employeeId = Number(userId);
-        if (!Number.isNaN(employeeId)) {
-            const employee = await prismaEmployee.em_employee.findUnique({
-                where: { UserId: employeeId },
-                select: { UserId: true }
-            });
-            if (employee) {
-                isEmployeeUser = true;
-            }
+        const employeeId = await resolveEmployeeId(userId, flowlyUser);
+        if (employeeId !== null) {
+            isEmployeeUser = true;
         }
     }
     if (isAdmin) {

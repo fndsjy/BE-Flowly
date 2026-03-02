@@ -7,6 +7,7 @@ import { generateCaseId, generateCaseDepartmentId, } from "../utils/id-generator
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
 import { assertCaseCrud, assertCaseRead, getEmployeeChartSbuSubIds, resolveCaseAccess, } from "../utils/case-access.js";
 import { CASE_STATUSES, CASE_TYPES, CASE_VISIBILITIES, normalizeUpper, } from "../utils/case-constants.js";
+import { Prisma } from "../generated/flowly/client.js";
 import { toCaseHeaderResponse, toCaseHeaderListResponse, } from "../model/case-header-model.js";
 import { CaseNotificationService } from "./case-notification-service.js";
 const CASE_AUDIT_FIELDS = [
@@ -120,6 +121,9 @@ const buildEmployeeCaseFilter = async (access) => {
                     isDeleted: false,
                 },
             },
+        });
+        orFilters.push({
+            originSbuSubId: { in: picSbuSubIds },
         });
     }
     if (chartSbuSubIds.length > 0) {
@@ -315,6 +319,7 @@ export class CaseHeaderService {
             let itemCount = 0;
             let itemCauseCount = 0;
             let fishboneCount = 0;
+            let pdcaCount = 0;
             if (fishboneIds.length > 0) {
                 const items = await tx.caseFishboneItem.findMany({
                     where: { caseFishboneId: { in: fishboneIds }, isDeleted: false },
@@ -372,6 +377,18 @@ export class CaseHeaderService {
                 });
                 fishboneCount = fishboneResult.count;
             }
+            const pdcaResult = await tx.casePdcaItem.updateMany({
+                where: { caseId: request.caseId, isDeleted: false },
+                data: {
+                    isDeleted: true,
+                    isActive: false,
+                    deletedAt: now,
+                    deletedBy: requesterId,
+                    updatedAt: now,
+                    updatedBy: requesterId,
+                },
+            });
+            pdcaCount = pdcaResult.count;
             await tx.caseHeader.update({
                 where: { caseId: request.caseId },
                 data: {
@@ -391,6 +408,7 @@ export class CaseHeaderService {
                 causes: causeCount,
                 items: itemCount,
                 itemCauses: itemCauseCount,
+                pdcaItems: pdcaCount,
             };
         });
         await writeAuditLog({
@@ -444,6 +462,9 @@ export class CaseHeaderService {
             where: whereClause,
             orderBy: { createdAt: "desc" },
         });
+        if (list.length === 0) {
+            return [];
+        }
         return list.map(toCaseHeaderListResponse);
     }
 }

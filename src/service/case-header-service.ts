@@ -26,7 +26,7 @@ import {
   CASE_VISIBILITIES,
   normalizeUpper,
 } from "../utils/case-constants.js";
-import type { Prisma } from "../generated/flowly/client.js";
+import { Prisma } from "../generated/flowly/client.js";
 import {
   type CreateCaseHeaderRequest,
   type UpdateCaseHeaderRequest,
@@ -172,6 +172,9 @@ const buildEmployeeCaseFilter = async (access: CaseAccess) => {
           isDeleted: false,
         },
       },
+    });
+    orFilters.push({
+      originSbuSubId: { in: picSbuSubIds },
     });
   }
 
@@ -413,6 +416,7 @@ export class CaseHeaderService {
       let itemCount = 0;
       let itemCauseCount = 0;
       let fishboneCount = 0;
+      let pdcaCount = 0;
 
       if (fishboneIds.length > 0) {
         const items = await tx.caseFishboneItem.findMany({
@@ -476,6 +480,23 @@ export class CaseHeaderService {
         fishboneCount = fishboneResult.count;
       }
 
+      const pdcaResult = await (tx as typeof tx & {
+        casePdcaItem: {
+          updateMany: (args: unknown) => Promise<{ count: number }>;
+        };
+      }).casePdcaItem.updateMany({
+        where: { caseId: request.caseId, isDeleted: false },
+        data: {
+          isDeleted: true,
+          isActive: false,
+          deletedAt: now,
+          deletedBy: requesterId,
+          updatedAt: now,
+          updatedBy: requesterId,
+        },
+      });
+      pdcaCount = pdcaResult.count;
+
       await tx.caseHeader.update({
         where: { caseId: request.caseId },
         data: {
@@ -496,6 +517,7 @@ export class CaseHeaderService {
         causes: causeCount,
         items: itemCount,
         itemCauses: itemCauseCount,
+        pdcaItems: pdcaCount,
       };
     });
 
@@ -570,6 +592,10 @@ export class CaseHeaderService {
       where: whereClause,
       orderBy: { createdAt: "desc" },
     });
+
+    if (list.length === 0) {
+      return [];
+    }
 
     return list.map(toCaseHeaderListResponse);
   }

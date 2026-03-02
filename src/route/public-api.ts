@@ -24,6 +24,9 @@ import { CaseAttachmentController } from "../controller/case-attachment-controll
 import { CaseFishboneController } from "../controller/case-fishbone-controller.js";
 import { CaseFishboneCauseController } from "../controller/case-fishbone-cause-controller.js";
 import { CaseFishboneItemController } from "../controller/case-fishbone-item-controller.js";
+import { CasePdcaController } from "../controller/case-pdca-controller.js";
+import { CaseFeedbackCommentController } from "../controller/case-feedback-comment-controller.js";
+import { CaseFeedbackApprovalController } from "../controller/case-feedback-approval-controller.js";
 import { CaseNotificationMessageController } from "../controller/case-notification-message-controller.js";
 import { CaseNotificationTemplateController } from "../controller/case-notification-template-controller.js";
 
@@ -152,6 +155,15 @@ v1.post("/case-fishbone-item", CaseFishboneItemController.create);
 v1.put("/case-fishbone-item", CaseFishboneItemController.update);
 v1.delete("/case-fishbone-item", CaseFishboneItemController.softDelete);
 v1.get("/case-fishbone-item", CaseFishboneItemController.list);
+
+v1.post("/case-pdca", CasePdcaController.create);
+v1.put("/case-pdca", CasePdcaController.update);
+v1.delete("/case-pdca", CasePdcaController.softDelete);
+v1.get("/case-pdca", CasePdcaController.list);
+
+v1.post("/case-feedback-comment", CaseFeedbackCommentController.create);
+v1.get("/case-feedback-comment", CaseFeedbackCommentController.list);
+v1.post("/case-feedback-approval", CaseFeedbackApprovalController.approve);
 
 v1.post("/procedure-sop-ik", ProcedureSopIkController.create);
 v1.put("/procedure-sop-ik", ProcedureSopIkController.update);
