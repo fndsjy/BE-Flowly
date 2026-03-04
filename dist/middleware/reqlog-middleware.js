@@ -17,7 +17,7 @@ export function requestLogger(req, res, next) {
         const timestamp = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
         const paddedMethod = method.padEnd(6);
         const paddedUrl = url.length > 30 ? url.substring(0, 27) + "..." : url.padEnd(30);
-        console.log(`${color}📥 [${timestamp}] ${paddedMethod} ${paddedUrl} → ${status} (${clientIp}) ${duration}ms\x1b[0m`);
+        console.log(`${color}ðŸ“¥ [${timestamp}] ${paddedMethod} ${paddedUrl} â†’ ${status} (${clientIp}) ${duration}ms\x1b[0m`);
     });
     next();
 }

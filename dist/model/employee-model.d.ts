@@ -2,6 +2,8 @@ export interface EmployeeResponse {
     UserId: number;
     Name: string;
     jobDesc: string | null;
+    DeptId: number | null;
+    DeptName: string | null;
 }
 export interface UpdateEmployeeJobDescRequest {
     userId: number;

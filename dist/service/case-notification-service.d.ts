@@ -24,5 +24,12 @@ export declare class CaseNotificationService {
         caseDepartmentId: string;
         requesterId: string;
     }): Promise<void>;
+    static enqueueFeedbackCommentNotifications(params: {
+        caseId: string;
+        requesterId: string;
+        commenterEmployeeId?: number | null;
+        commenterName?: string | null;
+        commentText?: string | null;
+    }): Promise<void>;
 }
 //# sourceMappingURL=case-notification-service.d.ts.map

@@ -26,7 +26,7 @@ export function requestLogger(req: Request, res: Response, next: NextFunction) {
     const paddedUrl = url.length > 30 ? url.substring(0, 27) + "..." : url.padEnd(30);
 
     console.log(
-      `${color}📥 [${timestamp}] ${paddedMethod} ${paddedUrl} → ${status} (${clientIp}) ${duration}ms\x1b[0m`
+      `${color}ðŸ“¥ [${timestamp}] ${paddedMethod} ${paddedUrl} â†’ ${status} (${clientIp}) ${duration}ms\x1b[0m`
     );
   });
 

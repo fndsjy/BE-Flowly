@@ -6,7 +6,7 @@ const roleSchema = z
   .min(1)
   .max(20)
   .transform(normalizeUpper)
-  .refine((value) => ["PIC", "ASSIGNEE", "REQUESTER"].includes(value), {
+  .refine((value) => ["PIC", "ASSIGNEE", "REQUESTER", "ALL"].includes(value), {
     message: "Invalid role",
   });
 

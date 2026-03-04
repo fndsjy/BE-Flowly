@@ -19,18 +19,39 @@ export class EmployeeService {
     // }
 
     // 2. Ambil employee di DB employee
-    const employees = await prismaEmployee.em_employee.findMany({
-      select: {
-        UserId: true,
-        Name: true,
-        jobDesc: true,
-      },
-      orderBy: {
-        Name: "asc",
-      },
-    });
+    const [employees, departments] = await Promise.all([
+      prismaEmployee.em_employee.findMany({
+        select: {
+          UserId: true,
+          Name: true,
+          jobDesc: true,
+          DeptId: true,
+        },
+        orderBy: {
+          Name: "asc",
+        },
+      }),
+      prismaEmployee.em_dept.findMany({
+        select: {
+          DEPTID: true,
+          DEPTNAME: true,
+        },
+      }),
+    ]);
 
-    return employees.map(toEmployeeResponse);
+    const deptMap = new Map<number, string | null>(
+      departments.map((dept) => [dept.DEPTID, dept.DEPTNAME ?? null])
+    );
+
+    return employees.map((employee) => {
+      const deptId = employee.DeptId ?? null;
+      const deptName = deptId !== null ? deptMap.get(deptId) ?? null : null;
+      return toEmployeeResponse({
+        ...employee,
+        DeptId: deptId,
+        DeptName: deptName,
+      });
+    });
   }
 
   static async updateJobDesc(requesterUserId: string, request: UpdateEmployeeJobDescRequest) {
@@ -62,6 +83,15 @@ export class EmployeeService {
       }
     });
 
-    return toEmployeeResponse(updated);
+    let deptName: string | null = null;
+    if (updated.DeptId !== null && updated.DeptId !== undefined) {
+      const dept = await prismaEmployee.em_dept.findUnique({
+        where: { DEPTID: updated.DeptId },
+        select: { DEPTNAME: true },
+      });
+      deptName = dept?.DEPTNAME ?? null;
+    }
+
+    return toEmployeeResponse({ ...updated, DeptName: deptName });
   }
 }

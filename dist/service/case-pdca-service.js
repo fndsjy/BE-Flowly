@@ -186,10 +186,6 @@ export class CasePdcaService {
             if (!employeeAccess.isDepartmentActor) {
                 throw new ResponseError(403, "Only target department can create PDCA items");
             }
-            const hasActFields = hasAnyField(request, PDCA_ACT_FIELDS);
-            if (hasActFields && !employeeAccess.isRequester) {
-                throw new ResponseError(403, "Only requester can fill ACT");
-            }
         }
         else {
             await ensureCasePdcaAccess(request.caseId);
@@ -259,8 +255,8 @@ export class CasePdcaService {
             if (!employeeAccess.isDepartmentActor && hasPdcFields) {
                 throw new ResponseError(403, "Only target department can update PDCA");
             }
-            if (!employeeAccess.isRequester && hasActFields) {
-                throw new ResponseError(403, "Only requester can update ACT");
+            if (!employeeAccess.isDepartmentActor && hasActFields) {
+                throw new ResponseError(403, "Only target department can update ACT");
             }
         }
         if (request.itemNo !== undefined && request.itemNo !== existing.itemNo) {

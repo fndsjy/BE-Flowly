@@ -112,6 +112,7 @@ const resolveCustomTemplate = async (params: {
 }) => {
   const role = normalizeRole(params.role);
   if (!role || !params.recipientEmployeeId) return null;
+  const rolesToTry = role === "ALL" ? ["ALL"] : [role, "ALL"];
 
   const client = prismaFlowly as typeof prismaFlowly & {
     caseNotificationMessage: {
@@ -119,32 +120,34 @@ const resolveCustomTemplate = async (params: {
     };
   };
 
-  if (params.caseDepartmentId) {
-    const byDepartment = await client.caseNotificationMessage.findFirst({
-      where: {
-        isDeleted: false,
-        isActive: true,
-        caseDepartmentId: params.caseDepartmentId,
-        recipientEmployeeId: params.recipientEmployeeId,
-        role,
-      },
-      orderBy: { updatedAt: "desc" },
-    });
-    if (byDepartment) return byDepartment;
-  }
+  for (const roleValue of rolesToTry) {
+    if (params.caseDepartmentId) {
+      const byDepartment = await client.caseNotificationMessage.findFirst({
+        where: {
+          isDeleted: false,
+          isActive: true,
+          caseDepartmentId: params.caseDepartmentId,
+          recipientEmployeeId: params.recipientEmployeeId,
+          role: roleValue,
+        },
+        orderBy: { updatedAt: "desc" },
+      });
+      if (byDepartment) return byDepartment;
+    }
 
-  if (params.caseId) {
-    const byCase = await client.caseNotificationMessage.findFirst({
-      where: {
-        isDeleted: false,
-        isActive: true,
-        caseId: params.caseId,
-        recipientEmployeeId: params.recipientEmployeeId,
-        role,
-      },
-      orderBy: { updatedAt: "desc" },
-    });
-    if (byCase) return byCase;
+    if (params.caseId) {
+      const byCase = await client.caseNotificationMessage.findFirst({
+        where: {
+          isDeleted: false,
+          isActive: true,
+          caseId: params.caseId,
+          recipientEmployeeId: params.recipientEmployeeId,
+          role: roleValue,
+        },
+        orderBy: { updatedAt: "desc" },
+      });
+      if (byCase) return byCase;
+    }
   }
 
   return null;
@@ -161,6 +164,7 @@ const resolveDefaultTemplate = async (params: {
   const action = normalizeAction(params.action);
   const caseType = normalizeCaseType(params.caseType);
   if (!role || !channel) return null;
+  const rolesToTry = role === "ALL" ? ["ALL"] : [role, "ALL"];
 
   const client = prismaFlowly as typeof prismaFlowly & {
     caseNotificationTemplate: {
@@ -168,51 +172,70 @@ const resolveDefaultTemplate = async (params: {
     };
   };
 
-  const findTemplate = (filters: Record<string, unknown>) =>
+  const findTemplate = (filters: Record<string, unknown>, roleValue: string) =>
     client.caseNotificationTemplate.findFirst({
       where: {
         isDeleted: false,
         isActive: true,
         channel,
-        role,
+        role: roleValue,
         ...filters,
       },
       orderBy: { updatedAt: "desc" },
     });
 
-  if (action) {
-    const byAction = await findTemplate({ action, caseType: caseType ?? null });
-    if (byAction) return byAction;
+  for (const roleValue of rolesToTry) {
+    if (action) {
+      const byAction = await findTemplate(
+        { action, caseType: caseType ?? null },
+        roleValue
+      );
+      if (byAction) return byAction;
+
+      if (caseType) {
+        const byActionGeneral = await findTemplate(
+          { action, caseType: null },
+          roleValue
+        );
+        if (byActionGeneral) return byActionGeneral;
+      }
+    }
+
+    const byDefault = await findTemplate(
+      { action: null, caseType: caseType ?? null },
+      roleValue
+    );
+    if (byDefault) return byDefault;
 
     if (caseType) {
-      const byActionGeneral = await findTemplate({ action, caseType: null });
-      if (byActionGeneral) return byActionGeneral;
+      const byDefaultGeneral = await findTemplate(
+        { action: null, caseType: null },
+        roleValue
+      );
+      if (byDefaultGeneral) return byDefaultGeneral;
     }
-  }
-
-  const byDefault = await findTemplate({ action: null, caseType: caseType ?? null });
-  if (byDefault) return byDefault;
-
-  if (caseType) {
-    return findTemplate({ action: null, caseType: null });
   }
 
   return null;
 };
 
-const buildTemplateContext = async (item: {
-  caseId?: string | null;
-  caseDepartmentId?: string | null;
-  recipientEmployeeId?: number | null;
-  meta?: string | null;
-}) => {
-  const meta = parseMeta(item.meta);
-  const role = normalizeRole(
-    typeof meta.role === "string" ? meta.role : undefined
-  );
-  const action = normalizeAction(
-    typeof meta.action === "string" ? meta.action : undefined
-  );
+  const buildTemplateContext = async (item: {
+    caseId?: string | null;
+    caseDepartmentId?: string | null;
+    recipientEmployeeId?: number | null;
+    meta?: string | null;
+  }) => {
+    const meta = parseMeta(item.meta);
+    const role = normalizeRole(
+      typeof meta.role === "string" ? meta.role : undefined
+    );
+    const action = normalizeAction(
+      typeof meta.action === "string" ? meta.action : undefined
+    );
+    const commentText =
+      typeof meta.commentText === "string" ? meta.commentText : "";
+    const commenterName =
+      typeof meta.commenterName === "string" ? meta.commenterName : "";
   const resolveNameByIds = async (
     userId?: string | null,
     employeeId?: number | null
@@ -384,18 +407,21 @@ const buildTemplateContext = async (item: {
   const decisionStatusValue = decisionStatus ?? "";
   const decisionNotesValue = decisionNotes ?? "";
 
-  let senderUserId = requesterUserId;
-  let senderName = requesterName;
-  if (action === "ASSIGN_TASK") {
-    senderUserId = assignerUserId || requesterUserId;
-    senderName = assignerName || requesterName;
-  } else if (action === "ADD_DEPARTMENT") {
-    senderUserId = adderUserId || requesterUserId;
-    senderName = adderName || requesterName;
-  } else if (action === "DECISION") {
-    senderUserId = decisionByUserId || requesterUserId;
-    senderName = decisionByName || requesterName;
-  }
+    let senderUserId = requesterUserId;
+    let senderName = requesterName;
+    if (action === "ASSIGN_TASK") {
+      senderUserId = assignerUserId || requesterUserId;
+      senderName = assignerName || requesterName;
+    } else if (action === "ADD_DEPARTMENT") {
+      senderUserId = adderUserId || requesterUserId;
+      senderName = adderName || requesterName;
+    } else if (action === "DECISION") {
+      senderUserId = decisionByUserId || requesterUserId;
+      senderName = decisionByName || requesterName;
+    } else if (action === "FEEDBACK_COMMENT") {
+      senderUserId = requesterUserId;
+      senderName = commenterName || requesterName;
+    }
 
   return {
     caseId: item.caseId ?? "",
@@ -424,13 +450,15 @@ const buildTemplateContext = async (item: {
     decisionStatus: decisionStatusValue,
     decisionNotes: decisionNotesValue,
     decisionByUserId,
-    decisionByName,
-    senderUserId,
-    senderName,
-    role,
-    action: action ?? "",
+      decisionByName,
+      senderUserId,
+      senderName,
+      commentText,
+      commenterName,
+      role,
+      action: action ?? "",
+    };
   };
-};
 
 const dispatchOutboxItem = async (
   item: {
