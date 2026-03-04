@@ -3,6 +3,8 @@ import { Validation } from "../validation/validation.js";
 import { CaseFeedbackCommentValidation } from "../validation/case-feedback-comment-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFeedbackCommentId } from "../utils/id-generator.js";
+import { logger } from "../application/logging.js";
+import { CaseNotificationService } from "./case-notification-service.js";
 import {
   assertCaseRead,
   ensureCaseNotClosed,
@@ -26,6 +28,7 @@ const ensureCaseFeedbackAccess = async (
     select: {
       caseId: true,
       caseType: true,
+      requesterId: true,
       requesterEmployeeId: true,
       visibility: true,
       originSbuSubId: true,
@@ -35,6 +38,7 @@ const ensureCaseFeedbackAccess = async (
     | {
         caseId: string;
         caseType: string;
+        requesterId: string | null;
         requesterEmployeeId: number | null;
         visibility?: string | null;
         originSbuSubId: number | null;
@@ -153,6 +157,42 @@ const resolveCommenterName = async (
   return requesterId;
 };
 
+const resolveCommenterEmployeeId = async (
+  requesterId: string,
+  access: { actorType: "FLOWLY" | "EMPLOYEE"; employeeId?: number }
+) => {
+  if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
+    return access.employeeId;
+  }
+
+  if (access.actorType !== "FLOWLY") {
+    return null;
+  }
+
+  const numericId = Number(requesterId);
+  if (!Number.isNaN(numericId)) {
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: numericId },
+      select: { UserId: true },
+    });
+    if (employee?.UserId) return employee.UserId;
+  }
+
+  const flowlyUser = await prismaFlowly.user.findUnique({
+    where: { userId: requesterId, isDeleted: false },
+    select: { badgeNumber: true },
+  });
+  const badgeNumber = flowlyUser?.badgeNumber?.trim();
+  if (!badgeNumber) return null;
+
+  const employee = await prismaEmployee.em_employee.findFirst({
+    where: { BadgeNum: badgeNumber },
+    select: { UserId: true },
+  });
+
+  return employee?.UserId ?? null;
+};
+
 export class CaseFeedbackCommentService {
   static async create(
     requesterId: string,
@@ -166,17 +206,17 @@ export class CaseFeedbackCommentService {
     const access = await resolveCaseAccess(requesterId);
     assertCaseRead(access);
 
-    if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-      await ensureCaseFeedbackAccess(request.caseId, access.employeeId);
-    } else {
-      await ensureCaseFeedbackAccess(request.caseId);
-    }
+    const caseHeader =
+      access.actorType === "EMPLOYEE" && access.employeeId !== undefined
+        ? await ensureCaseFeedbackAccess(request.caseId, access.employeeId)
+        : await ensureCaseFeedbackAccess(request.caseId);
 
     await ensureCaseNotClosed(request.caseId);
 
     const createId = await generateCaseFeedbackCommentId();
     const now = new Date();
     const commenterName = await resolveCommenterName(requesterId, access);
+    const commenterEmployeeId = await resolveCommenterEmployeeId(requesterId, access);
     const commentText = request.commentText.trim();
     if (!commentText) {
       throw new ResponseError(400, "Komentar wajib diisi");
@@ -185,8 +225,6 @@ export class CaseFeedbackCommentService {
     const commentId = createId();
     const commenterType = access.actorType;
     const commenterId = access.actorType === "FLOWLY" ? requesterId : null;
-    const commenterEmployeeId =
-      access.actorType === "EMPLOYEE" ? access.employeeId ?? null : null;
 
     const created = await prismaFlowly.caseFeedbackComment.create({
       data: {
@@ -217,6 +255,21 @@ export class CaseFeedbackCommentService {
         updatedAt: true,
       },
     });
+
+    try {
+      await CaseNotificationService.enqueueFeedbackCommentNotifications({
+        caseId: request.caseId,
+        requesterId,
+        commenterEmployeeId,
+        commenterName,
+        commentText,
+      });
+    } catch (error) {
+      logger.warn("Failed to enqueue feedback comment notifications", {
+        caseId: request.caseId,
+        error: (error as Error)?.message ?? error,
+      });
+    }
 
     return toCaseFeedbackCommentResponse(created);
   }

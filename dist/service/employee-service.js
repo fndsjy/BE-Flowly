@@ -15,17 +15,35 @@ export class EmployeeService {
         //   throw new ResponseError(403, "Only admin can access this resource");
         // }
         // 2. Ambil employee di DB employee
-        const employees = await prismaEmployee.em_employee.findMany({
-            select: {
-                UserId: true,
-                Name: true,
-                jobDesc: true,
-            },
-            orderBy: {
-                Name: "asc",
-            },
+        const [employees, departments] = await Promise.all([
+            prismaEmployee.em_employee.findMany({
+                select: {
+                    UserId: true,
+                    Name: true,
+                    jobDesc: true,
+                    DeptId: true,
+                },
+                orderBy: {
+                    Name: "asc",
+                },
+            }),
+            prismaEmployee.em_dept.findMany({
+                select: {
+                    DEPTID: true,
+                    DEPTNAME: true,
+                },
+            }),
+        ]);
+        const deptMap = new Map(departments.map((dept) => [dept.DEPTID, dept.DEPTNAME ?? null]));
+        return employees.map((employee) => {
+            const deptId = employee.DeptId ?? null;
+            const deptName = deptId !== null ? deptMap.get(deptId) ?? null : null;
+            return toEmployeeResponse({
+                ...employee,
+                DeptId: deptId,
+                DeptName: deptName,
+            });
         });
-        return employees.map(toEmployeeResponse);
     }
     static async updateJobDesc(requesterUserId, request) {
         const updateReq = Validation.validate(EmployeeValidation.UPDATE_JOB_DESC, request);
@@ -53,7 +71,15 @@ export class EmployeeService {
                 Lastupdate: new Date(),
             }
         });
-        return toEmployeeResponse(updated);
+        let deptName = null;
+        if (updated.DeptId !== null && updated.DeptId !== undefined) {
+            const dept = await prismaEmployee.em_dept.findUnique({
+                where: { DEPTID: updated.DeptId },
+                select: { DEPTNAME: true },
+            });
+            deptName = dept?.DEPTNAME ?? null;
+        }
+        return toEmployeeResponse({ ...updated, DeptName: deptName });
     }
 }
 //# sourceMappingURL=employee-service.js.map

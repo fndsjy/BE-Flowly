@@ -93,34 +93,37 @@ const resolveCustomTemplate = async (params) => {
     const role = normalizeRole(params.role);
     if (!role || !params.recipientEmployeeId)
         return null;
+    const rolesToTry = role === "ALL" ? ["ALL"] : [role, "ALL"];
     const client = prismaFlowly;
-    if (params.caseDepartmentId) {
-        const byDepartment = await client.caseNotificationMessage.findFirst({
-            where: {
-                isDeleted: false,
-                isActive: true,
-                caseDepartmentId: params.caseDepartmentId,
-                recipientEmployeeId: params.recipientEmployeeId,
-                role,
-            },
-            orderBy: { updatedAt: "desc" },
-        });
-        if (byDepartment)
-            return byDepartment;
-    }
-    if (params.caseId) {
-        const byCase = await client.caseNotificationMessage.findFirst({
-            where: {
-                isDeleted: false,
-                isActive: true,
-                caseId: params.caseId,
-                recipientEmployeeId: params.recipientEmployeeId,
-                role,
-            },
-            orderBy: { updatedAt: "desc" },
-        });
-        if (byCase)
-            return byCase;
+    for (const roleValue of rolesToTry) {
+        if (params.caseDepartmentId) {
+            const byDepartment = await client.caseNotificationMessage.findFirst({
+                where: {
+                    isDeleted: false,
+                    isActive: true,
+                    caseDepartmentId: params.caseDepartmentId,
+                    recipientEmployeeId: params.recipientEmployeeId,
+                    role: roleValue,
+                },
+                orderBy: { updatedAt: "desc" },
+            });
+            if (byDepartment)
+                return byDepartment;
+        }
+        if (params.caseId) {
+            const byCase = await client.caseNotificationMessage.findFirst({
+                where: {
+                    isDeleted: false,
+                    isActive: true,
+                    caseId: params.caseId,
+                    recipientEmployeeId: params.recipientEmployeeId,
+                    role: roleValue,
+                },
+                orderBy: { updatedAt: "desc" },
+            });
+            if (byCase)
+                return byCase;
+        }
     }
     return null;
 };
@@ -131,32 +134,37 @@ const resolveDefaultTemplate = async (params) => {
     const caseType = normalizeCaseType(params.caseType);
     if (!role || !channel)
         return null;
+    const rolesToTry = role === "ALL" ? ["ALL"] : [role, "ALL"];
     const client = prismaFlowly;
-    const findTemplate = (filters) => client.caseNotificationTemplate.findFirst({
+    const findTemplate = (filters, roleValue) => client.caseNotificationTemplate.findFirst({
         where: {
             isDeleted: false,
             isActive: true,
             channel,
-            role,
+            role: roleValue,
             ...filters,
         },
         orderBy: { updatedAt: "desc" },
     });
-    if (action) {
-        const byAction = await findTemplate({ action, caseType: caseType ?? null });
-        if (byAction)
-            return byAction;
-        if (caseType) {
-            const byActionGeneral = await findTemplate({ action, caseType: null });
-            if (byActionGeneral)
-                return byActionGeneral;
+    for (const roleValue of rolesToTry) {
+        if (action) {
+            const byAction = await findTemplate({ action, caseType: caseType ?? null }, roleValue);
+            if (byAction)
+                return byAction;
+            if (caseType) {
+                const byActionGeneral = await findTemplate({ action, caseType: null }, roleValue);
+                if (byActionGeneral)
+                    return byActionGeneral;
+            }
         }
-    }
-    const byDefault = await findTemplate({ action: null, caseType: caseType ?? null });
-    if (byDefault)
-        return byDefault;
-    if (caseType) {
-        return findTemplate({ action: null, caseType: null });
+        const byDefault = await findTemplate({ action: null, caseType: caseType ?? null }, roleValue);
+        if (byDefault)
+            return byDefault;
+        if (caseType) {
+            const byDefaultGeneral = await findTemplate({ action: null, caseType: null }, roleValue);
+            if (byDefaultGeneral)
+                return byDefaultGeneral;
+        }
     }
     return null;
 };
@@ -164,6 +172,8 @@ const buildTemplateContext = async (item) => {
     const meta = parseMeta(item.meta);
     const role = normalizeRole(typeof meta.role === "string" ? meta.role : undefined);
     const action = normalizeAction(typeof meta.action === "string" ? meta.action : undefined);
+    const commentText = typeof meta.commentText === "string" ? meta.commentText : "";
+    const commenterName = typeof meta.commenterName === "string" ? meta.commenterName : "";
     const resolveNameByIds = async (userId, employeeId) => {
         if (employeeId) {
             const employee = await prismaEmployee.em_employee.findUnique({
@@ -332,6 +342,10 @@ const buildTemplateContext = async (item) => {
         senderUserId = decisionByUserId || requesterUserId;
         senderName = decisionByName || requesterName;
     }
+    else if (action === "FEEDBACK_COMMENT") {
+        senderUserId = requesterUserId;
+        senderName = commenterName || requesterName;
+    }
     return {
         caseId: item.caseId ?? "",
         caseDepartmentId: item.caseDepartmentId ?? "",
@@ -362,6 +376,8 @@ const buildTemplateContext = async (item) => {
         decisionByName,
         senderUserId,
         senderName,
+        commentText,
+        commenterName,
         role,
         action: action ?? "",
     };
