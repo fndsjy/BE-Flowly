@@ -8,6 +8,12 @@ export type CaseDepartmentResponse = {
     decisionBy: string | null;
     decisionNotes: string | null;
     assigneeEmployeeId: number | null;
+    assigneeEmployeeIds: number[];
+    assignees: {
+        employeeId: number;
+        assignedAt: Date | null;
+        assignedBy: string | null;
+    }[];
     assignedAt: Date | null;
     assignedBy: string | null;
     workStatus: string | null;
@@ -30,6 +36,7 @@ export type UpdateCaseDepartmentRequest = {
     decisionStatus?: string;
     decisionNotes?: string | null;
     assigneeEmployeeId?: number | null;
+    assigneeEmployeeIds?: number[] | null;
     workStatus?: string | null;
     startDate?: Date | string | null;
     targetDate?: Date | string | null;
@@ -40,6 +47,14 @@ export type UpdateCaseDepartmentRequest = {
 export type DeleteCaseDepartmentRequest = {
     caseDepartmentId: string;
 };
-export declare function toCaseDepartmentResponse(department: CaseDepartment): CaseDepartmentResponse;
+export declare function toCaseDepartmentResponse(department: CaseDepartment & {
+    assignees?: Array<{
+        employeeId: number;
+        assignedAt: Date | null;
+        assignedBy: string | null;
+        isDeleted?: boolean;
+        isActive?: boolean;
+    }>;
+}): CaseDepartmentResponse;
 export declare const toCaseDepartmentListResponse: typeof toCaseDepartmentResponse;
 //# sourceMappingURL=case-department-model.d.ts.map

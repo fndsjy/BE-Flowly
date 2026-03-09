@@ -4,10 +4,11 @@ import { CasePdcaValidation } from "../validation/case-pdca-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateCasePdcaItemId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isAssigneeForCase, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCasePdcaItemResponse, toCasePdcaItemListResponse, } from "../model/case-pdca-model.js";
 const PDCA_AUDIT_FIELDS = [
     "caseId",
+    "ownerEmployeeId",
     "itemNo",
     "planText",
     "doText",
@@ -24,20 +25,6 @@ const PDCA_AUDIT_FIELDS = [
     "isActive",
     "isDeleted",
 ];
-const PDCA_PDC_FIELDS = [
-    "itemNo",
-    "planText",
-    "doText",
-    "doStartDate",
-    "doEndDate",
-    "checkText",
-    "checkStartDate",
-    "checkEndDate",
-    "checkBy",
-    "checkComment",
-    "isActive",
-];
-const PDCA_ACT_FIELDS = ["actText", "actStartDate", "actEndDate"];
 const PDCA_ALLOWED_CASE_TYPES = new Set(["PROBLEM", "PROJECT"]);
 const getPdcaSnapshot = (record) => pickSnapshot(record, PDCA_AUDIT_FIELDS);
 const normalizeNullableText = (value) => {
@@ -59,7 +46,6 @@ const parseDate = (value) => {
     }
     return parsed;
 };
-const hasAnyField = (payload, fields) => fields.some((field) => payload[field] !== undefined);
 const resolveEmployeePdcaAccess = async (caseId, employeeId) => {
     const caseHeader = await prismaFlowly.caseHeader.findUnique({
         where: { caseId },
@@ -78,13 +64,13 @@ const resolveEmployeePdcaAccess = async (caseId, employeeId) => {
     }
     const departments = await prismaFlowly.caseDepartment.findMany({
         where: { caseId, isDeleted: false },
-        select: { sbuSubId: true, assigneeEmployeeId: true },
+        select: { sbuSubId: true },
     });
     if (departments.length === 0) {
         throw new ResponseError(404, "Case department not found");
     }
     const isRequester = caseHeader.requesterEmployeeId === employeeId;
-    const isAssignee = departments.some((dept) => dept.assigneeEmployeeId === employeeId);
+    const isAssignee = await isAssigneeForCase(employeeId, caseId);
     let isPic = false;
     if (!isAssignee) {
         const sbuSubIds = Array.from(new Set(departments.map((dept) => dept.sbuSubId)));
@@ -109,6 +95,8 @@ const resolveEmployeePdcaAccess = async (caseId, employeeId) => {
         caseHeader,
         isRequester,
         isDepartmentActor,
+        isAssignee,
+        isPic,
     };
 };
 const ensureCasePdcaAccess = async (caseId, employeeId) => {
@@ -125,13 +113,12 @@ const ensureCasePdcaAccess = async (caseId, employeeId) => {
     if (employeeId !== undefined) {
         const departments = await prismaFlowly.caseDepartment.findMany({
             where: { caseId, isDeleted: false },
-            select: { sbuSubId: true, assigneeEmployeeId: true },
+            select: { sbuSubId: true },
         });
         if (departments.length === 0) {
             throw new ResponseError(404, "Case department not found");
         }
-        const isAssignee = departments.some((dept) => dept.assigneeEmployeeId === employeeId);
-        if (isAssignee)
+        if (await isAssigneeForCase(employeeId, caseId))
             return caseHeader;
         const sbuSubIds = Array.from(new Set(departments.map((dept) => dept.sbuSubId)));
         if (sbuSubIds.length > 0) {
@@ -151,25 +138,33 @@ const ensureCasePdcaAccess = async (caseId, employeeId) => {
     }
     return caseHeader;
 };
-const resolveNextItemNo = async (caseId) => {
+const normalizeOwnerEmployeeId = (ownerEmployeeId) => ownerEmployeeId ?? null;
+const resolveNextItemNo = async (caseId, ownerEmployeeId) => {
+    const ownerId = normalizeOwnerEmployeeId(ownerEmployeeId);
     const last = await prismaFlowly.casePdcaItem.findFirst({
-        where: { caseId },
+        where: { caseId, ownerEmployeeId: ownerId },
         select: { itemNo: true },
         orderBy: { itemNo: "desc" },
     });
     return last ? last.itemNo + 1 : 1;
 };
-const ensureItemNoAvailable = async (caseId, itemNo, excludeId) => {
+const isItemNoAvailable = async (caseId, ownerEmployeeId, itemNo, excludeId) => {
+    const ownerId = normalizeOwnerEmployeeId(ownerEmployeeId);
     const existing = await prismaFlowly.casePdcaItem.findFirst({
         where: {
             caseId,
+            ownerEmployeeId: ownerId,
             itemNo,
             isDeleted: false,
             ...(excludeId ? { casePdcaItemId: { not: excludeId } } : {}),
         },
         select: { casePdcaItemId: true },
     });
-    if (existing) {
+    return !existing;
+};
+const ensureItemNoAvailable = async (caseId, ownerEmployeeId, itemNo, excludeId) => {
+    const available = await isItemNoAvailable(caseId, ownerEmployeeId, itemNo, excludeId);
+    if (!available) {
         throw new ResponseError(400, "PDCA item number already exists");
     }
 };
@@ -177,15 +172,19 @@ export class CasePdcaService {
     static async create(requesterId, reqBody) {
         const request = Validation.validate(CasePdcaValidation.CREATE, reqBody);
         const access = await resolveCaseAccess(requesterId);
+        let ownerEmployeeId = null;
         if (access.actorType === "FLOWLY") {
             assertCaseCrud(access);
             await ensureCasePdcaAccess(request.caseId);
+            ownerEmployeeId =
+                request.ownerEmployeeId !== undefined ? request.ownerEmployeeId : null;
         }
         else if (access.employeeId !== undefined) {
             const employeeAccess = await resolveEmployeePdcaAccess(request.caseId, access.employeeId);
-            if (!employeeAccess.isDepartmentActor) {
-                throw new ResponseError(403, "Only target department can create PDCA items");
+            if (!employeeAccess.isAssignee) {
+                throw new ResponseError(403, "Only assignee can create PDCA items");
             }
+            ownerEmployeeId = access.employeeId;
         }
         else {
             await ensureCasePdcaAccess(request.caseId);
@@ -193,8 +192,8 @@ export class CasePdcaService {
         await ensureCaseNotClosed(request.caseId);
         const itemNo = request.itemNo !== undefined
             ? request.itemNo
-            : await resolveNextItemNo(request.caseId);
-        await ensureItemNoAvailable(request.caseId, itemNo);
+            : await resolveNextItemNo(request.caseId, ownerEmployeeId);
+        await ensureItemNoAvailable(request.caseId, ownerEmployeeId, itemNo);
         const createId = await generateCasePdcaItemId();
         const casePdcaItemId = createId();
         const now = new Date();
@@ -202,6 +201,7 @@ export class CasePdcaService {
             data: {
                 casePdcaItemId,
                 caseId: request.caseId,
+                ownerEmployeeId,
                 itemNo,
                 planText: normalizeNullableText(request.planText) ?? null,
                 doText: normalizeNullableText(request.doText) ?? null,
@@ -250,25 +250,54 @@ export class CasePdcaService {
         await ensureCaseNotClosed(existing.caseId);
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             const employeeAccess = await resolveEmployeePdcaAccess(existing.caseId, access.employeeId);
-            const hasPdcFields = hasAnyField(request, PDCA_PDC_FIELDS);
-            const hasActFields = hasAnyField(request, PDCA_ACT_FIELDS);
-            if (!employeeAccess.isDepartmentActor && hasPdcFields) {
-                throw new ResponseError(403, "Only target department can update PDCA");
-            }
-            if (!employeeAccess.isDepartmentActor && hasActFields) {
-                throw new ResponseError(403, "Only target department can update ACT");
+            const existingOwner = existing.ownerEmployeeId ?? null;
+            const canClaim = existingOwner === null && employeeAccess.isAssignee;
+            const isOwner = existingOwner !== null && existingOwner === access.employeeId;
+            if (!isOwner && !canClaim) {
+                throw new ResponseError(403, "Only assignee owner can update PDCA");
             }
         }
-        if (request.itemNo !== undefined && request.itemNo !== existing.itemNo) {
-            await ensureItemNoAvailable(existing.caseId, request.itemNo, existing.casePdcaItemId);
+        const existingOwner = existing.ownerEmployeeId ?? null;
+        let targetOwner = existingOwner;
+        if (access.actorType === "FLOWLY" && request.ownerEmployeeId !== undefined) {
+            targetOwner = normalizeOwnerEmployeeId(request.ownerEmployeeId);
+        }
+        if (access.actorType === "EMPLOYEE" &&
+            access.employeeId !== undefined &&
+            existingOwner === null) {
+            targetOwner = access.employeeId;
+        }
+        let targetItemNo = request.itemNo ?? existing.itemNo;
+        const ownerChanged = targetOwner !== existingOwner;
+        const itemNoChanged = targetItemNo !== existing.itemNo;
+        if (ownerChanged || itemNoChanged) {
+            const available = await isItemNoAvailable(existing.caseId, targetOwner, targetItemNo, existing.casePdcaItemId);
+            if (!available) {
+                if (access.actorType === "EMPLOYEE" &&
+                    access.employeeId !== undefined &&
+                    existingOwner === null) {
+                    targetItemNo = await resolveNextItemNo(existing.caseId, targetOwner);
+                }
+                else {
+                    throw new ResponseError(400, "PDCA item number already exists");
+                }
+            }
         }
         const before = { ...existing };
         const updateData = {
-            itemNo: request.itemNo ?? existing.itemNo,
+            itemNo: targetItemNo,
             isActive: request.isActive ?? existing.isActive,
             updatedAt: new Date(),
             updatedBy: requesterId,
         };
+        if (access.actorType === "FLOWLY" && request.ownerEmployeeId !== undefined) {
+            updateData.ownerEmployeeId = targetOwner;
+        }
+        if (access.actorType === "EMPLOYEE" &&
+            access.employeeId !== undefined &&
+            existingOwner === null) {
+            updateData.ownerEmployeeId = targetOwner;
+        }
         if (request.planText !== undefined) {
             updateData.planText = normalizeNullableText(request.planText) ?? null;
         }
@@ -339,8 +368,11 @@ export class CasePdcaService {
         await ensureCaseNotClosed(existing.caseId);
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             const employeeAccess = await resolveEmployeePdcaAccess(existing.caseId, access.employeeId);
-            if (!employeeAccess.isDepartmentActor) {
-                throw new ResponseError(403, "Only target department can delete PDCA items");
+            const existingOwner = existing.ownerEmployeeId ?? null;
+            const canClaim = existingOwner === null && employeeAccess.isAssignee;
+            const isOwner = existingOwner !== null && existingOwner === access.employeeId;
+            if (!isOwner && !canClaim) {
+                throw new ResponseError(403, "Only assignee owner can delete PDCA items");
             }
         }
         const now = new Date();

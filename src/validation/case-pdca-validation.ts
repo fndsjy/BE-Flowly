@@ -5,6 +5,7 @@ const dateSchema = z.union([z.string(), z.date()]);
 export class CasePdcaValidation {
   static readonly CREATE: ZodType = z.object({
     caseId: z.string().min(1).max(20),
+    ownerEmployeeId: z.number().int().min(1).optional().nullable(),
     itemNo: z.number().int().min(1).optional(),
     planText: z.string().max(1000).optional().nullable(),
     doText: z.string().max(1000).optional().nullable(),
@@ -22,6 +23,7 @@ export class CasePdcaValidation {
 
   static readonly UPDATE: ZodType = z.object({
     casePdcaItemId: z.string().min(1).max(20),
+    ownerEmployeeId: z.number().int().min(1).optional().nullable(),
     itemNo: z.number().int().min(1).optional(),
     planText: z.string().max(1000).optional().nullable(),
     doText: z.string().max(1000).optional().nullable(),

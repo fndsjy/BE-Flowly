@@ -60,6 +60,11 @@ export type CaseHeader = $Result.DefaultSelection<Prisma.$CaseHeaderPayload>
  */
 export type CaseDepartment = $Result.DefaultSelection<Prisma.$CaseDepartmentPayload>
 /**
+ * Model CaseDepartmentAssignee
+ * 
+ */
+export type CaseDepartmentAssignee = $Result.DefaultSelection<Prisma.$CaseDepartmentAssigneePayload>
+/**
  * Model CaseNotificationOutbox
  * Case notification outbox (WhatsApp, etc.)
  */
@@ -362,6 +367,16 @@ export class PrismaClient<
     * ```
     */
   get caseDepartment(): Prisma.CaseDepartmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.caseDepartmentAssignee`: Exposes CRUD operations for the **CaseDepartmentAssignee** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CaseDepartmentAssignees
+    * const caseDepartmentAssignees = await prisma.caseDepartmentAssignee.findMany()
+    * ```
+    */
+  get caseDepartmentAssignee(): Prisma.CaseDepartmentAssigneeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.caseNotificationOutbox`: Exposes CRUD operations for the **CaseNotificationOutbox** model.
@@ -1002,6 +1017,7 @@ export namespace Prisma {
     ProcedureSopIK: 'ProcedureSopIK',
     CaseHeader: 'CaseHeader',
     CaseDepartment: 'CaseDepartment',
+    CaseDepartmentAssignee: 'CaseDepartmentAssignee',
     CaseNotificationOutbox: 'CaseNotificationOutbox',
     CaseNotificationMessage: 'CaseNotificationMessage',
     CaseNotificationTemplate: 'CaseNotificationTemplate',
@@ -1039,7 +1055,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "casePdcaItem" | "caseFeedbackComment" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseDepartmentAssignee" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "casePdcaItem" | "caseFeedbackComment" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1634,6 +1650,72 @@ export namespace Prisma {
           count: {
             args: Prisma.CaseDepartmentCountArgs<ExtArgs>
             result: $Utils.Optional<CaseDepartmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      CaseDepartmentAssignee: {
+        payload: Prisma.$CaseDepartmentAssigneePayload<ExtArgs>
+        fields: Prisma.CaseDepartmentAssigneeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CaseDepartmentAssigneeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CaseDepartmentAssigneeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>
+          }
+          findFirst: {
+            args: Prisma.CaseDepartmentAssigneeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CaseDepartmentAssigneeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>
+          }
+          findMany: {
+            args: Prisma.CaseDepartmentAssigneeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>[]
+          }
+          create: {
+            args: Prisma.CaseDepartmentAssigneeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>
+          }
+          createMany: {
+            args: Prisma.CaseDepartmentAssigneeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.CaseDepartmentAssigneeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>
+          }
+          update: {
+            args: Prisma.CaseDepartmentAssigneeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>
+          }
+          deleteMany: {
+            args: Prisma.CaseDepartmentAssigneeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CaseDepartmentAssigneeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CaseDepartmentAssigneeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CaseDepartmentAssigneePayload>
+          }
+          aggregate: {
+            args: Prisma.CaseDepartmentAssigneeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCaseDepartmentAssignee>
+          }
+          groupBy: {
+            args: Prisma.CaseDepartmentAssigneeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CaseDepartmentAssigneeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CaseDepartmentAssigneeCountArgs<ExtArgs>
+            result: $Utils.Optional<CaseDepartmentAssigneeCountAggregateOutputType> | number
           }
         }
       }
@@ -2996,6 +3078,7 @@ export namespace Prisma {
     procedureSopIK?: ProcedureSopIKOmit
     caseHeader?: CaseHeaderOmit
     caseDepartment?: CaseDepartmentOmit
+    caseDepartmentAssignee?: CaseDepartmentAssigneeOmit
     caseNotificationOutbox?: CaseNotificationOutboxOmit
     caseNotificationMessage?: CaseNotificationMessageOmit
     caseNotificationTemplate?: CaseNotificationTemplateOmit
@@ -3389,11 +3472,13 @@ export namespace Prisma {
    */
 
   export type CaseDepartmentCountOutputType = {
+    assignees: number
     notifications: number
     caseNotificationMessages: number
   }
 
   export type CaseDepartmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assignees?: boolean | CaseDepartmentCountOutputTypeCountAssigneesArgs
     notifications?: boolean | CaseDepartmentCountOutputTypeCountNotificationsArgs
     caseNotificationMessages?: boolean | CaseDepartmentCountOutputTypeCountCaseNotificationMessagesArgs
   }
@@ -3407,6 +3492,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the CaseDepartmentCountOutputType
      */
     select?: CaseDepartmentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CaseDepartmentCountOutputType without action
+   */
+  export type CaseDepartmentCountOutputTypeCountAssigneesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseDepartmentAssigneeWhereInput
   }
 
   /**
@@ -13354,6 +13446,7 @@ export namespace Prisma {
     deletedAt?: boolean
     deletedBy?: boolean
     case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+    assignees?: boolean | CaseDepartment$assigneesArgs<ExtArgs>
     notifications?: boolean | CaseDepartment$notificationsArgs<ExtArgs>
     caseNotificationMessages?: boolean | CaseDepartment$caseNotificationMessagesArgs<ExtArgs>
     _count?: boolean | CaseDepartmentCountOutputTypeDefaultArgs<ExtArgs>
@@ -13390,6 +13483,7 @@ export namespace Prisma {
   export type CaseDepartmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseDepartmentId" | "caseId" | "sbuSubId" | "decisionStatus" | "decisionAt" | "decisionBy" | "decisionNotes" | "assigneeEmployeeId" | "assignedAt" | "assignedBy" | "workStatus" | "startDate" | "targetDate" | "endDate" | "workNotes" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseDepartment"]>
   export type CaseDepartmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
+    assignees?: boolean | CaseDepartment$assigneesArgs<ExtArgs>
     notifications?: boolean | CaseDepartment$notificationsArgs<ExtArgs>
     caseNotificationMessages?: boolean | CaseDepartment$caseNotificationMessagesArgs<ExtArgs>
     _count?: boolean | CaseDepartmentCountOutputTypeDefaultArgs<ExtArgs>
@@ -13399,6 +13493,7 @@ export namespace Prisma {
     name: "CaseDepartment"
     objects: {
       case: Prisma.$CaseHeaderPayload<ExtArgs>
+      assignees: Prisma.$CaseDepartmentAssigneePayload<ExtArgs>[]
       notifications: Prisma.$CaseNotificationOutboxPayload<ExtArgs>[]
       caseNotificationMessages: Prisma.$CaseNotificationMessagePayload<ExtArgs>[]
     }
@@ -13767,6 +13862,7 @@ export namespace Prisma {
   export interface Prisma__CaseDepartmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     case<T extends CaseHeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseHeaderDefaultArgs<ExtArgs>>): Prisma__CaseHeaderClient<$Result.GetResult<Prisma.$CaseHeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignees<T extends CaseDepartment$assigneesArgs<ExtArgs> = {}>(args?: Subset<T, CaseDepartment$assigneesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends CaseDepartment$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CaseDepartment$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     caseNotificationMessages<T extends CaseDepartment$caseNotificationMessagesArgs<ExtArgs> = {}>(args?: Subset<T, CaseDepartment$caseNotificationMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseNotificationMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -14163,6 +14259,30 @@ export namespace Prisma {
   }
 
   /**
+   * CaseDepartment.assignees
+   */
+  export type CaseDepartment$assigneesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    where?: CaseDepartmentAssigneeWhereInput
+    orderBy?: CaseDepartmentAssigneeOrderByWithRelationInput | CaseDepartmentAssigneeOrderByWithRelationInput[]
+    cursor?: CaseDepartmentAssigneeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CaseDepartmentAssigneeScalarFieldEnum | CaseDepartmentAssigneeScalarFieldEnum[]
+  }
+
+  /**
    * CaseDepartment.notifications
    */
   export type CaseDepartment$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14226,6 +14346,1056 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CaseDepartmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CaseDepartmentAssignee
+   */
+
+  export type AggregateCaseDepartmentAssignee = {
+    _count: CaseDepartmentAssigneeCountAggregateOutputType | null
+    _avg: CaseDepartmentAssigneeAvgAggregateOutputType | null
+    _sum: CaseDepartmentAssigneeSumAggregateOutputType | null
+    _min: CaseDepartmentAssigneeMinAggregateOutputType | null
+    _max: CaseDepartmentAssigneeMaxAggregateOutputType | null
+  }
+
+  export type CaseDepartmentAssigneeAvgAggregateOutputType = {
+    employeeId: number | null
+  }
+
+  export type CaseDepartmentAssigneeSumAggregateOutputType = {
+    employeeId: number | null
+  }
+
+  export type CaseDepartmentAssigneeMinAggregateOutputType = {
+    caseDepartmentAssigneeId: string | null
+    caseDepartmentId: string | null
+    employeeId: number | null
+    assignedAt: Date | null
+    assignedBy: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseDepartmentAssigneeMaxAggregateOutputType = {
+    caseDepartmentAssigneeId: string | null
+    caseDepartmentId: string | null
+    employeeId: number | null
+    assignedAt: Date | null
+    assignedBy: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type CaseDepartmentAssigneeCountAggregateOutputType = {
+    caseDepartmentAssigneeId: number
+    caseDepartmentId: number
+    employeeId: number
+    assignedAt: number
+    assignedBy: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    isDeleted: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type CaseDepartmentAssigneeAvgAggregateInputType = {
+    employeeId?: true
+  }
+
+  export type CaseDepartmentAssigneeSumAggregateInputType = {
+    employeeId?: true
+  }
+
+  export type CaseDepartmentAssigneeMinAggregateInputType = {
+    caseDepartmentAssigneeId?: true
+    caseDepartmentId?: true
+    employeeId?: true
+    assignedAt?: true
+    assignedBy?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseDepartmentAssigneeMaxAggregateInputType = {
+    caseDepartmentAssigneeId?: true
+    caseDepartmentId?: true
+    employeeId?: true
+    assignedAt?: true
+    assignedBy?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type CaseDepartmentAssigneeCountAggregateInputType = {
+    caseDepartmentAssigneeId?: true
+    caseDepartmentId?: true
+    employeeId?: true
+    assignedAt?: true
+    assignedBy?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type CaseDepartmentAssigneeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseDepartmentAssignee to aggregate.
+     */
+    where?: CaseDepartmentAssigneeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartmentAssignees to fetch.
+     */
+    orderBy?: CaseDepartmentAssigneeOrderByWithRelationInput | CaseDepartmentAssigneeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CaseDepartmentAssigneeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartmentAssignees from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartmentAssignees.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CaseDepartmentAssignees
+    **/
+    _count?: true | CaseDepartmentAssigneeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CaseDepartmentAssigneeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CaseDepartmentAssigneeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CaseDepartmentAssigneeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CaseDepartmentAssigneeMaxAggregateInputType
+  }
+
+  export type GetCaseDepartmentAssigneeAggregateType<T extends CaseDepartmentAssigneeAggregateArgs> = {
+        [P in keyof T & keyof AggregateCaseDepartmentAssignee]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCaseDepartmentAssignee[P]>
+      : GetScalarType<T[P], AggregateCaseDepartmentAssignee[P]>
+  }
+
+
+
+
+  export type CaseDepartmentAssigneeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CaseDepartmentAssigneeWhereInput
+    orderBy?: CaseDepartmentAssigneeOrderByWithAggregationInput | CaseDepartmentAssigneeOrderByWithAggregationInput[]
+    by: CaseDepartmentAssigneeScalarFieldEnum[] | CaseDepartmentAssigneeScalarFieldEnum
+    having?: CaseDepartmentAssigneeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CaseDepartmentAssigneeCountAggregateInputType | true
+    _avg?: CaseDepartmentAssigneeAvgAggregateInputType
+    _sum?: CaseDepartmentAssigneeSumAggregateInputType
+    _min?: CaseDepartmentAssigneeMinAggregateInputType
+    _max?: CaseDepartmentAssigneeMaxAggregateInputType
+  }
+
+  export type CaseDepartmentAssigneeGroupByOutputType = {
+    caseDepartmentAssigneeId: string
+    caseDepartmentId: string
+    employeeId: number
+    assignedAt: Date | null
+    assignedBy: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: CaseDepartmentAssigneeCountAggregateOutputType | null
+    _avg: CaseDepartmentAssigneeAvgAggregateOutputType | null
+    _sum: CaseDepartmentAssigneeSumAggregateOutputType | null
+    _min: CaseDepartmentAssigneeMinAggregateOutputType | null
+    _max: CaseDepartmentAssigneeMaxAggregateOutputType | null
+  }
+
+  type GetCaseDepartmentAssigneeGroupByPayload<T extends CaseDepartmentAssigneeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CaseDepartmentAssigneeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CaseDepartmentAssigneeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CaseDepartmentAssigneeGroupByOutputType[P]>
+            : GetScalarType<T[P], CaseDepartmentAssigneeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CaseDepartmentAssigneeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    caseDepartmentAssigneeId?: boolean
+    caseDepartmentId?: boolean
+    employeeId?: boolean
+    assignedAt?: boolean
+    assignedBy?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    department?: boolean | CaseDepartmentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["caseDepartmentAssignee"]>
+
+
+
+  export type CaseDepartmentAssigneeSelectScalar = {
+    caseDepartmentAssigneeId?: boolean
+    caseDepartmentId?: boolean
+    employeeId?: boolean
+    assignedAt?: boolean
+    assignedBy?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type CaseDepartmentAssigneeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"caseDepartmentAssigneeId" | "caseDepartmentId" | "employeeId" | "assignedAt" | "assignedBy" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["caseDepartmentAssignee"]>
+  export type CaseDepartmentAssigneeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    department?: boolean | CaseDepartmentDefaultArgs<ExtArgs>
+  }
+
+  export type $CaseDepartmentAssigneePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CaseDepartmentAssignee"
+    objects: {
+      department: Prisma.$CaseDepartmentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      caseDepartmentAssigneeId: string
+      caseDepartmentId: string
+      employeeId: number
+      assignedAt: Date | null
+      assignedBy: string | null
+      isActive: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      isDeleted: boolean
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["caseDepartmentAssignee"]>
+    composites: {}
+  }
+
+  type CaseDepartmentAssigneeGetPayload<S extends boolean | null | undefined | CaseDepartmentAssigneeDefaultArgs> = $Result.GetResult<Prisma.$CaseDepartmentAssigneePayload, S>
+
+  type CaseDepartmentAssigneeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CaseDepartmentAssigneeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CaseDepartmentAssigneeCountAggregateInputType | true
+    }
+
+  export interface CaseDepartmentAssigneeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CaseDepartmentAssignee'], meta: { name: 'CaseDepartmentAssignee' } }
+    /**
+     * Find zero or one CaseDepartmentAssignee that matches the filter.
+     * @param {CaseDepartmentAssigneeFindUniqueArgs} args - Arguments to find a CaseDepartmentAssignee
+     * @example
+     * // Get one CaseDepartmentAssignee
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CaseDepartmentAssigneeFindUniqueArgs>(args: SelectSubset<T, CaseDepartmentAssigneeFindUniqueArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CaseDepartmentAssignee that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CaseDepartmentAssigneeFindUniqueOrThrowArgs} args - Arguments to find a CaseDepartmentAssignee
+     * @example
+     * // Get one CaseDepartmentAssignee
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CaseDepartmentAssigneeFindUniqueOrThrowArgs>(args: SelectSubset<T, CaseDepartmentAssigneeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseDepartmentAssignee that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeFindFirstArgs} args - Arguments to find a CaseDepartmentAssignee
+     * @example
+     * // Get one CaseDepartmentAssignee
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CaseDepartmentAssigneeFindFirstArgs>(args?: SelectSubset<T, CaseDepartmentAssigneeFindFirstArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CaseDepartmentAssignee that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeFindFirstOrThrowArgs} args - Arguments to find a CaseDepartmentAssignee
+     * @example
+     * // Get one CaseDepartmentAssignee
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CaseDepartmentAssigneeFindFirstOrThrowArgs>(args?: SelectSubset<T, CaseDepartmentAssigneeFindFirstOrThrowArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CaseDepartmentAssignees that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CaseDepartmentAssignees
+     * const caseDepartmentAssignees = await prisma.caseDepartmentAssignee.findMany()
+     * 
+     * // Get first 10 CaseDepartmentAssignees
+     * const caseDepartmentAssignees = await prisma.caseDepartmentAssignee.findMany({ take: 10 })
+     * 
+     * // Only select the `caseDepartmentAssigneeId`
+     * const caseDepartmentAssigneeWithCaseDepartmentAssigneeIdOnly = await prisma.caseDepartmentAssignee.findMany({ select: { caseDepartmentAssigneeId: true } })
+     * 
+     */
+    findMany<T extends CaseDepartmentAssigneeFindManyArgs>(args?: SelectSubset<T, CaseDepartmentAssigneeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CaseDepartmentAssignee.
+     * @param {CaseDepartmentAssigneeCreateArgs} args - Arguments to create a CaseDepartmentAssignee.
+     * @example
+     * // Create one CaseDepartmentAssignee
+     * const CaseDepartmentAssignee = await prisma.caseDepartmentAssignee.create({
+     *   data: {
+     *     // ... data to create a CaseDepartmentAssignee
+     *   }
+     * })
+     * 
+     */
+    create<T extends CaseDepartmentAssigneeCreateArgs>(args: SelectSubset<T, CaseDepartmentAssigneeCreateArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CaseDepartmentAssignees.
+     * @param {CaseDepartmentAssigneeCreateManyArgs} args - Arguments to create many CaseDepartmentAssignees.
+     * @example
+     * // Create many CaseDepartmentAssignees
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CaseDepartmentAssigneeCreateManyArgs>(args?: SelectSubset<T, CaseDepartmentAssigneeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a CaseDepartmentAssignee.
+     * @param {CaseDepartmentAssigneeDeleteArgs} args - Arguments to delete one CaseDepartmentAssignee.
+     * @example
+     * // Delete one CaseDepartmentAssignee
+     * const CaseDepartmentAssignee = await prisma.caseDepartmentAssignee.delete({
+     *   where: {
+     *     // ... filter to delete one CaseDepartmentAssignee
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CaseDepartmentAssigneeDeleteArgs>(args: SelectSubset<T, CaseDepartmentAssigneeDeleteArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CaseDepartmentAssignee.
+     * @param {CaseDepartmentAssigneeUpdateArgs} args - Arguments to update one CaseDepartmentAssignee.
+     * @example
+     * // Update one CaseDepartmentAssignee
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CaseDepartmentAssigneeUpdateArgs>(args: SelectSubset<T, CaseDepartmentAssigneeUpdateArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CaseDepartmentAssignees.
+     * @param {CaseDepartmentAssigneeDeleteManyArgs} args - Arguments to filter CaseDepartmentAssignees to delete.
+     * @example
+     * // Delete a few CaseDepartmentAssignees
+     * const { count } = await prisma.caseDepartmentAssignee.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CaseDepartmentAssigneeDeleteManyArgs>(args?: SelectSubset<T, CaseDepartmentAssigneeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CaseDepartmentAssignees.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CaseDepartmentAssignees
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CaseDepartmentAssigneeUpdateManyArgs>(args: SelectSubset<T, CaseDepartmentAssigneeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CaseDepartmentAssignee.
+     * @param {CaseDepartmentAssigneeUpsertArgs} args - Arguments to update or create a CaseDepartmentAssignee.
+     * @example
+     * // Update or create a CaseDepartmentAssignee
+     * const caseDepartmentAssignee = await prisma.caseDepartmentAssignee.upsert({
+     *   create: {
+     *     // ... data to create a CaseDepartmentAssignee
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CaseDepartmentAssignee we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CaseDepartmentAssigneeUpsertArgs>(args: SelectSubset<T, CaseDepartmentAssigneeUpsertArgs<ExtArgs>>): Prisma__CaseDepartmentAssigneeClient<$Result.GetResult<Prisma.$CaseDepartmentAssigneePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CaseDepartmentAssignees.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeCountArgs} args - Arguments to filter CaseDepartmentAssignees to count.
+     * @example
+     * // Count the number of CaseDepartmentAssignees
+     * const count = await prisma.caseDepartmentAssignee.count({
+     *   where: {
+     *     // ... the filter for the CaseDepartmentAssignees we want to count
+     *   }
+     * })
+    **/
+    count<T extends CaseDepartmentAssigneeCountArgs>(
+      args?: Subset<T, CaseDepartmentAssigneeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CaseDepartmentAssigneeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CaseDepartmentAssignee.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CaseDepartmentAssigneeAggregateArgs>(args: Subset<T, CaseDepartmentAssigneeAggregateArgs>): Prisma.PrismaPromise<GetCaseDepartmentAssigneeAggregateType<T>>
+
+    /**
+     * Group by CaseDepartmentAssignee.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CaseDepartmentAssigneeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CaseDepartmentAssigneeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CaseDepartmentAssigneeGroupByArgs['orderBy'] }
+        : { orderBy?: CaseDepartmentAssigneeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CaseDepartmentAssigneeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCaseDepartmentAssigneeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CaseDepartmentAssignee model
+   */
+  readonly fields: CaseDepartmentAssigneeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CaseDepartmentAssignee.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CaseDepartmentAssigneeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    department<T extends CaseDepartmentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CaseDepartmentDefaultArgs<ExtArgs>>): Prisma__CaseDepartmentClient<$Result.GetResult<Prisma.$CaseDepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CaseDepartmentAssignee model
+   */
+  interface CaseDepartmentAssigneeFieldRefs {
+    readonly caseDepartmentAssigneeId: FieldRef<"CaseDepartmentAssignee", 'String'>
+    readonly caseDepartmentId: FieldRef<"CaseDepartmentAssignee", 'String'>
+    readonly employeeId: FieldRef<"CaseDepartmentAssignee", 'Int'>
+    readonly assignedAt: FieldRef<"CaseDepartmentAssignee", 'DateTime'>
+    readonly assignedBy: FieldRef<"CaseDepartmentAssignee", 'String'>
+    readonly isActive: FieldRef<"CaseDepartmentAssignee", 'Boolean'>
+    readonly createdAt: FieldRef<"CaseDepartmentAssignee", 'DateTime'>
+    readonly createdBy: FieldRef<"CaseDepartmentAssignee", 'String'>
+    readonly updatedAt: FieldRef<"CaseDepartmentAssignee", 'DateTime'>
+    readonly updatedBy: FieldRef<"CaseDepartmentAssignee", 'String'>
+    readonly isDeleted: FieldRef<"CaseDepartmentAssignee", 'Boolean'>
+    readonly deletedAt: FieldRef<"CaseDepartmentAssignee", 'DateTime'>
+    readonly deletedBy: FieldRef<"CaseDepartmentAssignee", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CaseDepartmentAssignee findUnique
+   */
+  export type CaseDepartmentAssigneeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartmentAssignee to fetch.
+     */
+    where: CaseDepartmentAssigneeWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartmentAssignee findUniqueOrThrow
+   */
+  export type CaseDepartmentAssigneeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartmentAssignee to fetch.
+     */
+    where: CaseDepartmentAssigneeWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartmentAssignee findFirst
+   */
+  export type CaseDepartmentAssigneeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartmentAssignee to fetch.
+     */
+    where?: CaseDepartmentAssigneeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartmentAssignees to fetch.
+     */
+    orderBy?: CaseDepartmentAssigneeOrderByWithRelationInput | CaseDepartmentAssigneeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseDepartmentAssignees.
+     */
+    cursor?: CaseDepartmentAssigneeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartmentAssignees from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartmentAssignees.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseDepartmentAssignees.
+     */
+    distinct?: CaseDepartmentAssigneeScalarFieldEnum | CaseDepartmentAssigneeScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartmentAssignee findFirstOrThrow
+   */
+  export type CaseDepartmentAssigneeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartmentAssignee to fetch.
+     */
+    where?: CaseDepartmentAssigneeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartmentAssignees to fetch.
+     */
+    orderBy?: CaseDepartmentAssigneeOrderByWithRelationInput | CaseDepartmentAssigneeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CaseDepartmentAssignees.
+     */
+    cursor?: CaseDepartmentAssigneeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartmentAssignees from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartmentAssignees.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CaseDepartmentAssignees.
+     */
+    distinct?: CaseDepartmentAssigneeScalarFieldEnum | CaseDepartmentAssigneeScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartmentAssignee findMany
+   */
+  export type CaseDepartmentAssigneeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * Filter, which CaseDepartmentAssignees to fetch.
+     */
+    where?: CaseDepartmentAssigneeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CaseDepartmentAssignees to fetch.
+     */
+    orderBy?: CaseDepartmentAssigneeOrderByWithRelationInput | CaseDepartmentAssigneeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CaseDepartmentAssignees.
+     */
+    cursor?: CaseDepartmentAssigneeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CaseDepartmentAssignees from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CaseDepartmentAssignees.
+     */
+    skip?: number
+    distinct?: CaseDepartmentAssigneeScalarFieldEnum | CaseDepartmentAssigneeScalarFieldEnum[]
+  }
+
+  /**
+   * CaseDepartmentAssignee create
+   */
+  export type CaseDepartmentAssigneeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CaseDepartmentAssignee.
+     */
+    data: XOR<CaseDepartmentAssigneeCreateInput, CaseDepartmentAssigneeUncheckedCreateInput>
+  }
+
+  /**
+   * CaseDepartmentAssignee createMany
+   */
+  export type CaseDepartmentAssigneeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CaseDepartmentAssignees.
+     */
+    data: CaseDepartmentAssigneeCreateManyInput | CaseDepartmentAssigneeCreateManyInput[]
+  }
+
+  /**
+   * CaseDepartmentAssignee update
+   */
+  export type CaseDepartmentAssigneeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CaseDepartmentAssignee.
+     */
+    data: XOR<CaseDepartmentAssigneeUpdateInput, CaseDepartmentAssigneeUncheckedUpdateInput>
+    /**
+     * Choose, which CaseDepartmentAssignee to update.
+     */
+    where: CaseDepartmentAssigneeWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartmentAssignee updateMany
+   */
+  export type CaseDepartmentAssigneeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CaseDepartmentAssignees.
+     */
+    data: XOR<CaseDepartmentAssigneeUpdateManyMutationInput, CaseDepartmentAssigneeUncheckedUpdateManyInput>
+    /**
+     * Filter which CaseDepartmentAssignees to update
+     */
+    where?: CaseDepartmentAssigneeWhereInput
+    /**
+     * Limit how many CaseDepartmentAssignees to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseDepartmentAssignee upsert
+   */
+  export type CaseDepartmentAssigneeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CaseDepartmentAssignee to update in case it exists.
+     */
+    where: CaseDepartmentAssigneeWhereUniqueInput
+    /**
+     * In case the CaseDepartmentAssignee found by the `where` argument doesn't exist, create a new CaseDepartmentAssignee with this data.
+     */
+    create: XOR<CaseDepartmentAssigneeCreateInput, CaseDepartmentAssigneeUncheckedCreateInput>
+    /**
+     * In case the CaseDepartmentAssignee was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CaseDepartmentAssigneeUpdateInput, CaseDepartmentAssigneeUncheckedUpdateInput>
+  }
+
+  /**
+   * CaseDepartmentAssignee delete
+   */
+  export type CaseDepartmentAssigneeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
+    /**
+     * Filter which CaseDepartmentAssignee to delete.
+     */
+    where: CaseDepartmentAssigneeWhereUniqueInput
+  }
+
+  /**
+   * CaseDepartmentAssignee deleteMany
+   */
+  export type CaseDepartmentAssigneeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CaseDepartmentAssignees to delete
+     */
+    where?: CaseDepartmentAssigneeWhereInput
+    /**
+     * Limit how many CaseDepartmentAssignees to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CaseDepartmentAssignee without action
+   */
+  export type CaseDepartmentAssigneeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CaseDepartmentAssignee
+     */
+    select?: CaseDepartmentAssigneeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CaseDepartmentAssignee
+     */
+    omit?: CaseDepartmentAssigneeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CaseDepartmentAssigneeInclude<ExtArgs> | null
   }
 
 
@@ -23936,16 +25106,19 @@ export namespace Prisma {
   }
 
   export type CasePdcaItemAvgAggregateOutputType = {
+    ownerEmployeeId: number | null
     itemNo: number | null
   }
 
   export type CasePdcaItemSumAggregateOutputType = {
+    ownerEmployeeId: number | null
     itemNo: number | null
   }
 
   export type CasePdcaItemMinAggregateOutputType = {
     casePdcaItemId: string | null
     caseId: string | null
+    ownerEmployeeId: number | null
     itemNo: number | null
     planText: string | null
     doText: string | null
@@ -23972,6 +25145,7 @@ export namespace Prisma {
   export type CasePdcaItemMaxAggregateOutputType = {
     casePdcaItemId: string | null
     caseId: string | null
+    ownerEmployeeId: number | null
     itemNo: number | null
     planText: string | null
     doText: string | null
@@ -23998,6 +25172,7 @@ export namespace Prisma {
   export type CasePdcaItemCountAggregateOutputType = {
     casePdcaItemId: number
     caseId: number
+    ownerEmployeeId: number
     itemNo: number
     planText: number
     doText: number
@@ -24024,16 +25199,19 @@ export namespace Prisma {
 
 
   export type CasePdcaItemAvgAggregateInputType = {
+    ownerEmployeeId?: true
     itemNo?: true
   }
 
   export type CasePdcaItemSumAggregateInputType = {
+    ownerEmployeeId?: true
     itemNo?: true
   }
 
   export type CasePdcaItemMinAggregateInputType = {
     casePdcaItemId?: true
     caseId?: true
+    ownerEmployeeId?: true
     itemNo?: true
     planText?: true
     doText?: true
@@ -24060,6 +25238,7 @@ export namespace Prisma {
   export type CasePdcaItemMaxAggregateInputType = {
     casePdcaItemId?: true
     caseId?: true
+    ownerEmployeeId?: true
     itemNo?: true
     planText?: true
     doText?: true
@@ -24086,6 +25265,7 @@ export namespace Prisma {
   export type CasePdcaItemCountAggregateInputType = {
     casePdcaItemId?: true
     caseId?: true
+    ownerEmployeeId?: true
     itemNo?: true
     planText?: true
     doText?: true
@@ -24199,6 +25379,7 @@ export namespace Prisma {
   export type CasePdcaItemGroupByOutputType = {
     casePdcaItemId: string
     caseId: string
+    ownerEmployeeId: number | null
     itemNo: number
     planText: string | null
     doText: string | null
@@ -24244,6 +25425,7 @@ export namespace Prisma {
   export type CasePdcaItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     casePdcaItemId?: boolean
     caseId?: boolean
+    ownerEmployeeId?: boolean
     itemNo?: boolean
     planText?: boolean
     doText?: boolean
@@ -24273,6 +25455,7 @@ export namespace Prisma {
   export type CasePdcaItemSelectScalar = {
     casePdcaItemId?: boolean
     caseId?: boolean
+    ownerEmployeeId?: boolean
     itemNo?: boolean
     planText?: boolean
     doText?: boolean
@@ -24296,7 +25479,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type CasePdcaItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"casePdcaItemId" | "caseId" | "itemNo" | "planText" | "doText" | "doStartDate" | "doEndDate" | "checkText" | "checkStartDate" | "checkEndDate" | "checkBy" | "checkComment" | "actText" | "actStartDate" | "actEndDate" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["casePdcaItem"]>
+  export type CasePdcaItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"casePdcaItemId" | "caseId" | "ownerEmployeeId" | "itemNo" | "planText" | "doText" | "doStartDate" | "doEndDate" | "checkText" | "checkStartDate" | "checkEndDate" | "checkBy" | "checkComment" | "actText" | "actStartDate" | "actEndDate" | "isActive" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy", ExtArgs["result"]["casePdcaItem"]>
   export type CasePdcaItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     case?: boolean | CaseHeaderDefaultArgs<ExtArgs>
   }
@@ -24309,6 +25492,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       casePdcaItemId: string
       caseId: string
+      ownerEmployeeId: number | null
       itemNo: number
       planText: string | null
       doText: string | null
@@ -24702,6 +25886,7 @@ export namespace Prisma {
   interface CasePdcaItemFieldRefs {
     readonly casePdcaItemId: FieldRef<"CasePdcaItem", 'String'>
     readonly caseId: FieldRef<"CasePdcaItem", 'String'>
+    readonly ownerEmployeeId: FieldRef<"CasePdcaItem", 'Int'>
     readonly itemNo: FieldRef<"CasePdcaItem", 'Int'>
     readonly planText: FieldRef<"CasePdcaItem", 'String'>
     readonly doText: FieldRef<"CasePdcaItem", 'String'>
@@ -34539,6 +35724,25 @@ export namespace Prisma {
   export type CaseDepartmentScalarFieldEnum = (typeof CaseDepartmentScalarFieldEnum)[keyof typeof CaseDepartmentScalarFieldEnum]
 
 
+  export const CaseDepartmentAssigneeScalarFieldEnum: {
+    caseDepartmentAssigneeId: 'caseDepartmentAssigneeId',
+    caseDepartmentId: 'caseDepartmentId',
+    employeeId: 'employeeId',
+    assignedAt: 'assignedAt',
+    assignedBy: 'assignedBy',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type CaseDepartmentAssigneeScalarFieldEnum = (typeof CaseDepartmentAssigneeScalarFieldEnum)[keyof typeof CaseDepartmentAssigneeScalarFieldEnum]
+
+
   export const CaseNotificationOutboxScalarFieldEnum: {
     caseNotificationId: 'caseNotificationId',
     caseId: 'caseId',
@@ -34724,6 +35928,7 @@ export namespace Prisma {
   export const CasePdcaItemScalarFieldEnum: {
     casePdcaItemId: 'casePdcaItemId',
     caseId: 'caseId',
+    ownerEmployeeId: 'ownerEmployeeId',
     itemNo: 'itemNo',
     planText: 'planText',
     doText: 'doText',
@@ -35957,6 +37162,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     deletedBy?: StringNullableFilter<"CaseDepartment"> | string | null
     case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+    assignees?: CaseDepartmentAssigneeListRelationFilter
     notifications?: CaseNotificationOutboxListRelationFilter
     caseNotificationMessages?: CaseNotificationMessageListRelationFilter
   }
@@ -35986,6 +37192,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     case?: CaseHeaderOrderByWithRelationInput
+    assignees?: CaseDepartmentAssigneeOrderByRelationAggregateInput
     notifications?: CaseNotificationOutboxOrderByRelationAggregateInput
     caseNotificationMessages?: CaseNotificationMessageOrderByRelationAggregateInput
   }
@@ -36019,6 +37226,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"CaseDepartment"> | Date | string | null
     deletedBy?: StringNullableFilter<"CaseDepartment"> | string | null
     case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
+    assignees?: CaseDepartmentAssigneeListRelationFilter
     notifications?: CaseNotificationOutboxListRelationFilter
     caseNotificationMessages?: CaseNotificationMessageListRelationFilter
   }, "caseDepartmentId" | "caseId_sbuSubId">
@@ -36081,6 +37289,104 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"CaseDepartment"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartment"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"CaseDepartment"> | string | null
+  }
+
+  export type CaseDepartmentAssigneeWhereInput = {
+    AND?: CaseDepartmentAssigneeWhereInput | CaseDepartmentAssigneeWhereInput[]
+    OR?: CaseDepartmentAssigneeWhereInput[]
+    NOT?: CaseDepartmentAssigneeWhereInput | CaseDepartmentAssigneeWhereInput[]
+    caseDepartmentAssigneeId?: StringFilter<"CaseDepartmentAssignee"> | string
+    caseDepartmentId?: StringFilter<"CaseDepartmentAssignee"> | string
+    employeeId?: IntFilter<"CaseDepartmentAssignee"> | number
+    assignedAt?: DateTimeNullableFilter<"CaseDepartmentAssignee"> | Date | string | null
+    assignedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    isActive?: BoolFilter<"CaseDepartmentAssignee"> | boolean
+    createdAt?: DateTimeFilter<"CaseDepartmentAssignee"> | Date | string
+    createdBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    updatedAt?: DateTimeFilter<"CaseDepartmentAssignee"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    isDeleted?: BoolFilter<"CaseDepartmentAssignee"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseDepartmentAssignee"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    department?: XOR<CaseDepartmentScalarRelationFilter, CaseDepartmentWhereInput>
+  }
+
+  export type CaseDepartmentAssigneeOrderByWithRelationInput = {
+    caseDepartmentAssigneeId?: SortOrder
+    caseDepartmentId?: SortOrder
+    employeeId?: SortOrder
+    assignedAt?: SortOrderInput | SortOrder
+    assignedBy?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    department?: CaseDepartmentOrderByWithRelationInput
+  }
+
+  export type CaseDepartmentAssigneeWhereUniqueInput = Prisma.AtLeast<{
+    caseDepartmentAssigneeId?: string
+    caseDepartmentId_employeeId?: CaseDepartmentAssigneeCaseDepartmentIdEmployeeIdCompoundUniqueInput
+    AND?: CaseDepartmentAssigneeWhereInput | CaseDepartmentAssigneeWhereInput[]
+    OR?: CaseDepartmentAssigneeWhereInput[]
+    NOT?: CaseDepartmentAssigneeWhereInput | CaseDepartmentAssigneeWhereInput[]
+    caseDepartmentId?: StringFilter<"CaseDepartmentAssignee"> | string
+    employeeId?: IntFilter<"CaseDepartmentAssignee"> | number
+    assignedAt?: DateTimeNullableFilter<"CaseDepartmentAssignee"> | Date | string | null
+    assignedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    isActive?: BoolFilter<"CaseDepartmentAssignee"> | boolean
+    createdAt?: DateTimeFilter<"CaseDepartmentAssignee"> | Date | string
+    createdBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    updatedAt?: DateTimeFilter<"CaseDepartmentAssignee"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    isDeleted?: BoolFilter<"CaseDepartmentAssignee"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseDepartmentAssignee"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    department?: XOR<CaseDepartmentScalarRelationFilter, CaseDepartmentWhereInput>
+  }, "caseDepartmentAssigneeId" | "caseDepartmentId_employeeId">
+
+  export type CaseDepartmentAssigneeOrderByWithAggregationInput = {
+    caseDepartmentAssigneeId?: SortOrder
+    caseDepartmentId?: SortOrder
+    employeeId?: SortOrder
+    assignedAt?: SortOrderInput | SortOrder
+    assignedBy?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: CaseDepartmentAssigneeCountOrderByAggregateInput
+    _avg?: CaseDepartmentAssigneeAvgOrderByAggregateInput
+    _max?: CaseDepartmentAssigneeMaxOrderByAggregateInput
+    _min?: CaseDepartmentAssigneeMinOrderByAggregateInput
+    _sum?: CaseDepartmentAssigneeSumOrderByAggregateInput
+  }
+
+  export type CaseDepartmentAssigneeScalarWhereWithAggregatesInput = {
+    AND?: CaseDepartmentAssigneeScalarWhereWithAggregatesInput | CaseDepartmentAssigneeScalarWhereWithAggregatesInput[]
+    OR?: CaseDepartmentAssigneeScalarWhereWithAggregatesInput[]
+    NOT?: CaseDepartmentAssigneeScalarWhereWithAggregatesInput | CaseDepartmentAssigneeScalarWhereWithAggregatesInput[]
+    caseDepartmentAssigneeId?: StringWithAggregatesFilter<"CaseDepartmentAssignee"> | string
+    caseDepartmentId?: StringWithAggregatesFilter<"CaseDepartmentAssignee"> | string
+    employeeId?: IntWithAggregatesFilter<"CaseDepartmentAssignee"> | number
+    assignedAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartmentAssignee"> | Date | string | null
+    assignedBy?: StringNullableWithAggregatesFilter<"CaseDepartmentAssignee"> | string | null
+    isActive?: BoolWithAggregatesFilter<"CaseDepartmentAssignee"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CaseDepartmentAssignee"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"CaseDepartmentAssignee"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"CaseDepartmentAssignee"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"CaseDepartmentAssignee"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"CaseDepartmentAssignee"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CaseDepartmentAssignee"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"CaseDepartmentAssignee"> | string | null
   }
 
   export type CaseNotificationOutboxWhereInput = {
@@ -37037,6 +38343,7 @@ export namespace Prisma {
     NOT?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
     casePdcaItemId?: StringFilter<"CasePdcaItem"> | string
     caseId?: StringFilter<"CasePdcaItem"> | string
+    ownerEmployeeId?: IntNullableFilter<"CasePdcaItem"> | number | null
     itemNo?: IntFilter<"CasePdcaItem"> | number
     planText?: StringNullableFilter<"CasePdcaItem"> | string | null
     doText?: StringNullableFilter<"CasePdcaItem"> | string | null
@@ -37064,6 +38371,7 @@ export namespace Prisma {
   export type CasePdcaItemOrderByWithRelationInput = {
     casePdcaItemId?: SortOrder
     caseId?: SortOrder
+    ownerEmployeeId?: SortOrderInput | SortOrder
     itemNo?: SortOrder
     planText?: SortOrderInput | SortOrder
     doText?: SortOrderInput | SortOrder
@@ -37090,11 +38398,12 @@ export namespace Prisma {
 
   export type CasePdcaItemWhereUniqueInput = Prisma.AtLeast<{
     casePdcaItemId?: string
-    caseId_itemNo_isDeleted?: CasePdcaItemCaseIdItemNoIsDeletedCompoundUniqueInput
+    caseId_ownerEmployeeId_itemNo_isDeleted?: CasePdcaItemCaseIdOwnerEmployeeIdItemNoIsDeletedCompoundUniqueInput
     AND?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
     OR?: CasePdcaItemWhereInput[]
     NOT?: CasePdcaItemWhereInput | CasePdcaItemWhereInput[]
     caseId?: StringFilter<"CasePdcaItem"> | string
+    ownerEmployeeId?: IntNullableFilter<"CasePdcaItem"> | number | null
     itemNo?: IntFilter<"CasePdcaItem"> | number
     planText?: StringNullableFilter<"CasePdcaItem"> | string | null
     doText?: StringNullableFilter<"CasePdcaItem"> | string | null
@@ -37117,11 +38426,12 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"CasePdcaItem"> | Date | string | null
     deletedBy?: StringNullableFilter<"CasePdcaItem"> | string | null
     case?: XOR<CaseHeaderScalarRelationFilter, CaseHeaderWhereInput>
-  }, "casePdcaItemId" | "caseId_itemNo_isDeleted">
+  }, "casePdcaItemId" | "caseId_ownerEmployeeId_itemNo_isDeleted">
 
   export type CasePdcaItemOrderByWithAggregationInput = {
     casePdcaItemId?: SortOrder
     caseId?: SortOrder
+    ownerEmployeeId?: SortOrderInput | SortOrder
     itemNo?: SortOrder
     planText?: SortOrderInput | SortOrder
     doText?: SortOrderInput | SortOrder
@@ -37156,6 +38466,7 @@ export namespace Prisma {
     NOT?: CasePdcaItemScalarWhereWithAggregatesInput | CasePdcaItemScalarWhereWithAggregatesInput[]
     casePdcaItemId?: StringWithAggregatesFilter<"CasePdcaItem"> | string
     caseId?: StringWithAggregatesFilter<"CasePdcaItem"> | string
+    ownerEmployeeId?: IntNullableWithAggregatesFilter<"CasePdcaItem"> | number | null
     itemNo?: IntWithAggregatesFilter<"CasePdcaItem"> | number
     planText?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
     doText?: StringNullableWithAggregatesFilter<"CasePdcaItem"> | string | null
@@ -39188,6 +40499,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    assignees?: CaseDepartmentAssigneeCreateNestedManyWithoutDepartmentInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
   }
@@ -39216,6 +40528,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    assignees?: CaseDepartmentAssigneeUncheckedCreateNestedManyWithoutDepartmentInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
   }
@@ -39244,6 +40557,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    assignees?: CaseDepartmentAssigneeUpdateManyWithoutDepartmentNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
   }
@@ -39272,6 +40586,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignees?: CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
   }
@@ -39343,6 +40658,117 @@ export namespace Prisma {
     targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentAssigneeCreateInput = {
+    caseDepartmentAssigneeId: string
+    employeeId: number
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    department: CaseDepartmentCreateNestedOneWithoutAssigneesInput
+  }
+
+  export type CaseDepartmentAssigneeUncheckedCreateInput = {
+    caseDepartmentAssigneeId: string
+    caseDepartmentId: string
+    employeeId: number
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseDepartmentAssigneeUpdateInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: CaseDepartmentUpdateOneRequiredWithoutAssigneesNestedInput
+  }
+
+  export type CaseDepartmentAssigneeUncheckedUpdateInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentAssigneeCreateManyInput = {
+    caseDepartmentAssigneeId: string
+    caseDepartmentId: string
+    employeeId: number
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseDepartmentAssigneeUpdateManyMutationInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentAssigneeUncheckedUpdateManyInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40453,6 +41879,7 @@ export namespace Prisma {
 
   export type CasePdcaItemCreateInput = {
     casePdcaItemId: string
+    ownerEmployeeId?: number | null
     itemNo: number
     planText?: string | null
     doText?: string | null
@@ -40480,6 +41907,7 @@ export namespace Prisma {
   export type CasePdcaItemUncheckedCreateInput = {
     casePdcaItemId: string
     caseId: string
+    ownerEmployeeId?: number | null
     itemNo: number
     planText?: string | null
     doText?: string | null
@@ -40505,6 +41933,7 @@ export namespace Prisma {
 
   export type CasePdcaItemUpdateInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40532,6 +41961,7 @@ export namespace Prisma {
   export type CasePdcaItemUncheckedUpdateInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
     caseId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40558,6 +41988,7 @@ export namespace Prisma {
   export type CasePdcaItemCreateManyInput = {
     casePdcaItemId: string
     caseId: string
+    ownerEmployeeId?: number | null
     itemNo: number
     planText?: string | null
     doText?: string | null
@@ -40583,6 +42014,7 @@ export namespace Prisma {
 
   export type CasePdcaItemUpdateManyMutationInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40609,6 +42041,7 @@ export namespace Prisma {
   export type CasePdcaItemUncheckedUpdateManyInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
     caseId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42501,6 +43934,16 @@ export namespace Prisma {
     isNot?: CaseHeaderWhereInput
   }
 
+  export type CaseDepartmentAssigneeListRelationFilter = {
+    every?: CaseDepartmentAssigneeWhereInput
+    some?: CaseDepartmentAssigneeWhereInput
+    none?: CaseDepartmentAssigneeWhereInput
+  }
+
+  export type CaseDepartmentAssigneeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type CaseDepartmentCaseIdSbuSubIdCompoundUniqueInput = {
     caseId: string
     sbuSubId: number
@@ -42592,6 +44035,72 @@ export namespace Prisma {
   export type CaseDepartmentSumOrderByAggregateInput = {
     sbuSubId?: SortOrder
     assigneeEmployeeId?: SortOrder
+  }
+
+  export type CaseDepartmentScalarRelationFilter = {
+    is?: CaseDepartmentWhereInput
+    isNot?: CaseDepartmentWhereInput
+  }
+
+  export type CaseDepartmentAssigneeCaseDepartmentIdEmployeeIdCompoundUniqueInput = {
+    caseDepartmentId: string
+    employeeId: number
+  }
+
+  export type CaseDepartmentAssigneeCountOrderByAggregateInput = {
+    caseDepartmentAssigneeId?: SortOrder
+    caseDepartmentId?: SortOrder
+    employeeId?: SortOrder
+    assignedAt?: SortOrder
+    assignedBy?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseDepartmentAssigneeAvgOrderByAggregateInput = {
+    employeeId?: SortOrder
+  }
+
+  export type CaseDepartmentAssigneeMaxOrderByAggregateInput = {
+    caseDepartmentAssigneeId?: SortOrder
+    caseDepartmentId?: SortOrder
+    employeeId?: SortOrder
+    assignedAt?: SortOrder
+    assignedBy?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseDepartmentAssigneeMinOrderByAggregateInput = {
+    caseDepartmentAssigneeId?: SortOrder
+    caseDepartmentId?: SortOrder
+    employeeId?: SortOrder
+    assignedAt?: SortOrder
+    assignedBy?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type CaseDepartmentAssigneeSumOrderByAggregateInput = {
+    employeeId?: SortOrder
   }
 
   export type CaseHeaderNullableScalarRelationFilter = {
@@ -43201,8 +44710,9 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type CasePdcaItemCaseIdItemNoIsDeletedCompoundUniqueInput = {
+  export type CasePdcaItemCaseIdOwnerEmployeeIdItemNoIsDeletedCompoundUniqueInput = {
     caseId: string
+    ownerEmployeeId: number
     itemNo: number
     isDeleted: boolean
   }
@@ -43210,6 +44720,7 @@ export namespace Prisma {
   export type CasePdcaItemCountOrderByAggregateInput = {
     casePdcaItemId?: SortOrder
     caseId?: SortOrder
+    ownerEmployeeId?: SortOrder
     itemNo?: SortOrder
     planText?: SortOrder
     doText?: SortOrder
@@ -43234,12 +44745,14 @@ export namespace Prisma {
   }
 
   export type CasePdcaItemAvgOrderByAggregateInput = {
+    ownerEmployeeId?: SortOrder
     itemNo?: SortOrder
   }
 
   export type CasePdcaItemMaxOrderByAggregateInput = {
     casePdcaItemId?: SortOrder
     caseId?: SortOrder
+    ownerEmployeeId?: SortOrder
     itemNo?: SortOrder
     planText?: SortOrder
     doText?: SortOrder
@@ -43266,6 +44779,7 @@ export namespace Prisma {
   export type CasePdcaItemMinOrderByAggregateInput = {
     casePdcaItemId?: SortOrder
     caseId?: SortOrder
+    ownerEmployeeId?: SortOrder
     itemNo?: SortOrder
     planText?: SortOrder
     doText?: SortOrder
@@ -43290,6 +44804,7 @@ export namespace Prisma {
   }
 
   export type CasePdcaItemSumOrderByAggregateInput = {
+    ownerEmployeeId?: SortOrder
     itemNo?: SortOrder
   }
 
@@ -44776,6 +46291,13 @@ export namespace Prisma {
     connect?: CaseHeaderWhereUniqueInput
   }
 
+  export type CaseDepartmentAssigneeCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CaseDepartmentAssigneeCreateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput> | CaseDepartmentAssigneeCreateWithoutDepartmentInput[] | CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput | CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CaseDepartmentAssigneeCreateManyDepartmentInputEnvelope
+    connect?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+  }
+
   export type CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput = {
     create?: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput> | CaseNotificationOutboxCreateWithoutDepartmentInput[] | CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput[]
     connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput | CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput[]
@@ -44788,6 +46310,13 @@ export namespace Prisma {
     connectOrCreate?: CaseNotificationMessageCreateOrConnectWithoutDepartmentInput | CaseNotificationMessageCreateOrConnectWithoutDepartmentInput[]
     createMany?: CaseNotificationMessageCreateManyDepartmentInputEnvelope
     connect?: CaseNotificationMessageWhereUniqueInput | CaseNotificationMessageWhereUniqueInput[]
+  }
+
+  export type CaseDepartmentAssigneeUncheckedCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CaseDepartmentAssigneeCreateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput> | CaseDepartmentAssigneeCreateWithoutDepartmentInput[] | CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput | CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CaseDepartmentAssigneeCreateManyDepartmentInputEnvelope
+    connect?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
   }
 
   export type CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput = {
@@ -44810,6 +46339,20 @@ export namespace Prisma {
     upsert?: CaseHeaderUpsertWithoutDepartmentsInput
     connect?: CaseHeaderWhereUniqueInput
     update?: XOR<XOR<CaseHeaderUpdateToOneWithWhereWithoutDepartmentsInput, CaseHeaderUpdateWithoutDepartmentsInput>, CaseHeaderUncheckedUpdateWithoutDepartmentsInput>
+  }
+
+  export type CaseDepartmentAssigneeUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CaseDepartmentAssigneeCreateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput> | CaseDepartmentAssigneeCreateWithoutDepartmentInput[] | CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput | CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CaseDepartmentAssigneeUpsertWithWhereUniqueWithoutDepartmentInput | CaseDepartmentAssigneeUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CaseDepartmentAssigneeCreateManyDepartmentInputEnvelope
+    set?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    disconnect?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    delete?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    connect?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    update?: CaseDepartmentAssigneeUpdateWithWhereUniqueWithoutDepartmentInput | CaseDepartmentAssigneeUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CaseDepartmentAssigneeUpdateManyWithWhereWithoutDepartmentInput | CaseDepartmentAssigneeUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CaseDepartmentAssigneeScalarWhereInput | CaseDepartmentAssigneeScalarWhereInput[]
   }
 
   export type CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput = {
@@ -44840,6 +46383,20 @@ export namespace Prisma {
     deleteMany?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
   }
 
+  export type CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CaseDepartmentAssigneeCreateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput> | CaseDepartmentAssigneeCreateWithoutDepartmentInput[] | CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput | CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CaseDepartmentAssigneeUpsertWithWhereUniqueWithoutDepartmentInput | CaseDepartmentAssigneeUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CaseDepartmentAssigneeCreateManyDepartmentInputEnvelope
+    set?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    disconnect?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    delete?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    connect?: CaseDepartmentAssigneeWhereUniqueInput | CaseDepartmentAssigneeWhereUniqueInput[]
+    update?: CaseDepartmentAssigneeUpdateWithWhereUniqueWithoutDepartmentInput | CaseDepartmentAssigneeUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CaseDepartmentAssigneeUpdateManyWithWhereWithoutDepartmentInput | CaseDepartmentAssigneeUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CaseDepartmentAssigneeScalarWhereInput | CaseDepartmentAssigneeScalarWhereInput[]
+  }
+
   export type CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput = {
     create?: XOR<CaseNotificationOutboxCreateWithoutDepartmentInput, CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput> | CaseNotificationOutboxCreateWithoutDepartmentInput[] | CaseNotificationOutboxUncheckedCreateWithoutDepartmentInput[]
     connectOrCreate?: CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput | CaseNotificationOutboxCreateOrConnectWithoutDepartmentInput[]
@@ -44866,6 +46423,20 @@ export namespace Prisma {
     update?: CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput | CaseNotificationMessageUpdateWithWhereUniqueWithoutDepartmentInput[]
     updateMany?: CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput | CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput[]
     deleteMany?: CaseNotificationMessageScalarWhereInput | CaseNotificationMessageScalarWhereInput[]
+  }
+
+  export type CaseDepartmentCreateNestedOneWithoutAssigneesInput = {
+    create?: XOR<CaseDepartmentCreateWithoutAssigneesInput, CaseDepartmentUncheckedCreateWithoutAssigneesInput>
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutAssigneesInput
+    connect?: CaseDepartmentWhereUniqueInput
+  }
+
+  export type CaseDepartmentUpdateOneRequiredWithoutAssigneesNestedInput = {
+    create?: XOR<CaseDepartmentCreateWithoutAssigneesInput, CaseDepartmentUncheckedCreateWithoutAssigneesInput>
+    connectOrCreate?: CaseDepartmentCreateOrConnectWithoutAssigneesInput
+    upsert?: CaseDepartmentUpsertWithoutAssigneesInput
+    connect?: CaseDepartmentWhereUniqueInput
+    update?: XOR<XOR<CaseDepartmentUpdateToOneWithWhereWithoutAssigneesInput, CaseDepartmentUpdateWithoutAssigneesInput>, CaseDepartmentUncheckedUpdateWithoutAssigneesInput>
   }
 
   export type CaseHeaderCreateNestedOneWithoutNotificationsInput = {
@@ -47712,6 +49283,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    assignees?: CaseDepartmentAssigneeCreateNestedManyWithoutDepartmentInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
   }
@@ -47739,6 +49311,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    assignees?: CaseDepartmentAssigneeUncheckedCreateNestedManyWithoutDepartmentInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
   }
@@ -47846,6 +49419,7 @@ export namespace Prisma {
 
   export type CasePdcaItemCreateWithoutCaseInput = {
     casePdcaItemId: string
+    ownerEmployeeId?: number | null
     itemNo: number
     planText?: string | null
     doText?: string | null
@@ -47871,6 +49445,7 @@ export namespace Prisma {
 
   export type CasePdcaItemUncheckedCreateWithoutCaseInput = {
     casePdcaItemId: string
+    ownerEmployeeId?: number | null
     itemNo: number
     planText?: string | null
     doText?: string | null
@@ -48182,6 +49757,7 @@ export namespace Prisma {
     NOT?: CasePdcaItemScalarWhereInput | CasePdcaItemScalarWhereInput[]
     casePdcaItemId?: StringFilter<"CasePdcaItem"> | string
     caseId?: StringFilter<"CasePdcaItem"> | string
+    ownerEmployeeId?: IntNullableFilter<"CasePdcaItem"> | number | null
     itemNo?: IntFilter<"CasePdcaItem"> | number
     planText?: StringNullableFilter<"CasePdcaItem"> | string | null
     doText?: StringNullableFilter<"CasePdcaItem"> | string | null
@@ -48393,6 +49969,45 @@ export namespace Prisma {
     create: XOR<CaseHeaderCreateWithoutDepartmentsInput, CaseHeaderUncheckedCreateWithoutDepartmentsInput>
   }
 
+  export type CaseDepartmentAssigneeCreateWithoutDepartmentInput = {
+    caseDepartmentAssigneeId: string
+    employeeId: number
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput = {
+    caseDepartmentAssigneeId: string
+    employeeId: number
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type CaseDepartmentAssigneeCreateOrConnectWithoutDepartmentInput = {
+    where: CaseDepartmentAssigneeWhereUniqueInput
+    create: XOR<CaseDepartmentAssigneeCreateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CaseDepartmentAssigneeCreateManyDepartmentInputEnvelope = {
+    data: CaseDepartmentAssigneeCreateManyDepartmentInput | CaseDepartmentAssigneeCreateManyDepartmentInput[]
+  }
+
   export type CaseNotificationOutboxCreateWithoutDepartmentInput = {
     caseNotificationId: string
     recipientEmployeeId?: number | null
@@ -48566,6 +50181,41 @@ export namespace Prisma {
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutCaseNestedInput
   }
 
+  export type CaseDepartmentAssigneeUpsertWithWhereUniqueWithoutDepartmentInput = {
+    where: CaseDepartmentAssigneeWhereUniqueInput
+    update: XOR<CaseDepartmentAssigneeUpdateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedUpdateWithoutDepartmentInput>
+    create: XOR<CaseDepartmentAssigneeCreateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CaseDepartmentAssigneeUpdateWithWhereUniqueWithoutDepartmentInput = {
+    where: CaseDepartmentAssigneeWhereUniqueInput
+    data: XOR<CaseDepartmentAssigneeUpdateWithoutDepartmentInput, CaseDepartmentAssigneeUncheckedUpdateWithoutDepartmentInput>
+  }
+
+  export type CaseDepartmentAssigneeUpdateManyWithWhereWithoutDepartmentInput = {
+    where: CaseDepartmentAssigneeScalarWhereInput
+    data: XOR<CaseDepartmentAssigneeUpdateManyMutationInput, CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentInput>
+  }
+
+  export type CaseDepartmentAssigneeScalarWhereInput = {
+    AND?: CaseDepartmentAssigneeScalarWhereInput | CaseDepartmentAssigneeScalarWhereInput[]
+    OR?: CaseDepartmentAssigneeScalarWhereInput[]
+    NOT?: CaseDepartmentAssigneeScalarWhereInput | CaseDepartmentAssigneeScalarWhereInput[]
+    caseDepartmentAssigneeId?: StringFilter<"CaseDepartmentAssignee"> | string
+    caseDepartmentId?: StringFilter<"CaseDepartmentAssignee"> | string
+    employeeId?: IntFilter<"CaseDepartmentAssignee"> | number
+    assignedAt?: DateTimeNullableFilter<"CaseDepartmentAssignee"> | Date | string | null
+    assignedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    isActive?: BoolFilter<"CaseDepartmentAssignee"> | boolean
+    createdAt?: DateTimeFilter<"CaseDepartmentAssignee"> | Date | string
+    createdBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    updatedAt?: DateTimeFilter<"CaseDepartmentAssignee"> | Date | string
+    updatedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+    isDeleted?: BoolFilter<"CaseDepartmentAssignee"> | boolean
+    deletedAt?: DateTimeNullableFilter<"CaseDepartmentAssignee"> | Date | string | null
+    deletedBy?: StringNullableFilter<"CaseDepartmentAssignee"> | string | null
+  }
+
   export type CaseNotificationOutboxUpsertWithWhereUniqueWithoutDepartmentInput = {
     where: CaseNotificationOutboxWhereUniqueInput
     update: XOR<CaseNotificationOutboxUpdateWithoutDepartmentInput, CaseNotificationOutboxUncheckedUpdateWithoutDepartmentInput>
@@ -48596,6 +50246,134 @@ export namespace Prisma {
   export type CaseNotificationMessageUpdateManyWithWhereWithoutDepartmentInput = {
     where: CaseNotificationMessageScalarWhereInput
     data: XOR<CaseNotificationMessageUpdateManyMutationInput, CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentInput>
+  }
+
+  export type CaseDepartmentCreateWithoutAssigneesInput = {
+    caseDepartmentId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    decisionNotes?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
+    caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentUncheckedCreateWithoutAssigneesInput = {
+    caseDepartmentId: string
+    caseId: string
+    sbuSubId: number
+    decisionStatus?: string
+    decisionAt?: Date | string | null
+    decisionBy?: string | null
+    decisionNotes?: string | null
+    assigneeEmployeeId?: number | null
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    workStatus?: string | null
+    startDate?: Date | string | null
+    targetDate?: Date | string | null
+    endDate?: Date | string | null
+    workNotes?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
+  }
+
+  export type CaseDepartmentCreateOrConnectWithoutAssigneesInput = {
+    where: CaseDepartmentWhereUniqueInput
+    create: XOR<CaseDepartmentCreateWithoutAssigneesInput, CaseDepartmentUncheckedCreateWithoutAssigneesInput>
+  }
+
+  export type CaseDepartmentUpsertWithoutAssigneesInput = {
+    update: XOR<CaseDepartmentUpdateWithoutAssigneesInput, CaseDepartmentUncheckedUpdateWithoutAssigneesInput>
+    create: XOR<CaseDepartmentCreateWithoutAssigneesInput, CaseDepartmentUncheckedCreateWithoutAssigneesInput>
+    where?: CaseDepartmentWhereInput
+  }
+
+  export type CaseDepartmentUpdateToOneWithWhereWithoutAssigneesInput = {
+    where?: CaseDepartmentWhereInput
+    data: XOR<CaseDepartmentUpdateWithoutAssigneesInput, CaseDepartmentUncheckedUpdateWithoutAssigneesInput>
+  }
+
+  export type CaseDepartmentUpdateWithoutAssigneesInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
+  }
+
+  export type CaseDepartmentUncheckedUpdateWithoutAssigneesInput = {
+    caseDepartmentId?: StringFieldUpdateOperationsInput | string
+    caseId?: StringFieldUpdateOperationsInput | string
+    sbuSubId?: IntFieldUpdateOperationsInput | number
+    decisionStatus?: StringFieldUpdateOperationsInput | string
+    decisionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    decisionBy?: NullableStringFieldUpdateOperationsInput | string | null
+    decisionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    workStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
+    caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
   }
 
   export type CaseHeaderCreateWithoutNotificationsInput = {
@@ -48695,6 +50473,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    assignees?: CaseDepartmentAssigneeCreateNestedManyWithoutDepartmentInput
     caseNotificationMessages?: CaseNotificationMessageCreateNestedManyWithoutDepartmentInput
   }
 
@@ -48722,6 +50501,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    assignees?: CaseDepartmentAssigneeUncheckedCreateNestedManyWithoutDepartmentInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedCreateNestedManyWithoutDepartmentInput
   }
 
@@ -48844,6 +50624,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    assignees?: CaseDepartmentAssigneeUpdateManyWithoutDepartmentNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
   }
 
@@ -48871,6 +50652,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignees?: CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
   }
 
@@ -48971,6 +50753,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     deletedBy?: string | null
     case: CaseHeaderCreateNestedOneWithoutDepartmentsInput
+    assignees?: CaseDepartmentAssigneeCreateNestedManyWithoutDepartmentInput
     notifications?: CaseNotificationOutboxCreateNestedManyWithoutDepartmentInput
   }
 
@@ -48998,6 +50781,7 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    assignees?: CaseDepartmentAssigneeUncheckedCreateNestedManyWithoutDepartmentInput
     notifications?: CaseNotificationOutboxUncheckedCreateNestedManyWithoutDepartmentInput
   }
 
@@ -49120,6 +50904,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
     case?: CaseHeaderUpdateOneRequiredWithoutDepartmentsNestedInput
+    assignees?: CaseDepartmentAssigneeUpdateManyWithoutDepartmentNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
   }
 
@@ -49147,6 +50932,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignees?: CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
   }
 
@@ -52028,6 +53814,7 @@ export namespace Prisma {
 
   export type CasePdcaItemCreateManyCaseInput = {
     casePdcaItemId: string
+    ownerEmployeeId?: number | null
     itemNo: number
     planText?: string | null
     doText?: string | null
@@ -52129,6 +53916,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignees?: CaseDepartmentAssigneeUpdateManyWithoutDepartmentNestedInput
     notifications?: CaseNotificationOutboxUpdateManyWithoutDepartmentNestedInput
     caseNotificationMessages?: CaseNotificationMessageUpdateManyWithoutDepartmentNestedInput
   }
@@ -52156,6 +53944,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignees?: CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentNestedInput
     notifications?: CaseNotificationOutboxUncheckedUpdateManyWithoutDepartmentNestedInput
     caseNotificationMessages?: CaseNotificationMessageUncheckedUpdateManyWithoutDepartmentNestedInput
   }
@@ -52296,6 +54085,7 @@ export namespace Prisma {
 
   export type CasePdcaItemUpdateWithoutCaseInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52321,6 +54111,7 @@ export namespace Prisma {
 
   export type CasePdcaItemUncheckedUpdateWithoutCaseInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52346,6 +54137,7 @@ export namespace Prisma {
 
   export type CasePdcaItemUncheckedUpdateManyWithoutCaseInput = {
     casePdcaItemId?: StringFieldUpdateOperationsInput | string
+    ownerEmployeeId?: NullableIntFieldUpdateOperationsInput | number | null
     itemNo?: IntFieldUpdateOperationsInput | number
     planText?: NullableStringFieldUpdateOperationsInput | string | null
     doText?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52534,6 +54326,21 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type CaseDepartmentAssigneeCreateManyDepartmentInput = {
+    caseDepartmentAssigneeId: string
+    employeeId: number
+    assignedAt?: Date | string | null
+    assignedBy?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
   export type CaseNotificationOutboxCreateManyDepartmentInput = {
     caseNotificationId: string
     caseId?: string | null
@@ -52570,6 +54377,51 @@ export namespace Prisma {
     isDeleted?: boolean
     deletedAt?: Date | string | null
     deletedBy?: string | null
+  }
+
+  export type CaseDepartmentAssigneeUpdateWithoutDepartmentInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentAssigneeUncheckedUpdateWithoutDepartmentInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CaseDepartmentAssigneeUncheckedUpdateManyWithoutDepartmentInput = {
+    caseDepartmentAssigneeId?: StringFieldUpdateOperationsInput | string
+    employeeId?: IntFieldUpdateOperationsInput | number
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CaseNotificationOutboxUpdateWithoutDepartmentInput = {

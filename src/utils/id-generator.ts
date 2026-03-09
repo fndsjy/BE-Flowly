@@ -348,6 +348,29 @@ export async function generateCaseDepartmentId(): Promise<() => string> {
   return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
 }
 
+export async function generateCaseDepartmentAssigneeId(): Promise<() => string> {
+  const today = getDDMMYY();
+  const prefix = `CDA${today}`;
+
+  const existing = await (prisma as typeof prisma & {
+    caseDepartmentAssignee: {
+      findFirst: (args: unknown) => Promise<{ caseDepartmentAssigneeId: string } | null>;
+    };
+  }).caseDepartmentAssignee.findFirst({
+    where: { caseDepartmentAssigneeId: { startsWith: prefix } },
+    select: { caseDepartmentAssigneeId: true },
+    orderBy: { caseDepartmentAssigneeId: "desc" },
+  });
+
+  let nextSeq = 1;
+  if (existing?.caseDepartmentAssigneeId) {
+    const currentSeq = extractSeqFromId(existing.caseDepartmentAssigneeId);
+    nextSeq = currentSeq + 1;
+  }
+
+  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+}
+
 export async function generateCaseAttachmentId(): Promise<() => string> {
   const today = getDDMMYY();
   const prefix = `CAD${today}`;

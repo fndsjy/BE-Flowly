@@ -283,6 +283,7 @@ model CaseDepartment {
   deletedAt                DateTime?
   deletedBy                String?                   @db.NVarChar(20)
   case                     CaseHeader                @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+  assignees                CaseDepartmentAssignee[]
   notifications            CaseNotificationOutbox[]
   caseNotificationMessages CaseNotificationMessage[]
 
@@ -290,6 +291,28 @@ model CaseDepartment {
   @@index([caseId, decisionStatus])
   @@index([sbuSubId])
   @@map("case_department")
+}
+
+model CaseDepartmentAssignee {
+  caseDepartmentAssigneeId String         @id @db.NVarChar(20)
+  caseDepartmentId         String         @db.NVarChar(20)
+  employeeId               Int
+  assignedAt               DateTime?
+  assignedBy               String?        @db.NVarChar(20)
+  isActive                 Boolean        @default(true)
+  createdAt                DateTime       @default(now())
+  createdBy                String?        @db.NVarChar(20)
+  updatedAt                DateTime       @updatedAt
+  updatedBy                String?        @db.NVarChar(20)
+  isDeleted                Boolean        @default(false)
+  deletedAt                DateTime?
+  deletedBy                String?        @db.NVarChar(20)
+  department               CaseDepartment @relation(fields: [caseDepartmentId], references: [caseDepartmentId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([caseDepartmentId, employeeId])
+  @@index([caseDepartmentId])
+  @@index([employeeId])
+  @@map("case_department_assignee")
 }
 
 /// Case notification outbox (WhatsApp, etc.)
@@ -511,33 +534,35 @@ model CaseFishboneItemCause {
 
 /// Case PDCA items (Plan-Do-Check-Act)
 model CasePdcaItem {
-  casePdcaItemId String     @id @db.NVarChar(20)
-  caseId         String     @db.NVarChar(20)
-  itemNo         Int
-  planText       String?    @db.NVarChar(1000)
-  doText         String?    @db.NVarChar(1000)
-  doStartDate    DateTime?
-  doEndDate      DateTime?
-  checkText      String?    @db.NVarChar(1000)
-  checkStartDate DateTime?
-  checkEndDate   DateTime?
-  checkBy        String?    @db.NVarChar(100)
-  checkComment   String?    @db.NVarChar(500)
-  actText        String?    @db.NVarChar(2000)
-  actStartDate   DateTime?
-  actEndDate     DateTime?
-  isActive       Boolean    @default(true)
-  createdAt      DateTime   @default(now())
-  createdBy      String?    @db.NVarChar(20)
-  updatedAt      DateTime   @updatedAt
-  updatedBy      String?    @db.NVarChar(20)
-  isDeleted      Boolean    @default(false)
-  deletedAt      DateTime?
-  deletedBy      String?    @db.NVarChar(20)
-  case           CaseHeader @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
+  casePdcaItemId  String     @id @db.NVarChar(20)
+  caseId          String     @db.NVarChar(20)
+  ownerEmployeeId Int?
+  itemNo          Int
+  planText        String?    @db.NVarChar(1000)
+  doText          String?    @db.NVarChar(1000)
+  doStartDate     DateTime?
+  doEndDate       DateTime?
+  checkText       String?    @db.NVarChar(1000)
+  checkStartDate  DateTime?
+  checkEndDate    DateTime?
+  checkBy         String?    @db.NVarChar(100)
+  checkComment    String?    @db.NVarChar(500)
+  actText         String?    @db.NVarChar(2000)
+  actStartDate    DateTime?
+  actEndDate      DateTime?
+  isActive        Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  createdBy       String?    @db.NVarChar(20)
+  updatedAt       DateTime   @updatedAt
+  updatedBy       String?    @db.NVarChar(20)
+  isDeleted       Boolean    @default(false)
+  deletedAt       DateTime?
+  deletedBy       String?    @db.NVarChar(20)
+  case            CaseHeader @relation(fields: [caseId], references: [caseId], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([caseId, itemNo, isDeleted])
+  @@unique([caseId, ownerEmployeeId, itemNo, isDeleted])
   @@index([caseId, isDeleted])
+  @@index([caseId, ownerEmployeeId])
   @@map("case_pdca_item")
 }
 

@@ -3,6 +3,7 @@ import type { CasePdcaItem } from "../generated/flowly/client.js";
 export type CasePdcaItemResponse = {
   casePdcaItemId: string;
   caseId: string;
+  ownerEmployeeId: number | null;
   itemNo: number;
   planText: string | null;
   doText: string | null;
@@ -26,6 +27,7 @@ export type CasePdcaItemListResponse = CasePdcaItemResponse;
 
 export type CreateCasePdcaItemRequest = {
   caseId: string;
+  ownerEmployeeId?: number | null;
   itemNo?: number;
   planText?: string | null;
   doText?: string | null;
@@ -43,6 +45,7 @@ export type CreateCasePdcaItemRequest = {
 
 export type UpdateCasePdcaItemRequest = {
   casePdcaItemId: string;
+  ownerEmployeeId?: number | null;
   itemNo?: number;
   planText?: string | null;
   doText?: string | null;
@@ -69,6 +72,8 @@ export function toCasePdcaItemResponse(
   return {
     casePdcaItemId: item.casePdcaItemId,
     caseId: item.caseId,
+    ownerEmployeeId: (item as CasePdcaItem & { ownerEmployeeId?: number | null })
+      .ownerEmployeeId ?? null,
     itemNo: item.itemNo,
     planText: item.planText ?? null,
     doText: item.doText ?? null,

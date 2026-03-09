@@ -123,6 +123,111 @@ export const isPicForSbuSub = async (
   return Boolean(pic);
 };
 
+export const isAssigneeForDepartment = async (
+  employeeId: number,
+  caseDepartmentId: string
+): Promise<boolean> => {
+  const assignee = await (prismaFlowly as typeof prismaFlowly & {
+    caseDepartmentAssignee: {
+      findFirst: (args: unknown) => Promise<{ caseDepartmentAssigneeId: string } | null>;
+    };
+  }).caseDepartmentAssignee.findFirst({
+    where: {
+      caseDepartmentId,
+      employeeId,
+      isDeleted: false,
+      isActive: true,
+    },
+    select: { caseDepartmentAssigneeId: true },
+  });
+
+  if (assignee) return true;
+
+  const legacy = await prismaFlowly.caseDepartment.findFirst({
+    where: {
+      caseDepartmentId,
+      assigneeEmployeeId: employeeId,
+      isDeleted: false,
+    },
+    select: { caseDepartmentId: true },
+  });
+
+  return Boolean(legacy);
+};
+
+export const isAssigneeForCase = async (
+  employeeId: number,
+  caseId: string
+): Promise<boolean> => {
+  const assignee = await (prismaFlowly as typeof prismaFlowly & {
+    caseDepartmentAssignee: {
+      findFirst: (args: unknown) => Promise<{ caseDepartmentAssigneeId: string } | null>;
+    };
+  }).caseDepartmentAssignee.findFirst({
+    where: {
+      employeeId,
+      isDeleted: false,
+      isActive: true,
+      department: {
+        caseId,
+        isDeleted: false,
+      },
+    },
+    select: { caseDepartmentAssigneeId: true },
+  });
+
+  if (assignee) return true;
+
+  const legacy = await prismaFlowly.caseDepartment.findFirst({
+    where: {
+      caseId,
+      assigneeEmployeeId: employeeId,
+      isDeleted: false,
+    },
+    select: { caseDepartmentId: true },
+  });
+
+  return Boolean(legacy);
+};
+
+export const isAssigneeForSbuSub = async (
+  employeeId: number,
+  caseId: string,
+  sbuSubId: number
+): Promise<boolean> => {
+  const assignee = await (prismaFlowly as typeof prismaFlowly & {
+    caseDepartmentAssignee: {
+      findFirst: (args: unknown) => Promise<{ caseDepartmentAssigneeId: string } | null>;
+    };
+  }).caseDepartmentAssignee.findFirst({
+    where: {
+      employeeId,
+      isDeleted: false,
+      isActive: true,
+      department: {
+        caseId,
+        sbuSubId,
+        isDeleted: false,
+      },
+    },
+    select: { caseDepartmentAssigneeId: true },
+  });
+
+  if (assignee) return true;
+
+  const legacy = await prismaFlowly.caseDepartment.findFirst({
+    where: {
+      caseId,
+      sbuSubId,
+      assigneeEmployeeId: employeeId,
+      isDeleted: false,
+    },
+    select: { caseDepartmentId: true },
+  });
+
+  return Boolean(legacy);
+};
+
 export const getEmployeeChartSbuSubIds = async (employeeId: number) => {
   const members = await prismaFlowly.chartMember.findMany({
     where: {
@@ -140,6 +245,142 @@ export const getEmployeeChartSbuSubIds = async (employeeId: number) => {
     .filter((id): id is number => Number.isFinite(id));
 
   return Array.from(new Set(ids));
+};
+
+export const isRequesterForCase = async (
+  employeeId: number,
+  caseId: string
+): Promise<boolean> => {
+  const caseHeader = await prismaFlowly.caseHeader.findUnique({
+    where: { caseId },
+    select: { requesterEmployeeId: true, isDeleted: true },
+  });
+
+  if (!caseHeader || caseHeader.isDeleted) return false;
+  return caseHeader.requesterEmployeeId === employeeId;
+};
+
+export const isEmployeeInvolvedInCase = async (
+  employeeId: number,
+  caseId: string
+): Promise<boolean> => {
+  if (await isRequesterForCase(employeeId, caseId)) return true;
+  if (await isAssigneeForCase(employeeId, caseId)) return true;
+
+  const departments = await prismaFlowly.caseDepartment.findMany({
+    where: { caseId, isDeleted: false },
+    select: { sbuSubId: true },
+  });
+
+  if (departments.length === 0) return false;
+
+  const sbuSubIds = Array.from(new Set(departments.map((dept) => dept.sbuSubId)));
+
+  const pic = await prismaEmployee.em_sbu_sub.findFirst({
+    where: {
+      id: { in: sbuSubIds },
+      pic: employeeId,
+      status: "A",
+      OR: [{ isDeleted: false }, { isDeleted: null }],
+    },
+    select: { id: true },
+  });
+
+  return Boolean(pic);
+};
+
+export const canEmployeeViewCase = async (
+  employeeId: number,
+  caseId: string
+): Promise<boolean> => {
+  const caseHeader = await prismaFlowly.caseHeader.findUnique({
+    where: { caseId },
+    select: {
+      caseId: true,
+      requesterEmployeeId: true,
+      visibility: true,
+      originSbuSubId: true,
+      isDeleted: true,
+    },
+  });
+
+  if (!caseHeader || caseHeader.isDeleted) return false;
+  if (caseHeader.requesterEmployeeId === employeeId) return true;
+
+  if (await isAssigneeForCase(employeeId, caseId)) return true;
+
+  const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+    where: {
+      pic: employeeId,
+      status: "A",
+      OR: [{ isDeleted: false }, { isDeleted: null }],
+    },
+    select: { id: true },
+  });
+  const picSbuSubIds = picSubs.map((sub) => sub.id);
+  if (
+    picSbuSubIds.length > 0 &&
+    caseHeader.originSbuSubId &&
+    picSbuSubIds.includes(caseHeader.originSbuSubId)
+  ) {
+    return true;
+  }
+  if (picSbuSubIds.length > 0) {
+    const picDept = await prismaFlowly.caseDepartment.findFirst({
+      where: {
+        caseId,
+        isDeleted: false,
+        sbuSubId: { in: picSbuSubIds },
+      },
+      select: { caseDepartmentId: true },
+    });
+    if (picDept) return true;
+  }
+
+  if (caseHeader.visibility === "PUBLIC") {
+    const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+    if (chartSbuSubIds.length > 0) {
+      if (
+        caseHeader.originSbuSubId &&
+        chartSbuSubIds.includes(caseHeader.originSbuSubId)
+      ) {
+        return true;
+      }
+      const chartDept = await prismaFlowly.caseDepartment.findFirst({
+        where: {
+          caseId,
+          isDeleted: false,
+          sbuSubId: { in: chartSbuSubIds },
+        },
+        select: { caseDepartmentId: true },
+      });
+      if (chartDept) return true;
+    }
+  }
+
+  return false;
+};
+
+export const canEmployeeViewFishbone = async (
+  employeeId: number,
+  caseFishboneId: string
+): Promise<boolean> => {
+  const fishbone = await prismaFlowly.caseFishboneMaster.findUnique({
+    where: { caseFishboneId },
+    select: { caseId: true, sbuSubId: true, isDeleted: true },
+  });
+
+  if (!fishbone || fishbone.isDeleted) return false;
+
+  const isPic = await isPicForSbuSub(employeeId, fishbone.sbuSubId);
+  const isAssignee = await isAssigneeForSbuSub(
+    employeeId,
+    fishbone.caseId,
+    fishbone.sbuSubId
+  );
+  if (isPic || isAssignee) return true;
+
+  return isEmployeeInvolvedInCase(employeeId, fishbone.caseId);
 };
 
 export const ensureCaseNotClosed = async (caseId: string) => {

@@ -13,6 +13,13 @@ export declare class CaseNotificationService {
         assigneeEmployeeId: number;
         requesterId: string;
     }): Promise<void>;
+    static enqueueAssigneeNotifications(params: {
+        caseId: string;
+        caseDepartmentId: string;
+        sbuSubId: number;
+        assigneeEmployeeIds: number[];
+        requesterId: string;
+    }): Promise<void>;
     static enqueueDepartmentAddedNotification(params: {
         caseId: string;
         caseDepartmentId: string;

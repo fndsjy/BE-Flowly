@@ -299,6 +299,22 @@ exports.Prisma.CaseDepartmentScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.CaseDepartmentAssigneeScalarFieldEnum = {
+  caseDepartmentAssigneeId: 'caseDepartmentAssigneeId',
+  caseDepartmentId: 'caseDepartmentId',
+  employeeId: 'employeeId',
+  assignedAt: 'assignedAt',
+  assignedBy: 'assignedBy',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.CaseNotificationOutboxScalarFieldEnum = {
   caseNotificationId: 'caseNotificationId',
   caseId: 'caseId',
@@ -457,6 +473,7 @@ exports.Prisma.CaseFishboneItemCauseScalarFieldEnum = {
 exports.Prisma.CasePdcaItemScalarFieldEnum = {
   casePdcaItemId: 'casePdcaItemId',
   caseId: 'caseId',
+  ownerEmployeeId: 'ownerEmployeeId',
   itemNo: 'itemNo',
   planText: 'planText',
   doText: 'doText',
@@ -644,6 +661,7 @@ exports.Prisma.ModelName = {
   ProcedureSopIK: 'ProcedureSopIK',
   CaseHeader: 'CaseHeader',
   CaseDepartment: 'CaseDepartment',
+  CaseDepartmentAssignee: 'CaseDepartmentAssignee',
   CaseNotificationOutbox: 'CaseNotificationOutbox',
   CaseNotificationMessage: 'CaseNotificationMessage',
   CaseNotificationTemplate: 'CaseNotificationTemplate',

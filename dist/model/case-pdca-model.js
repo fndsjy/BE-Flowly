@@ -2,6 +2,8 @@ export function toCasePdcaItemResponse(item) {
     return {
         casePdcaItemId: item.casePdcaItemId,
         caseId: item.caseId,
+        ownerEmployeeId: item
+            .ownerEmployeeId ?? null,
         itemNo: item.itemNo,
         planText: item.planText ?? null,
         doText: item.doText ?? null,

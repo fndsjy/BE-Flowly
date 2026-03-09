@@ -17,6 +17,7 @@ import {
   assertCaseRead,
   ensureCaseNotClosed,
   getEmployeeChartSbuSubIds,
+  isAssigneeForCase,
   resolveCaseAccess,
 } from "../utils/case-access.js";
 import { CASE_MEDIA_TYPES, normalizeUpper } from "../utils/case-constants.js";
@@ -155,16 +156,7 @@ const ensureEmployeeCaseAccess = async (employeeId: number, caseId: string) => {
     return;
   }
 
-  const assigned = await prismaFlowly.caseDepartment.findFirst({
-    where: {
-      caseId,
-      assigneeEmployeeId: employeeId,
-      isDeleted: false,
-    },
-    select: { caseDepartmentId: true },
-  });
-
-  if (assigned) {
+  if (await isAssigneeForCase(employeeId, caseId)) {
     return;
   }
 
@@ -225,16 +217,7 @@ const ensureEmployeeCaseReadAccess = async (
     return;
   }
 
-  const assigned = await prismaFlowly.caseDepartment.findFirst({
-    where: {
-      caseId,
-      assigneeEmployeeId: employeeId,
-      isDeleted: false,
-    },
-    select: { caseDepartmentId: true },
-  });
-
-  if (assigned) {
+  if (await isAssigneeForCase(employeeId, caseId)) {
     return;
   }
 

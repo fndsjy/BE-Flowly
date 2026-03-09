@@ -40,6 +40,7 @@ export class CaseDepartmentValidation {
     decisionStatus: decisionStatusSchema.optional(),
     decisionNotes: z.string().max(500).optional().nullable(),
     assigneeEmployeeId: z.number().int().min(1).optional().nullable(),
+    assigneeEmployeeIds: z.array(z.number().int().min(1)).optional().nullable(),
     workStatus: workStatusSchema.optional().nullable(),
     startDate: z.union([z.string(), z.date()]).optional().nullable(),
     targetDate: z.union([z.string(), z.date()]).optional().nullable(),

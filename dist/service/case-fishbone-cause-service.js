@@ -4,7 +4,7 @@ import { CaseFishboneCauseValidation } from "../validation/case-fishbone-cause-v
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFishboneCauseId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, isAssigneeForSbuSub, canEmployeeViewFishbone, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFishboneCauseResponse, toCaseFishboneCauseListResponse, } from "../model/case-fishbone-cause-model.js";
 const CAUSE_AUDIT_FIELDS = [
     "caseFishboneId",
@@ -30,13 +30,13 @@ const ensureCaseFishboneAccess = async (caseFishboneId, employeeId) => {
                 sbuSubId: fishbone.sbuSubId,
                 isDeleted: false,
             },
-            select: { assigneeEmployeeId: true },
+            select: { caseDepartmentId: true },
         });
         if (!department) {
             throw new ResponseError(404, "Case department not found");
         }
         const isPic = await isPicForSbuSub(employeeId, fishbone.sbuSubId);
-        const isAssignee = department.assigneeEmployeeId === employeeId;
+        const isAssignee = await isAssigneeForSbuSub(employeeId, fishbone.caseId, fishbone.sbuSubId);
         if (!isPic && !isAssignee) {
             throw new ResponseError(403, "No access to case fishbone");
         }
@@ -219,7 +219,10 @@ export class CaseFishboneCauseService {
             if (!filters?.caseFishboneId) {
                 return [];
             }
-            await ensureCaseFishboneAccess(filters.caseFishboneId, access.employeeId);
+            const canView = await canEmployeeViewFishbone(access.employeeId, filters.caseFishboneId);
+            if (!canView) {
+                return [];
+            }
         }
         const whereClause = {
             isDeleted: false,

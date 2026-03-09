@@ -116,7 +116,28 @@ export class CaseNotificationService {
     assigneeEmployeeId: number;
     requesterId: string;
   }) {
-    const [caseHeader, sbuSub, employee] = await Promise.all([
+    await CaseNotificationService.enqueueAssigneeNotifications({
+      caseId: params.caseId,
+      caseDepartmentId: params.caseDepartmentId,
+      sbuSubId: params.sbuSubId,
+      assigneeEmployeeIds: [params.assigneeEmployeeId],
+      requesterId: params.requesterId,
+    });
+  }
+
+  static async enqueueAssigneeNotifications(params: {
+    caseId: string;
+    caseDepartmentId: string;
+    sbuSubId: number;
+    assigneeEmployeeIds: number[];
+    requesterId: string;
+  }) {
+    const assigneeIds = Array.from(
+      new Set(params.assigneeEmployeeIds.filter((id) => Number.isFinite(id)))
+    );
+    if (assigneeIds.length === 0) return;
+
+    const [caseHeader, sbuSub, employees] = await Promise.all([
       prismaFlowly.caseHeader.findUnique({
         where: { caseId: params.caseId },
         select: { caseTitle: true, caseType: true, isDeleted: true },
@@ -129,45 +150,59 @@ export class CaseNotificationService {
         },
         select: { sbu_sub_name: true },
       }),
-      prismaEmployee.em_employee.findUnique({
-        where: { UserId: params.assigneeEmployeeId },
-        select: { Phone: true },
+      prismaEmployee.em_employee.findMany({
+        where: { UserId: { in: assigneeIds } },
+        select: { UserId: true, Phone: true },
       }),
     ]);
 
     if (!caseHeader || caseHeader.isDeleted) return;
     if (!sbuSub) return;
-    const phone = normalizePhone(employee?.Phone ?? null);
-    if (!phone) return;
 
+    const employeeMap = new Map(employees.map((item) => [item.UserId, item]));
     const createId = await generateCaseNotificationId();
     const now = new Date();
-    await notificationClient.caseNotificationOutbox.create({
-      data: {
-        caseNotificationId: createId(),
-        caseId: params.caseId,
-        caseDepartmentId: params.caseDepartmentId,
-        recipientEmployeeId: params.assigneeEmployeeId,
-        channel: "WHATSAPP",
-        phoneNumber: phone,
-        message: "",
-        status: "PENDING",
-        attempts: 0,
-        provider: "SYSTEM",
-        meta: JSON.stringify({
-          sbuSubId: params.sbuSubId,
-          sbuSubName: sbuSub.sbu_sub_name,
-          role: "ASSIGNEE",
-          action: "ASSIGN_TASK",
-        }),
-        isActive: true,
-        isDeleted: false,
-        createdAt: now,
-        updatedAt: now,
-        createdBy: params.requesterId,
-        updatedBy: params.requesterId,
-      },
-    });
+
+    const payloads: Array<CaseNotificationPayload | null> = assigneeIds.map(
+      (assigneeEmployeeId) => {
+        const employee = employeeMap.get(assigneeEmployeeId);
+        const phone = normalizePhone(employee?.Phone ?? null);
+        if (!phone) return null;
+        return {
+          caseNotificationId: createId(),
+          caseId: params.caseId,
+          caseDepartmentId: params.caseDepartmentId,
+          recipientEmployeeId: assigneeEmployeeId,
+          channel: "WHATSAPP",
+          phoneNumber: phone,
+          message: "",
+          status: "PENDING",
+          attempts: 0,
+          provider: "SYSTEM",
+          meta: JSON.stringify({
+            sbuSubId: params.sbuSubId,
+            sbuSubName: sbuSub.sbu_sub_name,
+            role: "ASSIGNEE",
+            action: "ASSIGN_TASK",
+          }),
+          isActive: true,
+          isDeleted: false,
+          createdAt: now,
+          updatedAt: now,
+          createdBy: params.requesterId,
+          updatedBy: params.requesterId,
+        };
+      }
+    );
+    const payloadsFiltered = payloads.filter(
+      (item): item is CaseNotificationPayload => item !== null
+    );
+
+    if (payloadsFiltered.length > 0) {
+      await notificationClient.caseNotificationOutbox.createMany({
+        data: payloadsFiltered,
+      });
+    }
   }
 
   static async enqueueDepartmentAddedNotification(params: {
@@ -339,6 +374,10 @@ export class CaseNotificationService {
         caseDepartmentId: true,
         sbuSubId: true,
         assigneeEmployeeId: true,
+        assignees: {
+          where: { isDeleted: false },
+          select: { employeeId: true },
+        },
       },
     });
 
@@ -421,7 +460,14 @@ export class CaseNotificationService {
     };
 
     for (const dept of departments) {
-      addRecipient(dept, dept.assigneeEmployeeId, "ASSIGNEE");
+      const assignees = dept.assignees ?? [];
+      if (assignees.length > 0) {
+        for (const assignee of assignees) {
+          addRecipient(dept, assignee.employeeId, "ASSIGNEE");
+        }
+      } else {
+        addRecipient(dept, dept.assigneeEmployeeId ?? null, "ASSIGNEE");
+      }
       const sbuSub = sbuSubMap.get(dept.sbuSubId);
       addRecipient(dept, sbuSub?.pic, "PIC");
     }
