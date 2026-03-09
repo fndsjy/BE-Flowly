@@ -4,7 +4,7 @@ import { CaseFishboneValidation } from "../validation/case-fishbone-validation.j
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFishboneId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isEmployeeInvolvedInCase, isPicForSbuSub, isAssigneeForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFishboneResponse, toCaseFishboneListResponse, } from "../model/case-fishbone-model.js";
 const FISHBONE_AUDIT_FIELDS = [
     "caseId",
@@ -33,14 +33,14 @@ const ensureCaseDepartmentAccess = async (caseId, sbuSubId, employeeId) => {
     }
     const department = await prismaFlowly.caseDepartment.findFirst({
         where: { caseId, sbuSubId, isDeleted: false },
-        select: { caseDepartmentId: true, assigneeEmployeeId: true },
+        select: { caseDepartmentId: true },
     });
     if (!department) {
         throw new ResponseError(404, "Case department not found");
     }
     if (employeeId !== undefined) {
         const isPic = await isPicForSbuSub(employeeId, sbuSubId);
-        const isAssignee = department.assigneeEmployeeId === employeeId;
+        const isAssignee = await isAssigneeForSbuSub(employeeId, caseId, sbuSubId);
         if (!isPic && !isAssignee) {
             throw new ResponseError(403, "No access to this case department");
         }
@@ -240,30 +240,69 @@ export class CaseFishboneService {
         };
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
             const employeeId = access.employeeId;
-            const assignments = await prismaFlowly.caseDepartment.findMany({
-                where: { assigneeEmployeeId: employeeId, isDeleted: false },
-                select: { caseId: true, sbuSubId: true },
-            });
-            const picSubs = await prismaEmployee.em_sbu_sub.findMany({
-                where: {
-                    pic: employeeId,
-                    status: "A",
-                    OR: [{ isDeleted: false }, { isDeleted: null }],
-                },
-                select: { id: true },
-            });
-            const picSbuSubIds = picSubs.map((sub) => sub.id);
-            const orFilters = [];
-            for (const item of assignments) {
-                orFilters.push({ caseId: item.caseId, sbuSubId: item.sbuSubId });
+            if (filters?.caseId) {
+                const caseId = filters.caseId;
+                const canView = await isEmployeeInvolvedInCase(employeeId, caseId);
+                if (!canView) {
+                    return [];
+                }
             }
-            if (picSbuSubIds.length > 0) {
-                orFilters.push({ sbuSubId: { in: picSbuSubIds } });
+            else if (filters?.caseFishboneId) {
+                const fishbone = await prismaFlowly.caseFishboneMaster.findUnique({
+                    where: { caseFishboneId: filters.caseFishboneId },
+                    select: { caseId: true, sbuSubId: true, isDeleted: true },
+                });
+                if (!fishbone || fishbone.isDeleted)
+                    return [];
+                const canView = await isEmployeeInvolvedInCase(employeeId, fishbone.caseId);
+                if (!canView) {
+                    return [];
+                }
             }
-            if (orFilters.length === 0) {
-                return [];
+            else {
+                const assignments = await prismaFlowly.caseDepartment.findMany({
+                    where: {
+                        isDeleted: false,
+                        OR: [
+                            {
+                                assignees: {
+                                    some: { employeeId, isDeleted: false },
+                                },
+                            },
+                            { assigneeEmployeeId: employeeId },
+                        ],
+                    },
+                    select: { caseId: true, sbuSubId: true },
+                });
+                const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+                    where: {
+                        pic: employeeId,
+                        status: "A",
+                        OR: [{ isDeleted: false }, { isDeleted: null }],
+                    },
+                    select: { id: true },
+                });
+                const picSbuSubIds = picSubs.map((sub) => sub.id);
+                const orFilters = [];
+                for (const item of assignments) {
+                    orFilters.push({ caseId: item.caseId, sbuSubId: item.sbuSubId });
+                }
+                if (picSbuSubIds.length > 0) {
+                    orFilters.push({ sbuSubId: { in: picSbuSubIds } });
+                }
+                const requestedCases = await prismaFlowly.caseHeader.findMany({
+                    where: { requesterEmployeeId: employeeId, isDeleted: false },
+                    select: { caseId: true },
+                });
+                const requesterCaseIds = requestedCases.map((item) => item.caseId);
+                if (requesterCaseIds.length > 0) {
+                    orFilters.push({ caseId: { in: requesterCaseIds } });
+                }
+                if (orFilters.length === 0) {
+                    return [];
+                }
+                whereClause.AND = [{ OR: orFilters }];
             }
-            whereClause.AND = [{ OR: orFilters }];
         }
         const list = await prismaFlowly.caseFishboneMaster.findMany({
             where: whereClause,

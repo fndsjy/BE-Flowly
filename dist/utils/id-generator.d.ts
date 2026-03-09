@@ -16,6 +16,7 @@ export declare function generateFishboneItemCauseId(): Promise<() => string>;
 export declare function generateProcedureIkId(): Promise<string>;
 export declare function generateCaseId(): Promise<string>;
 export declare function generateCaseDepartmentId(): Promise<() => string>;
+export declare function generateCaseDepartmentAssigneeId(): Promise<() => string>;
 export declare function generateCaseAttachmentId(): Promise<() => string>;
 export declare function generateCaseFishboneId(): Promise<string>;
 export declare function generateCaseFishboneCauseId(): Promise<() => string>;

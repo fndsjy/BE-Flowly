@@ -5,7 +5,7 @@ import { ResponseError } from "../error/response-error.js";
 import { generateCaseFeedbackCommentId } from "../utils/id-generator.js";
 import { logger } from "../application/logging.js";
 import { CaseNotificationService } from "./case-notification-service.js";
-import { assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, isAssigneeForCase, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFeedbackCommentListResponse, toCaseFeedbackCommentResponse, } from "../model/case-feedback-comment-model.js";
 const FEEDBACK_ALLOWED_CASE_TYPES = new Set(["PROBLEM", "PROJECT"]);
 const ensureCaseFeedbackAccess = async (caseId, employeeId) => {
@@ -33,15 +33,7 @@ const ensureCaseFeedbackAccess = async (caseId, employeeId) => {
     if (caseHeader.requesterEmployeeId === employeeId) {
         return caseHeader;
     }
-    const assigned = await prismaFlowly.caseDepartment.findFirst({
-        where: {
-            caseId,
-            assigneeEmployeeId: employeeId,
-            isDeleted: false,
-        },
-        select: { caseDepartmentId: true },
-    });
-    if (assigned) {
+    if (await isAssigneeForCase(employeeId, caseId)) {
         return caseHeader;
     }
     const picSubs = await prismaEmployee.em_sbu_sub.findMany({

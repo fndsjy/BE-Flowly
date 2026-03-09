@@ -17,6 +17,8 @@ import {
   assertCaseRead,
   ensureCaseNotClosed,
   isPicForSbuSub,
+  isAssigneeForSbuSub,
+  canEmployeeViewFishbone,
   resolveCaseAccess,
 } from "../utils/case-access.js";
 import type { Prisma, CaseFishboneItemCause } from "../generated/flowly/client.js";
@@ -73,7 +75,7 @@ const ensureCaseFishboneAccess = async (
         sbuSubId: fishbone.sbuSubId,
         isDeleted: false,
       },
-      select: { assigneeEmployeeId: true },
+      select: { caseDepartmentId: true },
     });
 
     if (!department) {
@@ -81,7 +83,11 @@ const ensureCaseFishboneAccess = async (
     }
 
     const isPic = await isPicForSbuSub(employeeId, fishbone.sbuSubId);
-    const isAssignee = department.assigneeEmployeeId === employeeId;
+    const isAssignee = await isAssigneeForSbuSub(
+      employeeId,
+      fishbone.caseId,
+      fishbone.sbuSubId
+    );
     if (!isPic && !isAssignee) {
       throw new ResponseError(403, "No access to case fishbone");
     }
@@ -680,7 +686,13 @@ export class CaseFishboneItemService {
       if (!filters?.caseFishboneId) {
         return [];
       }
-      await ensureCaseFishboneAccess(filters.caseFishboneId, access.employeeId);
+      const canView = await canEmployeeViewFishbone(
+        access.employeeId,
+        filters.caseFishboneId
+      );
+      if (!canView) {
+        return [];
+      }
     }
 
     const categoryCode =

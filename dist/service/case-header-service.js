@@ -107,8 +107,18 @@ const buildEmployeeCaseFilter = async (access) => {
         {
             departments: {
                 some: {
-                    assigneeEmployeeId: employeeId,
                     isDeleted: false,
+                    OR: [
+                        {
+                            assignees: {
+                                some: {
+                                    employeeId,
+                                    isDeleted: false,
+                                },
+                            },
+                        },
+                        { assigneeEmployeeId: employeeId },
+                    ],
                 },
             },
         },
@@ -444,7 +454,19 @@ export class CaseHeaderService {
             isDeleted: false,
             ...(filters?.sbuSubId !== undefined ? { sbuSubId: filters.sbuSubId } : {}),
             ...(filters?.assigneeEmployeeId !== undefined
-                ? { assigneeEmployeeId: filters.assigneeEmployeeId }
+                ? {
+                    OR: [
+                        {
+                            assignees: {
+                                some: {
+                                    employeeId: filters.assigneeEmployeeId,
+                                    isDeleted: false,
+                                },
+                            },
+                        },
+                        { assigneeEmployeeId: filters.assigneeEmployeeId },
+                    ],
+                }
                 : {}),
             ...(filters?.decisionStatus ? { decisionStatus: filters.decisionStatus } : {}),
         };

@@ -7,7 +7,7 @@ import { CaseAttachmentValidation } from "../validation/case-attachment-validati
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseAttachmentId } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, isAssigneeForCase, resolveCaseAccess, } from "../utils/case-access.js";
 import { CASE_MEDIA_TYPES, normalizeUpper } from "../utils/case-constants.js";
 import { toCaseAttachmentResponse, toCaseAttachmentListResponse, } from "../model/case-attachment-model.js";
 const CASE_ATTACHMENT_FIELDS = [
@@ -120,15 +120,7 @@ const ensureEmployeeCaseAccess = async (employeeId, caseId) => {
     if (caseHeader.requesterEmployeeId === employeeId) {
         return;
     }
-    const assigned = await prismaFlowly.caseDepartment.findFirst({
-        where: {
-            caseId,
-            assigneeEmployeeId: employeeId,
-            isDeleted: false,
-        },
-        select: { caseDepartmentId: true },
-    });
-    if (assigned) {
+    if (await isAssigneeForCase(employeeId, caseId)) {
         return;
     }
     const picSubs = await prismaEmployee.em_sbu_sub.findMany({
@@ -171,15 +163,7 @@ const ensureEmployeeCaseReadAccess = async (employeeId, caseId) => {
     if (caseHeader.requesterEmployeeId === employeeId) {
         return;
     }
-    const assigned = await prismaFlowly.caseDepartment.findFirst({
-        where: {
-            caseId,
-            assigneeEmployeeId: employeeId,
-            isDeleted: false,
-        },
-        select: { caseDepartmentId: true },
-    });
-    if (assigned) {
+    if (await isAssigneeForCase(employeeId, caseId)) {
         return;
     }
     const picSubs = await prismaEmployee.em_sbu_sub.findMany({

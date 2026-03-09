@@ -13,6 +13,7 @@ import {
   assertCaseCrud,
   assertCaseRead,
   ensureCaseNotClosed,
+  isAssigneeForCase,
   resolveCaseAccess,
 } from "../utils/case-access.js";
 import type { Prisma } from "../generated/flowly/client.js";
@@ -26,6 +27,7 @@ import {
 
 const PDCA_AUDIT_FIELDS = [
   "caseId",
+  "ownerEmployeeId",
   "itemNo",
   "planText",
   "doText",
@@ -43,21 +45,6 @@ const PDCA_AUDIT_FIELDS = [
   "isDeleted",
 ] as const;
 
-const PDCA_PDC_FIELDS = [
-  "itemNo",
-  "planText",
-  "doText",
-  "doStartDate",
-  "doEndDate",
-  "checkText",
-  "checkStartDate",
-  "checkEndDate",
-  "checkBy",
-  "checkComment",
-  "isActive",
-] as const;
-
-const PDCA_ACT_FIELDS = ["actText", "actStartDate", "actEndDate"] as const;
 const PDCA_ALLOWED_CASE_TYPES = new Set(["PROBLEM", "PROJECT"]);
 
 const getPdcaSnapshot = (record: Record<string, unknown>) =>
@@ -79,11 +66,6 @@ const parseDate = (value?: string | Date | null): Date | null => {
   }
   return parsed;
 };
-
-const hasAnyField = (
-  payload: Record<string, unknown>,
-  fields: readonly string[]
-) => fields.some((field) => payload[field] !== undefined);
 
 const resolveEmployeePdcaAccess = async (
   caseId: string,
@@ -109,7 +91,7 @@ const resolveEmployeePdcaAccess = async (
 
   const departments = await prismaFlowly.caseDepartment.findMany({
     where: { caseId, isDeleted: false },
-    select: { sbuSubId: true, assigneeEmployeeId: true },
+    select: { sbuSubId: true },
   });
 
   if (departments.length === 0) {
@@ -117,9 +99,7 @@ const resolveEmployeePdcaAccess = async (
   }
 
   const isRequester = caseHeader.requesterEmployeeId === employeeId;
-  const isAssignee = departments.some(
-    (dept) => dept.assigneeEmployeeId === employeeId
-  );
+  const isAssignee = await isAssigneeForCase(employeeId, caseId);
 
   let isPic = false;
   if (!isAssignee) {
@@ -151,6 +131,8 @@ const resolveEmployeePdcaAccess = async (
     caseHeader,
     isRequester,
     isDepartmentActor,
+    isAssignee,
+    isPic,
   };
 };
 
@@ -174,17 +156,14 @@ const ensureCasePdcaAccess = async (
   if (employeeId !== undefined) {
     const departments = await prismaFlowly.caseDepartment.findMany({
       where: { caseId, isDeleted: false },
-      select: { sbuSubId: true, assigneeEmployeeId: true },
+      select: { sbuSubId: true },
     });
 
     if (departments.length === 0) {
       throw new ResponseError(404, "Case department not found");
     }
 
-    const isAssignee = departments.some(
-      (dept) => dept.assigneeEmployeeId === employeeId
-    );
-    if (isAssignee) return caseHeader;
+    if (await isAssigneeForCase(employeeId, caseId)) return caseHeader;
 
     const sbuSubIds = Array.from(
       new Set(departments.map((dept) => dept.sbuSubId))
@@ -210,31 +189,56 @@ const ensureCasePdcaAccess = async (
   return caseHeader;
 };
 
-const resolveNextItemNo = async (caseId: string) => {
+const normalizeOwnerEmployeeId = (ownerEmployeeId?: number | null) =>
+  ownerEmployeeId ?? null;
+
+const resolveNextItemNo = async (
+  caseId: string,
+  ownerEmployeeId?: number | null
+) => {
+  const ownerId = normalizeOwnerEmployeeId(ownerEmployeeId);
   const last = await prismaFlowly.casePdcaItem.findFirst({
-    where: { caseId },
+    where: { caseId, ownerEmployeeId: ownerId },
     select: { itemNo: true },
     orderBy: { itemNo: "desc" },
   });
   return last ? last.itemNo + 1 : 1;
 };
 
-const ensureItemNoAvailable = async (
+const isItemNoAvailable = async (
   caseId: string,
+  ownerEmployeeId: number | null,
   itemNo: number,
   excludeId?: string
 ) => {
+  const ownerId = normalizeOwnerEmployeeId(ownerEmployeeId);
   const existing = await prismaFlowly.casePdcaItem.findFirst({
     where: {
       caseId,
+      ownerEmployeeId: ownerId,
       itemNo,
       isDeleted: false,
       ...(excludeId ? { casePdcaItemId: { not: excludeId } } : {}),
     },
     select: { casePdcaItemId: true },
   });
+  return !existing;
+};
 
-  if (existing) {
+const ensureItemNoAvailable = async (
+  caseId: string,
+  ownerEmployeeId: number | null,
+  itemNo: number,
+  excludeId?: string
+) => {
+  const available = await isItemNoAvailable(
+    caseId,
+    ownerEmployeeId,
+    itemNo,
+    excludeId
+  );
+
+  if (!available) {
     throw new ResponseError(400, "PDCA item number already exists");
   }
 };
@@ -244,32 +248,36 @@ export class CasePdcaService {
     const request = Validation.validate(CasePdcaValidation.CREATE, reqBody);
 
     const access = await resolveCaseAccess(requesterId);
+    let ownerEmployeeId: number | null = null;
     if (access.actorType === "FLOWLY") {
       assertCaseCrud(access);
       await ensureCasePdcaAccess(request.caseId);
+      ownerEmployeeId =
+        request.ownerEmployeeId !== undefined ? request.ownerEmployeeId : null;
     } else if (access.employeeId !== undefined) {
       const employeeAccess = await resolveEmployeePdcaAccess(
         request.caseId,
         access.employeeId
       );
-        if (!employeeAccess.isDepartmentActor) {
-          throw new ResponseError(
-            403,
-            "Only target department can create PDCA items"
-          );
-        }
-      } else {
-        await ensureCasePdcaAccess(request.caseId);
+      if (!employeeAccess.isAssignee) {
+        throw new ResponseError(
+          403,
+          "Only assignee can create PDCA items"
+        );
       }
+      ownerEmployeeId = access.employeeId;
+    } else {
+      await ensureCasePdcaAccess(request.caseId);
+    }
 
     await ensureCaseNotClosed(request.caseId);
 
     const itemNo =
       request.itemNo !== undefined
         ? request.itemNo
-        : await resolveNextItemNo(request.caseId);
+        : await resolveNextItemNo(request.caseId, ownerEmployeeId);
 
-    await ensureItemNoAvailable(request.caseId, itemNo);
+    await ensureItemNoAvailable(request.caseId, ownerEmployeeId, itemNo);
 
     const createId = await generateCasePdcaItemId();
     const casePdcaItemId = createId();
@@ -279,6 +287,7 @@ export class CasePdcaService {
       data: {
         casePdcaItemId,
         caseId: request.caseId,
+        ownerEmployeeId,
         itemNo,
         planText: normalizeNullableText(request.planText) ?? null,
         doText: normalizeNullableText(request.doText) ?? null,
@@ -338,37 +347,75 @@ export class CasePdcaService {
         existing.caseId,
         access.employeeId
       );
-      const hasPdcFields = hasAnyField(
-        request as Record<string, unknown>,
-        PDCA_PDC_FIELDS
-      );
-      const hasActFields = hasAnyField(
-        request as Record<string, unknown>,
-        PDCA_ACT_FIELDS
-      );
-        if (!employeeAccess.isDepartmentActor && hasPdcFields) {
-          throw new ResponseError(403, "Only target department can update PDCA");
-        }
-        if (!employeeAccess.isDepartmentActor && hasActFields) {
-          throw new ResponseError(403, "Only target department can update ACT");
-        }
+      const existingOwner = (existing as typeof existing & {
+        ownerEmployeeId?: number | null;
+      }).ownerEmployeeId ?? null;
+      const canClaim = existingOwner === null && employeeAccess.isAssignee;
+      const isOwner = existingOwner !== null && existingOwner === access.employeeId;
+      if (!isOwner && !canClaim) {
+        throw new ResponseError(403, "Only assignee owner can update PDCA");
       }
+    }
 
-    if (request.itemNo !== undefined && request.itemNo !== existing.itemNo) {
-      await ensureItemNoAvailable(
+    const existingOwner = (existing as typeof existing & {
+      ownerEmployeeId?: number | null;
+    }).ownerEmployeeId ?? null;
+    let targetOwner = existingOwner;
+    if (access.actorType === "FLOWLY" && request.ownerEmployeeId !== undefined) {
+      targetOwner = normalizeOwnerEmployeeId(request.ownerEmployeeId);
+    }
+    if (
+      access.actorType === "EMPLOYEE" &&
+      access.employeeId !== undefined &&
+      existingOwner === null
+    ) {
+      targetOwner = access.employeeId;
+    }
+    let targetItemNo = request.itemNo ?? existing.itemNo;
+    const ownerChanged = targetOwner !== existingOwner;
+    const itemNoChanged = targetItemNo !== existing.itemNo;
+
+    if (ownerChanged || itemNoChanged) {
+      const available = await isItemNoAvailable(
         existing.caseId,
-        request.itemNo,
+        targetOwner,
+        targetItemNo,
         existing.casePdcaItemId
       );
+      if (!available) {
+        if (
+          access.actorType === "EMPLOYEE" &&
+          access.employeeId !== undefined &&
+          existingOwner === null
+        ) {
+          targetItemNo = await resolveNextItemNo(
+            existing.caseId,
+            targetOwner
+          );
+        } else {
+          throw new ResponseError(400, "PDCA item number already exists");
+        }
+      }
     }
 
     const before = { ...existing } as Record<string, unknown>;
     const updateData: Prisma.CasePdcaItemUpdateInput = {
-      itemNo: request.itemNo ?? existing.itemNo,
+      itemNo: targetItemNo,
       isActive: request.isActive ?? existing.isActive,
       updatedAt: new Date(),
       updatedBy: requesterId,
     };
+
+    if (access.actorType === "FLOWLY" && request.ownerEmployeeId !== undefined) {
+      updateData.ownerEmployeeId = targetOwner;
+    }
+    if (
+      access.actorType === "EMPLOYEE" &&
+      access.employeeId !== undefined &&
+      existingOwner === null
+    ) {
+      updateData.ownerEmployeeId = targetOwner;
+    }
 
     if (request.planText !== undefined) {
       updateData.planText = normalizeNullableText(request.planText) ?? null;
@@ -460,10 +507,15 @@ export class CasePdcaService {
         existing.caseId,
         access.employeeId
       );
-      if (!employeeAccess.isDepartmentActor) {
+      const existingOwner = (existing as typeof existing & {
+        ownerEmployeeId?: number | null;
+      }).ownerEmployeeId ?? null;
+      const canClaim = existingOwner === null && employeeAccess.isAssignee;
+      const isOwner = existingOwner !== null && existingOwner === access.employeeId;
+      if (!isOwner && !canClaim) {
         throw new ResponseError(
           403,
-          "Only target department can delete PDCA items"
+          "Only assignee owner can delete PDCA items"
         );
       }
     }

@@ -9,6 +9,7 @@ import {
   assertCaseRead,
   ensureCaseNotClosed,
   getEmployeeChartSbuSubIds,
+  isAssigneeForCase,
   resolveCaseAccess,
 } from "../utils/case-access.js";
 import {
@@ -65,16 +66,7 @@ const ensureCaseFeedbackAccess = async (
     return caseHeader;
   }
 
-  const assigned = await prismaFlowly.caseDepartment.findFirst({
-    where: {
-      caseId,
-      assigneeEmployeeId: employeeId,
-      isDeleted: false,
-    },
-    select: { caseDepartmentId: true },
-  });
-
-  if (assigned) {
+  if (await isAssigneeForCase(employeeId, caseId)) {
     return caseHeader;
   }
 

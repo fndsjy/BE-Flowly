@@ -3,9 +3,9 @@ import { logger } from "../application/logging.js";
 import { Validation } from "../validation/validation.js";
 import { CaseDepartmentValidation } from "../validation/case-department-validation.js";
 import { ResponseError } from "../error/response-error.js";
-import { generateCaseDepartmentId } from "../utils/id-generator.js";
+import { generateCaseDepartmentAssigneeId, generateCaseDepartmentId, } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, resolveCaseAccess, isPicForSbuSub, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, getEmployeeChartSbuSubIds, resolveCaseAccess, canEmployeeViewCase, isPicForSbuSub, isAssigneeForCase, isAssigneeForDepartment, } from "../utils/case-access.js";
 import { CASE_DECISION_STATUSES, CASE_WORK_STATUSES, normalizeUpper, } from "../utils/case-constants.js";
 import { toCaseDepartmentResponse, toCaseDepartmentListResponse, } from "../model/case-department-model.js";
 import { CaseNotificationService } from "./case-notification-service.js";
@@ -44,6 +44,23 @@ const normalizeNotes = (value) => {
         return null;
     const trimmed = value.trim();
     return trimmed.length > 0 ? trimmed : null;
+};
+const normalizeAssigneeIds = (value) => {
+    if (!value)
+        return [];
+    const filtered = value
+        .map((item) => Number(item))
+        .filter((item) => Number.isFinite(item) && item > 0);
+    return Array.from(new Set(filtered));
+};
+const resolveAssigneeIdsFromRequest = (request) => {
+    if (request.assigneeEmployeeIds !== undefined) {
+        return normalizeAssigneeIds(request.assigneeEmployeeIds);
+    }
+    if (request.assigneeEmployeeId !== undefined) {
+        return request.assigneeEmployeeId ? [request.assigneeEmployeeId] : [];
+    }
+    return undefined;
 };
 const ensureDecisionStatus = (value) => {
     const normalized = normalizeUpper(value);
@@ -130,74 +147,6 @@ const syncCaseHeaderStatus = async (caseId, requesterId) => {
         },
     });
 };
-const canEmployeeViewCase = async (employeeId, caseId) => {
-    const caseHeader = await prismaFlowly.caseHeader.findUnique({
-        where: { caseId },
-        select: {
-            caseId: true,
-            requesterEmployeeId: true,
-            visibility: true,
-            originSbuSubId: true,
-            isDeleted: true,
-        },
-    });
-    if (!caseHeader || caseHeader.isDeleted)
-        return false;
-    if (caseHeader.requesterEmployeeId === employeeId)
-        return true;
-    const hasAssignment = await prismaFlowly.caseDepartment.findFirst({
-        where: { caseId, assigneeEmployeeId: employeeId, isDeleted: false },
-        select: { caseDepartmentId: true },
-    });
-    if (hasAssignment)
-        return true;
-    const picSubs = await prismaEmployee.em_sbu_sub.findMany({
-        where: {
-            pic: employeeId,
-            status: "A",
-            OR: [{ isDeleted: false }, { isDeleted: null }],
-        },
-        select: { id: true },
-    });
-    const picSbuSubIds = picSubs.map((sub) => sub.id);
-    if (picSbuSubIds.length > 0 &&
-        caseHeader.originSbuSubId &&
-        picSbuSubIds.includes(caseHeader.originSbuSubId)) {
-        return true;
-    }
-    if (picSbuSubIds.length > 0) {
-        const picDept = await prismaFlowly.caseDepartment.findFirst({
-            where: {
-                caseId,
-                isDeleted: false,
-                sbuSubId: { in: picSbuSubIds },
-            },
-            select: { caseDepartmentId: true },
-        });
-        if (picDept)
-            return true;
-    }
-    if (caseHeader.visibility === "PUBLIC") {
-        const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
-        if (chartSbuSubIds.length > 0) {
-            if (caseHeader.originSbuSubId &&
-                chartSbuSubIds.includes(caseHeader.originSbuSubId)) {
-                return true;
-            }
-            const chartDept = await prismaFlowly.caseDepartment.findFirst({
-                where: {
-                    caseId,
-                    isDeleted: false,
-                    sbuSubId: { in: chartSbuSubIds },
-                },
-                select: { caseDepartmentId: true },
-            });
-            if (chartDept)
-                return true;
-        }
-    }
-    return false;
-};
 export class CaseDepartmentService {
     static async create(requesterId, reqBody) {
         const request = Validation.validate(CaseDepartmentValidation.CREATE, reqBody);
@@ -219,9 +168,9 @@ export class CaseDepartmentService {
             if (!isRequester) {
                 const departments = await prismaFlowly.caseDepartment.findMany({
                     where: { caseId: request.caseId, isDeleted: false },
-                    select: { sbuSubId: true, assigneeEmployeeId: true },
+                    select: { sbuSubId: true },
                 });
-                const isAssignee = departments.some((dept) => dept.assigneeEmployeeId === employeeId);
+                const isAssignee = await isAssigneeForCase(employeeId, request.caseId);
                 let isPic = false;
                 if (!isAssignee && departments.length > 0) {
                     const sbuSubIds = Array.from(new Set(departments.map((dept) => dept.sbuSubId)));
@@ -305,15 +254,16 @@ export class CaseDepartmentService {
             throw new ResponseError(404, "Case department not found");
         }
         await ensureCaseNotClosed(existing.caseId);
+        let requestedAssigneeIds = resolveAssigneeIdsFromRequest(request);
         if (access.actorType === "EMPLOYEE") {
             if (access.employeeId === undefined) {
                 throw new ResponseError(401, "Unauthorized");
             }
             const employeeId = access.employeeId;
             const isPic = await isPicForSbuSub(employeeId, existing.sbuSubId);
-            const isAssignee = existing.assigneeEmployeeId === employeeId;
+            const isAssignee = await isAssigneeForDepartment(employeeId, existing.caseDepartmentId);
             const hasDecisionUpdate = request.decisionStatus !== undefined || request.decisionNotes !== undefined;
-            const hasAssignmentUpdate = request.assigneeEmployeeId !== undefined;
+            const hasAssignmentUpdate = requestedAssigneeIds !== undefined;
             const hasWorkUpdate = request.workStatus !== undefined ||
                 request.startDate !== undefined ||
                 request.targetDate !== undefined ||
@@ -344,12 +294,16 @@ export class CaseDepartmentService {
                 ? null
                 : ensureWorkStatus(request.workStatus)
             : existing.workStatus;
-        const hasAssignmentUpdate = request.assigneeEmployeeId !== undefined;
+        let hasAssignmentUpdate = requestedAssigneeIds !== undefined;
         const hasWorkUpdate = request.workStatus !== undefined ||
             request.startDate !== undefined ||
             request.targetDate !== undefined ||
             request.endDate !== undefined ||
             request.workNotes !== undefined;
+        if (request.decisionStatus !== undefined && nextDecisionStatus === "REJECT") {
+            requestedAssigneeIds = [];
+            hasAssignmentUpdate = true;
+        }
         if ((hasAssignmentUpdate || hasWorkUpdate) && nextDecisionStatus !== "ACCEPT") {
             if (!(request.decisionStatus && nextDecisionStatus === "REJECT")) {
                 throw new ResponseError(400, "Case must be accepted before assignment");
@@ -358,8 +312,8 @@ export class CaseDepartmentService {
         if (nextDecisionStatus === "REJECT" && !nextDecisionNotes) {
             throw new ResponseError(400, "Komentar wajib diisi sebelum REJECT");
         }
-        if (request.assigneeEmployeeId !== undefined && request.assigneeEmployeeId !== null) {
-            await ensureEmployeeInSbuSub(request.assigneeEmployeeId, existing.sbuSubId);
+        if (hasAssignmentUpdate && requestedAssigneeIds) {
+            await Promise.all(requestedAssigneeIds.map((assigneeId) => ensureEmployeeInSbuSub(assigneeId, existing.sbuSubId)));
         }
         const before = { ...existing };
         const now = new Date();
@@ -389,25 +343,114 @@ export class CaseDepartmentService {
             updateData.decisionAt = now;
             updateData.decisionBy = requesterId;
         }
-        if (request.assigneeEmployeeId !== undefined) {
-            updateData.assigneeEmployeeId = request.assigneeEmployeeId;
-            updateData.assignedAt = request.assigneeEmployeeId ? now : null;
-            updateData.assignedBy = request.assigneeEmployeeId ? requesterId : null;
+        if (requestedAssigneeIds !== undefined) {
+            const primaryAssignee = requestedAssigneeIds[0] ?? null;
+            updateData.assigneeEmployeeId = primaryAssignee;
+            updateData.assignedAt = primaryAssignee ? now : null;
+            updateData.assignedBy = primaryAssignee ? requesterId : null;
         }
         if (request.decisionStatus !== undefined && nextDecisionStatus === "REJECT") {
-            updateData.assigneeEmployeeId = null;
-            updateData.assignedAt = null;
-            updateData.assignedBy = null;
             updateData.workStatus = null;
             updateData.startDate = null;
             updateData.targetDate = null;
             updateData.endDate = null;
             updateData.workNotes = null;
         }
-        const updated = await prismaFlowly.caseDepartment.update({
-            where: { caseDepartmentId: request.caseDepartmentId },
-            data: updateData,
+        const createAssigneeId = requestedAssigneeIds !== undefined
+            ? await generateCaseDepartmentAssigneeId()
+            : null;
+        const result = await prismaFlowly.$transaction(async (tx) => {
+            const updated = await tx.caseDepartment.update({
+                where: { caseDepartmentId: request.caseDepartmentId },
+                data: updateData,
+            });
+            let addedAssigneeIds = [];
+            if (requestedAssigneeIds !== undefined) {
+                const assigneeClient = tx;
+                const existingAssignees = await assigneeClient.caseDepartmentAssignee.findMany({
+                    where: { caseDepartmentId: existing.caseDepartmentId },
+                    select: {
+                        caseDepartmentAssigneeId: true,
+                        employeeId: true,
+                        isDeleted: true,
+                    },
+                });
+                const existingActiveIds = new Set(existingAssignees
+                    .filter((item) => !item.isDeleted)
+                    .map((item) => item.employeeId));
+                const nextIds = new Set(requestedAssigneeIds);
+                const assigneeMap = new Map(existingAssignees.map((item) => [item.employeeId, item]));
+                const removedIds = Array.from(existingActiveIds).filter((id) => !nextIds.has(id));
+                addedAssigneeIds = Array.from(nextIds).filter((id) => !existingActiveIds.has(id));
+                const updates = [];
+                for (const employeeId of removedIds) {
+                    const record = assigneeMap.get(employeeId);
+                    if (!record)
+                        continue;
+                    updates.push(assigneeClient.caseDepartmentAssignee.update({
+                        where: { caseDepartmentAssigneeId: record.caseDepartmentAssigneeId },
+                        data: {
+                            isDeleted: true,
+                            isActive: false,
+                            deletedAt: now,
+                            deletedBy: requesterId,
+                            updatedAt: now,
+                            updatedBy: requesterId,
+                        },
+                    }));
+                }
+                for (const employeeId of addedAssigneeIds) {
+                    const record = assigneeMap.get(employeeId);
+                    if (record) {
+                        updates.push(assigneeClient.caseDepartmentAssignee.update({
+                            where: { caseDepartmentAssigneeId: record.caseDepartmentAssigneeId },
+                            data: {
+                                isDeleted: false,
+                                isActive: true,
+                                deletedAt: null,
+                                deletedBy: null,
+                                assignedAt: now,
+                                assignedBy: requesterId,
+                                updatedAt: now,
+                                updatedBy: requesterId,
+                            },
+                        }));
+                    }
+                    else if (createAssigneeId) {
+                        updates.push(assigneeClient.caseDepartmentAssignee.create({
+                            data: {
+                                caseDepartmentAssigneeId: createAssigneeId(),
+                                caseDepartmentId: existing.caseDepartmentId,
+                                employeeId,
+                                assignedAt: now,
+                                assignedBy: requesterId,
+                                isActive: true,
+                                isDeleted: false,
+                                createdAt: now,
+                                updatedAt: now,
+                                createdBy: requesterId,
+                                updatedBy: requesterId,
+                            },
+                        }));
+                    }
+                }
+                if (updates.length > 0) {
+                    await Promise.all(updates);
+                }
+            }
+            const updatedWithAssignees = await tx.caseDepartment.findUnique({
+                where: { caseDepartmentId: updated.caseDepartmentId },
+                include: {
+                    assignees: { where: { isDeleted: false } },
+                },
+            });
+            return {
+                updated: updatedWithAssignees ?? updated,
+                addedAssigneeIds,
+            };
         });
+        const updated = result.updated;
+        const addedAssigneeIds = result.addedAssigneeIds;
         const changes = buildChanges(before, updated, CASE_DEPARTMENT_FIELDS);
         if (changes.length > 0) {
             await writeAuditLog({
@@ -421,20 +464,18 @@ export class CaseDepartmentService {
                 meta: { caseId: updated.caseId },
             });
         }
-        if (request.assigneeEmployeeId !== undefined &&
-            request.assigneeEmployeeId !== null &&
-            request.assigneeEmployeeId !== existing.assigneeEmployeeId) {
+        if (addedAssigneeIds.length > 0) {
             try {
-                await CaseNotificationService.enqueueAssigneeNotification({
+                await CaseNotificationService.enqueueAssigneeNotifications({
                     caseId: updated.caseId,
                     caseDepartmentId: updated.caseDepartmentId,
                     sbuSubId: updated.sbuSubId,
-                    assigneeEmployeeId: request.assigneeEmployeeId,
+                    assigneeEmployeeIds: addedAssigneeIds,
                     requesterId,
                 });
             }
             catch (error) {
-                logger.warn("Failed to enqueue case assignee notification", {
+                logger.warn("Failed to enqueue case assignee notifications", {
                     caseDepartmentId: updated.caseDepartmentId,
                     error: error?.message ?? error,
                 });
@@ -507,7 +548,19 @@ export class CaseDepartmentService {
             ...(filters?.sbuSubId !== undefined ? { sbuSubId: filters.sbuSubId } : {}),
             ...(filters?.decisionStatus ? { decisionStatus: filters.decisionStatus } : {}),
             ...(filters?.assigneeEmployeeId !== undefined
-                ? { assigneeEmployeeId: filters.assigneeEmployeeId }
+                ? {
+                    OR: [
+                        {
+                            assignees: {
+                                some: {
+                                    employeeId: filters.assigneeEmployeeId,
+                                    isDeleted: false,
+                                },
+                            },
+                        },
+                        { assigneeEmployeeId: filters.assigneeEmployeeId },
+                    ],
+                }
                 : {}),
         };
         if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
@@ -529,6 +582,14 @@ export class CaseDepartmentService {
                 const picSbuSubIds = picSubs.map((sub) => sub.id);
                 const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
                 const orFilters = [
+                    {
+                        assignees: {
+                            some: {
+                                employeeId,
+                                isDeleted: false,
+                            },
+                        },
+                    },
                     { assigneeEmployeeId: employeeId },
                     { case: { requesterEmployeeId: employeeId } },
                     ...(picSbuSubIds.length > 0
@@ -559,6 +620,9 @@ export class CaseDepartmentService {
         const list = await prismaFlowly.caseDepartment.findMany({
             where: whereClause,
             orderBy: { createdAt: "desc" },
+            include: {
+                assignees: { where: { isDeleted: false } },
+            },
         });
         return list.map(toCaseDepartmentListResponse);
     }

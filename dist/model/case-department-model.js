@@ -1,4 +1,9 @@
 export function toCaseDepartmentResponse(department) {
+    const assignees = (department.assignees ?? []).filter((item) => item && item.employeeId);
+    const assigneeEmployeeIds = Array.from(new Set(assignees.map((item) => item.employeeId)));
+    if (assigneeEmployeeIds.length === 0 && department.assigneeEmployeeId) {
+        assigneeEmployeeIds.push(department.assigneeEmployeeId);
+    }
     return {
         caseDepartmentId: department.caseDepartmentId,
         caseId: department.caseId,
@@ -8,6 +13,12 @@ export function toCaseDepartmentResponse(department) {
         decisionBy: department.decisionBy ?? null,
         decisionNotes: department.decisionNotes ?? null,
         assigneeEmployeeId: department.assigneeEmployeeId ?? null,
+        assigneeEmployeeIds,
+        assignees: assignees.map((item) => ({
+            employeeId: item.employeeId,
+            assignedAt: item.assignedAt ?? null,
+            assignedBy: item.assignedBy ?? null,
+        })),
         assignedAt: department.assignedAt ?? null,
         assignedBy: department.assignedBy ?? null,
         workStatus: department.workStatus ?? null,

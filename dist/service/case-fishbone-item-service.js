@@ -4,7 +4,7 @@ import { CaseFishboneItemValidation } from "../validation/case-fishbone-item-val
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseFishboneItemId, generateCaseFishboneItemCauseId, } from "../utils/id-generator.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
-import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, resolveCaseAccess, } from "../utils/case-access.js";
+import { assertCaseCrud, assertCaseRead, ensureCaseNotClosed, isPicForSbuSub, isAssigneeForSbuSub, canEmployeeViewFishbone, resolveCaseAccess, } from "../utils/case-access.js";
 import { toCaseFishboneItemResponse, toCaseFishboneItemListResponse, } from "../model/case-fishbone-item-model.js";
 const normalizeCategoryCode = (value) => value.trim().toUpperCase();
 const ensureCategoryExists = async (categoryCode, requireActive = true) => {
@@ -35,13 +35,13 @@ const ensureCaseFishboneAccess = async (caseFishboneId, employeeId) => {
                 sbuSubId: fishbone.sbuSubId,
                 isDeleted: false,
             },
-            select: { assigneeEmployeeId: true },
+            select: { caseDepartmentId: true },
         });
         if (!department) {
             throw new ResponseError(404, "Case department not found");
         }
         const isPic = await isPicForSbuSub(employeeId, fishbone.sbuSubId);
-        const isAssignee = department.assigneeEmployeeId === employeeId;
+        const isAssignee = await isAssigneeForSbuSub(employeeId, fishbone.caseId, fishbone.sbuSubId);
         if (!isPic && !isAssignee) {
             throw new ResponseError(403, "No access to case fishbone");
         }
@@ -500,7 +500,10 @@ export class CaseFishboneItemService {
             if (!filters?.caseFishboneId) {
                 return [];
             }
-            await ensureCaseFishboneAccess(filters.caseFishboneId, access.employeeId);
+            const canView = await canEmployeeViewFishbone(access.employeeId, filters.caseFishboneId);
+            if (!canView) {
+                return [];
+            }
         }
         const categoryCode = filters?.categoryCode !== undefined
             ? normalizeCategoryCode(filters.categoryCode)
