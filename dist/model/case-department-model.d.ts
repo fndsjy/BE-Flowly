@@ -21,6 +21,7 @@ export type CaseDepartmentResponse = {
     targetDate: Date | null;
     endDate: Date | null;
     workNotes: string | null;
+    availableAssigneeEmployeeIds?: number[];
     isActive: boolean;
     isDeleted: boolean;
     createdAt: Date;
@@ -55,6 +56,7 @@ export declare function toCaseDepartmentResponse(department: CaseDepartment & {
         isDeleted?: boolean;
         isActive?: boolean;
     }>;
+    availableAssigneeEmployeeIds?: number[];
 }): CaseDepartmentResponse;
 export declare const toCaseDepartmentListResponse: typeof toCaseDepartmentResponse;
 //# sourceMappingURL=case-department-model.d.ts.map

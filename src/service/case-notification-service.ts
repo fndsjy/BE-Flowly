@@ -34,6 +34,115 @@ type CaseNotificationPayload = {
   updatedBy: string;
 };
 
+type RequesterNotificationRecipient = {
+  recipientEmployeeId: number;
+  role: "REQUESTER";
+  sbuSubId: number | null;
+  sbuSubName: string;
+  sbuSubCode: string;
+};
+
+const resolveRequesterEmployeeId = async (params: {
+  requesterId?: string | null | undefined;
+  requesterEmployeeId?: number | null | undefined;
+}) => {
+  if (params.requesterEmployeeId) {
+    return params.requesterEmployeeId;
+  }
+
+  const requesterId = params.requesterId?.trim();
+  if (!requesterId) return null;
+
+  const numericId = Number(requesterId);
+  if (!Number.isNaN(numericId)) {
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: numericId },
+      select: { UserId: true },
+    });
+    if (employee?.UserId) return employee.UserId;
+  }
+
+  const user = await prismaFlowly.user.findUnique({
+    where: { userId: requesterId, isDeleted: false },
+    select: { badgeNumber: true },
+  });
+  const badgeNumber = user?.badgeNumber?.trim();
+  if (!badgeNumber) return null;
+
+  const employee = await prismaEmployee.em_employee.findFirst({
+    where: { BadgeNum: badgeNumber },
+    select: { UserId: true },
+  });
+
+  return employee?.UserId ?? null;
+};
+
+const resolveRequesterNotificationRecipients = async (params: {
+  requesterId?: string | null | undefined;
+  requesterEmployeeId?: number | null | undefined;
+  originSbuSubId?: number | null | undefined;
+}) => {
+  const requesterEmployeeId = await resolveRequesterEmployeeId({
+    requesterId: params.requesterId,
+    requesterEmployeeId: params.requesterEmployeeId,
+  });
+
+  const recipients = new Map<number, RequesterNotificationRecipient>();
+
+  if (requesterEmployeeId) {
+    recipients.set(requesterEmployeeId, {
+      recipientEmployeeId: requesterEmployeeId,
+      role: "REQUESTER",
+      sbuSubId: params.originSbuSubId ?? null,
+      sbuSubName: "",
+      sbuSubCode: "",
+    });
+  }
+
+  if (params.originSbuSubId) {
+    const originSbuSub = await prismaEmployee.em_sbu_sub.findFirst({
+      where: {
+        id: params.originSbuSubId,
+        status: "A",
+        OR: [{ isDeleted: false }, { isDeleted: null }],
+      },
+      select: {
+        id: true,
+        pic: true,
+        sbu_sub_name: true,
+        sbu_sub_code: true,
+      },
+    });
+
+    if (originSbuSub) {
+      const sbuSubName = originSbuSub.sbu_sub_name;
+      const sbuSubCode = originSbuSub.sbu_sub_code ?? "";
+
+      if (requesterEmployeeId) {
+        recipients.set(requesterEmployeeId, {
+          recipientEmployeeId: requesterEmployeeId,
+          role: "REQUESTER",
+          sbuSubId: originSbuSub.id,
+          sbuSubName,
+          sbuSubCode,
+        });
+      }
+
+      if (originSbuSub.pic) {
+        recipients.set(originSbuSub.pic, {
+          recipientEmployeeId: originSbuSub.pic,
+          role: "REQUESTER",
+          sbuSubId: originSbuSub.id,
+          sbuSubName,
+          sbuSubCode,
+        });
+      }
+    }
+  }
+
+  return Array.from(recipients.values());
+};
+
 export class CaseNotificationService {
   static async enqueuePicNotifications(params: {
     caseId: string;
@@ -273,53 +382,71 @@ export class CaseNotificationService {
   }) {
     const caseHeader = await prismaFlowly.caseHeader.findUnique({
       where: { caseId: params.caseId },
-      select: { requesterId: true, requesterEmployeeId: true, isDeleted: true },
+      select: {
+        requesterId: true,
+        requesterEmployeeId: true,
+        originSbuSubId: true,
+        isDeleted: true,
+      },
     });
 
     if (!caseHeader || caseHeader.isDeleted) return;
 
-    let recipientEmployeeId = caseHeader.requesterEmployeeId ?? null;
-    if (!recipientEmployeeId && caseHeader.requesterId) {
-      const numericId = Number(caseHeader.requesterId);
-      if (Number.isFinite(numericId)) {
-        recipientEmployeeId = numericId;
-      }
-    }
-
-    if (!recipientEmployeeId) return;
-
-    const employee = await prismaEmployee.em_employee.findUnique({
-      where: { UserId: recipientEmployeeId },
-      select: { Phone: true },
+    const recipients = await resolveRequesterNotificationRecipients({
+      requesterId: caseHeader.requesterId,
+      requesterEmployeeId: caseHeader.requesterEmployeeId,
+      originSbuSubId: caseHeader.originSbuSubId,
     });
-    const phone = normalizePhone(employee?.Phone ?? null);
-    if (!phone) return;
+    if (recipients.length === 0) return;
+
+    const employees = await prismaEmployee.em_employee.findMany({
+      where: {
+        UserId: { in: recipients.map((item) => item.recipientEmployeeId) },
+      },
+      select: { UserId: true, Phone: true },
+    });
+    const employeeMap = new Map(employees.map((item) => [item.UserId, item]));
 
     const createId = await generateCaseNotificationId();
     const now = new Date();
-    await notificationClient.caseNotificationOutbox.create({
-      data: {
-        caseNotificationId: createId(),
-        caseId: params.caseId,
-        caseDepartmentId: params.caseDepartmentId,
-        recipientEmployeeId,
-        channel: "WHATSAPP",
-        phoneNumber: phone,
-        message: "",
-        status: "PENDING",
-        attempts: 0,
-        provider: "SYSTEM",
-        meta: JSON.stringify({
-          role: "REQUESTER",
-          action: "DECISION",
-        }),
-        isActive: true,
-        isDeleted: false,
-        createdAt: now,
-        updatedAt: now,
-        createdBy: params.requesterId,
-        updatedBy: params.requesterId,
-      },
+    const payloads = recipients
+      .map<CaseNotificationPayload | null>((recipient) => {
+        const employee = employeeMap.get(recipient.recipientEmployeeId);
+        const phone = normalizePhone(employee?.Phone ?? null);
+        if (!phone) return null;
+
+        return {
+          caseNotificationId: createId(),
+          caseId: params.caseId,
+          caseDepartmentId: params.caseDepartmentId,
+          recipientEmployeeId: recipient.recipientEmployeeId,
+          channel: "WHATSAPP",
+          phoneNumber: phone,
+          message: "",
+          status: "PENDING",
+          attempts: 0,
+          provider: "SYSTEM",
+          meta: JSON.stringify({
+            sbuSubId: recipient.sbuSubId,
+            sbuSubName: recipient.sbuSubName,
+            sbuSubCode: recipient.sbuSubCode,
+            role: recipient.role,
+            action: "DECISION",
+          }),
+          isActive: true,
+          isDeleted: false,
+          createdAt: now,
+          updatedAt: now,
+          createdBy: params.requesterId,
+          updatedBy: params.requesterId,
+        };
+      })
+      .filter((item): item is CaseNotificationPayload => item !== null);
+
+    if (payloads.length === 0) return;
+
+    await notificationClient.caseNotificationOutbox.createMany({
+      data: payloads,
     });
   }
 
@@ -342,31 +469,6 @@ export class CaseNotificationService {
     });
 
     if (!caseHeader || caseHeader.isDeleted) return;
-
-    const resolveRequesterEmployeeId = async () => {
-      if (caseHeader.requesterEmployeeId) return caseHeader.requesterEmployeeId;
-      const requesterId = caseHeader.requesterId ?? params.requesterId;
-      if (!requesterId) return null;
-      const numericId = Number(requesterId);
-      if (!Number.isNaN(numericId)) {
-        const employee = await prismaEmployee.em_employee.findUnique({
-          where: { UserId: numericId },
-          select: { UserId: true },
-        });
-        if (employee?.UserId) return employee.UserId;
-      }
-      const user = await prismaFlowly.user.findUnique({
-        where: { userId: requesterId, isDeleted: false },
-        select: { badgeNumber: true },
-      });
-      const badgeNumber = user?.badgeNumber?.trim();
-      if (!badgeNumber) return null;
-      const employee = await prismaEmployee.em_employee.findFirst({
-        where: { BadgeNum: badgeNumber },
-        select: { UserId: true },
-      });
-      return employee?.UserId ?? null;
-    };
 
     const departments = await prismaFlowly.caseDepartment.findMany({
       where: { caseId: params.caseId, isDeleted: false },
@@ -472,24 +574,35 @@ export class CaseNotificationService {
       addRecipient(dept, sbuSub?.pic, "PIC");
     }
 
-    const requesterEmployeeId = await resolveRequesterEmployeeId();
-    if (requesterEmployeeId) {
+    const requesterRecipients = await resolveRequesterNotificationRecipients({
+      requesterId: caseHeader.requesterId ?? params.requesterId,
+      requesterEmployeeId: caseHeader.requesterEmployeeId,
+      originSbuSubId: caseHeader.originSbuSubId,
+    });
+    if (requesterRecipients.length > 0) {
       const fallbackDept = departments[0];
       if (!fallbackDept) return;
-      const requesterDept = {
-        caseDepartmentId: null,
-        sbuSubId: caseHeader.originSbuSubId ?? fallbackDept.sbuSubId,
-      };
-      addRecipient(
-        requesterDept,
-        requesterEmployeeId,
-        "REQUESTER",
-        {
-          sbuSubName: requesterSbuSubName,
-          sbuSubCode: requesterSbuSubCode,
+      for (const requesterRecipient of requesterRecipients) {
+        const requesterDept = {
           caseDepartmentId: null,
-        }
-      );
+          sbuSubId:
+            requesterRecipient.sbuSubId ??
+            caseHeader.originSbuSubId ??
+            fallbackDept.sbuSubId,
+        };
+        addRecipient(
+          requesterDept,
+          requesterRecipient.recipientEmployeeId,
+          requesterRecipient.role,
+          {
+            sbuSubName:
+              requesterRecipient.sbuSubName || requesterSbuSubName,
+            sbuSubCode:
+              requesterRecipient.sbuSubCode || requesterSbuSubCode,
+            caseDepartmentId: null,
+          }
+        );
+      }
     }
 
     if (recipients.length === 0) return;

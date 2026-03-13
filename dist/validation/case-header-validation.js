@@ -32,7 +32,7 @@ export class CaseHeaderValidation {
         projectObjective: z.string().max(1000).optional().nullable(),
         locationDesc: z.string().max(255).optional().nullable(),
         notes: z.string().max(1000).optional().nullable(),
-        originSbuSubId: z.number().int().min(1).optional(),
+        originSbuSubId: z.number().int().min(1),
         visibility: caseVisibilitySchema.optional(),
         departmentSbuSubIds: z.array(z.number().int().min(1)).min(1),
     });
