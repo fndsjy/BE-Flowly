@@ -136,17 +136,114 @@ const ensureSbuSubExists = async (sbuSubId: number) => {
   }
 };
 
-const ensureEmployeeInSbuSub = async (employeeId: number, sbuSubId: number) => {
-  const employee = await prismaEmployee.em_employee.findUnique({
-    where: { UserId: employeeId },
-    select: { UserId: true, SbuSub: true },
+const getAllowedAssigneeEmployeeIds = async (sbuSubId: number) => {
+  const sbuSub = await prismaEmployee.em_sbu_sub.findFirst({
+    where: {
+      id: sbuSubId,
+      status: "A",
+      OR: [{ isDeleted: false }, { isDeleted: null }],
+    },
+    select: {
+      id: true,
+      sbu_id: true,
+      sbu_pilar: true,
+      pic: true,
+    },
   });
 
-  if (!employee) {
-    throw new ResponseError(404, "Employee not found");
+  if (!sbuSub) {
+    return [];
   }
-  // Temporary: allow assigning any employee regardless of SBU Sub.
-  void sbuSubId;
+
+  const chartNodes = await prismaFlowly.chart.findMany({
+    where: {
+      sbuSubId,
+      isDeleted: false,
+    },
+    select: { chartId: true },
+  });
+  const chartIds = chartNodes.map((item) => item.chartId);
+
+  const [sbu, pilar, chartMembers] = await Promise.all([
+    sbuSub.sbu_id
+      ? prismaEmployee.em_sbu.findFirst({
+          where: {
+            id: sbuSub.sbu_id,
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+          },
+          select: { pic: true },
+        })
+      : Promise.resolve(null),
+    sbuSub.sbu_pilar
+      ? prismaEmployee.em_pilar.findFirst({
+          where: {
+            id: sbuSub.sbu_pilar,
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+          },
+          select: { pic: true },
+        })
+      : Promise.resolve(null),
+    chartIds.length > 0
+      ? prismaFlowly.chartMember.findMany({
+          where: {
+            chartId: { in: chartIds },
+            isDeleted: false,
+            userId: { not: null },
+          },
+          select: { userId: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const allowedEmployeeIds = new Set<number>();
+
+  for (const member of chartMembers) {
+    if (typeof member.userId === "number" && member.userId > 0) {
+      allowedEmployeeIds.add(member.userId);
+    }
+  }
+
+  for (const picId of [sbuSub.pic, sbu?.pic ?? null, pilar?.pic ?? null]) {
+    if (typeof picId === "number" && picId > 0) {
+      allowedEmployeeIds.add(picId);
+    }
+  }
+
+  return Array.from(allowedEmployeeIds).sort((left, right) => left - right);
+};
+
+const ensureEmployeesAssignableForSbuSub = async (
+  employeeIds: number[],
+  sbuSubId: number
+) => {
+  if (employeeIds.length === 0) {
+    return;
+  }
+
+  const [employees, allowedAssigneeIds] = await Promise.all([
+    prismaEmployee.em_employee.findMany({
+      where: { UserId: { in: employeeIds } },
+      select: { UserId: true },
+    }),
+    getAllowedAssigneeEmployeeIds(sbuSubId),
+  ]);
+
+  const employeeSet = new Set(employees.map((item) => item.UserId));
+  const missingEmployeeId = employeeIds.find((id) => !employeeSet.has(id));
+  if (missingEmployeeId !== undefined) {
+    throw new ResponseError(404, `Employee not found: ${missingEmployeeId}`);
+  }
+
+  const allowedAssigneeSet = new Set(allowedAssigneeIds);
+  const invalidEmployeeId = employeeIds.find((id) => !allowedAssigneeSet.has(id));
+  if (invalidEmployeeId !== undefined) {
+    throw new ResponseError(
+      400,
+      "Employee is outside the allowed SBU Sub assignment scope"
+    );
+  }
 };
 
 const syncCaseHeaderStatus = async (caseId: string, requesterId: string) => {
@@ -391,36 +488,35 @@ export class CaseDepartmentService {
           : ensureWorkStatus(request.workStatus)
         : existing.workStatus;
 
-      let hasAssignmentUpdate = requestedAssigneeIds !== undefined;
-      const hasWorkUpdate =
-        request.workStatus !== undefined ||
-        request.startDate !== undefined ||
-        request.targetDate !== undefined ||
-        request.endDate !== undefined ||
-        request.workNotes !== undefined;
+    let hasAssignmentUpdate = requestedAssigneeIds !== undefined;
+    const hasWorkUpdate =
+      request.workStatus !== undefined ||
+      request.startDate !== undefined ||
+      request.targetDate !== undefined ||
+      request.endDate !== undefined ||
+      request.workNotes !== undefined;
 
-      if (request.decisionStatus !== undefined && nextDecisionStatus === "REJECT") {
-        requestedAssigneeIds = [];
-        hasAssignmentUpdate = true;
-      }
+    if (request.decisionStatus !== undefined && nextDecisionStatus === "REJECT") {
+      requestedAssigneeIds = [];
+      hasAssignmentUpdate = true;
+    }
 
-      if ((hasAssignmentUpdate || hasWorkUpdate) && nextDecisionStatus !== "ACCEPT") {
-        if (!(request.decisionStatus && nextDecisionStatus === "REJECT")) {
-          throw new ResponseError(400, "Case must be accepted before assignment");
-        }
+    if ((hasAssignmentUpdate || hasWorkUpdate) && nextDecisionStatus !== "ACCEPT") {
+      if (!(request.decisionStatus && nextDecisionStatus === "REJECT")) {
+        throw new ResponseError(400, "Case must be accepted before assignment");
       }
+    }
 
     if (nextDecisionStatus === "REJECT" && !nextDecisionNotes) {
       throw new ResponseError(400, "Komentar wajib diisi sebelum REJECT");
     }
 
-      if (hasAssignmentUpdate && requestedAssigneeIds) {
-        await Promise.all(
-          requestedAssigneeIds.map((assigneeId) =>
-            ensureEmployeeInSbuSub(assigneeId, existing.sbuSubId)
-          )
-        );
-      }
+    if (hasAssignmentUpdate && requestedAssigneeIds) {
+      await ensureEmployeesAssignableForSbuSub(
+        requestedAssigneeIds,
+        existing.sbuSubId
+      );
+    }
 
     const before = { ...existing } as Record<string, unknown>;
     const now = new Date();
@@ -457,12 +553,12 @@ export class CaseDepartmentService {
       updateData.decisionBy = requesterId;
     }
 
-      if (requestedAssigneeIds !== undefined) {
-        const primaryAssignee: number | null = requestedAssigneeIds[0] ?? null;
-        updateData.assigneeEmployeeId = primaryAssignee;
-        updateData.assignedAt = primaryAssignee ? now : null;
-        updateData.assignedBy = primaryAssignee ? requesterId : null;
-      }
+    if (requestedAssigneeIds !== undefined) {
+      const primaryAssignee: number | null = requestedAssigneeIds[0] ?? null;
+      updateData.assigneeEmployeeId = primaryAssignee;
+      updateData.assignedAt = primaryAssignee ? now : null;
+      updateData.assignedBy = primaryAssignee ? requesterId : null;
+    }
 
     if (request.decisionStatus !== undefined && nextDecisionStatus === "REJECT") {
       updateData.workStatus = null;
@@ -733,89 +829,106 @@ export class CaseDepartmentService {
       isDeleted: false,
       ...(access.actorType === "FLOWLY" && !access.canCrud ? { isActive: true } : {}),
       ...(filters?.caseId ? { caseId: filters.caseId } : {}),
-        ...(filters?.sbuSubId !== undefined ? { sbuSubId: filters.sbuSubId } : {}),
-        ...(filters?.decisionStatus ? { decisionStatus: filters.decisionStatus } : {}),
-        ...(filters?.assigneeEmployeeId !== undefined
-          ? {
-              OR: [
-                {
-                  assignees: {
-                    some: {
-                      employeeId: filters.assigneeEmployeeId,
-                      isDeleted: false,
-                    },
-                  },
-                },
-                { assigneeEmployeeId: filters.assigneeEmployeeId },
-              ],
-            }
-          : {}),
-      };
-
-      if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
-        const employeeId = access.employeeId;
-        if (filters?.caseId) {
-          const canView = await canEmployeeViewCase(employeeId, filters.caseId);
-          if (!canView) return [];
-        } else {
-          const picSubs = await prismaEmployee.em_sbu_sub.findMany({
-            where: {
-              pic: employeeId,
-              status: "A",
-              OR: [{ isDeleted: false }, { isDeleted: null }],
-            },
-            select: { id: true },
-          });
-          const picSbuSubIds = picSubs.map((sub) => sub.id);
-            const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
-
-            const orFilters: Prisma.CaseDepartmentWhereInput[] = [
+      ...(filters?.sbuSubId !== undefined ? { sbuSubId: filters.sbuSubId } : {}),
+      ...(filters?.decisionStatus ? { decisionStatus: filters.decisionStatus } : {}),
+      ...(filters?.assigneeEmployeeId !== undefined
+        ? {
+            OR: [
               {
                 assignees: {
                   some: {
-                    employeeId,
+                    employeeId: filters.assigneeEmployeeId,
                     isDeleted: false,
                   },
                 },
               },
-              { assigneeEmployeeId: employeeId },
-              { case: { requesterEmployeeId: employeeId } },
-              ...(picSbuSubIds.length > 0
-                ? [{ sbuSubId: { in: picSbuSubIds } }]
-                : []),
-            ];
+              { assigneeEmployeeId: filters.assigneeEmployeeId },
+            ],
+          }
+        : {}),
+    };
 
-          if (chartSbuSubIds.length > 0) {
-            orFilters.push({
-              case: {
-                visibility: "PUBLIC",
-                OR: [
-                  { originSbuSubId: { in: chartSbuSubIds } },
-                  {
-                    departments: {
-                      some: {
-                        sbuSubId: { in: chartSbuSubIds },
-                        isDeleted: false,
-                      },
+    if (access.actorType === "EMPLOYEE" && access.employeeId !== undefined) {
+      const employeeId = access.employeeId;
+      if (filters?.caseId) {
+        const canView = await canEmployeeViewCase(employeeId, filters.caseId);
+        if (!canView) return [];
+      } else {
+        const picSubs = await prismaEmployee.em_sbu_sub.findMany({
+          where: {
+            pic: employeeId,
+            status: "A",
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+          },
+          select: { id: true },
+        });
+        const picSbuSubIds = picSubs.map((sub) => sub.id);
+        const chartSbuSubIds = await getEmployeeChartSbuSubIds(employeeId);
+
+        const orFilters: Prisma.CaseDepartmentWhereInput[] = [
+          {
+            assignees: {
+              some: {
+                employeeId,
+                isDeleted: false,
+              },
+            },
+          },
+          { assigneeEmployeeId: employeeId },
+          { case: { requesterEmployeeId: employeeId } },
+          ...(picSbuSubIds.length > 0 ? [{ sbuSubId: { in: picSbuSubIds } }] : []),
+        ];
+
+        if (chartSbuSubIds.length > 0) {
+          orFilters.push({
+            case: {
+              visibility: "PUBLIC",
+              OR: [
+                { originSbuSubId: { in: chartSbuSubIds } },
+                {
+                  departments: {
+                    some: {
+                      sbuSubId: { in: chartSbuSubIds },
+                      isDeleted: false,
                     },
                   },
-                ],
-              },
-            } as Prisma.CaseDepartmentWhereInput);
-          }
-
-          whereClause.OR = orFilters;
+                },
+              ],
+            },
+          } as Prisma.CaseDepartmentWhereInput);
         }
+
+        whereClause.OR = orFilters;
       }
+    }
 
-      const list = await prismaFlowly.caseDepartment.findMany({
-        where: whereClause,
-        orderBy: { createdAt: "desc" },
-        include: {
-          assignees: { where: { isDeleted: false } },
-        },
-      });
+    const list = await prismaFlowly.caseDepartment.findMany({
+      where: whereClause,
+      orderBy: { createdAt: "desc" },
+      include: {
+        assignees: { where: { isDeleted: false } },
+      },
+    });
 
+    if (!filters?.caseId || list.length === 0) {
       return list.map(toCaseDepartmentListResponse);
+    }
+
+    const uniqueSbuSubIds = Array.from(new Set(list.map((item) => item.sbuSubId)));
+    const assigneeScopeEntries = await Promise.all(
+      uniqueSbuSubIds.map(async (sbuSubId) => [
+        sbuSubId,
+        await getAllowedAssigneeEmployeeIds(sbuSubId),
+      ] as const)
+    );
+    const assigneeScopeMap = new Map(assigneeScopeEntries);
+
+    return list.map((item) =>
+      toCaseDepartmentListResponse({
+        ...item,
+        availableAssigneeEmployeeIds:
+          assigneeScopeMap.get(item.sbuSubId) ?? [],
+      })
+    );
   }
 }

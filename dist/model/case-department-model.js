@@ -4,6 +4,9 @@ export function toCaseDepartmentResponse(department) {
     if (assigneeEmployeeIds.length === 0 && department.assigneeEmployeeId) {
         assigneeEmployeeIds.push(department.assigneeEmployeeId);
     }
+    const availableAssigneeEmployeeIds = Array.isArray(department.availableAssigneeEmployeeIds)
+        ? Array.from(new Set(department.availableAssigneeEmployeeIds.filter((item) => Number.isFinite(item) && item > 0)))
+        : undefined;
     return {
         caseDepartmentId: department.caseDepartmentId,
         caseId: department.caseId,
@@ -26,6 +29,9 @@ export function toCaseDepartmentResponse(department) {
         targetDate: department.targetDate ?? null,
         endDate: department.endDate ?? null,
         workNotes: department.workNotes ?? null,
+        ...(availableAssigneeEmployeeIds !== undefined
+            ? { availableAssigneeEmployeeIds }
+            : {}),
         isActive: department.isActive,
         isDeleted: department.isDeleted,
         createdAt: department.createdAt,

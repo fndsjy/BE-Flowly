@@ -22,6 +22,7 @@ export type CaseDepartmentResponse = {
   targetDate: Date | null;
   endDate: Date | null;
   workNotes: string | null;
+  availableAssigneeEmployeeIds?: number[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -62,6 +63,7 @@ export function toCaseDepartmentResponse(
       isDeleted?: boolean;
       isActive?: boolean;
     }>;
+    availableAssigneeEmployeeIds?: number[];
   }
 ): CaseDepartmentResponse {
   const assignees = (department.assignees ?? []).filter(
@@ -73,6 +75,17 @@ export function toCaseDepartmentResponse(
   if (assigneeEmployeeIds.length === 0 && department.assigneeEmployeeId) {
     assigneeEmployeeIds.push(department.assigneeEmployeeId);
   }
+  const availableAssigneeEmployeeIds = Array.isArray(
+    department.availableAssigneeEmployeeIds
+  )
+    ? Array.from(
+        new Set(
+          department.availableAssigneeEmployeeIds.filter(
+            (item) => Number.isFinite(item) && item > 0
+          )
+        )
+      )
+    : undefined;
 
   return {
     caseDepartmentId: department.caseDepartmentId,
@@ -96,6 +109,9 @@ export function toCaseDepartmentResponse(
     targetDate: department.targetDate ?? null,
     endDate: department.endDate ?? null,
     workNotes: department.workNotes ?? null,
+    ...(availableAssigneeEmployeeIds !== undefined
+      ? { availableAssigneeEmployeeIds }
+      : {}),
     isActive: department.isActive,
     isDeleted: department.isDeleted,
     createdAt: department.createdAt,
