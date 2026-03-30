@@ -4,6 +4,48 @@ import { verifyToken } from "../utils/auth.js";
 import { ResponseError } from "../error/response-error.js";
 
 export class EmployeeController {
+  static async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await EmployeeService.create(payload.userId, req.body);
+
+      res.status(201).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await EmployeeService.update(payload.userId, req.body);
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async remove(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await EmployeeService.remove(payload.userId, req.body);
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async listForPIC(req: Request, res: Response, next: NextFunction) {
     try {
       // // 1. Ambil token dari cookie
@@ -16,6 +58,16 @@ export class EmployeeController {
 
       // 3. Panggil service
       const response = await EmployeeService.listForPIC();
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async listDepartments(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await EmployeeService.listDepartments();
 
       res.status(200).json({ response });
     } catch (err) {

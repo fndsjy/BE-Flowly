@@ -396,7 +396,14 @@ exports.Prisma.Em_employeeScalarFieldEnum = {
   ResignDate: 'ResignDate',
   status: 'status',
   roleId: 'roleId',
-  jobDesc: 'jobDesc'
+  jobDesc: 'jobDesc',
+  city: 'city',
+  state: 'state',
+  email: 'email',
+  IPMsnFinger: 'IPMsnFinger',
+  BPJSKshtn: 'BPJSKshtn',
+  BPJSKtngkerjaan: 'BPJSKtngkerjaan',
+  statusLMS: 'statusLMS'
 };
 
 exports.Prisma.Em_eventScalarFieldEnum = {
@@ -650,7 +657,8 @@ exports.Prisma.Em_materi1ScalarFieldEnum = {
   status: 'status',
   created_by: 'created_by',
   created_at: 'created_at',
-  lastupdate: 'lastupdate'
+  lastupdate: 'lastupdate',
+  global_sequence: 'global_sequence'
 };
 
 exports.Prisma.Em_materi2ScalarFieldEnum = {
@@ -972,6 +980,23 @@ exports.Prisma.Em_usersScalarFieldEnum = {
   Pass_Access_Menu: 'Pass_Access_Menu'
 };
 
+exports.Prisma.Em_users_learningScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  materi_id: 'materi_id',
+  start_date: 'start_date',
+  duration_day: 'duration_day',
+  due_date: 'due_date',
+  reminder_day: 'reminder_day',
+  reminder_sent: 'reminder_sent',
+  status: 'status',
+  created_at: 'created_at',
+  is_active: 'is_active',
+  exam_status: 'exam_status',
+  attempt_count: 'attempt_count',
+  passed_at: 'passed_at'
+};
+
 exports.Prisma.Em_verify_linksScalarFieldEnum = {
   id: 'id',
   applicant_id: 'applicant_id',
@@ -1160,6 +1185,7 @@ exports.Prisma.ModelName = {
   em_user_dashboard: 'em_user_dashboard',
   em_user_list: 'em_user_list',
   em_users: 'em_users',
+  em_users_learning: 'em_users_learning',
   em_verify_links: 'em_verify_links',
   em_wa_templates: 'em_wa_templates',
   em_worktype: 'em_worktype',

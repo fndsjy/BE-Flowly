@@ -155,6 +155,11 @@ export type AccessRole = $Result.DefaultSelection<Prisma.$AccessRolePayload>
  */
 export type MasterAccessRole = $Result.DefaultSelection<Prisma.$MasterAccessRolePayload>
 /**
+ * Model PortalMenuMap
+ * Portal-to-menu mapping so one menu can be reused across many OMS portals
+ */
+export type PortalMenuMap = $Result.DefaultSelection<Prisma.$PortalMenuMapPayload>
+/**
  * Model AuditLog
  * Audit log for tracking CRUD and revision actions
  */
@@ -557,6 +562,16 @@ export class PrismaClient<
     * ```
     */
   get masterAccessRole(): Prisma.MasterAccessRoleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.portalMenuMap`: Exposes CRUD operations for the **PortalMenuMap** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PortalMenuMaps
+    * const portalMenuMaps = await prisma.portalMenuMap.findMany()
+    * ```
+    */
+  get portalMenuMap(): Prisma.PortalMenuMapDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
@@ -1036,6 +1051,7 @@ export namespace Prisma {
     jabatan: 'jabatan',
     AccessRole: 'AccessRole',
     MasterAccessRole: 'MasterAccessRole',
+    PortalMenuMap: 'PortalMenuMap',
     AuditLog: 'AuditLog'
   };
 
@@ -1055,7 +1071,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseDepartmentAssignee" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "casePdcaItem" | "caseFeedbackComment" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "auditLog"
+      modelProps: "role" | "user" | "chart" | "chartMember" | "procedureSop" | "masterIK" | "procedureSopIK" | "caseHeader" | "caseDepartment" | "caseDepartmentAssignee" | "caseNotificationOutbox" | "caseNotificationMessage" | "caseNotificationTemplate" | "caseAttachment" | "masterFishbone" | "caseFishboneMaster" | "caseFishboneCause" | "caseFishboneItem" | "caseFishboneItemCause" | "casePdcaItem" | "caseFeedbackComment" | "fishboneCategory" | "fishboneCause" | "fishboneItem" | "fishboneItemCause" | "jabatan" | "accessRole" | "masterAccessRole" | "portalMenuMap" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2907,6 +2923,72 @@ export namespace Prisma {
           }
         }
       }
+      PortalMenuMap: {
+        payload: Prisma.$PortalMenuMapPayload<ExtArgs>
+        fields: Prisma.PortalMenuMapFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PortalMenuMapFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PortalMenuMapFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>
+          }
+          findFirst: {
+            args: Prisma.PortalMenuMapFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PortalMenuMapFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>
+          }
+          findMany: {
+            args: Prisma.PortalMenuMapFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>[]
+          }
+          create: {
+            args: Prisma.PortalMenuMapCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>
+          }
+          createMany: {
+            args: Prisma.PortalMenuMapCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PortalMenuMapDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>
+          }
+          update: {
+            args: Prisma.PortalMenuMapUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>
+          }
+          deleteMany: {
+            args: Prisma.PortalMenuMapDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PortalMenuMapUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PortalMenuMapUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PortalMenuMapPayload>
+          }
+          aggregate: {
+            args: Prisma.PortalMenuMapAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePortalMenuMap>
+          }
+          groupBy: {
+            args: Prisma.PortalMenuMapGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PortalMenuMapGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PortalMenuMapCountArgs<ExtArgs>
+            result: $Utils.Optional<PortalMenuMapCountAggregateOutputType> | number
+          }
+        }
+      }
       AuditLog: {
         payload: Prisma.$AuditLogPayload<ExtArgs>
         fields: Prisma.AuditLogFieldRefs
@@ -3097,6 +3179,7 @@ export namespace Prisma {
     jabatan?: jabatanOmit
     accessRole?: AccessRoleOmit
     masterAccessRole?: MasterAccessRoleOmit
+    portalMenuMap?: PortalMenuMapOmit
     auditLog?: AuditLogOmit
   }
 
@@ -3757,6 +3840,46 @@ export namespace Prisma {
    */
   export type FishboneItemCountOutputTypeCountCauseLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FishboneItemCauseWhereInput
+  }
+
+
+  /**
+   * Count Type MasterAccessRoleCountOutputType
+   */
+
+  export type MasterAccessRoleCountOutputType = {
+    portalMenus: number
+    menuPortals: number
+  }
+
+  export type MasterAccessRoleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    portalMenus?: boolean | MasterAccessRoleCountOutputTypeCountPortalMenusArgs
+    menuPortals?: boolean | MasterAccessRoleCountOutputTypeCountMenuPortalsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MasterAccessRoleCountOutputType without action
+   */
+  export type MasterAccessRoleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterAccessRoleCountOutputType
+     */
+    select?: MasterAccessRoleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MasterAccessRoleCountOutputType without action
+   */
+  export type MasterAccessRoleCountOutputTypeCountPortalMenusArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PortalMenuMapWhereInput
+  }
+
+  /**
+   * MasterAccessRoleCountOutputType without action
+   */
+  export type MasterAccessRoleCountOutputTypeCountMenuPortalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PortalMenuMapWhereInput
   }
 
 
@@ -33777,6 +33900,9 @@ export namespace Prisma {
     updatedBy?: boolean
     deletedAt?: boolean
     deletedBy?: boolean
+    portalMenus?: boolean | MasterAccessRole$portalMenusArgs<ExtArgs>
+    menuPortals?: boolean | MasterAccessRole$menuPortalsArgs<ExtArgs>
+    _count?: boolean | MasterAccessRoleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["masterAccessRole"]>
 
 
@@ -33800,10 +33926,18 @@ export namespace Prisma {
   }
 
   export type MasterAccessRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"masAccessId" | "resourceType" | "resourceKey" | "displayName" | "route" | "parentKey" | "orderIndex" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterAccessRole"]>
+  export type MasterAccessRoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    portalMenus?: boolean | MasterAccessRole$portalMenusArgs<ExtArgs>
+    menuPortals?: boolean | MasterAccessRole$menuPortalsArgs<ExtArgs>
+    _count?: boolean | MasterAccessRoleCountOutputTypeDefaultArgs<ExtArgs>
+  }
 
   export type $MasterAccessRolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MasterAccessRole"
-    objects: {}
+    objects: {
+      portalMenus: Prisma.$PortalMenuMapPayload<ExtArgs>[]
+      menuPortals: Prisma.$PortalMenuMapPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       masAccessId: string
       resourceType: string
@@ -34160,6 +34294,8 @@ export namespace Prisma {
    */
   export interface Prisma__MasterAccessRoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    portalMenus<T extends MasterAccessRole$portalMenusArgs<ExtArgs> = {}>(args?: Subset<T, MasterAccessRole$portalMenusArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    menuPortals<T extends MasterAccessRole$menuPortalsArgs<ExtArgs> = {}>(args?: Subset<T, MasterAccessRole$menuPortalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -34221,6 +34357,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * Filter, which MasterAccessRole to fetch.
      */
     where: MasterAccessRoleWhereUniqueInput
@@ -34239,6 +34379,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * Filter, which MasterAccessRole to fetch.
      */
     where: MasterAccessRoleWhereUniqueInput
@@ -34256,6 +34400,10 @@ export namespace Prisma {
      * Omit specific fields from the MasterAccessRole
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
     /**
      * Filter, which MasterAccessRole to fetch.
      */
@@ -34305,6 +34453,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * Filter, which MasterAccessRole to fetch.
      */
     where?: MasterAccessRoleWhereInput
@@ -34353,6 +34505,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * Filter, which MasterAccessRoles to fetch.
      */
     where?: MasterAccessRoleWhereInput
@@ -34396,6 +34552,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * The data needed to create a MasterAccessRole.
      */
     data: XOR<MasterAccessRoleCreateInput, MasterAccessRoleUncheckedCreateInput>
@@ -34423,6 +34583,10 @@ export namespace Prisma {
      * Omit specific fields from the MasterAccessRole
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
     /**
      * The data needed to update a MasterAccessRole.
      */
@@ -34464,6 +34628,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * The filter to search for the MasterAccessRole to update in case it exists.
      */
     where: MasterAccessRoleWhereUniqueInput
@@ -34490,6 +34658,10 @@ export namespace Prisma {
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+    /**
      * Filter which MasterAccessRole to delete.
      */
     where: MasterAccessRoleWhereUniqueInput
@@ -34510,6 +34682,54 @@ export namespace Prisma {
   }
 
   /**
+   * MasterAccessRole.portalMenus
+   */
+  export type MasterAccessRole$portalMenusArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    where?: PortalMenuMapWhereInput
+    orderBy?: PortalMenuMapOrderByWithRelationInput | PortalMenuMapOrderByWithRelationInput[]
+    cursor?: PortalMenuMapWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PortalMenuMapScalarFieldEnum | PortalMenuMapScalarFieldEnum[]
+  }
+
+  /**
+   * MasterAccessRole.menuPortals
+   */
+  export type MasterAccessRole$menuPortalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    where?: PortalMenuMapWhereInput
+    orderBy?: PortalMenuMapOrderByWithRelationInput | PortalMenuMapOrderByWithRelationInput[]
+    cursor?: PortalMenuMapWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PortalMenuMapScalarFieldEnum | PortalMenuMapScalarFieldEnum[]
+  }
+
+  /**
    * MasterAccessRole without action
    */
   export type MasterAccessRoleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -34521,6 +34741,1053 @@ export namespace Prisma {
      * Omit specific fields from the MasterAccessRole
      */
     omit?: MasterAccessRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterAccessRoleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PortalMenuMap
+   */
+
+  export type AggregatePortalMenuMap = {
+    _count: PortalMenuMapCountAggregateOutputType | null
+    _avg: PortalMenuMapAvgAggregateOutputType | null
+    _sum: PortalMenuMapSumAggregateOutputType | null
+    _min: PortalMenuMapMinAggregateOutputType | null
+    _max: PortalMenuMapMaxAggregateOutputType | null
+  }
+
+  export type PortalMenuMapAvgAggregateOutputType = {
+    orderIndex: number | null
+  }
+
+  export type PortalMenuMapSumAggregateOutputType = {
+    orderIndex: number | null
+  }
+
+  export type PortalMenuMapMinAggregateOutputType = {
+    portalMenuMapId: string | null
+    portalMasAccessId: string | null
+    menuMasAccessId: string | null
+    orderIndex: number | null
+    isActive: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type PortalMenuMapMaxAggregateOutputType = {
+    portalMenuMapId: string | null
+    portalMasAccessId: string | null
+    menuMasAccessId: string | null
+    orderIndex: number | null
+    isActive: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    deletedAt: Date | null
+    deletedBy: string | null
+  }
+
+  export type PortalMenuMapCountAggregateOutputType = {
+    portalMenuMapId: number
+    portalMasAccessId: number
+    menuMasAccessId: number
+    orderIndex: number
+    isActive: number
+    isDeleted: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    deletedAt: number
+    deletedBy: number
+    _all: number
+  }
+
+
+  export type PortalMenuMapAvgAggregateInputType = {
+    orderIndex?: true
+  }
+
+  export type PortalMenuMapSumAggregateInputType = {
+    orderIndex?: true
+  }
+
+  export type PortalMenuMapMinAggregateInputType = {
+    portalMenuMapId?: true
+    portalMasAccessId?: true
+    menuMasAccessId?: true
+    orderIndex?: true
+    isActive?: true
+    isDeleted?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type PortalMenuMapMaxAggregateInputType = {
+    portalMenuMapId?: true
+    portalMasAccessId?: true
+    menuMasAccessId?: true
+    orderIndex?: true
+    isActive?: true
+    isDeleted?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    deletedAt?: true
+    deletedBy?: true
+  }
+
+  export type PortalMenuMapCountAggregateInputType = {
+    portalMenuMapId?: true
+    portalMasAccessId?: true
+    menuMasAccessId?: true
+    orderIndex?: true
+    isActive?: true
+    isDeleted?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    deletedAt?: true
+    deletedBy?: true
+    _all?: true
+  }
+
+  export type PortalMenuMapAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PortalMenuMap to aggregate.
+     */
+    where?: PortalMenuMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PortalMenuMaps to fetch.
+     */
+    orderBy?: PortalMenuMapOrderByWithRelationInput | PortalMenuMapOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PortalMenuMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PortalMenuMaps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PortalMenuMaps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PortalMenuMaps
+    **/
+    _count?: true | PortalMenuMapCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PortalMenuMapAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PortalMenuMapSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PortalMenuMapMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PortalMenuMapMaxAggregateInputType
+  }
+
+  export type GetPortalMenuMapAggregateType<T extends PortalMenuMapAggregateArgs> = {
+        [P in keyof T & keyof AggregatePortalMenuMap]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePortalMenuMap[P]>
+      : GetScalarType<T[P], AggregatePortalMenuMap[P]>
+  }
+
+
+
+
+  export type PortalMenuMapGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PortalMenuMapWhereInput
+    orderBy?: PortalMenuMapOrderByWithAggregationInput | PortalMenuMapOrderByWithAggregationInput[]
+    by: PortalMenuMapScalarFieldEnum[] | PortalMenuMapScalarFieldEnum
+    having?: PortalMenuMapScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PortalMenuMapCountAggregateInputType | true
+    _avg?: PortalMenuMapAvgAggregateInputType
+    _sum?: PortalMenuMapSumAggregateInputType
+    _min?: PortalMenuMapMinAggregateInputType
+    _max?: PortalMenuMapMaxAggregateInputType
+  }
+
+  export type PortalMenuMapGroupByOutputType = {
+    portalMenuMapId: string
+    portalMasAccessId: string
+    menuMasAccessId: string
+    orderIndex: number
+    isActive: boolean
+    isDeleted: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    deletedAt: Date | null
+    deletedBy: string | null
+    _count: PortalMenuMapCountAggregateOutputType | null
+    _avg: PortalMenuMapAvgAggregateOutputType | null
+    _sum: PortalMenuMapSumAggregateOutputType | null
+    _min: PortalMenuMapMinAggregateOutputType | null
+    _max: PortalMenuMapMaxAggregateOutputType | null
+  }
+
+  type GetPortalMenuMapGroupByPayload<T extends PortalMenuMapGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PortalMenuMapGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PortalMenuMapGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PortalMenuMapGroupByOutputType[P]>
+            : GetScalarType<T[P], PortalMenuMapGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PortalMenuMapSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    portalMenuMapId?: boolean
+    portalMasAccessId?: boolean
+    menuMasAccessId?: boolean
+    orderIndex?: boolean
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+    portal?: boolean | MasterAccessRoleDefaultArgs<ExtArgs>
+    menu?: boolean | MasterAccessRoleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["portalMenuMap"]>
+
+
+
+  export type PortalMenuMapSelectScalar = {
+    portalMenuMapId?: boolean
+    portalMasAccessId?: boolean
+    menuMasAccessId?: boolean
+    orderIndex?: boolean
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    deletedAt?: boolean
+    deletedBy?: boolean
+  }
+
+  export type PortalMenuMapOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"portalMenuMapId" | "portalMasAccessId" | "menuMasAccessId" | "orderIndex" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["portalMenuMap"]>
+  export type PortalMenuMapInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    portal?: boolean | MasterAccessRoleDefaultArgs<ExtArgs>
+    menu?: boolean | MasterAccessRoleDefaultArgs<ExtArgs>
+  }
+
+  export type $PortalMenuMapPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PortalMenuMap"
+    objects: {
+      portal: Prisma.$MasterAccessRolePayload<ExtArgs>
+      menu: Prisma.$MasterAccessRolePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      portalMenuMapId: string
+      portalMasAccessId: string
+      menuMasAccessId: string
+      orderIndex: number
+      isActive: boolean
+      isDeleted: boolean
+      createdAt: Date
+      createdBy: string | null
+      updatedAt: Date
+      updatedBy: string | null
+      deletedAt: Date | null
+      deletedBy: string | null
+    }, ExtArgs["result"]["portalMenuMap"]>
+    composites: {}
+  }
+
+  type PortalMenuMapGetPayload<S extends boolean | null | undefined | PortalMenuMapDefaultArgs> = $Result.GetResult<Prisma.$PortalMenuMapPayload, S>
+
+  type PortalMenuMapCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PortalMenuMapFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PortalMenuMapCountAggregateInputType | true
+    }
+
+  export interface PortalMenuMapDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PortalMenuMap'], meta: { name: 'PortalMenuMap' } }
+    /**
+     * Find zero or one PortalMenuMap that matches the filter.
+     * @param {PortalMenuMapFindUniqueArgs} args - Arguments to find a PortalMenuMap
+     * @example
+     * // Get one PortalMenuMap
+     * const portalMenuMap = await prisma.portalMenuMap.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PortalMenuMapFindUniqueArgs>(args: SelectSubset<T, PortalMenuMapFindUniqueArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PortalMenuMap that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PortalMenuMapFindUniqueOrThrowArgs} args - Arguments to find a PortalMenuMap
+     * @example
+     * // Get one PortalMenuMap
+     * const portalMenuMap = await prisma.portalMenuMap.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PortalMenuMapFindUniqueOrThrowArgs>(args: SelectSubset<T, PortalMenuMapFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PortalMenuMap that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapFindFirstArgs} args - Arguments to find a PortalMenuMap
+     * @example
+     * // Get one PortalMenuMap
+     * const portalMenuMap = await prisma.portalMenuMap.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PortalMenuMapFindFirstArgs>(args?: SelectSubset<T, PortalMenuMapFindFirstArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PortalMenuMap that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapFindFirstOrThrowArgs} args - Arguments to find a PortalMenuMap
+     * @example
+     * // Get one PortalMenuMap
+     * const portalMenuMap = await prisma.portalMenuMap.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PortalMenuMapFindFirstOrThrowArgs>(args?: SelectSubset<T, PortalMenuMapFindFirstOrThrowArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PortalMenuMaps that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PortalMenuMaps
+     * const portalMenuMaps = await prisma.portalMenuMap.findMany()
+     * 
+     * // Get first 10 PortalMenuMaps
+     * const portalMenuMaps = await prisma.portalMenuMap.findMany({ take: 10 })
+     * 
+     * // Only select the `portalMenuMapId`
+     * const portalMenuMapWithPortalMenuMapIdOnly = await prisma.portalMenuMap.findMany({ select: { portalMenuMapId: true } })
+     * 
+     */
+    findMany<T extends PortalMenuMapFindManyArgs>(args?: SelectSubset<T, PortalMenuMapFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PortalMenuMap.
+     * @param {PortalMenuMapCreateArgs} args - Arguments to create a PortalMenuMap.
+     * @example
+     * // Create one PortalMenuMap
+     * const PortalMenuMap = await prisma.portalMenuMap.create({
+     *   data: {
+     *     // ... data to create a PortalMenuMap
+     *   }
+     * })
+     * 
+     */
+    create<T extends PortalMenuMapCreateArgs>(args: SelectSubset<T, PortalMenuMapCreateArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PortalMenuMaps.
+     * @param {PortalMenuMapCreateManyArgs} args - Arguments to create many PortalMenuMaps.
+     * @example
+     * // Create many PortalMenuMaps
+     * const portalMenuMap = await prisma.portalMenuMap.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PortalMenuMapCreateManyArgs>(args?: SelectSubset<T, PortalMenuMapCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PortalMenuMap.
+     * @param {PortalMenuMapDeleteArgs} args - Arguments to delete one PortalMenuMap.
+     * @example
+     * // Delete one PortalMenuMap
+     * const PortalMenuMap = await prisma.portalMenuMap.delete({
+     *   where: {
+     *     // ... filter to delete one PortalMenuMap
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PortalMenuMapDeleteArgs>(args: SelectSubset<T, PortalMenuMapDeleteArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PortalMenuMap.
+     * @param {PortalMenuMapUpdateArgs} args - Arguments to update one PortalMenuMap.
+     * @example
+     * // Update one PortalMenuMap
+     * const portalMenuMap = await prisma.portalMenuMap.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PortalMenuMapUpdateArgs>(args: SelectSubset<T, PortalMenuMapUpdateArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PortalMenuMaps.
+     * @param {PortalMenuMapDeleteManyArgs} args - Arguments to filter PortalMenuMaps to delete.
+     * @example
+     * // Delete a few PortalMenuMaps
+     * const { count } = await prisma.portalMenuMap.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PortalMenuMapDeleteManyArgs>(args?: SelectSubset<T, PortalMenuMapDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PortalMenuMaps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PortalMenuMaps
+     * const portalMenuMap = await prisma.portalMenuMap.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PortalMenuMapUpdateManyArgs>(args: SelectSubset<T, PortalMenuMapUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PortalMenuMap.
+     * @param {PortalMenuMapUpsertArgs} args - Arguments to update or create a PortalMenuMap.
+     * @example
+     * // Update or create a PortalMenuMap
+     * const portalMenuMap = await prisma.portalMenuMap.upsert({
+     *   create: {
+     *     // ... data to create a PortalMenuMap
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PortalMenuMap we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PortalMenuMapUpsertArgs>(args: SelectSubset<T, PortalMenuMapUpsertArgs<ExtArgs>>): Prisma__PortalMenuMapClient<$Result.GetResult<Prisma.$PortalMenuMapPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PortalMenuMaps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapCountArgs} args - Arguments to filter PortalMenuMaps to count.
+     * @example
+     * // Count the number of PortalMenuMaps
+     * const count = await prisma.portalMenuMap.count({
+     *   where: {
+     *     // ... the filter for the PortalMenuMaps we want to count
+     *   }
+     * })
+    **/
+    count<T extends PortalMenuMapCountArgs>(
+      args?: Subset<T, PortalMenuMapCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PortalMenuMapCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PortalMenuMap.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PortalMenuMapAggregateArgs>(args: Subset<T, PortalMenuMapAggregateArgs>): Prisma.PrismaPromise<GetPortalMenuMapAggregateType<T>>
+
+    /**
+     * Group by PortalMenuMap.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PortalMenuMapGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PortalMenuMapGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PortalMenuMapGroupByArgs['orderBy'] }
+        : { orderBy?: PortalMenuMapGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PortalMenuMapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPortalMenuMapGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PortalMenuMap model
+   */
+  readonly fields: PortalMenuMapFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PortalMenuMap.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PortalMenuMapClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    portal<T extends MasterAccessRoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MasterAccessRoleDefaultArgs<ExtArgs>>): Prisma__MasterAccessRoleClient<$Result.GetResult<Prisma.$MasterAccessRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    menu<T extends MasterAccessRoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MasterAccessRoleDefaultArgs<ExtArgs>>): Prisma__MasterAccessRoleClient<$Result.GetResult<Prisma.$MasterAccessRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PortalMenuMap model
+   */
+  interface PortalMenuMapFieldRefs {
+    readonly portalMenuMapId: FieldRef<"PortalMenuMap", 'String'>
+    readonly portalMasAccessId: FieldRef<"PortalMenuMap", 'String'>
+    readonly menuMasAccessId: FieldRef<"PortalMenuMap", 'String'>
+    readonly orderIndex: FieldRef<"PortalMenuMap", 'Int'>
+    readonly isActive: FieldRef<"PortalMenuMap", 'Boolean'>
+    readonly isDeleted: FieldRef<"PortalMenuMap", 'Boolean'>
+    readonly createdAt: FieldRef<"PortalMenuMap", 'DateTime'>
+    readonly createdBy: FieldRef<"PortalMenuMap", 'String'>
+    readonly updatedAt: FieldRef<"PortalMenuMap", 'DateTime'>
+    readonly updatedBy: FieldRef<"PortalMenuMap", 'String'>
+    readonly deletedAt: FieldRef<"PortalMenuMap", 'DateTime'>
+    readonly deletedBy: FieldRef<"PortalMenuMap", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PortalMenuMap findUnique
+   */
+  export type PortalMenuMapFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * Filter, which PortalMenuMap to fetch.
+     */
+    where: PortalMenuMapWhereUniqueInput
+  }
+
+  /**
+   * PortalMenuMap findUniqueOrThrow
+   */
+  export type PortalMenuMapFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * Filter, which PortalMenuMap to fetch.
+     */
+    where: PortalMenuMapWhereUniqueInput
+  }
+
+  /**
+   * PortalMenuMap findFirst
+   */
+  export type PortalMenuMapFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * Filter, which PortalMenuMap to fetch.
+     */
+    where?: PortalMenuMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PortalMenuMaps to fetch.
+     */
+    orderBy?: PortalMenuMapOrderByWithRelationInput | PortalMenuMapOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PortalMenuMaps.
+     */
+    cursor?: PortalMenuMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PortalMenuMaps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PortalMenuMaps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PortalMenuMaps.
+     */
+    distinct?: PortalMenuMapScalarFieldEnum | PortalMenuMapScalarFieldEnum[]
+  }
+
+  /**
+   * PortalMenuMap findFirstOrThrow
+   */
+  export type PortalMenuMapFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * Filter, which PortalMenuMap to fetch.
+     */
+    where?: PortalMenuMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PortalMenuMaps to fetch.
+     */
+    orderBy?: PortalMenuMapOrderByWithRelationInput | PortalMenuMapOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PortalMenuMaps.
+     */
+    cursor?: PortalMenuMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PortalMenuMaps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PortalMenuMaps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PortalMenuMaps.
+     */
+    distinct?: PortalMenuMapScalarFieldEnum | PortalMenuMapScalarFieldEnum[]
+  }
+
+  /**
+   * PortalMenuMap findMany
+   */
+  export type PortalMenuMapFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * Filter, which PortalMenuMaps to fetch.
+     */
+    where?: PortalMenuMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PortalMenuMaps to fetch.
+     */
+    orderBy?: PortalMenuMapOrderByWithRelationInput | PortalMenuMapOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PortalMenuMaps.
+     */
+    cursor?: PortalMenuMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PortalMenuMaps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PortalMenuMaps.
+     */
+    skip?: number
+    distinct?: PortalMenuMapScalarFieldEnum | PortalMenuMapScalarFieldEnum[]
+  }
+
+  /**
+   * PortalMenuMap create
+   */
+  export type PortalMenuMapCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PortalMenuMap.
+     */
+    data: XOR<PortalMenuMapCreateInput, PortalMenuMapUncheckedCreateInput>
+  }
+
+  /**
+   * PortalMenuMap createMany
+   */
+  export type PortalMenuMapCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PortalMenuMaps.
+     */
+    data: PortalMenuMapCreateManyInput | PortalMenuMapCreateManyInput[]
+  }
+
+  /**
+   * PortalMenuMap update
+   */
+  export type PortalMenuMapUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PortalMenuMap.
+     */
+    data: XOR<PortalMenuMapUpdateInput, PortalMenuMapUncheckedUpdateInput>
+    /**
+     * Choose, which PortalMenuMap to update.
+     */
+    where: PortalMenuMapWhereUniqueInput
+  }
+
+  /**
+   * PortalMenuMap updateMany
+   */
+  export type PortalMenuMapUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PortalMenuMaps.
+     */
+    data: XOR<PortalMenuMapUpdateManyMutationInput, PortalMenuMapUncheckedUpdateManyInput>
+    /**
+     * Filter which PortalMenuMaps to update
+     */
+    where?: PortalMenuMapWhereInput
+    /**
+     * Limit how many PortalMenuMaps to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PortalMenuMap upsert
+   */
+  export type PortalMenuMapUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PortalMenuMap to update in case it exists.
+     */
+    where: PortalMenuMapWhereUniqueInput
+    /**
+     * In case the PortalMenuMap found by the `where` argument doesn't exist, create a new PortalMenuMap with this data.
+     */
+    create: XOR<PortalMenuMapCreateInput, PortalMenuMapUncheckedCreateInput>
+    /**
+     * In case the PortalMenuMap was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PortalMenuMapUpdateInput, PortalMenuMapUncheckedUpdateInput>
+  }
+
+  /**
+   * PortalMenuMap delete
+   */
+  export type PortalMenuMapDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
+    /**
+     * Filter which PortalMenuMap to delete.
+     */
+    where: PortalMenuMapWhereUniqueInput
+  }
+
+  /**
+   * PortalMenuMap deleteMany
+   */
+  export type PortalMenuMapDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PortalMenuMaps to delete
+     */
+    where?: PortalMenuMapWhereInput
+    /**
+     * Limit how many PortalMenuMaps to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PortalMenuMap without action
+   */
+  export type PortalMenuMapDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortalMenuMap
+     */
+    select?: PortalMenuMapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortalMenuMap
+     */
+    omit?: PortalMenuMapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortalMenuMapInclude<ExtArgs> | null
   }
 
 
@@ -36106,6 +37373,24 @@ export namespace Prisma {
   };
 
   export type MasterAccessRoleScalarFieldEnum = (typeof MasterAccessRoleScalarFieldEnum)[keyof typeof MasterAccessRoleScalarFieldEnum]
+
+
+  export const PortalMenuMapScalarFieldEnum: {
+    portalMenuMapId: 'portalMenuMapId',
+    portalMasAccessId: 'portalMasAccessId',
+    menuMasAccessId: 'menuMasAccessId',
+    orderIndex: 'orderIndex',
+    isActive: 'isActive',
+    isDeleted: 'isDeleted',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    deletedAt: 'deletedAt',
+    deletedBy: 'deletedBy'
+  };
+
+  export type PortalMenuMapScalarFieldEnum = (typeof PortalMenuMapScalarFieldEnum)[keyof typeof PortalMenuMapScalarFieldEnum]
 
 
   export const AuditLogScalarFieldEnum: {
@@ -39187,6 +40472,8 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"MasterAccessRole"> | string | null
     deletedAt?: DateTimeNullableFilter<"MasterAccessRole"> | Date | string | null
     deletedBy?: StringNullableFilter<"MasterAccessRole"> | string | null
+    portalMenus?: PortalMenuMapListRelationFilter
+    menuPortals?: PortalMenuMapListRelationFilter
   }
 
   export type MasterAccessRoleOrderByWithRelationInput = {
@@ -39205,6 +40492,8 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
+    portalMenus?: PortalMenuMapOrderByRelationAggregateInput
+    menuPortals?: PortalMenuMapOrderByRelationAggregateInput
   }
 
   export type MasterAccessRoleWhereUniqueInput = Prisma.AtLeast<{
@@ -39227,6 +40516,8 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"MasterAccessRole"> | string | null
     deletedAt?: DateTimeNullableFilter<"MasterAccessRole"> | Date | string | null
     deletedBy?: StringNullableFilter<"MasterAccessRole"> | string | null
+    portalMenus?: PortalMenuMapListRelationFilter
+    menuPortals?: PortalMenuMapListRelationFilter
   }, "masAccessId" | "resourceType_resourceKey">
 
   export type MasterAccessRoleOrderByWithAggregationInput = {
@@ -39271,6 +40562,102 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"MasterAccessRole"> | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"MasterAccessRole"> | Date | string | null
     deletedBy?: StringNullableWithAggregatesFilter<"MasterAccessRole"> | string | null
+  }
+
+  export type PortalMenuMapWhereInput = {
+    AND?: PortalMenuMapWhereInput | PortalMenuMapWhereInput[]
+    OR?: PortalMenuMapWhereInput[]
+    NOT?: PortalMenuMapWhereInput | PortalMenuMapWhereInput[]
+    portalMenuMapId?: StringFilter<"PortalMenuMap"> | string
+    portalMasAccessId?: StringFilter<"PortalMenuMap"> | string
+    menuMasAccessId?: StringFilter<"PortalMenuMap"> | string
+    orderIndex?: IntFilter<"PortalMenuMap"> | number
+    isActive?: BoolFilter<"PortalMenuMap"> | boolean
+    isDeleted?: BoolFilter<"PortalMenuMap"> | boolean
+    createdAt?: DateTimeFilter<"PortalMenuMap"> | Date | string
+    createdBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    updatedAt?: DateTimeFilter<"PortalMenuMap"> | Date | string
+    updatedBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    deletedAt?: DateTimeNullableFilter<"PortalMenuMap"> | Date | string | null
+    deletedBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    portal?: XOR<MasterAccessRoleScalarRelationFilter, MasterAccessRoleWhereInput>
+    menu?: XOR<MasterAccessRoleScalarRelationFilter, MasterAccessRoleWhereInput>
+  }
+
+  export type PortalMenuMapOrderByWithRelationInput = {
+    portalMenuMapId?: SortOrder
+    portalMasAccessId?: SortOrder
+    menuMasAccessId?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    portal?: MasterAccessRoleOrderByWithRelationInput
+    menu?: MasterAccessRoleOrderByWithRelationInput
+  }
+
+  export type PortalMenuMapWhereUniqueInput = Prisma.AtLeast<{
+    portalMenuMapId?: string
+    portalMasAccessId_menuMasAccessId?: PortalMenuMapPortalMasAccessIdMenuMasAccessIdCompoundUniqueInput
+    AND?: PortalMenuMapWhereInput | PortalMenuMapWhereInput[]
+    OR?: PortalMenuMapWhereInput[]
+    NOT?: PortalMenuMapWhereInput | PortalMenuMapWhereInput[]
+    portalMasAccessId?: StringFilter<"PortalMenuMap"> | string
+    menuMasAccessId?: StringFilter<"PortalMenuMap"> | string
+    orderIndex?: IntFilter<"PortalMenuMap"> | number
+    isActive?: BoolFilter<"PortalMenuMap"> | boolean
+    isDeleted?: BoolFilter<"PortalMenuMap"> | boolean
+    createdAt?: DateTimeFilter<"PortalMenuMap"> | Date | string
+    createdBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    updatedAt?: DateTimeFilter<"PortalMenuMap"> | Date | string
+    updatedBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    deletedAt?: DateTimeNullableFilter<"PortalMenuMap"> | Date | string | null
+    deletedBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    portal?: XOR<MasterAccessRoleScalarRelationFilter, MasterAccessRoleWhereInput>
+    menu?: XOR<MasterAccessRoleScalarRelationFilter, MasterAccessRoleWhereInput>
+  }, "portalMenuMapId" | "portalMasAccessId_menuMasAccessId">
+
+  export type PortalMenuMapOrderByWithAggregationInput = {
+    portalMenuMapId?: SortOrder
+    portalMasAccessId?: SortOrder
+    menuMasAccessId?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedBy?: SortOrderInput | SortOrder
+    _count?: PortalMenuMapCountOrderByAggregateInput
+    _avg?: PortalMenuMapAvgOrderByAggregateInput
+    _max?: PortalMenuMapMaxOrderByAggregateInput
+    _min?: PortalMenuMapMinOrderByAggregateInput
+    _sum?: PortalMenuMapSumOrderByAggregateInput
+  }
+
+  export type PortalMenuMapScalarWhereWithAggregatesInput = {
+    AND?: PortalMenuMapScalarWhereWithAggregatesInput | PortalMenuMapScalarWhereWithAggregatesInput[]
+    OR?: PortalMenuMapScalarWhereWithAggregatesInput[]
+    NOT?: PortalMenuMapScalarWhereWithAggregatesInput | PortalMenuMapScalarWhereWithAggregatesInput[]
+    portalMenuMapId?: StringWithAggregatesFilter<"PortalMenuMap"> | string
+    portalMasAccessId?: StringWithAggregatesFilter<"PortalMenuMap"> | string
+    menuMasAccessId?: StringWithAggregatesFilter<"PortalMenuMap"> | string
+    orderIndex?: IntWithAggregatesFilter<"PortalMenuMap"> | number
+    isActive?: BoolWithAggregatesFilter<"PortalMenuMap"> | boolean
+    isDeleted?: BoolWithAggregatesFilter<"PortalMenuMap"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PortalMenuMap"> | Date | string
+    createdBy?: StringNullableWithAggregatesFilter<"PortalMenuMap"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"PortalMenuMap"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"PortalMenuMap"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"PortalMenuMap"> | Date | string | null
+    deletedBy?: StringNullableWithAggregatesFilter<"PortalMenuMap"> | string | null
   }
 
   export type AuditLogWhereInput = {
@@ -42868,6 +44255,8 @@ export namespace Prisma {
     updatedBy?: string | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    portalMenus?: PortalMenuMapCreateNestedManyWithoutPortalInput
+    menuPortals?: PortalMenuMapCreateNestedManyWithoutMenuInput
   }
 
   export type MasterAccessRoleUncheckedCreateInput = {
@@ -42886,6 +44275,8 @@ export namespace Prisma {
     updatedBy?: string | null
     deletedAt?: Date | string | null
     deletedBy?: string | null
+    portalMenus?: PortalMenuMapUncheckedCreateNestedManyWithoutPortalInput
+    menuPortals?: PortalMenuMapUncheckedCreateNestedManyWithoutMenuInput
   }
 
   export type MasterAccessRoleUpdateInput = {
@@ -42904,6 +44295,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    portalMenus?: PortalMenuMapUpdateManyWithoutPortalNestedInput
+    menuPortals?: PortalMenuMapUpdateManyWithoutMenuNestedInput
   }
 
   export type MasterAccessRoleUncheckedUpdateInput = {
@@ -42922,6 +44315,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    portalMenus?: PortalMenuMapUncheckedUpdateManyWithoutPortalNestedInput
+    menuPortals?: PortalMenuMapUncheckedUpdateManyWithoutMenuNestedInput
   }
 
   export type MasterAccessRoleCreateManyInput = {
@@ -42967,6 +44362,109 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapCreateInput = {
+    portalMenuMapId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    portal: MasterAccessRoleCreateNestedOneWithoutPortalMenusInput
+    menu: MasterAccessRoleCreateNestedOneWithoutMenuPortalsInput
+  }
+
+  export type PortalMenuMapUncheckedCreateInput = {
+    portalMenuMapId: string
+    portalMasAccessId: string
+    menuMasAccessId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type PortalMenuMapUpdateInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    portal?: MasterAccessRoleUpdateOneRequiredWithoutPortalMenusNestedInput
+    menu?: MasterAccessRoleUpdateOneRequiredWithoutMenuPortalsNestedInput
+  }
+
+  export type PortalMenuMapUncheckedUpdateInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    portalMasAccessId?: StringFieldUpdateOperationsInput | string
+    menuMasAccessId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapCreateManyInput = {
+    portalMenuMapId: string
+    portalMasAccessId: string
+    menuMasAccessId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type PortalMenuMapUpdateManyMutationInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapUncheckedUpdateManyInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    portalMasAccessId?: StringFieldUpdateOperationsInput | string
+    menuMasAccessId?: StringFieldUpdateOperationsInput | string
     orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
@@ -45208,6 +46706,16 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
+  export type PortalMenuMapListRelationFilter = {
+    every?: PortalMenuMapWhereInput
+    some?: PortalMenuMapWhereInput
+    none?: PortalMenuMapWhereInput
+  }
+
+  export type PortalMenuMapOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type MasterAccessRoleResourceTypeResourceKeyCompoundUniqueInput = {
     resourceType: string
     resourceKey: string
@@ -45272,6 +46780,69 @@ export namespace Prisma {
   }
 
   export type MasterAccessRoleSumOrderByAggregateInput = {
+    orderIndex?: SortOrder
+  }
+
+  export type MasterAccessRoleScalarRelationFilter = {
+    is?: MasterAccessRoleWhereInput
+    isNot?: MasterAccessRoleWhereInput
+  }
+
+  export type PortalMenuMapPortalMasAccessIdMenuMasAccessIdCompoundUniqueInput = {
+    portalMasAccessId: string
+    menuMasAccessId: string
+  }
+
+  export type PortalMenuMapCountOrderByAggregateInput = {
+    portalMenuMapId?: SortOrder
+    portalMasAccessId?: SortOrder
+    menuMasAccessId?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type PortalMenuMapAvgOrderByAggregateInput = {
+    orderIndex?: SortOrder
+  }
+
+  export type PortalMenuMapMaxOrderByAggregateInput = {
+    portalMenuMapId?: SortOrder
+    portalMasAccessId?: SortOrder
+    menuMasAccessId?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type PortalMenuMapMinOrderByAggregateInput = {
+    portalMenuMapId?: SortOrder
+    portalMasAccessId?: SortOrder
+    menuMasAccessId?: SortOrder
+    orderIndex?: SortOrder
+    isActive?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    deletedAt?: SortOrder
+    deletedBy?: SortOrder
+  }
+
+  export type PortalMenuMapSumOrderByAggregateInput = {
     orderIndex?: SortOrder
   }
 
@@ -47117,6 +48688,118 @@ export namespace Prisma {
     upsert?: FishboneCauseUpsertWithoutItemLinksInput
     connect?: FishboneCauseWhereUniqueInput
     update?: XOR<XOR<FishboneCauseUpdateToOneWithWhereWithoutItemLinksInput, FishboneCauseUpdateWithoutItemLinksInput>, FishboneCauseUncheckedUpdateWithoutItemLinksInput>
+  }
+
+  export type PortalMenuMapCreateNestedManyWithoutPortalInput = {
+    create?: XOR<PortalMenuMapCreateWithoutPortalInput, PortalMenuMapUncheckedCreateWithoutPortalInput> | PortalMenuMapCreateWithoutPortalInput[] | PortalMenuMapUncheckedCreateWithoutPortalInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutPortalInput | PortalMenuMapCreateOrConnectWithoutPortalInput[]
+    createMany?: PortalMenuMapCreateManyPortalInputEnvelope
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+  }
+
+  export type PortalMenuMapCreateNestedManyWithoutMenuInput = {
+    create?: XOR<PortalMenuMapCreateWithoutMenuInput, PortalMenuMapUncheckedCreateWithoutMenuInput> | PortalMenuMapCreateWithoutMenuInput[] | PortalMenuMapUncheckedCreateWithoutMenuInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutMenuInput | PortalMenuMapCreateOrConnectWithoutMenuInput[]
+    createMany?: PortalMenuMapCreateManyMenuInputEnvelope
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+  }
+
+  export type PortalMenuMapUncheckedCreateNestedManyWithoutPortalInput = {
+    create?: XOR<PortalMenuMapCreateWithoutPortalInput, PortalMenuMapUncheckedCreateWithoutPortalInput> | PortalMenuMapCreateWithoutPortalInput[] | PortalMenuMapUncheckedCreateWithoutPortalInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutPortalInput | PortalMenuMapCreateOrConnectWithoutPortalInput[]
+    createMany?: PortalMenuMapCreateManyPortalInputEnvelope
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+  }
+
+  export type PortalMenuMapUncheckedCreateNestedManyWithoutMenuInput = {
+    create?: XOR<PortalMenuMapCreateWithoutMenuInput, PortalMenuMapUncheckedCreateWithoutMenuInput> | PortalMenuMapCreateWithoutMenuInput[] | PortalMenuMapUncheckedCreateWithoutMenuInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutMenuInput | PortalMenuMapCreateOrConnectWithoutMenuInput[]
+    createMany?: PortalMenuMapCreateManyMenuInputEnvelope
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+  }
+
+  export type PortalMenuMapUpdateManyWithoutPortalNestedInput = {
+    create?: XOR<PortalMenuMapCreateWithoutPortalInput, PortalMenuMapUncheckedCreateWithoutPortalInput> | PortalMenuMapCreateWithoutPortalInput[] | PortalMenuMapUncheckedCreateWithoutPortalInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutPortalInput | PortalMenuMapCreateOrConnectWithoutPortalInput[]
+    upsert?: PortalMenuMapUpsertWithWhereUniqueWithoutPortalInput | PortalMenuMapUpsertWithWhereUniqueWithoutPortalInput[]
+    createMany?: PortalMenuMapCreateManyPortalInputEnvelope
+    set?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    disconnect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    delete?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    update?: PortalMenuMapUpdateWithWhereUniqueWithoutPortalInput | PortalMenuMapUpdateWithWhereUniqueWithoutPortalInput[]
+    updateMany?: PortalMenuMapUpdateManyWithWhereWithoutPortalInput | PortalMenuMapUpdateManyWithWhereWithoutPortalInput[]
+    deleteMany?: PortalMenuMapScalarWhereInput | PortalMenuMapScalarWhereInput[]
+  }
+
+  export type PortalMenuMapUpdateManyWithoutMenuNestedInput = {
+    create?: XOR<PortalMenuMapCreateWithoutMenuInput, PortalMenuMapUncheckedCreateWithoutMenuInput> | PortalMenuMapCreateWithoutMenuInput[] | PortalMenuMapUncheckedCreateWithoutMenuInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutMenuInput | PortalMenuMapCreateOrConnectWithoutMenuInput[]
+    upsert?: PortalMenuMapUpsertWithWhereUniqueWithoutMenuInput | PortalMenuMapUpsertWithWhereUniqueWithoutMenuInput[]
+    createMany?: PortalMenuMapCreateManyMenuInputEnvelope
+    set?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    disconnect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    delete?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    update?: PortalMenuMapUpdateWithWhereUniqueWithoutMenuInput | PortalMenuMapUpdateWithWhereUniqueWithoutMenuInput[]
+    updateMany?: PortalMenuMapUpdateManyWithWhereWithoutMenuInput | PortalMenuMapUpdateManyWithWhereWithoutMenuInput[]
+    deleteMany?: PortalMenuMapScalarWhereInput | PortalMenuMapScalarWhereInput[]
+  }
+
+  export type PortalMenuMapUncheckedUpdateManyWithoutPortalNestedInput = {
+    create?: XOR<PortalMenuMapCreateWithoutPortalInput, PortalMenuMapUncheckedCreateWithoutPortalInput> | PortalMenuMapCreateWithoutPortalInput[] | PortalMenuMapUncheckedCreateWithoutPortalInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutPortalInput | PortalMenuMapCreateOrConnectWithoutPortalInput[]
+    upsert?: PortalMenuMapUpsertWithWhereUniqueWithoutPortalInput | PortalMenuMapUpsertWithWhereUniqueWithoutPortalInput[]
+    createMany?: PortalMenuMapCreateManyPortalInputEnvelope
+    set?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    disconnect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    delete?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    update?: PortalMenuMapUpdateWithWhereUniqueWithoutPortalInput | PortalMenuMapUpdateWithWhereUniqueWithoutPortalInput[]
+    updateMany?: PortalMenuMapUpdateManyWithWhereWithoutPortalInput | PortalMenuMapUpdateManyWithWhereWithoutPortalInput[]
+    deleteMany?: PortalMenuMapScalarWhereInput | PortalMenuMapScalarWhereInput[]
+  }
+
+  export type PortalMenuMapUncheckedUpdateManyWithoutMenuNestedInput = {
+    create?: XOR<PortalMenuMapCreateWithoutMenuInput, PortalMenuMapUncheckedCreateWithoutMenuInput> | PortalMenuMapCreateWithoutMenuInput[] | PortalMenuMapUncheckedCreateWithoutMenuInput[]
+    connectOrCreate?: PortalMenuMapCreateOrConnectWithoutMenuInput | PortalMenuMapCreateOrConnectWithoutMenuInput[]
+    upsert?: PortalMenuMapUpsertWithWhereUniqueWithoutMenuInput | PortalMenuMapUpsertWithWhereUniqueWithoutMenuInput[]
+    createMany?: PortalMenuMapCreateManyMenuInputEnvelope
+    set?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    disconnect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    delete?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    connect?: PortalMenuMapWhereUniqueInput | PortalMenuMapWhereUniqueInput[]
+    update?: PortalMenuMapUpdateWithWhereUniqueWithoutMenuInput | PortalMenuMapUpdateWithWhereUniqueWithoutMenuInput[]
+    updateMany?: PortalMenuMapUpdateManyWithWhereWithoutMenuInput | PortalMenuMapUpdateManyWithWhereWithoutMenuInput[]
+    deleteMany?: PortalMenuMapScalarWhereInput | PortalMenuMapScalarWhereInput[]
+  }
+
+  export type MasterAccessRoleCreateNestedOneWithoutPortalMenusInput = {
+    create?: XOR<MasterAccessRoleCreateWithoutPortalMenusInput, MasterAccessRoleUncheckedCreateWithoutPortalMenusInput>
+    connectOrCreate?: MasterAccessRoleCreateOrConnectWithoutPortalMenusInput
+    connect?: MasterAccessRoleWhereUniqueInput
+  }
+
+  export type MasterAccessRoleCreateNestedOneWithoutMenuPortalsInput = {
+    create?: XOR<MasterAccessRoleCreateWithoutMenuPortalsInput, MasterAccessRoleUncheckedCreateWithoutMenuPortalsInput>
+    connectOrCreate?: MasterAccessRoleCreateOrConnectWithoutMenuPortalsInput
+    connect?: MasterAccessRoleWhereUniqueInput
+  }
+
+  export type MasterAccessRoleUpdateOneRequiredWithoutPortalMenusNestedInput = {
+    create?: XOR<MasterAccessRoleCreateWithoutPortalMenusInput, MasterAccessRoleUncheckedCreateWithoutPortalMenusInput>
+    connectOrCreate?: MasterAccessRoleCreateOrConnectWithoutPortalMenusInput
+    upsert?: MasterAccessRoleUpsertWithoutPortalMenusInput
+    connect?: MasterAccessRoleWhereUniqueInput
+    update?: XOR<XOR<MasterAccessRoleUpdateToOneWithWhereWithoutPortalMenusInput, MasterAccessRoleUpdateWithoutPortalMenusInput>, MasterAccessRoleUncheckedUpdateWithoutPortalMenusInput>
+  }
+
+  export type MasterAccessRoleUpdateOneRequiredWithoutMenuPortalsNestedInput = {
+    create?: XOR<MasterAccessRoleCreateWithoutMenuPortalsInput, MasterAccessRoleUncheckedCreateWithoutMenuPortalsInput>
+    connectOrCreate?: MasterAccessRoleCreateOrConnectWithoutMenuPortalsInput
+    upsert?: MasterAccessRoleUpsertWithoutMenuPortalsInput
+    connect?: MasterAccessRoleWhereUniqueInput
+    update?: XOR<XOR<MasterAccessRoleUpdateToOneWithWhereWithoutMenuPortalsInput, MasterAccessRoleUpdateWithoutMenuPortalsInput>, MasterAccessRoleUncheckedUpdateWithoutMenuPortalsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -52994,6 +54677,314 @@ export namespace Prisma {
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type PortalMenuMapCreateWithoutPortalInput = {
+    portalMenuMapId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    menu: MasterAccessRoleCreateNestedOneWithoutMenuPortalsInput
+  }
+
+  export type PortalMenuMapUncheckedCreateWithoutPortalInput = {
+    portalMenuMapId: string
+    menuMasAccessId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type PortalMenuMapCreateOrConnectWithoutPortalInput = {
+    where: PortalMenuMapWhereUniqueInput
+    create: XOR<PortalMenuMapCreateWithoutPortalInput, PortalMenuMapUncheckedCreateWithoutPortalInput>
+  }
+
+  export type PortalMenuMapCreateManyPortalInputEnvelope = {
+    data: PortalMenuMapCreateManyPortalInput | PortalMenuMapCreateManyPortalInput[]
+  }
+
+  export type PortalMenuMapCreateWithoutMenuInput = {
+    portalMenuMapId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    portal: MasterAccessRoleCreateNestedOneWithoutPortalMenusInput
+  }
+
+  export type PortalMenuMapUncheckedCreateWithoutMenuInput = {
+    portalMenuMapId: string
+    portalMasAccessId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type PortalMenuMapCreateOrConnectWithoutMenuInput = {
+    where: PortalMenuMapWhereUniqueInput
+    create: XOR<PortalMenuMapCreateWithoutMenuInput, PortalMenuMapUncheckedCreateWithoutMenuInput>
+  }
+
+  export type PortalMenuMapCreateManyMenuInputEnvelope = {
+    data: PortalMenuMapCreateManyMenuInput | PortalMenuMapCreateManyMenuInput[]
+  }
+
+  export type PortalMenuMapUpsertWithWhereUniqueWithoutPortalInput = {
+    where: PortalMenuMapWhereUniqueInput
+    update: XOR<PortalMenuMapUpdateWithoutPortalInput, PortalMenuMapUncheckedUpdateWithoutPortalInput>
+    create: XOR<PortalMenuMapCreateWithoutPortalInput, PortalMenuMapUncheckedCreateWithoutPortalInput>
+  }
+
+  export type PortalMenuMapUpdateWithWhereUniqueWithoutPortalInput = {
+    where: PortalMenuMapWhereUniqueInput
+    data: XOR<PortalMenuMapUpdateWithoutPortalInput, PortalMenuMapUncheckedUpdateWithoutPortalInput>
+  }
+
+  export type PortalMenuMapUpdateManyWithWhereWithoutPortalInput = {
+    where: PortalMenuMapScalarWhereInput
+    data: XOR<PortalMenuMapUpdateManyMutationInput, PortalMenuMapUncheckedUpdateManyWithoutPortalInput>
+  }
+
+  export type PortalMenuMapScalarWhereInput = {
+    AND?: PortalMenuMapScalarWhereInput | PortalMenuMapScalarWhereInput[]
+    OR?: PortalMenuMapScalarWhereInput[]
+    NOT?: PortalMenuMapScalarWhereInput | PortalMenuMapScalarWhereInput[]
+    portalMenuMapId?: StringFilter<"PortalMenuMap"> | string
+    portalMasAccessId?: StringFilter<"PortalMenuMap"> | string
+    menuMasAccessId?: StringFilter<"PortalMenuMap"> | string
+    orderIndex?: IntFilter<"PortalMenuMap"> | number
+    isActive?: BoolFilter<"PortalMenuMap"> | boolean
+    isDeleted?: BoolFilter<"PortalMenuMap"> | boolean
+    createdAt?: DateTimeFilter<"PortalMenuMap"> | Date | string
+    createdBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    updatedAt?: DateTimeFilter<"PortalMenuMap"> | Date | string
+    updatedBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+    deletedAt?: DateTimeNullableFilter<"PortalMenuMap"> | Date | string | null
+    deletedBy?: StringNullableFilter<"PortalMenuMap"> | string | null
+  }
+
+  export type PortalMenuMapUpsertWithWhereUniqueWithoutMenuInput = {
+    where: PortalMenuMapWhereUniqueInput
+    update: XOR<PortalMenuMapUpdateWithoutMenuInput, PortalMenuMapUncheckedUpdateWithoutMenuInput>
+    create: XOR<PortalMenuMapCreateWithoutMenuInput, PortalMenuMapUncheckedCreateWithoutMenuInput>
+  }
+
+  export type PortalMenuMapUpdateWithWhereUniqueWithoutMenuInput = {
+    where: PortalMenuMapWhereUniqueInput
+    data: XOR<PortalMenuMapUpdateWithoutMenuInput, PortalMenuMapUncheckedUpdateWithoutMenuInput>
+  }
+
+  export type PortalMenuMapUpdateManyWithWhereWithoutMenuInput = {
+    where: PortalMenuMapScalarWhereInput
+    data: XOR<PortalMenuMapUpdateManyMutationInput, PortalMenuMapUncheckedUpdateManyWithoutMenuInput>
+  }
+
+  export type MasterAccessRoleCreateWithoutPortalMenusInput = {
+    masAccessId: string
+    resourceType: string
+    resourceKey: string
+    displayName: string
+    route?: string | null
+    parentKey?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    menuPortals?: PortalMenuMapCreateNestedManyWithoutMenuInput
+  }
+
+  export type MasterAccessRoleUncheckedCreateWithoutPortalMenusInput = {
+    masAccessId: string
+    resourceType: string
+    resourceKey: string
+    displayName: string
+    route?: string | null
+    parentKey?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    menuPortals?: PortalMenuMapUncheckedCreateNestedManyWithoutMenuInput
+  }
+
+  export type MasterAccessRoleCreateOrConnectWithoutPortalMenusInput = {
+    where: MasterAccessRoleWhereUniqueInput
+    create: XOR<MasterAccessRoleCreateWithoutPortalMenusInput, MasterAccessRoleUncheckedCreateWithoutPortalMenusInput>
+  }
+
+  export type MasterAccessRoleCreateWithoutMenuPortalsInput = {
+    masAccessId: string
+    resourceType: string
+    resourceKey: string
+    displayName: string
+    route?: string | null
+    parentKey?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    portalMenus?: PortalMenuMapCreateNestedManyWithoutPortalInput
+  }
+
+  export type MasterAccessRoleUncheckedCreateWithoutMenuPortalsInput = {
+    masAccessId: string
+    resourceType: string
+    resourceKey: string
+    displayName: string
+    route?: string | null
+    parentKey?: string | null
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+    portalMenus?: PortalMenuMapUncheckedCreateNestedManyWithoutPortalInput
+  }
+
+  export type MasterAccessRoleCreateOrConnectWithoutMenuPortalsInput = {
+    where: MasterAccessRoleWhereUniqueInput
+    create: XOR<MasterAccessRoleCreateWithoutMenuPortalsInput, MasterAccessRoleUncheckedCreateWithoutMenuPortalsInput>
+  }
+
+  export type MasterAccessRoleUpsertWithoutPortalMenusInput = {
+    update: XOR<MasterAccessRoleUpdateWithoutPortalMenusInput, MasterAccessRoleUncheckedUpdateWithoutPortalMenusInput>
+    create: XOR<MasterAccessRoleCreateWithoutPortalMenusInput, MasterAccessRoleUncheckedCreateWithoutPortalMenusInput>
+    where?: MasterAccessRoleWhereInput
+  }
+
+  export type MasterAccessRoleUpdateToOneWithWhereWithoutPortalMenusInput = {
+    where?: MasterAccessRoleWhereInput
+    data: XOR<MasterAccessRoleUpdateWithoutPortalMenusInput, MasterAccessRoleUncheckedUpdateWithoutPortalMenusInput>
+  }
+
+  export type MasterAccessRoleUpdateWithoutPortalMenusInput = {
+    masAccessId?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceKey?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    route?: NullableStringFieldUpdateOperationsInput | string | null
+    parentKey?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    menuPortals?: PortalMenuMapUpdateManyWithoutMenuNestedInput
+  }
+
+  export type MasterAccessRoleUncheckedUpdateWithoutPortalMenusInput = {
+    masAccessId?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceKey?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    route?: NullableStringFieldUpdateOperationsInput | string | null
+    parentKey?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    menuPortals?: PortalMenuMapUncheckedUpdateManyWithoutMenuNestedInput
+  }
+
+  export type MasterAccessRoleUpsertWithoutMenuPortalsInput = {
+    update: XOR<MasterAccessRoleUpdateWithoutMenuPortalsInput, MasterAccessRoleUncheckedUpdateWithoutMenuPortalsInput>
+    create: XOR<MasterAccessRoleCreateWithoutMenuPortalsInput, MasterAccessRoleUncheckedCreateWithoutMenuPortalsInput>
+    where?: MasterAccessRoleWhereInput
+  }
+
+  export type MasterAccessRoleUpdateToOneWithWhereWithoutMenuPortalsInput = {
+    where?: MasterAccessRoleWhereInput
+    data: XOR<MasterAccessRoleUpdateWithoutMenuPortalsInput, MasterAccessRoleUncheckedUpdateWithoutMenuPortalsInput>
+  }
+
+  export type MasterAccessRoleUpdateWithoutMenuPortalsInput = {
+    masAccessId?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceKey?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    route?: NullableStringFieldUpdateOperationsInput | string | null
+    parentKey?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    portalMenus?: PortalMenuMapUpdateManyWithoutPortalNestedInput
+  }
+
+  export type MasterAccessRoleUncheckedUpdateWithoutMenuPortalsInput = {
+    masAccessId?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceKey?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    route?: NullableStringFieldUpdateOperationsInput | string | null
+    parentKey?: NullableStringFieldUpdateOperationsInput | string | null
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    portalMenus?: PortalMenuMapUncheckedUpdateManyWithoutPortalNestedInput
+  }
+
   export type UserCreateManyRoleInput = {
     userId: string
     username: string
@@ -55106,6 +57097,118 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapCreateManyPortalInput = {
+    portalMenuMapId: string
+    menuMasAccessId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type PortalMenuMapCreateManyMenuInput = {
+    portalMenuMapId: string
+    portalMasAccessId: string
+    orderIndex?: number
+    isActive?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    deletedAt?: Date | string | null
+    deletedBy?: string | null
+  }
+
+  export type PortalMenuMapUpdateWithoutPortalInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    menu?: MasterAccessRoleUpdateOneRequiredWithoutMenuPortalsNestedInput
+  }
+
+  export type PortalMenuMapUncheckedUpdateWithoutPortalInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    menuMasAccessId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapUncheckedUpdateManyWithoutPortalInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    menuMasAccessId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapUpdateWithoutMenuInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    portal?: MasterAccessRoleUpdateOneRequiredWithoutPortalMenusNestedInput
+  }
+
+  export type PortalMenuMapUncheckedUpdateWithoutMenuInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    portalMasAccessId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortalMenuMapUncheckedUpdateManyWithoutMenuInput = {
+    portalMenuMapId?: StringFieldUpdateOperationsInput | string
+    portalMasAccessId?: StringFieldUpdateOperationsInput | string
+    orderIndex?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }

@@ -3,6 +3,11 @@ generator employeeClient {
   output   = "../dist/generated/employee"
 }
 
+generator employeeClientSrc {
+  provider = "prisma-client-js"
+  output   = "../src/generated/employee"
+}
+
 datasource employee {
   provider = "sqlserver"
   url      = env("EMPLOYEE_DATABASE_URL")
@@ -32,6 +37,8 @@ model em_apc_academy {
   DailySchedule      String?         @employee.NVarChar(Max)
   SchoolAddress      String?         @employee.NVarChar(Max)
   em_apc_personal    em_apc_personal @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_apc_academy")
+
+  @@index([ApcId], map: "em_apc_academy_ApcId_IDX")
 }
 
 model em_apc_personal {
@@ -84,6 +91,8 @@ model em_apc_personal {
   em_apc_regulation  em_apc_regulation[]
   em_apc_skill_exper em_apc_skill_exper[]
   em_applicant_match em_applicant_match[]
+
+  @@index([PossId], map: "em_apc_personal_PossId_IDX")
 }
 
 model em_apc_photograph {
@@ -91,6 +100,8 @@ model em_apc_photograph {
   ApcId           Int?
   GenrName        String?          @employee.VarChar(50)
   em_apc_personal em_apc_personal? @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_em_apc_photograph_em_apc_personal")
+
+  @@index([ApcId], map: "em_apc_photograph_ApcId_IDX")
 }
 
 model em_apc_regulation {
@@ -99,6 +110,9 @@ model em_apc_regulation {
   RegId           Int?
   RegChoice       Boolean?
   em_apc_personal em_apc_personal? @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_apc_regulation")
+
+  @@index([ApcId], map: "em_apc_regulation_ApcId_IDX")
+  @@index([RegId], map: "em_apc_regulation_RegId_IDX")
 }
 
 model em_apc_skill_exper {
@@ -137,6 +151,8 @@ model em_apc_skill_exper {
   isThreeYears     String?         @employee.NVarChar(Max)
   PersonVal        String?         @employee.NVarChar(Max)
   em_apc_personal  em_apc_personal @relation(fields: [ApcId], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "FK_apc_skill_exper")
+
+  @@index([ApcId], map: "em_apc_skill_exper_ApcId_IDX")
 }
 
 model em_api_keys {
@@ -156,6 +172,8 @@ model em_applicant_criteria {
   created_at     DateTime? @employee.Date
   lastupdate     DateTime? @employee.DateTime
   emposs         emposs    @relation(fields: [id_loker], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "em_applicant_criteria_emposs_FK")
+
+  @@index([id_loker], map: "em_applicant_criteria_id_loker_IDX")
 }
 
 model em_applicant_match {
@@ -174,6 +192,9 @@ model em_applicant_match {
   created_at       DateTime?       @employee.DateTime
   em_apc_personal  em_apc_personal @relation(fields: [id_applicant], references: [ApcId], onDelete: Cascade, onUpdate: NoAction, map: "em_applicant_match_em_apc_personal_FK")
   emposs           emposs          @relation(fields: [id_loker], references: [Id], onUpdate: NoAction, map: "em_applicant_match_emposs_FK")
+
+  @@index([id_applicant], map: "em_applicant_match_id_applicant_IDX")
+  @@index([id_loker], map: "em_applicant_match_id_loker_IDX")
 }
 
 model em_banner {
@@ -239,6 +260,9 @@ model em_certificates_result {
   status        String?   @employee.VarChar(1)
   generated_by  String?   @employee.VarChar(5)
   schedule_id   Int?
+
+  @@index([cert_templ_id], map: "em_certificates_result_cert_templ_id_IDX")
+  @@index([empl_id], map: "em_certificates_result_empl_id_IDX")
 }
 
 model em_chance {
@@ -271,34 +295,43 @@ model em_dept {
 }
 
 model em_employee {
-  UserId       Int       @id(map: "PK_em_employee") @default(autoincrement())
-  BadgeNum     String    @employee.VarChar(24)
-  Name         String?   @employee.VarChar(40)
-  Gender       String?   @employee.VarChar(8)
-  BirthDay     DateTime? @employee.DateTime
-  HireDay      DateTime? @employee.DateTime
-  Street       String?   @employee.VarChar(255)
-  Religion     String?   @employee.VarChar(50)
-  Tipe         String?   @employee.VarChar(50)
-  isLokasi     String?   @employee.VarChar(100)
-  Phone        String?   @employee.VarChar(20)
-  DeptId       Int?      @employee.SmallInt
-  Password     String?   @employee.NVarChar(255)
-  CardNo       String?   @employee.VarChar(20)
-  Shift        Int?
-  isMem        Boolean?
-  AddBy        String?   @employee.VarChar(5)
-  Created_at   DateTime? @employee.DateTime
-  Lastupdate   DateTime? @employee.DateTime
-  isMemDate    DateTime? @employee.DateTime
-  isFirstLogin Int?
-  ImgName      String?   @employee.VarChar(255)
-  SbuSub       Int?
-  Nik          String?   @employee.VarChar(20)
-  ResignDate   DateTime? @employee.DateTime
-  status       String?   @employee.VarChar(1)
-  roleId       Int?
-  jobDesc      String?   @employee.NVarChar(500)
+  UserId          Int       @id(map: "PK_em_employee") @default(autoincrement())
+  BadgeNum        String    @employee.VarChar(24)
+  Name            String?   @employee.VarChar(40)
+  Gender          String?   @employee.VarChar(8)
+  BirthDay        DateTime? @employee.DateTime
+  HireDay         DateTime? @employee.DateTime
+  Street          String?   @employee.VarChar(255)
+  Religion        String?   @employee.VarChar(50)
+  Tipe            String?   @employee.VarChar(50)
+  isLokasi        String?   @employee.VarChar(100)
+  Phone           String?   @employee.VarChar(20)
+  DeptId          Int?      @employee.SmallInt
+  Password        String?   @employee.NVarChar(255)
+  CardNo          String?   @employee.VarChar(20)
+  Shift           Int?
+  isMem           Boolean?
+  AddBy           String?   @employee.VarChar(5)
+  Created_at      DateTime? @employee.DateTime
+  Lastupdate      DateTime? @employee.DateTime
+  isMemDate       DateTime? @employee.DateTime
+  isFirstLogin    Int?
+  ImgName         String?   @employee.VarChar(255)
+  SbuSub          Int?
+  Nik             String?   @employee.VarChar(20)
+  ResignDate      DateTime? @employee.DateTime
+  statusLMS       String    @employee.VarChar(1)
+  roleId          Int?
+  jobDesc         String?   @employee.NVarChar(500)
+  city            String?   @employee.VarChar(200)
+  state           String    @employee.VarChar(100)
+  email           String?   @employee.VarChar(80)
+  IPMsnFinger     String    @employee.VarChar(100)
+  BPJSKshtn       String?   @employee.VarChar(50)
+  BPJSKtngkerjaan String?   @employee.VarChar(50)
+
+  @@index([BadgeNum], map: "em_employee_BadgeNum_IDX")
+  @@index([CardNo], map: "em_employee_CardNo_IDX")
 }
 
 model em_event {
@@ -327,6 +360,8 @@ model em_event_reg {
   created_date DateTime? @employee.Date
   last_update  DateTime? @employee.DateTime
   image_name   String?   @employee.VarChar(255)
+
+  @@index([event_id], map: "em_event_reg_event_id_IDX")
 }
 
 model em_event2 {
@@ -336,12 +371,17 @@ model em_event2 {
   status     String?   @employee.VarChar(1)
   qr_code    String?   @employee.VarChar(255)
   em_event   em_event? @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction, map: "em_event2_em_event_FK")
+
+  @@index([event_id], map: "em_event2_event_id_IDX")
 }
 
 model em_exam_questions {
   id          Int @id(map: "PK__em_exam___3213E83F5B2151F1") @default(autoincrement())
   exam_id     Int
   question_id Int
+
+  @@index([exam_id], map: "em_exam_questions_exam_id_IDX")
+  @@index([question_id], map: "em_exam_questions_question_id_IDX")
 }
 
 model em_exams {
@@ -355,6 +395,8 @@ model em_exams {
   CatType     String?       @employee.VarChar(1)
   em_loktopik em_loktopik[]
   scores      scores[]
+
+  @@index([UserId], map: "em_exams_UserId_IDX")
 }
 
 model em_exams_monitor {
@@ -366,6 +408,10 @@ model em_exams_monitor {
   jumlah_soal Int?
   status      String?   @employee.VarChar(1)
   created_at  DateTime? @employee.DateTime
+
+  @@index([empl_id], map: "em_exams_monitor_empl_id_IDX")
+  @@index([exams_id], map: "em_exams_monitor_exams_id_IDX")
+  @@index([schedule_id], map: "em_exams_monitor_schedule_id_IDX")
 }
 
 model em_exams_results {
@@ -376,6 +422,9 @@ model em_exams_results {
   is_changes Int?
   is_answer  String?   @employee.NVarChar(Max)
   is_time    DateTime? @employee.DateTime
+
+  @@index([empl_id], map: "em_exams_results_empl_id_IDX")
+  @@index([exams_id], map: "em_exams_results_exams_id_IDX")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -401,6 +450,8 @@ model em_faq {
   lastupdate  DateTime?   @employee.DateTime
   userid      String?     @employee.VarChar(5)
   em_faq_cat  em_faq_cat? @relation(fields: [fqcatid], references: [fqcatid], onDelete: Cascade, onUpdate: NoAction, map: "FK_em_faq_em_faq_cat")
+
+  @@index([fqcatid], map: "em_faq_fqcatid_IDX")
 }
 
 model em_faq_cat {
@@ -460,6 +511,9 @@ model em_jawaban_peserta {
   em_session_exams em_session_exams @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_sessiujianid")
 
   @@id([Id, empl_id, soal_id, session_exams_id], map: "PK_em_jawaban_peserta")
+  @@index([empl_id], map: "em_jawaban_peserta_empl_id_IDX")
+  @@index([session_exams_id], map: "em_jawaban_peserta_session_exams_id_IDX")
+  @@index([soal_id], map: "em_jawaban_peserta_soal_id_IDX")
 }
 
 model em_jawaban_peserta_apc {
@@ -475,6 +529,11 @@ model em_jawaban_peserta_apc {
   is_correction        Boolean?
   is_train_jawaban     Boolean?
   em_session_exams_apc em_session_exams_apc @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: "em_jawaban_peserta_apc_em_session_exams_apc_FK")
+
+  @@index([apc_id], map: "em_jawaban_peserta_apc_apc_id_IDX")
+  @@index([session_exams_id], map: "em_jawaban_peserta_apc_session_exams_id_IDX")
+  @@index([soal_id], map: "em_jawaban_peserta_apc_soal_id_IDX")
+  @@index([topic_id], map: "em_jawaban_peserta_apc_topic_id_IDX")
 }
 
 model em_jobfair {
@@ -544,8 +603,11 @@ model em_loktopik {
   created_at DateTime? @employee.DateTime
   possid     Int?
   urutan     Int?
-  em_loker   em_loker  @relation(fields: [loker_id], references: [lokerid], onUpdate: NoAction, map: "FK__em_loktop__loker__7BE56230")
+  em_loker   em_loker  @relation(fields: [loker_id], references: [lokerid], onDelete: Cascade, onUpdate: NoAction, map: "em_loktopik_em_loker_FK")
   em_exams   em_exams  @relation(fields: [topik_id], references: [id], onUpdate: NoAction, map: "FK__em_loktop__topik__7CD98669")
+
+  @@index([loker_id], map: "em_loktopik_loker_id_IDX")
+  @@index([topik_id], map: "em_loktopik_topik_id_IDX")
 }
 
 model em_materi_file {
@@ -561,6 +623,8 @@ model em_materi_file {
   updated_at DateTime?  @employee.DateTime
   galeri_id  Int?
   em_materi1 em_materi1 @relation(fields: [materi_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_materi")
+
+  @@index([materi_id], map: "em_materi_file_materi_id_IDX")
 }
 
 model em_materi_kategori {
@@ -594,8 +658,14 @@ model em_materi1 {
   created_by       String?          @employee.VarChar(5)
   created_at       DateTime         @employee.DateTime
   lastupdate       DateTime?        @employee.DateTime
+  global_sequence  Int?
   em_materi_file   em_materi_file[]
   em_materi2       em_materi2[]
+
+  @@index([global_sequence], map: "em_materi1_global_sequence_IDX")
+  @@index([kode_materi], map: "em_materi1_kode_materi_IDX")
+  @@index([status], map: "idx_em_materi1_status")
+  @@index([global_sequence], map: "idx_global_sequence")
 }
 
 model em_materi2 {
@@ -604,6 +674,8 @@ model em_materi2 {
   materi_type    Int
   em_materi_type em_materi_type @relation(fields: [materi_type], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_materi_type2")
   em_materi1     em_materi1     @relation(fields: [materi_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_materi2")
+
+  @@index([materi_id], map: "em_materi2_materi_id_IDX")
 }
 
 model em_menu {
@@ -692,6 +764,8 @@ model em_questions1 {
   isExams         String?         @employee.VarChar(1)
   isLevel         Int?
   em_questions2   em_questions2[]
+
+  @@index([exam_id], map: "em_questions1_exam_id_IDX")
 }
 
 model em_questions2 {
@@ -720,6 +794,8 @@ model em_regulations {
   userid     String?   @employee.VarChar(5)
   createDate DateTime? @employee.Date
   lastUpdate DateTime? @employee.DateTime
+
+  @@index([chanceId], map: "em_regulations_chanceId_IDX")
 }
 
 model em_sbu {
@@ -767,6 +843,9 @@ model em_sbu_sub {
   pic          Int?
   jobDesc      String?   @employee.NVarChar(500)
   jabatan      String?   @employee.NVarChar(50)
+
+  @@index([sbu_id], map: "em_sbu_sub_sbu_id_IDX")
+  @@index([sbu_sub_code], map: "em_sbu_sub_sbu_sub_code_IDX")
 }
 
 model em_schedule1 {
@@ -794,6 +873,8 @@ model em_schedule1 {
   em_schedule2   em_schedule2[]
   em_schedule3   em_schedule3[]
   em_schedule4   em_schedule4[]
+
+  @@index([isMateri], map: "em_schedule1_isMateri_IDX")
 }
 
 model em_schedule2 {
@@ -806,6 +887,7 @@ model em_schedule2 {
   is_code_send     String?       @employee.VarChar(100)
   em_schedule1     em_schedule1? @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_schedule2_schedule1")
 
+  @@index([Regid], map: "em_schedule2_Regid_IDX")
   @@index([employeeId], map: "idx_empl_id")
   @@index([scheduleId], map: "idx_scheduleid")
 }
@@ -820,6 +902,7 @@ model em_schedule3 {
   tipeSoal       Int
   em_schedule1   em_schedule1 @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_schedule3_schedule1")
 
+  @@index([materiId], map: "em_schedule3_materiId_IDX")
   @@index([scheduleId], map: "idx_scheduleid")
   @@index([soalId], map: "idx_soal_id")
 }
@@ -877,6 +960,9 @@ model em_session_exams_apc {
   is_jawaban_kosong      Int?
   em_jawaban_peserta_apc em_jawaban_peserta_apc[]
   em_topic_selesai       em_topic_selesai[]
+
+  @@index([apcid], map: "em_session_exams_apc_apcid_IDX")
+  @@index([lokerid], map: "em_session_exams_apc_lokerid_IDX")
 }
 
 model em_subscribe {
@@ -906,6 +992,10 @@ model em_topic_selesai {
   topic_id             Int
   selesai_at           DateTime?            @employee.DateTime
   em_session_exams_apc em_session_exams_apc @relation(fields: [session_exams_id], references: [exams_id], onDelete: Cascade, onUpdate: NoAction, map: "em_topic_selesai_em_session_exams_apc_FK")
+
+  @@index([apc_id], map: "em_topic_selesai_apc_id_IDX")
+  @@index([session_exams_id], map: "em_topic_selesai_session_exams_id_IDX")
+  @@index([topic_id], map: "em_topic_selesai_topic_id_IDX")
 }
 
 model em_user_answers1 {
@@ -915,6 +1005,9 @@ model em_user_answers1 {
   status           String?            @employee.NVarChar(1)
   startdate        DateTime?          @employee.DateTime
   em_user_answers2 em_user_answers2[] @ignore
+
+  @@index([apcid], map: "em_user_answers1_apcid_IDX")
+  @@index([topic_id], map: "em_user_answers1_topic_id_IDX")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -927,6 +1020,8 @@ model em_user_answers2 {
   Score            Float?
   em_user_answers1 em_user_answers1 @relation(fields: [Id], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "em_user_answers2_em_user_answers1_FK")
 
+  @@index([Id], map: "em_user_answers2_Id_IDX")
+  @@index([question_id], map: "em_user_answers2_question_id_IDX")
   @@ignore
 }
 
@@ -948,6 +1043,9 @@ model em_user_list {
   menuid     Int?
   visible    Boolean
   lastupdate DateTime? @employee.DateTime
+
+  @@index([menuid], map: "em_user_list_menuid_IDX")
+  @@index([userid], map: "em_user_list_userid_IDX")
 }
 
 model em_users {
@@ -965,6 +1063,31 @@ model em_users {
   @@id([Id, UserId], map: "PK__em_users__1788CC4C739C2478")
 }
 
+model em_users_learning {
+  id            Int       @id(map: "PK__em_users__3213E83F6CFA6274") @default(autoincrement())
+  user_id       Int
+  materi_id     Int
+  start_date    DateTime  @employee.Date
+  duration_day  Int
+  due_date      DateTime  @employee.Date
+  reminder_day  Int
+  reminder_sent Boolean
+  status        String    @employee.VarChar(20)
+  created_at    DateTime  @employee.DateTime
+  is_active     Boolean
+  exam_status   String?   @employee.VarChar(20)
+  attempt_count Int
+  passed_at     DateTime? @employee.DateTime
+
+  @@index([materi_id], map: "em_users_learning_materi_id_IDX")
+  @@index([start_date], map: "em_users_learning_start_date_IDX")
+  @@index([user_id, materi_id], map: "em_users_learning_user_id_IDX")
+  @@index([user_id], map: "em_users_learning_user_id_IDX_usr")
+  @@index([due_date], map: "idx_due_date")
+  @@index([reminder_sent], map: "idx_reminder_sent")
+  @@index([status], map: "idx_status")
+}
+
 model em_verify_links {
   id           Int       @id(map: "PK__em_verif__3213E83F15F1A2A1") @default(autoincrement())
   applicant_id Int
@@ -977,6 +1100,8 @@ model em_verify_links {
   browser      String?   @employee.VarChar(100)
   platform     String?   @employee.VarChar(100)
   device       String?   @employee.VarChar(100)
+
+  @@index([applicant_id], map: "em_verify_links_applicant_id_IDX")
 }
 
 model em_wa_templates {
@@ -1069,6 +1194,9 @@ model scores {
   created_at  DateTime? @employee.DateTime
   em_exams    em_exams  @relation(fields: [exam_id], references: [id], onUpdate: NoAction, map: "FK__scores__exam_id__71D1E811")
   emapp       emapp     @relation(fields: [user_id], references: [AppId], onUpdate: NoAction, map: "FK__scores__user_id__72C60C4A")
+
+  @@index([exam_id], map: "scores_exam_id_IDX")
+  @@index([user_id], map: "scores_user_id_IDX")
 }
 
 model sysdiagrams {

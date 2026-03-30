@@ -1,5 +1,11 @@
 import { z, ZodType } from "zod";
 
+const optionalText = (max: number) =>
+  z.union([z.string().trim().max(max), z.null()]).optional();
+const optionalRequiredText = (max: number) =>
+  z.string().trim().min(1).max(max).optional();
+const optionalNullableDate = z.union([z.coerce.date(), z.null()]).optional();
+
 export class UserValidation {
   static readonly REGISTER: ZodType = z.object({
     username: z.string().min(3).max(30),
@@ -11,16 +17,16 @@ export class UserValidation {
 
   static readonly LOGIN: ZodType = z.object({
     username: z.string().trim().min(1).optional(),
-    badgeNumber: z.string().trim().min(1).optional(),
+    cardNo: z.string().trim().min(1).optional(),
     password: z.string().min(1),
   }).superRefine((data, ctx) => {
     const hasUsername = Boolean(data.username);
-    const hasBadgeNumber = Boolean(data.badgeNumber);
+    const hasCardNo = Boolean(data.cardNo);
 
-    if (hasUsername === hasBadgeNumber) {
+    if (hasUsername === hasCardNo) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Provide either username or badge number",
+        message: "Provide either username or card number",
       });
     }
   });
@@ -29,6 +35,30 @@ export class UserValidation {
     oldPassword: z.string().min(1),
     newPassword: z.string().min(6).max(100),
   });
+
+  static readonly UPDATE_PROFILE: ZodType = z.object({
+    name: optionalRequiredText(40),
+    badgeNumber: optionalRequiredText(24),
+    gender: optionalRequiredText(8),
+    nik: optionalRequiredText(20),
+    birthDay: z.coerce.date().optional(),
+    religion: optionalRequiredText(50),
+    hireDay: z.coerce.date().optional(),
+    street: optionalText(255),
+    city: optionalText(200),
+    state: optionalRequiredText(100),
+    email: z.union([z.string().trim().email().max(80), z.literal(""), z.null()]).optional(),
+    phone: optionalText(20),
+    departmentId: z.number().int().positive().optional().nullable(),
+    isMem: z.boolean().optional().nullable(),
+    isMemDate: optionalNullableDate,
+    imgName: optionalText(255),
+    tipe: optionalRequiredText(50),
+    location: optionalRequiredText(100),
+    statusLMS: z.boolean().optional(),
+    bpjsKesehatan: optionalText(50),
+    bpjsKetenagakerjaan: optionalText(50),
+  }).strict();
 
   static readonly CHANGE_ROLE: ZodType = z.object({
     userId: z.string().min(1).max(20),

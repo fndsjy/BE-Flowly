@@ -626,6 +626,21 @@ exports.Prisma.MasterAccessRoleScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.PortalMenuMapScalarFieldEnum = {
+  portalMenuMapId: 'portalMenuMapId',
+  portalMasAccessId: 'portalMasAccessId',
+  menuMasAccessId: 'menuMasAccessId',
+  orderIndex: 'orderIndex',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   logId: 'logId',
   module: 'module',
@@ -680,6 +695,7 @@ exports.Prisma.ModelName = {
   jabatan: 'jabatan',
   AccessRole: 'AccessRole',
   MasterAccessRole: 'MasterAccessRole',
+  PortalMenuMap: 'PortalMenuMap',
   AuditLog: 'AuditLog'
 };
 
