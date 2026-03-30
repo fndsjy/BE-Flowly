@@ -14,7 +14,7 @@ export declare const prismaFlowly: FlowlyClient<{
         emit: "event";
         level: "warn";
     })[];
-}, "error" | "info" | "query" | "warn", import("../generated/flowly/runtime/library.js").DefaultArgs>;
+}, "error" | "query" | "info" | "warn", import("../generated/flowly/runtime/library.js").DefaultArgs>;
 export declare const prismaEmployee: EmployeeClient<{
     log: ({
         emit: "event";
@@ -29,5 +29,5 @@ export declare const prismaEmployee: EmployeeClient<{
         emit: "event";
         level: "warn";
     })[];
-}, "error" | "info" | "query" | "warn", import("../generated/employee/runtime/library.js").DefaultArgs>;
+}, "error" | "query" | "info" | "warn", import("../generated/employee/runtime/library.js").DefaultArgs>;
 //# sourceMappingURL=database.d.ts.map

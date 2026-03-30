@@ -9,6 +9,7 @@ import { SbuSubController } from "../controller/sbu-sub-controller.js";
 import { ChartMemberController } from "../controller/chart-member-controller.js";
 import { JabatanController } from "../controller/jabatan-controller.js";
 import { MasterAccessRoleController } from "../controller/master-access-role-controller.js";
+import { PortalMenuMapController } from "../controller/portal-menu-map-controller.js";
 import { AccessRoleController } from "../controller/access-role-controller.js";
 import { ProcedureSopController } from "../controller/procedure-sop-controller.js";
 import { MasterIkController } from "../controller/master-ik-controller.js";
@@ -34,12 +35,13 @@ export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
 
 const v1 = express.Router();
-v1.post("/register", UserController.register);          // 🔐 role 1 only
+v1.post("/register", UserController.register);
 v1.post("/login", UserController.login);
 v1.get("/profile", UserController.getProfile);
-v1.get("/users", UserController.listUsers);             // 🔐 role 1 only
+v1.patch("/profile", UserController.updateProfile);
+v1.get("/users", UserController.listUsers);
 v1.patch("/password", UserController.changePassword);
-v1.patch("/role", UserController.changeRole);           // 🔐 role 1 only
+v1.patch("/role", UserController.changeRole);
 v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
 
@@ -48,12 +50,21 @@ v1.put("/master-access-role", MasterAccessRoleController.update);
 v1.delete("/master-access-role", MasterAccessRoleController.softDelete);
 v1.get("/master-access-role", MasterAccessRoleController.list);
 
+v1.post("/portal-menu-map", PortalMenuMapController.create);
+v1.put("/portal-menu-map", PortalMenuMapController.update);
+v1.delete("/portal-menu-map", PortalMenuMapController.softDelete);
+v1.get("/portal-menu-map", PortalMenuMapController.list);
+
 v1.post("/access-role", AccessRoleController.create);
 v1.put("/access-role", AccessRoleController.update);
 v1.delete("/access-role", AccessRoleController.softDelete);
 v1.get("/access-role", AccessRoleController.list);
 v1.get("/access-role/me", AccessRoleController.getSummary);
 
+v1.post("/employee", EmployeeController.create);
+v1.put("/employee", EmployeeController.update);
+v1.delete("/employee", EmployeeController.remove);
+v1.get("/employee/departments", EmployeeController.listDepartments);
 v1.get("/employee", EmployeeController.listForPIC);
 v1.patch("/employee/job-desc", EmployeeController.updateJobDesc);
 
@@ -170,7 +181,6 @@ v1.put("/procedure-sop-ik", ProcedureSopIkController.update);
 v1.delete("/procedure-sop-ik", ProcedureSopIkController.softDelete);
 v1.get("/procedure-sop-ik", ProcedureSopIkController.list);
 
-// Backward-compatible alias
 v1.post("/procedure-ik", MasterIkController.create);
 v1.put("/procedure-ik", MasterIkController.update);
 v1.delete("/procedure-ik", MasterIkController.softDelete);
@@ -189,10 +199,8 @@ v1.delete("/chart", ChartController.softDelete);
 v1.get("/chart", ChartController.list);
 v1.get("/chart-by-sbuSub", ChartController.listBySbuSub);
 
-// v1.post("/chart-member", ChartMemberController.create);
 v1.put("/chart-member", ChartMemberController.update);
 v1.delete("/chart-member", ChartMemberController.softDelete);
 v1.get("/chart-member", ChartMemberController.list);
 
-// Mount /v1
 publicRouter.use("/v1/api", v1);

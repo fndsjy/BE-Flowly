@@ -122,6 +122,21 @@ export async function generatemasAccessId() {
     }
     return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
 }
+export async function generatePortalMenuMapId() {
+    const today = getDDMMYY();
+    const prefix = `PMM${today}`;
+    const existing = await prisma.portalMenuMap.findFirst({
+        where: { portalMenuMapId: { startsWith: prefix } },
+        select: { portalMenuMapId: true },
+        orderBy: { portalMenuMapId: "desc" },
+    });
+    let nextSeq = 1;
+    if (existing?.portalMenuMapId) {
+        const currentSeq = extractSeqFromId(existing.portalMenuMapId);
+        nextSeq = currentSeq + 1;
+    }
+    return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+}
 export async function generateProcedureSopId() {
     const today = getDDMMYY();
     const prefix = `SOP${today}`;

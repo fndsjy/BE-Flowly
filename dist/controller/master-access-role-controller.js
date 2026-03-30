@@ -49,7 +49,10 @@ export class MasterAccessRoleController {
             const parentKey = typeof req.query.parentKey === "string"
                 ? req.query.parentKey
                 : undefined;
-            const response = await MasterAccessRoleService.list(resourceType, parentKey);
+            const portalKey = typeof req.query.portalKey === "string"
+                ? req.query.portalKey
+                : undefined;
+            const response = await MasterAccessRoleService.list(resourceType, parentKey, portalKey);
             res.status(200).json({ response });
         }
         catch (err) {

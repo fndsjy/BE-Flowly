@@ -6,7 +6,8 @@ import {
   generateRoleId,
   generatemasAccessId,
   generateAcessRoleId,
-  generateFishboneCategoryId
+  generateFishboneCategoryId,
+  generatePortalMenuMapId,
 } from "../src/utils/id-generator.js";
 
 // 🔹 Daftar Role
@@ -59,22 +60,94 @@ const users = [
 ];
 
 const masAccessItems = [
+  { resourceType: "PORTAL", resourceKey: "EMPLOYEE", displayName: "Employee", route: "/employee", parentKey: null, orderIndex: 10 },
+  { resourceType: "PORTAL", resourceKey: "SUPPLIER", displayName: "Supplier", route: "/supplier", parentKey: null, orderIndex: 20 },
+  { resourceType: "PORTAL", resourceKey: "CUSTOMER", displayName: "Customer", route: "/customer", parentKey: null, orderIndex: 30 },
+  { resourceType: "PORTAL", resourceKey: "AFFILIATE", displayName: "Affiliate", route: "/affiliate", parentKey: null, orderIndex: 40 },
+  { resourceType: "PORTAL", resourceKey: "INFLUENCER", displayName: "Influencer", route: "/influencer", parentKey: null, orderIndex: 50 },
+  { resourceType: "PORTAL", resourceKey: "COMMUNITY", displayName: "Community", route: "/community", parentKey: null, orderIndex: 60 },
   { resourceType: "MENU", resourceKey: "ORGANISASI", displayName: "Organisasi", route: "/pilar", parentKey: null, orderIndex: 10 },
   { resourceType: "MENU", resourceKey: "PROSEDUR", displayName: "Prosedur", route: "/prosedur", parentKey: null, orderIndex: 20 },
   { resourceType: "MENU", resourceKey: "A3", displayName: "A3", route: "/a3", parentKey: null, orderIndex: 30 },
   { resourceType: "MENU", resourceKey: "ABSENSI", displayName: "Absensi", route: "/absensi", parentKey: null, orderIndex: 40 },
+  { resourceType: "MENU", resourceKey: "HRD", displayName: "HRD", route: "/hrd", parentKey: null, orderIndex: 45 },
   { resourceType: "MENU", resourceKey: "ADMIN", displayName: "Administrator", route: "/administrator", parentKey: null, orderIndex: 50 },
+  { resourceType: "MENU", resourceKey: "ONBOARDING", displayName: "Onboarding", route: "/onboarding", parentKey: null, orderIndex: 80 },
+  { resourceType: "MENU", resourceKey: "SUPPLIER_DASHBOARD", displayName: "Dashboard", route: "/supplier", parentKey: null, orderIndex: 10 },
+  { resourceType: "MENU", resourceKey: "SUPPLIER_ONBOARDING", displayName: "Onboarding", route: "/supplier/onboarding", parentKey: null, orderIndex: 20 },
+  { resourceType: "MENU", resourceKey: "SUPPLIER_ADMIN", displayName: "Administrator", route: "/supplier/administrator", parentKey: null, orderIndex: 30 },
+  { resourceType: "MENU", resourceKey: "CUSTOMER_DASHBOARD", displayName: "Dashboard", route: "/customer", parentKey: null, orderIndex: 10 },
+  { resourceType: "MENU", resourceKey: "CUSTOMER_ONBOARDING", displayName: "Onboarding", route: "/customer/onboarding", parentKey: null, orderIndex: 20 },
+  { resourceType: "MENU", resourceKey: "CUSTOMER_ADMIN", displayName: "Administrator", route: "/customer/administrator", parentKey: null, orderIndex: 30 },
+  { resourceType: "MENU", resourceKey: "AFFILIATE_DASHBOARD", displayName: "Dashboard", route: "/affiliate", parentKey: null, orderIndex: 10 },
+  { resourceType: "MENU", resourceKey: "AFFILIATE_ONBOARDING", displayName: "Onboarding", route: "/affiliate/onboarding", parentKey: null, orderIndex: 20 },
+  { resourceType: "MENU", resourceKey: "AFFILIATE_ADMIN", displayName: "Administrator", route: "/affiliate/administrator", parentKey: null, orderIndex: 30 },
+  { resourceType: "MENU", resourceKey: "INFLUENCER_DASHBOARD", displayName: "Dashboard", route: "/influencer", parentKey: null, orderIndex: 10 },
+  { resourceType: "MENU", resourceKey: "INFLUENCER_ONBOARDING", displayName: "Onboarding", route: "/influencer/onboarding", parentKey: null, orderIndex: 20 },
+  { resourceType: "MENU", resourceKey: "INFLUENCER_ADMIN", displayName: "Administrator", route: "/influencer/administrator", parentKey: null, orderIndex: 30 },
+  { resourceType: "MENU", resourceKey: "COMMUNITY_DASHBOARD", displayName: "Dashboard", route: "/community", parentKey: null, orderIndex: 10 },
+  { resourceType: "MENU", resourceKey: "COMMUNITY_ONBOARDING", displayName: "Onboarding", route: "/community/onboarding", parentKey: null, orderIndex: 20 },
+  { resourceType: "MENU", resourceKey: "COMMUNITY_ADMIN", displayName: "Administrator", route: "/community/administrator", parentKey: null, orderIndex: 30 },
   { resourceType: "MODULE", resourceKey: "PILAR", displayName: "Pilar", route: "/pilar", parentKey: "ORGANISASI", orderIndex: 10 },
   { resourceType: "MODULE", resourceKey: "SBU", displayName: "SBU", route: "/pilar/sbu", parentKey: "ORGANISASI", orderIndex: 20 },
   { resourceType: "MODULE", resourceKey: "SBU_SUB", displayName: "SBU Sub", route: "/pilar/sbu/sbu_sub", parentKey: "ORGANISASI", orderIndex: 30 },
   { resourceType: "MODULE", resourceKey: "CHART", displayName: "Chart", route: "/pilar/sbu/sbu_sub/organisasi", parentKey: "ORGANISASI", orderIndex: 40 },
   { resourceType: "MODULE", resourceKey: "CHART_MEMBER", displayName: "Chart Member", route: null, parentKey: "ORGANISASI", orderIndex: 50 },
   { resourceType: "MODULE", resourceKey: "CASE", displayName: "Case", route: "/a3/case", parentKey: "A3", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/onboarding/checklist", parentKey: "ONBOARDING", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/onboarding/assessments", parentKey: "ONBOARDING", orderIndex: 20 },
+  { resourceType: "MODULE", resourceKey: "ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/onboarding/certificates", parentKey: "ONBOARDING", orderIndex: 30 },
   { resourceType: "MODULE", resourceKey: "ADMIN_USERS", displayName: "Users", route: "/administrator/users", parentKey: "ADMIN", orderIndex: 10 },
   { resourceType: "MODULE", resourceKey: "ADMIN_JABATAN", displayName: "Jabatan", route: "/administrator/jabatan", parentKey: "ADMIN", orderIndex: 20 },
   { resourceType: "MODULE", resourceKey: "ADMIN_ACCESS_ROLE", displayName: "Hak Akses", route: "/administrator/access-role", parentKey: "ADMIN", orderIndex: 30 },
   { resourceType: "MODULE", resourceKey: "ADMIN_AUDIT_LOG", displayName: "Audit Log", route: "/administrator/audit-log", parentKey: "ADMIN", orderIndex: 40 },
   { resourceType: "MODULE", resourceKey: "ADMIN_NOTIFICATION_TEMPLATE", displayName: "Template Notifikasi", route: "/administrator/notification-template", parentKey: "ADMIN", orderIndex: 50 },
+  { resourceType: "MODULE", resourceKey: "SUPPLIER_ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/supplier/onboarding/checklist", parentKey: "SUPPLIER_ONBOARDING", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "SUPPLIER_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/supplier/onboarding/assessments", parentKey: "SUPPLIER_ONBOARDING", orderIndex: 20 },
+  { resourceType: "MODULE", resourceKey: "SUPPLIER_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/supplier/onboarding/certificates", parentKey: "SUPPLIER_ONBOARDING", orderIndex: 30 },
+  { resourceType: "MODULE", resourceKey: "SUPPLIER_ADMIN_SUPPLIERS", displayName: "Supplier", route: "/supplier/administrator/suppliers", parentKey: "SUPPLIER_ADMIN", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "CUSTOMER_ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/customer/onboarding/checklist", parentKey: "CUSTOMER_ONBOARDING", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "CUSTOMER_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/customer/onboarding/assessments", parentKey: "CUSTOMER_ONBOARDING", orderIndex: 20 },
+  { resourceType: "MODULE", resourceKey: "CUSTOMER_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/customer/onboarding/certificates", parentKey: "CUSTOMER_ONBOARDING", orderIndex: 30 },
+  { resourceType: "MODULE", resourceKey: "CUSTOMER_ADMIN_CUSTOMERS", displayName: "Customers", route: "/customer/administrator/customers", parentKey: "CUSTOMER_ADMIN", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "AFFILIATE_ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/affiliate/onboarding/checklist", parentKey: "AFFILIATE_ONBOARDING", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "AFFILIATE_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/affiliate/onboarding/assessments", parentKey: "AFFILIATE_ONBOARDING", orderIndex: 20 },
+  { resourceType: "MODULE", resourceKey: "AFFILIATE_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/affiliate/onboarding/certificates", parentKey: "AFFILIATE_ONBOARDING", orderIndex: 30 },
+  { resourceType: "MODULE", resourceKey: "AFFILIATE_ADMIN_AFFILIATES", displayName: "Affiliate", route: "/affiliate/administrator/affiliates", parentKey: "AFFILIATE_ADMIN", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "INFLUENCER_ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/influencer/onboarding/checklist", parentKey: "INFLUENCER_ONBOARDING", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "INFLUENCER_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/influencer/onboarding/assessments", parentKey: "INFLUENCER_ONBOARDING", orderIndex: 20 },
+  { resourceType: "MODULE", resourceKey: "INFLUENCER_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/influencer/onboarding/certificates", parentKey: "INFLUENCER_ONBOARDING", orderIndex: 30 },
+  { resourceType: "MODULE", resourceKey: "INFLUENCER_ADMIN_INFLUENCERS", displayName: "Influencer", route: "/influencer/administrator/influencers", parentKey: "INFLUENCER_ADMIN", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "COMMUNITY_ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/community/onboarding/checklist", parentKey: "COMMUNITY_ONBOARDING", orderIndex: 10 },
+  { resourceType: "MODULE", resourceKey: "COMMUNITY_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/community/onboarding/assessments", parentKey: "COMMUNITY_ONBOARDING", orderIndex: 20 },
+  { resourceType: "MODULE", resourceKey: "COMMUNITY_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/community/onboarding/certificates", parentKey: "COMMUNITY_ONBOARDING", orderIndex: 30 },
+  { resourceType: "MODULE", resourceKey: "COMMUNITY_ADMIN_COMMUNITIES", displayName: "Community", route: "/community/administrator/communities", parentKey: "COMMUNITY_ADMIN", orderIndex: 10 },
+];
+
+const portalMenuMappings = [
+  { portalKey: "EMPLOYEE", menuKey: "ORGANISASI", orderIndex: 10 },
+  { portalKey: "EMPLOYEE", menuKey: "PROSEDUR", orderIndex: 20 },
+  { portalKey: "EMPLOYEE", menuKey: "FISHBONE", orderIndex: 30 },
+  { portalKey: "EMPLOYEE", menuKey: "A3", orderIndex: 40 },
+  { portalKey: "EMPLOYEE", menuKey: "HRD", orderIndex: 50 },
+  { portalKey: "EMPLOYEE", menuKey: "ABSENSI", orderIndex: 60 },
+  { portalKey: "EMPLOYEE", menuKey: "ADMIN", orderIndex: 70 },
+  { portalKey: "EMPLOYEE", menuKey: "ONBOARDING", orderIndex: 80 },
+  { portalKey: "SUPPLIER", menuKey: "SUPPLIER_DASHBOARD", orderIndex: 10 },
+  { portalKey: "SUPPLIER", menuKey: "SUPPLIER_ONBOARDING", orderIndex: 20 },
+  { portalKey: "SUPPLIER", menuKey: "SUPPLIER_ADMIN", orderIndex: 30 },
+  { portalKey: "CUSTOMER", menuKey: "CUSTOMER_DASHBOARD", orderIndex: 10 },
+  { portalKey: "CUSTOMER", menuKey: "CUSTOMER_ONBOARDING", orderIndex: 20 },
+  { portalKey: "CUSTOMER", menuKey: "CUSTOMER_ADMIN", orderIndex: 30 },
+  { portalKey: "AFFILIATE", menuKey: "AFFILIATE_DASHBOARD", orderIndex: 10 },
+  { portalKey: "AFFILIATE", menuKey: "AFFILIATE_ONBOARDING", orderIndex: 20 },
+  { portalKey: "AFFILIATE", menuKey: "AFFILIATE_ADMIN", orderIndex: 30 },
+  { portalKey: "INFLUENCER", menuKey: "INFLUENCER_DASHBOARD", orderIndex: 10 },
+  { portalKey: "INFLUENCER", menuKey: "INFLUENCER_ONBOARDING", orderIndex: 20 },
+  { portalKey: "INFLUENCER", menuKey: "INFLUENCER_ADMIN", orderIndex: 30 },
+  { portalKey: "COMMUNITY", menuKey: "COMMUNITY_DASHBOARD", orderIndex: 10 },
+  { portalKey: "COMMUNITY", menuKey: "COMMUNITY_ONBOARDING", orderIndex: 20 },
+  { portalKey: "COMMUNITY", menuKey: "COMMUNITY_ADMIN", orderIndex: 30 },
 ];
 
 type accessRoleseed = {
@@ -190,6 +263,58 @@ async function main() {
         route: item.route,
         parentKey: item.parentKey,
         orderIndex: item.orderIndex,
+        isActive: true,
+        isDeleted: false,
+      },
+    });
+  }
+
+  const resourceRows = await prisma.masterAccessRole.findMany({
+    where: {
+      isDeleted: false,
+      resourceType: { in: ["PORTAL", "MENU"] },
+    },
+    select: {
+      masAccessId: true,
+      resourceType: true,
+      resourceKey: true,
+    },
+  });
+
+  const resourceMap = new Map(
+    resourceRows.map((item) => [`${item.resourceType}:${item.resourceKey}`, item.masAccessId])
+  );
+
+  const makePortalMenuMapId = await generatePortalMenuMapId();
+  for (const mapping of portalMenuMappings) {
+    const portalMasAccessId = resourceMap.get(`PORTAL:${mapping.portalKey}`);
+    const menuMasAccessId = resourceMap.get(`MENU:${mapping.menuKey}`);
+
+    if (!portalMasAccessId || !menuMasAccessId) {
+      throw new Error(
+        `Portal/menu mapping resource missing for ${mapping.portalKey} -> ${mapping.menuKey}`
+      );
+    }
+
+    await prisma.portalMenuMap.upsert({
+      where: {
+        portalMasAccessId_menuMasAccessId: {
+          portalMasAccessId,
+          menuMasAccessId,
+        },
+      },
+      update: {
+        orderIndex: mapping.orderIndex,
+        isActive: true,
+        isDeleted: false,
+        deletedAt: null,
+        deletedBy: null,
+      },
+      create: {
+        portalMenuMapId: makePortalMenuMapId(),
+        portalMasAccessId,
+        menuMasAccessId,
+        orderIndex: mapping.orderIndex,
         isActive: true,
         isDeleted: false,
       },

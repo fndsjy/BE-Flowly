@@ -1,67 +1,420 @@
-// user-service.ts
-import { toUserResponse, toLoginResponse, toUserProfileResponse, toUserListResponse, type CreateUserRequest, type UserResponse, type LoginRequest, type LoginResponse, type ChangePasswordRequest, type ChangeRoleRequest, type UserProfileResponse, type UserListResponse } from "../model/user-model.js";
+import bcrypt from "bcrypt";
+import { prismaEmployee, prismaFlowly } from "../application/database.js";
+import { ResponseError } from "../error/response-error.js";
+import {
+  toLoginResponse,
+  toUserListResponse,
+  toUserResponse,
+  type ChangePasswordRequest,
+  type ChangeRoleRequest,
+  type CreateUserRequest,
+  type LoginRequest,
+  type LoginResponse,
+  type UpdateProfileRequest,
+  type UserListResponse,
+  type UserProfileResponse,
+  type UserResponse,
+} from "../model/user-model.js";
+import { generateToken, getTokenExpiresIn } from "../utils/auth.js";
+import { generateUserId } from "../utils/id-generator.js";
 import { UserValidation } from "../validation/user-validation.js";
 import { Validation } from "../validation/validation.js";
-import { prismaFlowly, prismaEmployee } from "../application/database.js";
-import { ResponseError } from "../error/response-error.js";
-import bcrypt from "bcrypt";
-import { getTokenExpiresIn, generateToken, verifyToken } from "../utils/auth.js";
-import { generateUserId } from "../utils/id-generator.js";
+
+const SELF_EDITABLE_PROFILE_FIELDS = [
+  "street",
+  "city",
+  "email",
+  "phone",
+] as const;
+
+const ADMIN_EDITABLE_PROFILE_FIELDS = [
+  ...SELF_EDITABLE_PROFILE_FIELDS,
+  "name",
+  "badgeNumber",
+  "gender",
+  "nik",
+  "birthDay",
+  "religion",
+  "hireDay",
+  "state",
+  "departmentId",
+  "isMem",
+  "isMemDate",
+  "imgName",
+  "tipe",
+  "location",
+  "statusLMS",
+  "bpjsKesehatan",
+  "bpjsKetenagakerjaan",
+] as const;
+
+type EditableProfileField =
+  | (typeof SELF_EDITABLE_PROFILE_FIELDS)[number]
+  | (typeof ADMIN_EDITABLE_PROFILE_FIELDS)[number];
+
+type EmployeeProfileRecord = {
+  UserId: number;
+  BadgeNum: string;
+  Name: string | null;
+  Gender: string | null;
+  BirthDay: Date | null;
+  HireDay: Date | null;
+  Street: string | null;
+  Religion: string | null;
+  Tipe: string | null;
+  isLokasi: string | null;
+  Phone: string | null;
+  DeptId: number | null;
+  Password: string | null;
+  isMem: boolean | null;
+  isMemDate: Date | null;
+  ImgName: string | null;
+  Nik: string | null;
+  city: string | null;
+  state: string;
+  email: string | null;
+  BPJSKshtn: string | null;
+  BPJSKtngkerjaan: string | null;
+  statusLMS: boolean;
+  roleId: number | null;
+};
+
+type FlowlyUserWithRole = {
+  userId: string;
+  username: string;
+  name: string;
+  badgeNumber: string;
+  department: string | null;
+  roleId: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  password: string;
+  token: string | null;
+  role: {
+    roleName: string;
+    roleLevel: number;
+  };
+};
+
+type ProfileContext = {
+  flowlyUser: FlowlyUserWithRole | null;
+  employee: EmployeeProfileRecord | null;
+  roleId: string;
+  roleName: string;
+  roleLevel: number;
+  userId: string;
+  username: string;
+  name: string;
+  badgeNumber: string | null;
+  department: string | null;
+};
+
+const employeeProfileSelect = {
+  UserId: true,
+  BadgeNum: true,
+  Name: true,
+  Gender: true,
+  BirthDay: true,
+  HireDay: true,
+  Street: true,
+  Religion: true,
+  Tipe: true,
+  isLokasi: true,
+  Phone: true,
+  DeptId: true,
+  Password: true,
+  isMem: true,
+  isMemDate: true,
+  ImgName: true,
+  Nik: true,
+  city: true,
+  state: true,
+  email: true,
+  BPJSKshtn: true,
+  BPJSKtngkerjaan: true,
+  statusLMS: true,
+  roleId: true,
+} as const;
+
+const normalizeOptionalText = (value?: string | null) => {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+};
+
+const normalizeProfileEmail = (value?: string | null) => {
+  if (value === undefined || value === null) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return trimmed && trimmed !== "-" ? trimmed : null;
+};
+
+const getEditableProfileFields = (
+  isAdmin: boolean,
+  hasEmployeeProfile: boolean
+): string[] => {
+  if (!hasEmployeeProfile) {
+    return [];
+  }
+
+  return isAdmin
+    ? [...ADMIN_EDITABLE_PROFILE_FIELDS]
+    : [...SELF_EDITABLE_PROFILE_FIELDS];
+};
+
+const findDepartmentName = async (departmentId?: number | null) => {
+  if (departmentId === undefined || departmentId === null) {
+    return null;
+  }
+
+  const department = await prismaEmployee.em_dept.findUnique({
+    where: { DEPTID: departmentId },
+    select: { DEPTNAME: true },
+  });
+
+  return department?.DEPTNAME ?? null;
+};
+
+const ensureDepartmentExists = async (departmentId?: number | null) => {
+  if (departmentId === undefined || departmentId === null) {
+    return;
+  }
+
+  const department = await prismaEmployee.em_dept.findUnique({
+    where: { DEPTID: departmentId },
+    select: { DEPTID: true },
+  });
+
+  if (!department) {
+    throw new ResponseError(400, "Department not found");
+  }
+};
+
+const ensureUniqueEmployeeBadgeNumber = async (
+  badgeNumber: string,
+  excludeUserId?: number
+) => {
+  const existing = await prismaEmployee.em_employee.findFirst({
+    where: {
+      BadgeNum: badgeNumber,
+      ...(excludeUserId ? { UserId: { not: excludeUserId } } : {}),
+    },
+    select: { UserId: true },
+  });
+
+  if (existing) {
+    throw new ResponseError(400, "Badge number already used by another employee");
+  }
+};
+
+const findEmployeeByUserId = async (
+  employeeUserId: number
+): Promise<EmployeeProfileRecord | null> => {
+  const employee = await prismaEmployee.em_employee.findUnique({
+    where: { UserId: employeeUserId },
+    select: employeeProfileSelect,
+  });
+
+  return employee;
+};
+
+const findEmployeeByBadgeNumber = async (
+  badgeNumber?: string | null
+): Promise<EmployeeProfileRecord | null> => {
+  const normalized = badgeNumber?.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  const employee = await prismaEmployee.em_employee.findFirst({
+    where: { BadgeNum: normalized },
+    select: employeeProfileSelect,
+  });
+
+  return employee;
+};
+
+const findFlowlyUserById = async (
+  userId: string
+): Promise<FlowlyUserWithRole | null> => {
+  const user = await prismaFlowly.user.findUnique({
+    where: { userId },
+    include: {
+      role: {
+        select: {
+          roleName: true,
+          roleLevel: true,
+        },
+      },
+    },
+  });
+
+  if (!user || user.isDeleted) {
+    return null;
+  }
+
+  return user;
+};
+
+const resolveProfileContext = async (userId: string): Promise<ProfileContext> => {
+  const flowlyUser = await findFlowlyUserById(userId);
+  if (flowlyUser) {
+    const employee = await findEmployeeByBadgeNumber(flowlyUser.badgeNumber);
+
+    return {
+      flowlyUser,
+      employee,
+      roleId: flowlyUser.roleId,
+      roleName: flowlyUser.role.roleName,
+      roleLevel: flowlyUser.role.roleLevel,
+      userId: flowlyUser.userId,
+      username: flowlyUser.username,
+      name: employee?.Name ?? flowlyUser.name,
+      badgeNumber: employee?.BadgeNum ?? flowlyUser.badgeNumber,
+      department: flowlyUser.department,
+    };
+  }
+
+  const employeeUserId = Number(userId);
+  if (Number.isNaN(employeeUserId)) {
+    throw new ResponseError(404, "User not found");
+  }
+
+  const employee = await findEmployeeByUserId(employeeUserId);
+  if (!employee) {
+    throw new ResponseError(404, "User not found");
+  }
+
+  const username = employee.BadgeNum?.trim() || String(employee.UserId);
+  const name = employee.Name ?? username;
+
+  return {
+    flowlyUser: null,
+    employee,
+    roleId:
+      employee.roleId !== null && employee.roleId !== undefined
+        ? String(employee.roleId)
+        : "EMPLOYEE",
+    roleName: "Employee",
+    roleLevel: 4,
+    userId: String(employee.UserId),
+    username,
+    name,
+    badgeNumber: employee.BadgeNum ?? null,
+    department: null,
+  };
+};
+
+const toProfileResponse = async (
+  context: ProfileContext
+): Promise<UserProfileResponse> => {
+  const { employee, roleLevel } = context;
+  const isAdmin = roleLevel === 1;
+  const departmentName =
+    employee?.DeptId !== null && employee?.DeptId !== undefined
+      ? await findDepartmentName(employee.DeptId)
+      : context.department;
+
+  return {
+    userId: context.userId,
+    username: context.username,
+    name: employee?.Name ?? context.name,
+    badgeNumber: employee?.BadgeNum ?? context.badgeNumber ?? null,
+    department: departmentName ?? null,
+    departmentId: employee?.DeptId ?? null,
+    employeeUserId: employee?.UserId ?? null,
+    roleId: context.roleId,
+    roleName: context.roleName,
+    roleLevel: context.roleLevel,
+    gender: employee?.Gender ?? null,
+    nik: employee?.Nik ?? null,
+    birthDay: employee?.BirthDay ?? null,
+    religion: employee?.Religion ?? null,
+    hireDay: employee?.HireDay ?? null,
+    street: employee?.Street ?? null,
+    city: employee?.city ?? null,
+    state: employee?.state ?? null,
+    email: normalizeProfileEmail(employee?.email),
+    phone: employee?.Phone ?? null,
+    isMem: employee?.isMem ?? null,
+    isMemDate: employee?.isMemDate ?? null,
+    imgName: employee?.ImgName ?? null,
+    tipe: employee?.Tipe ?? null,
+    location: employee?.isLokasi ?? null,
+    statusLMS: employee?.statusLMS ?? false,
+    bpjsKesehatan: employee?.BPJSKshtn ?? null,
+    bpjsKetenagakerjaan: employee?.BPJSKtngkerjaan ?? null,
+    canEditProfile: Boolean(employee),
+    canEditAllProfileFields: Boolean(employee) && isAdmin,
+    canEditProfilePhoto: Boolean(employee) && isAdmin,
+    canChangePassword: true,
+    editableFields: getEditableProfileFields(isAdmin, Boolean(employee)),
+  };
+};
+
+const hasOwn = (value: object, key: string) =>
+  Object.prototype.hasOwnProperty.call(value, key);
 
 export class UserService {
-  // ✅ Register (with generated userId)
-  static async register(request: CreateUserRequest, requesterUserId: string): Promise<UserResponse> {
-    const registerRequest = Validation.validate(UserValidation.REGISTER, request);
+  static async register(
+    request: CreateUserRequest,
+    requesterUserId: string
+  ): Promise<UserResponse> {
+    const registerRequest = Validation.validate(
+      UserValidation.REGISTER,
+      request
+    ) as CreateUserRequest;
 
-    // ✅ Check requester role
     const requester = await prismaFlowly.user.findUnique({
       where: { userId: requesterUserId },
-      include: { role: true }
+      include: { role: true },
     });
-    if (!requester || requester.role.roleLevel !== 1) {
+    if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
       throw new ResponseError(403, "Only Admin can register new users");
     }
 
     const existing = await prismaFlowly.user.findUnique({
-      where: { username: registerRequest.username }
+      where: { username: registerRequest.username },
     });
     if (existing) {
       throw new ResponseError(400, "Username already taken");
     }
 
-    // ✅ Determine role
-  let roleToAssign;
-  if (registerRequest.roleId) {
-    // Admin explicitly selected a role
-    roleToAssign = await prismaFlowly.role.findUnique({
-      where: { roleId: registerRequest.roleId, roleIsActive: true }
-    });
-    if (!roleToAssign) {
-      throw new ResponseError(400, "Selected role is invalid or inactive");
+    let roleToAssign;
+    if (registerRequest.roleId) {
+      roleToAssign = await prismaFlowly.role.findUnique({
+        where: { roleId: registerRequest.roleId, roleIsActive: true },
+      });
+      if (!roleToAssign) {
+        throw new ResponseError(400, "Selected role is invalid or inactive");
+      }
+    } else {
+      roleToAssign = await prismaFlowly.role.findFirst({
+        where: { roleLevel: 4, roleIsActive: true },
+      });
+      if (!roleToAssign) {
+        throw new ResponseError(500, "Default role (level 4) not found");
+      }
     }
-  } else {
-    // Use default role (level 4)
-    roleToAssign = await prismaFlowly.role.findFirst({
-      where: { roleLevel: 4, roleIsActive: true }
-    });
-    if (!roleToAssign) {
-      throw new ResponseError(500, "Default role (level 4) not found");
+
+    const badgeNumber = registerRequest.badgeNumber.trim();
+    if (!badgeNumber) {
+      throw new ResponseError(400, "Badge number is required");
     }
-  }
 
-  // ✅ Badge number — already validated as non-empty via Zod, but double-check:
-  const badgeNumber = registerRequest.badgeNumber.trim();
-  if (!badgeNumber) {
-    throw new ResponseError(400, "Badge number is required");
-  }
-
-    // ✅ Generate userId
     const userId = await generateUserId();
-
     const hashed = await bcrypt.hash(registerRequest.password, 10);
     const user = await prismaFlowly.user.create({
       data: {
-        userId, // ✅ Required field (from your Prisma schema)
+        userId,
         ...registerRequest,
         password: hashed,
         roleId: roleToAssign.roleId,
@@ -70,22 +423,24 @@ export class UserService {
         updatedBy: requesterUserId,
         isActive: true,
         isDeleted: false,
-      }
+      },
     });
 
     return toUserResponse(user);
   }
 
-  // ✅ Login — no change needed (no create/update raw object)
   static async login(request: LoginRequest): Promise<LoginResponse> {
-    const loginRequest = Validation.validate(UserValidation.LOGIN, request);
+    const loginRequest = Validation.validate(
+      UserValidation.LOGIN,
+      request
+    ) as LoginRequest;
 
     if (loginRequest.username) {
       const user = await prismaFlowly.user.findUnique({
-        where: { username: loginRequest.username, isDeleted: false },
-        include: { role: true }
+        where: { username: loginRequest.username },
+        include: { role: true },
       });
-      if (!user || !user.isActive) {
+      if (!user || user.isDeleted || !user.isActive) {
         throw new ResponseError(401, "User not found or inactive");
       }
 
@@ -97,47 +452,49 @@ export class UserService {
       let token = user.token;
       let expiresIn = 0;
 
-      // Check if existing token exists and is still valid
       if (token) {
         expiresIn = getTokenExpiresIn(token);
         if (expiresIn <= 0) {
-          // Token expired or invalid → discard and generate new one
           token = null;
         }
       }
 
-      // If no valid token, generate a new one
       if (!token) {
         token = generateToken(user);
         expiresIn = 3 * 60 * 60;
-        // expiresIn = 3 * 60 * 60; // 3 hours in seconds (since getTokenExpiresIn() gives seconds)
 
-        // Update DB with new token and lastLogin
         await prismaFlowly.user.update({
           where: { userId: user.userId },
           data: {
             token,
             lastLogin: new Date(),
-            // ✅ Set updatedBy to 'login system' as per your requirement
-            // updatedBy: "login system",
-          }
+          },
         });
       }
 
       return toLoginResponse(user, token);
     }
 
-    const badgeNumber = loginRequest.badgeNumber;
-    if (!badgeNumber) {
-      throw new ResponseError(400, "Badge number is required");
+    const cardNo = loginRequest.cardNo?.trim();
+    if (!cardNo) {
+      throw new ResponseError(400, "Card number is required");
     }
 
     const employee = await prismaEmployee.em_employee.findFirst({
-      where: { BadgeNum: badgeNumber }
+      where: { CardNo: cardNo },
+      select: {
+        UserId: true,
+        BadgeNum: true,
+        CardNo: true,
+        Name: true,
+        Password: true,
+        roleId: true,
+        jobDesc: true,
+      },
     });
 
     if (!employee || !employee.Password) {
-      throw new ResponseError(401, "Invalid badge number");
+      throw new ResponseError(401, "Invalid card number");
     }
 
     const isPasswordValid = await UserService.isEmployeePasswordValid(
@@ -145,26 +502,31 @@ export class UserService {
       employee.Password
     );
     if (!isPasswordValid) {
-      throw new ResponseError(401, "Invalid badge number or password");
+      throw new ResponseError(401, "Invalid card number or password");
     }
+
+    const employeeUsername = employee.CardNo?.trim() || cardNo;
 
     const token = generateToken({
       userId: String(employee.UserId),
-      username: badgeNumber,
-      roleId: String(employee.roleId ?? "EMPLOYEE")
+      username: employeeUsername,
+      roleId: String(employee.roleId ?? "EMPLOYEE"),
     });
 
     return toLoginResponse(
       {
-        username: badgeNumber,
-        name: employee.Name ?? badgeNumber,
+        username: employeeUsername,
+        name: employee.Name ?? employeeUsername,
         jobDesc: employee.jobDesc ?? null,
       },
       token
     );
   }
 
-  private static async isEmployeePasswordValid(password: string, storedPassword: string): Promise<boolean> {
+  private static async isEmployeePasswordValid(
+    password: string,
+    storedPassword: string
+  ): Promise<boolean> {
     const normalized = storedPassword.trim();
     const bcryptHash = normalized.startsWith("$2y$")
       ? `$2b$${normalized.slice(4)}`
@@ -177,156 +539,373 @@ export class UserService {
     }
   }
 
-  // ✅ Get Profile — no change needed
   static async getProfile(userId: string): Promise<UserProfileResponse> {
-    const user = await prismaFlowly.user.findUnique({
-      where: { userId, isDeleted: false },
-      include: { role: { select: { roleName: true, roleLevel: true } } }
-    });
-    if (user) {
-      return toUserProfileResponse(user);
-    }
-
-    const employeeId = Number(userId);
-    if (Number.isNaN(employeeId)) {
-      throw new ResponseError(404, "User not found");
-    }
-
-    const employee = await prismaEmployee.em_employee.findUnique({
-      where: { UserId: employeeId },
-      select: {
-        UserId: true,
-        Name: true,
-        BadgeNum: true,
-        roleId: true
-      }
-    });
-
-    if (!employee) throw new ResponseError(404, "User not found");
-
-    const badgeNumber = employee.BadgeNum ?? null;
-    const username = badgeNumber ?? String(employee.UserId);
-    const name = employee.Name ?? username;
-    const roleId = employee.roleId !== null && employee.roleId !== undefined
-      ? String(employee.roleId)
-      : "EMPLOYEE";
-
-    return {
-      userId: String(employee.UserId),
-      username,
-      name,
-      badgeNumber,
-      department: null,
-      roleId,
-      roleName: "Employee",
-      roleLevel: 4
-    };
+    const context = await resolveProfileContext(userId);
+    return toProfileResponse(context);
   }
 
-  // ✅ List Users — no change needed
+  static async updateProfile(
+    requesterUserId: string,
+    request: UpdateProfileRequest
+  ): Promise<UserProfileResponse> {
+    const validated = Validation.validate(
+      UserValidation.UPDATE_PROFILE,
+      request
+    ) as UpdateProfileRequest;
+
+    const providedKeys = Object.entries(request)
+      .filter(([, value]) => value !== undefined)
+      .map(([key]) => key as EditableProfileField);
+
+    if (providedKeys.length === 0) {
+      throw new ResponseError(400, "No profile changes were provided");
+    }
+
+    const context = await resolveProfileContext(requesterUserId);
+    if (!context.employee) {
+      throw new ResponseError(404, "Employee profile not found");
+    }
+
+    const isAdmin = context.roleLevel === 1;
+    const allowedFields = new Set<string>(
+      getEditableProfileFields(isAdmin, true)
+    );
+    const unauthorizedFields = providedKeys.filter(
+      (key) => !allowedFields.has(key)
+    );
+
+    if (unauthorizedFields.length > 0) {
+      throw new ResponseError(
+        403,
+        `You are not allowed to update: ${unauthorizedFields.join(", ")}`
+      );
+    }
+
+    if (validated.departmentId !== undefined) {
+      await ensureDepartmentExists(validated.departmentId);
+    }
+
+    if (
+      validated.badgeNumber !== undefined &&
+      validated.badgeNumber.trim() !== context.employee.BadgeNum
+    ) {
+      await ensureUniqueEmployeeBadgeNumber(
+        validated.badgeNumber.trim(),
+        context.employee.UserId
+      );
+    }
+
+    const employeeUpdateData: Record<string, unknown> = {
+      Lastupdate: new Date(),
+    };
+
+    if (validated.name !== undefined) {
+      employeeUpdateData.Name = validated.name.trim();
+    }
+
+    if (validated.badgeNumber !== undefined) {
+      const badgeNumber = validated.badgeNumber.trim();
+      employeeUpdateData.BadgeNum = badgeNumber;
+      employeeUpdateData.CardNo = badgeNumber;
+    }
+
+    if (validated.gender !== undefined) {
+      employeeUpdateData.Gender = validated.gender.trim();
+    }
+
+    if (validated.nik !== undefined) {
+      employeeUpdateData.Nik = validated.nik.trim();
+    }
+
+    if (validated.birthDay !== undefined) {
+      employeeUpdateData.BirthDay = validated.birthDay;
+    }
+
+    if (validated.religion !== undefined) {
+      employeeUpdateData.Religion = validated.religion.trim();
+    }
+
+    if (validated.hireDay !== undefined) {
+      employeeUpdateData.HireDay = validated.hireDay;
+    }
+
+    if (validated.street !== undefined) {
+      employeeUpdateData.Street = normalizeOptionalText(validated.street);
+    }
+
+    if (validated.city !== undefined) {
+      employeeUpdateData.city = normalizeOptionalText(validated.city);
+    }
+
+    if (validated.state !== undefined) {
+      employeeUpdateData.state = validated.state.trim();
+    }
+
+    if (validated.email !== undefined) {
+      employeeUpdateData.email = normalizeOptionalText(validated.email);
+    }
+
+    if (validated.phone !== undefined) {
+      employeeUpdateData.Phone = normalizeOptionalText(validated.phone);
+    }
+
+    if (validated.departmentId !== undefined) {
+      employeeUpdateData.DeptId = validated.departmentId;
+    }
+
+    if (validated.imgName !== undefined) {
+      employeeUpdateData.ImgName = normalizeOptionalText(validated.imgName);
+    }
+
+    if (validated.tipe !== undefined) {
+      employeeUpdateData.Tipe = validated.tipe.trim();
+    }
+
+    if (validated.location !== undefined) {
+      employeeUpdateData.isLokasi = validated.location.trim();
+    }
+
+    if (validated.statusLMS !== undefined) {
+      employeeUpdateData.statusLMS = validated.statusLMS;
+    }
+
+    if (validated.bpjsKesehatan !== undefined) {
+      employeeUpdateData.BPJSKshtn = normalizeOptionalText(
+        validated.bpjsKesehatan
+      );
+    }
+
+    if (validated.bpjsKetenagakerjaan !== undefined) {
+      employeeUpdateData.BPJSKtngkerjaan = normalizeOptionalText(
+        validated.bpjsKetenagakerjaan
+      );
+    }
+
+    const isMemSubmitted =
+      hasOwn(validated, "isMem") || hasOwn(validated, "isMemDate");
+    if (isMemSubmitted) {
+      const nextIsMem = validated.isMem ?? context.employee.isMem ?? false;
+      const nextIsMemDate = nextIsMem
+        ? hasOwn(validated, "isMemDate")
+          ? validated.isMemDate ?? null
+          : context.employee.isMemDate ?? null
+        : null;
+
+      if (nextIsMem && !nextIsMemDate) {
+        throw new ResponseError(
+          400,
+          "Tanggal hafal ibadah wajib diisi saat status hafal ibadah aktif"
+        );
+      }
+
+      employeeUpdateData.isMem = nextIsMem;
+      employeeUpdateData.isMemDate = nextIsMemDate;
+    }
+
+    await prismaEmployee.em_employee.update({
+      where: { UserId: context.employee.UserId },
+      data: employeeUpdateData,
+    });
+
+    const shouldSyncFlowlyUser =
+      context.flowlyUser &&
+      (validated.name !== undefined ||
+        validated.badgeNumber !== undefined ||
+        validated.departmentId !== undefined);
+
+    if (context.flowlyUser && shouldSyncFlowlyUser) {
+      const flowlyUserUpdateData: Record<string, unknown> = {
+        updatedBy: requesterUserId,
+      };
+
+      if (validated.name !== undefined) {
+        flowlyUserUpdateData.name = validated.name.trim();
+      }
+
+      if (validated.badgeNumber !== undefined) {
+        flowlyUserUpdateData.badgeNumber = validated.badgeNumber.trim();
+      }
+
+      if (validated.departmentId !== undefined) {
+        flowlyUserUpdateData.department = await findDepartmentName(
+          validated.departmentId
+        );
+      }
+
+      await prismaFlowly.user.update({
+        where: { userId: context.flowlyUser.userId },
+        data: flowlyUserUpdateData,
+      });
+    }
+
+    return this.getProfile(requesterUserId);
+  }
+
   static async listUsers(requesterUserId: string): Promise<UserListResponse[]> {
     const requester = await prismaFlowly.user.findUnique({
       where: { userId: requesterUserId },
-      include: { role: true }
+      include: { role: true },
     });
-    if (!requester || requester.role.roleLevel !== 1) {
+    if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
       throw new ResponseError(403, "Access denied");
     }
 
     const users = await prismaFlowly.user.findMany({
       where: { isDeleted: false },
       include: { role: { select: { roleName: true } } },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" },
     });
 
     return users.map(toUserListResponse);
   }
 
-  // ✅ Change Password — fix missing `data:`
-  static async changePassword(userId: string, request: ChangePasswordRequest): Promise<void> {
-    const changeReq = Validation.validate(UserValidation.CHANGE_PASSWORD, request);
+  static async changePassword(
+    userId: string,
+    request: ChangePasswordRequest
+  ): Promise<void> {
+    const changeReq = Validation.validate(
+      UserValidation.CHANGE_PASSWORD,
+      request
+    ) as ChangePasswordRequest;
 
-    // 1. Find user
-    const user = await prismaFlowly.user.findUnique({ where: { userId } });
-    if (!user) throw new ResponseError(404, "User not found");
+    const flowlyUser = await prismaFlowly.user.findUnique({
+      where: { userId },
+    });
 
-    // 2. Verify old password
-    const isOldPasswordCorrect = await bcrypt.compare(changeReq.oldPassword, user.password);
+    if (flowlyUser && !flowlyUser.isDeleted) {
+      const isOldPasswordCorrect = await bcrypt.compare(
+        changeReq.oldPassword,
+        flowlyUser.password
+      );
+      if (!isOldPasswordCorrect) {
+        throw new ResponseError(400, "Old password is incorrect");
+      }
+
+      if (changeReq.newPassword === changeReq.oldPassword) {
+        throw new ResponseError(
+          400,
+          "New password must be different from the old password"
+        );
+      }
+
+      const hashed = await bcrypt.hash(changeReq.newPassword, 10);
+      await prismaFlowly.user.update({
+        where: { userId },
+        data: {
+          password: hashed,
+          updatedBy: userId,
+        },
+      });
+      return;
+    }
+
+    const employeeUserId = Number(userId);
+    if (Number.isNaN(employeeUserId)) {
+      throw new ResponseError(404, "User not found");
+    }
+
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: employeeUserId },
+      select: {
+        UserId: true,
+        Password: true,
+      },
+    });
+
+    if (!employee || !employee.Password) {
+      throw new ResponseError(404, "User not found");
+    }
+
+    const isOldPasswordCorrect = await this.isEmployeePasswordValid(
+      changeReq.oldPassword,
+      employee.Password
+    );
     if (!isOldPasswordCorrect) {
       throw new ResponseError(400, "Old password is incorrect");
     }
 
-    // 3. Prevent reusing the same password
     if (changeReq.newPassword === changeReq.oldPassword) {
-      throw new ResponseError(400, "New password must be different from the old password");
+      throw new ResponseError(
+        400,
+        "New password must be different from the old password"
+      );
     }
 
     const hashed = await bcrypt.hash(changeReq.newPassword, 10);
-    await prismaFlowly.user.update({
-      where: { userId },
-      data: { // ✅ Added `data:`
-        password: hashed,
-        updatedBy: userId
-      }
+    await prismaEmployee.em_employee.update({
+      where: { UserId: employeeUserId },
+      data: {
+        Password: hashed,
+        Lastupdate: new Date(),
+      },
     });
   }
 
-  // ✅ Change Role — fix missing `data:`
-  static async changeRole(requesterUserId: string, request: ChangeRoleRequest): Promise<void> {
-    const changeReq = Validation.validate(UserValidation.CHANGE_ROLE, request);
+  static async changeRole(
+    requesterUserId: string,
+    request: ChangeRoleRequest
+  ): Promise<void> {
+    const changeReq = Validation.validate(
+      UserValidation.CHANGE_ROLE,
+      request
+    ) as ChangeRoleRequest;
 
     const requester = await prismaFlowly.user.findUnique({
       where: { userId: requesterUserId },
-      include: { role: true }
+      include: { role: true },
     });
-    if (!requester || requester.role.roleLevel !== 1) {
+    if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
       throw new ResponseError(403, "Only admin can change roles");
     }
 
-    const targetUser = await prismaFlowly.user.findUnique({ where: { userId: changeReq.userId }, select: { userId: true, roleId: true } });
-    if (!targetUser) throw new ResponseError(404, "User not found");
+    const targetUser = await prismaFlowly.user.findUnique({
+      where: { userId: changeReq.userId },
+      select: { userId: true, roleId: true, isDeleted: true },
+    });
+    if (!targetUser || targetUser.isDeleted) {
+      throw new ResponseError(404, "User not found");
+    }
 
     if (targetUser.roleId === changeReq.newRoleId) {
       throw new ResponseError(400, "User already has this role");
     }
 
     const newRole = await prismaFlowly.role.findUnique({
-      where: { roleId: changeReq.newRoleId, roleIsActive: true }
+      where: { roleId: changeReq.newRoleId, roleIsActive: true },
     });
-    if (!newRole) throw new ResponseError(400, "Invalid or inactive role");
+    if (!newRole) {
+      throw new ResponseError(400, "Invalid or inactive role");
+    }
 
     await prismaFlowly.user.update({
       where: { userId: changeReq.userId },
-      data: { // ✅ Added `data:`
+      data: {
         roleId: newRole.roleId,
-        updatedBy: requesterUserId
-      }
+        updatedBy: requesterUserId,
+      },
     });
   }
 
-  // ✅ List Roles
   static async listRoles(requesterUserId: string) {
     const requester = await prismaFlowly.user.findUnique({
       where: { userId: requesterUserId },
-      include: { role: true }
+      include: { role: true },
     });
 
-    if (!requester || requester.role.roleLevel !== 1) {
+    if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
       throw new ResponseError(403, "Only admin can access roles");
     }
 
     const roles = await prismaFlowly.role.findMany({
       where: { roleIsActive: true },
-      orderBy: { roleLevel: "asc" }
+      orderBy: { roleLevel: "asc" },
     });
 
-    return roles.map(r => ({
-      roleId: r.roleId,
-      roleName: r.roleName,
-      roleLevel: r.roleLevel,
-      isActive: r.roleIsActive
+    return roles.map((role) => ({
+      roleId: role.roleId,
+      roleName: role.roleName,
+      roleLevel: role.roleLevel,
+      isActive: role.roleIsActive,
     }));
   }
-
 }
-
