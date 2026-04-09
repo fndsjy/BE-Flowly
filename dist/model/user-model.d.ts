@@ -12,7 +12,9 @@ export type CreateUserRequest = {
     roleId?: string;
 };
 export type LoginRequest = {
+    identity?: string;
     username?: string;
+    email?: string;
     cardNo?: string;
     password: string;
 };

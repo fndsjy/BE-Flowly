@@ -20,7 +20,17 @@ export class UserController {
     static async login(req, res, next) {
         try {
             const request = {
+                identity: req.body?.identity ??
+                    req.body?.identifier ??
+                    req.body?.login ??
+                    req.body?.username ??
+                    req.body?.email ??
+                    req.body?.cardNo ??
+                    req.body?.cardNumber ??
+                    req.body?.badgeNumber ??
+                    req.body?.batchNumber,
                 username: req.body?.username,
+                email: req.body?.email,
                 cardNo: req.body?.cardNo ??
                     req.body?.cardNumber ??
                     req.body?.badgeNumber ??

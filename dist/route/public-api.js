@@ -30,6 +30,7 @@ import { CaseFeedbackCommentController } from "../controller/case-feedback-comme
 import { CaseFeedbackApprovalController } from "../controller/case-feedback-approval-controller.js";
 import { CaseNotificationMessageController } from "../controller/case-notification-message-controller.js";
 import { CaseNotificationTemplateController } from "../controller/case-notification-template-controller.js";
+import { OnboardingMaterialController } from "../controller/onboarding-material-controller.js";
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
 const v1 = express.Router();
@@ -84,6 +85,7 @@ v1.put("/procedure-sop", ProcedureSopController.update);
 v1.delete("/procedure-sop", ProcedureSopController.softDelete);
 v1.get("/procedure-sop", ProcedureSopController.list);
 v1.get("/procedure-sop/file/:sopId", ProcedureSopController.download);
+v1.get("/onboarding-material/file/:fileName", OnboardingMaterialController.download);
 v1.post("/master-ik", MasterIkController.create);
 v1.put("/master-ik", MasterIkController.update);
 v1.delete("/master-ik", MasterIkController.softDelete);

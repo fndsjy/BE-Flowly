@@ -6,7 +6,6 @@ export class MasterAccessRoleValidation {
         displayName: z.string().min(1).max(100),
         route: z.string().max(200).optional().nullable(),
         parentKey: z.string().max(50).optional().nullable(),
-        orderIndex: z.number().int().min(0).optional(),
         isActive: z.boolean().optional(),
     });
     static UPDATE = z.object({
@@ -16,7 +15,6 @@ export class MasterAccessRoleValidation {
         displayName: z.string().min(1).max(100).optional(),
         route: z.string().max(200).optional().nullable(),
         parentKey: z.string().max(50).optional().nullable(),
-        orderIndex: z.number().int().min(0).optional(),
         isActive: z.boolean().optional(),
     });
     static DELETE = z.object({

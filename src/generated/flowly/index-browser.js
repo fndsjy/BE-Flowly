@@ -615,7 +615,6 @@ exports.Prisma.MasterAccessRoleScalarFieldEnum = {
   displayName: 'displayName',
   route: 'route',
   parentKey: 'parentKey',
-  orderIndex: 'orderIndex',
   isActive: 'isActive',
   isDeleted: 'isDeleted',
   createdAt: 'createdAt',

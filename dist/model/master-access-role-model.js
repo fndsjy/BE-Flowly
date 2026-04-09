@@ -6,7 +6,6 @@ export function toMasterAccessRoleResponse(m) {
         displayName: m.displayName,
         route: m.route ?? null,
         parentKey: m.parentKey ?? null,
-        orderIndex: m.orderIndex ?? 0,
         isActive: m.isActive ?? true,
         isDeleted: m.isDeleted ?? false,
         createdAt: m.createdAt,

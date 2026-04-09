@@ -33628,18 +33628,8 @@ export namespace Prisma {
 
   export type AggregateMasterAccessRole = {
     _count: MasterAccessRoleCountAggregateOutputType | null
-    _avg: MasterAccessRoleAvgAggregateOutputType | null
-    _sum: MasterAccessRoleSumAggregateOutputType | null
     _min: MasterAccessRoleMinAggregateOutputType | null
     _max: MasterAccessRoleMaxAggregateOutputType | null
-  }
-
-  export type MasterAccessRoleAvgAggregateOutputType = {
-    orderIndex: number | null
-  }
-
-  export type MasterAccessRoleSumAggregateOutputType = {
-    orderIndex: number | null
   }
 
   export type MasterAccessRoleMinAggregateOutputType = {
@@ -33649,7 +33639,6 @@ export namespace Prisma {
     displayName: string | null
     route: string | null
     parentKey: string | null
-    orderIndex: number | null
     isActive: boolean | null
     isDeleted: boolean | null
     createdAt: Date | null
@@ -33667,7 +33656,6 @@ export namespace Prisma {
     displayName: string | null
     route: string | null
     parentKey: string | null
-    orderIndex: number | null
     isActive: boolean | null
     isDeleted: boolean | null
     createdAt: Date | null
@@ -33685,7 +33673,6 @@ export namespace Prisma {
     displayName: number
     route: number
     parentKey: number
-    orderIndex: number
     isActive: number
     isDeleted: number
     createdAt: number
@@ -33698,14 +33685,6 @@ export namespace Prisma {
   }
 
 
-  export type MasterAccessRoleAvgAggregateInputType = {
-    orderIndex?: true
-  }
-
-  export type MasterAccessRoleSumAggregateInputType = {
-    orderIndex?: true
-  }
-
   export type MasterAccessRoleMinAggregateInputType = {
     masAccessId?: true
     resourceType?: true
@@ -33713,7 +33692,6 @@ export namespace Prisma {
     displayName?: true
     route?: true
     parentKey?: true
-    orderIndex?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -33731,7 +33709,6 @@ export namespace Prisma {
     displayName?: true
     route?: true
     parentKey?: true
-    orderIndex?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -33749,7 +33726,6 @@ export namespace Prisma {
     displayName?: true
     route?: true
     parentKey?: true
-    orderIndex?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -33799,18 +33775,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: MasterAccessRoleAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: MasterAccessRoleSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: MasterAccessRoleMinAggregateInputType
@@ -33841,8 +33805,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: MasterAccessRoleCountAggregateInputType | true
-    _avg?: MasterAccessRoleAvgAggregateInputType
-    _sum?: MasterAccessRoleSumAggregateInputType
     _min?: MasterAccessRoleMinAggregateInputType
     _max?: MasterAccessRoleMaxAggregateInputType
   }
@@ -33854,7 +33816,6 @@ export namespace Prisma {
     displayName: string
     route: string | null
     parentKey: string | null
-    orderIndex: number
     isActive: boolean
     isDeleted: boolean
     createdAt: Date
@@ -33864,8 +33825,6 @@ export namespace Prisma {
     deletedAt: Date | null
     deletedBy: string | null
     _count: MasterAccessRoleCountAggregateOutputType | null
-    _avg: MasterAccessRoleAvgAggregateOutputType | null
-    _sum: MasterAccessRoleSumAggregateOutputType | null
     _min: MasterAccessRoleMinAggregateOutputType | null
     _max: MasterAccessRoleMaxAggregateOutputType | null
   }
@@ -33891,7 +33850,6 @@ export namespace Prisma {
     displayName?: boolean
     route?: boolean
     parentKey?: boolean
-    orderIndex?: boolean
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: boolean
@@ -33914,7 +33872,6 @@ export namespace Prisma {
     displayName?: boolean
     route?: boolean
     parentKey?: boolean
-    orderIndex?: boolean
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: boolean
@@ -33925,7 +33882,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type MasterAccessRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"masAccessId" | "resourceType" | "resourceKey" | "displayName" | "route" | "parentKey" | "orderIndex" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterAccessRole"]>
+  export type MasterAccessRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"masAccessId" | "resourceType" | "resourceKey" | "displayName" | "route" | "parentKey" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["masterAccessRole"]>
   export type MasterAccessRoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portalMenus?: boolean | MasterAccessRole$portalMenusArgs<ExtArgs>
     menuPortals?: boolean | MasterAccessRole$menuPortalsArgs<ExtArgs>
@@ -33945,7 +33902,6 @@ export namespace Prisma {
       displayName: string
       route: string | null
       parentKey: string | null
-      orderIndex: number
       isActive: boolean
       isDeleted: boolean
       createdAt: Date
@@ -34331,7 +34287,6 @@ export namespace Prisma {
     readonly displayName: FieldRef<"MasterAccessRole", 'String'>
     readonly route: FieldRef<"MasterAccessRole", 'String'>
     readonly parentKey: FieldRef<"MasterAccessRole", 'String'>
-    readonly orderIndex: FieldRef<"MasterAccessRole", 'Int'>
     readonly isActive: FieldRef<"MasterAccessRole", 'Boolean'>
     readonly isDeleted: FieldRef<"MasterAccessRole", 'Boolean'>
     readonly createdAt: FieldRef<"MasterAccessRole", 'DateTime'>
@@ -37361,7 +37316,6 @@ export namespace Prisma {
     displayName: 'displayName',
     route: 'route',
     parentKey: 'parentKey',
-    orderIndex: 'orderIndex',
     isActive: 'isActive',
     isDeleted: 'isDeleted',
     createdAt: 'createdAt',
@@ -40463,7 +40417,6 @@ export namespace Prisma {
     displayName?: StringFilter<"MasterAccessRole"> | string
     route?: StringNullableFilter<"MasterAccessRole"> | string | null
     parentKey?: StringNullableFilter<"MasterAccessRole"> | string | null
-    orderIndex?: IntFilter<"MasterAccessRole"> | number
     isActive?: BoolFilter<"MasterAccessRole"> | boolean
     isDeleted?: BoolFilter<"MasterAccessRole"> | boolean
     createdAt?: DateTimeFilter<"MasterAccessRole"> | Date | string
@@ -40483,7 +40436,6 @@ export namespace Prisma {
     displayName?: SortOrder
     route?: SortOrderInput | SortOrder
     parentKey?: SortOrderInput | SortOrder
-    orderIndex?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -40507,7 +40459,6 @@ export namespace Prisma {
     displayName?: StringFilter<"MasterAccessRole"> | string
     route?: StringNullableFilter<"MasterAccessRole"> | string | null
     parentKey?: StringNullableFilter<"MasterAccessRole"> | string | null
-    orderIndex?: IntFilter<"MasterAccessRole"> | number
     isActive?: BoolFilter<"MasterAccessRole"> | boolean
     isDeleted?: BoolFilter<"MasterAccessRole"> | boolean
     createdAt?: DateTimeFilter<"MasterAccessRole"> | Date | string
@@ -40527,7 +40478,6 @@ export namespace Prisma {
     displayName?: SortOrder
     route?: SortOrderInput | SortOrder
     parentKey?: SortOrderInput | SortOrder
-    orderIndex?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -40537,10 +40487,8 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     deletedBy?: SortOrderInput | SortOrder
     _count?: MasterAccessRoleCountOrderByAggregateInput
-    _avg?: MasterAccessRoleAvgOrderByAggregateInput
     _max?: MasterAccessRoleMaxOrderByAggregateInput
     _min?: MasterAccessRoleMinOrderByAggregateInput
-    _sum?: MasterAccessRoleSumOrderByAggregateInput
   }
 
   export type MasterAccessRoleScalarWhereWithAggregatesInput = {
@@ -40553,7 +40501,6 @@ export namespace Prisma {
     displayName?: StringWithAggregatesFilter<"MasterAccessRole"> | string
     route?: StringNullableWithAggregatesFilter<"MasterAccessRole"> | string | null
     parentKey?: StringNullableWithAggregatesFilter<"MasterAccessRole"> | string | null
-    orderIndex?: IntWithAggregatesFilter<"MasterAccessRole"> | number
     isActive?: BoolWithAggregatesFilter<"MasterAccessRole"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"MasterAccessRole"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"MasterAccessRole"> | Date | string
@@ -44246,7 +44193,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -44266,7 +44212,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -44286,7 +44231,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44306,7 +44250,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44326,7 +44269,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -44344,7 +44286,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44362,7 +44303,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46728,7 +46668,6 @@ export namespace Prisma {
     displayName?: SortOrder
     route?: SortOrder
     parentKey?: SortOrder
-    orderIndex?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -46739,10 +46678,6 @@ export namespace Prisma {
     deletedBy?: SortOrder
   }
 
-  export type MasterAccessRoleAvgOrderByAggregateInput = {
-    orderIndex?: SortOrder
-  }
-
   export type MasterAccessRoleMaxOrderByAggregateInput = {
     masAccessId?: SortOrder
     resourceType?: SortOrder
@@ -46750,7 +46685,6 @@ export namespace Prisma {
     displayName?: SortOrder
     route?: SortOrder
     parentKey?: SortOrder
-    orderIndex?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -46768,7 +46702,6 @@ export namespace Prisma {
     displayName?: SortOrder
     route?: SortOrder
     parentKey?: SortOrder
-    orderIndex?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -46777,10 +46710,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
     deletedAt?: SortOrder
     deletedBy?: SortOrder
-  }
-
-  export type MasterAccessRoleSumOrderByAggregateInput = {
-    orderIndex?: SortOrder
   }
 
   export type MasterAccessRoleScalarRelationFilter = {
@@ -54808,7 +54737,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -54827,7 +54755,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -54851,7 +54778,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -54870,7 +54796,6 @@ export namespace Prisma {
     displayName: string
     route?: string | null
     parentKey?: string | null
-    orderIndex?: number
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -54905,7 +54830,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54924,7 +54848,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54954,7 +54877,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54973,7 +54895,6 @@ export namespace Prisma {
     displayName?: StringFieldUpdateOperationsInput | string
     route?: NullableStringFieldUpdateOperationsInput | string | null
     parentKey?: NullableStringFieldUpdateOperationsInput | string | null
-    orderIndex?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

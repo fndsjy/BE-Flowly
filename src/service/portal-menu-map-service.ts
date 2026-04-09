@@ -1,4 +1,5 @@
 import { prismaFlowly } from "../application/database.js";
+import { invalidateMasterAccessRoleCaches } from "../application/master-access-role-cache.js";
 import { Validation } from "../validation/validation.js";
 import { PortalMenuMapValidation } from "../validation/portal-menu-map-validation.js";
 import { ResponseError } from "../error/response-error.js";
@@ -32,7 +33,6 @@ const masterAccessRoleSelect = {
   resourceKey: true,
   displayName: true,
   route: true,
-  orderIndex: true,
   isActive: true,
   isDeleted: true,
 } as const;
@@ -164,7 +164,9 @@ export class PortalMenuMapService {
         data: {
           orderIndex:
             request.orderIndex ??
-            (existing.orderIndex > 0 ? existing.orderIndex : menu.orderIndex),
+            (existing.orderIndex > 0
+              ? existing.orderIndex
+              : await getNextOrderIndex(portal.masAccessId)),
           isActive: request.isActive ?? existing.isActive,
           isDeleted: false,
           deletedAt: null,
@@ -174,13 +176,13 @@ export class PortalMenuMapService {
         },
         include: portalMenuMapInclude,
       });
+      invalidateMasterAccessRoleCaches();
 
       return toPortalMenuMapResponse(restored);
     }
 
     const createId = await generatePortalMenuMapId();
-    const orderIndex =
-      request.orderIndex ?? (menu.orderIndex > 0 ? menu.orderIndex : await getNextOrderIndex(portal.masAccessId));
+    const orderIndex = request.orderIndex ?? (await getNextOrderIndex(portal.masAccessId));
 
     const created = await prismaFlowly.portalMenuMap.create({
       data: {
@@ -197,6 +199,7 @@ export class PortalMenuMapService {
       },
       include: portalMenuMapInclude,
     });
+    invalidateMasterAccessRoleCaches();
 
     return toPortalMenuMapResponse(created);
   }
@@ -265,6 +268,7 @@ export class PortalMenuMapService {
       },
       include: portalMenuMapInclude,
     });
+    invalidateMasterAccessRoleCaches();
 
     return toPortalMenuMapResponse(updated);
   }
@@ -300,6 +304,7 @@ export class PortalMenuMapService {
         updatedBy: requesterId,
       },
     });
+    invalidateMasterAccessRoleCaches();
 
     return { message: "Portal menu mapping deleted" };
   }

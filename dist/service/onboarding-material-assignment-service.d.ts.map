@@ -1,0 +1,1 @@
+{"version":3,"file":"onboarding-material-assignment-service.d.ts","sourceRoot":"","sources":["../../src/service/onboarding-material-assignment-service.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EACV,uCAAuC,EACvC,wCAAwC,EAGzC,MAAM,kDAAkD,CAAC;AA2B1D,qBAAa,mCAAmC;WACjC,IAAI,CACf,WAAW,EAAE,MAAM,EACnB,QAAQ,EAAE,uCAAuC,GAChD,OAAO,CAAC,wCAAwC,CAAC;CAyOrD"}

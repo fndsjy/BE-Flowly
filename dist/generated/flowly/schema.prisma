@@ -729,7 +729,6 @@ model MasterAccessRole {
   displayName  String          @db.NVarChar(100)
   route        String?         @db.NVarChar(200)
   parentKey    String?         @db.NVarChar(50)
-  orderIndex   Int             @default(0)
   isActive     Boolean         @default(true)
   isDeleted    Boolean         @default(false)
   createdAt    DateTime        @default(now())

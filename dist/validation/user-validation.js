@@ -11,16 +11,28 @@ export class UserValidation {
         roleId: z.string().optional(),
     });
     static LOGIN = z.object({
+        identity: z.string().trim().min(1).optional(),
         username: z.string().trim().min(1).optional(),
+        email: z.string().trim().email().optional(),
         cardNo: z.string().trim().min(1).optional(),
         password: z.string().min(1),
     }).superRefine((data, ctx) => {
+        const hasIdentity = Boolean(data.identity);
         const hasUsername = Boolean(data.username);
+        const hasEmail = Boolean(data.email);
         const hasCardNo = Boolean(data.cardNo);
-        if (hasUsername === hasCardNo) {
+        const identityCount = [hasIdentity, hasUsername, hasEmail, hasCardNo].filter(Boolean).length;
+        if (identityCount < 1) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: "Provide either username or card number",
+                message: "Provide at least one login identity",
+            });
+        }
+        if (data.identity && !data.identity.trim()) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["identity"],
+                message: "Identity is required",
             });
         }
     });
