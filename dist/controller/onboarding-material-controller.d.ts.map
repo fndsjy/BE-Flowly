@@ -1,0 +1,1 @@
+{"version":3,"file":"onboarding-material-controller.d.ts","sourceRoot":"","sources":["../../src/controller/onboarding-material-controller.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,YAAY,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AA2C/D,qBAAa,4BAA4B;WAC1B,QAAQ,CAAC,GAAG,EAAE,OAAO,EAAE,GAAG,EAAE,QAAQ,EAAE,IAAI,EAAE,YAAY;CA0BtE"}

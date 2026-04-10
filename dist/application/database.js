@@ -10,6 +10,15 @@ const isEnabled = (value, defaultValue = false) => {
 const enablePrismaQueryLog = isEnabled(process.env.PRISMA_LOG_QUERY, false);
 const enablePrismaInfoLog = isEnabled(process.env.PRISMA_LOG_INFO, false);
 const enablePrismaWarnLog = isEnabled(process.env.PRISMA_LOG_WARN, false);
+const keepAliveEnabled = isEnabled(process.env.PRISMA_KEEPALIVE_ENABLED, true);
+const parsePositiveInteger = (value, fallback) => {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+        return fallback;
+    }
+    return Math.trunc(parsed);
+};
+const keepAliveIntervalMs = parsePositiveInteger(process.env.PRISMA_KEEPALIVE_INTERVAL_MS, 4 * 60 * 1000);
 const prismaLogConfig = [
     ...(enablePrismaQueryLog ? [{ emit: "event", level: "query" }] : []),
     { emit: "event", level: "error" },
@@ -22,6 +31,32 @@ export const prismaFlowly = new FlowlyClient({
 export const prismaEmployee = new EmployeeClient({
     log: prismaLogConfig,
 });
+const scheduleKeepAlive = (label, client) => {
+    if (!keepAliveEnabled) {
+        return;
+    }
+    let running = false;
+    const timer = setInterval(async () => {
+        if (running) {
+            return;
+        }
+        running = true;
+        try {
+            await client.$queryRaw `SELECT 1`;
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : "Unknown keepalive error";
+            logger.warn(`[PRISMA ${label} KEEPALIVE FAILED]`, {
+                intervalMs: keepAliveIntervalMs,
+                message,
+            });
+        }
+        finally {
+            running = false;
+        }
+    }, keepAliveIntervalMs);
+    timer.unref?.();
+};
 if (enablePrismaQueryLog) {
     prismaFlowly.$on("query", (e) => {
         logger.info(`[PRISMA FLOWLY QUERY] ${e.query} | ${e.duration}ms`);
@@ -52,4 +87,6 @@ if (enablePrismaWarnLog) {
         logger.info(`[PRISMA EMPLOYEE WARN]`, { message: e.message });
     });
 }
+scheduleKeepAlive("FLOWLY", prismaFlowly);
+scheduleKeepAlive("EMPLOYEE", prismaEmployee);
 //# sourceMappingURL=database.js.map

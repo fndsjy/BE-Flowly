@@ -5,7 +5,6 @@ export type MasterAccessRoleResponse = {
   displayName: string;
   route: string | null;
   parentKey: string | null;
-  orderIndex: number;
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -20,7 +19,6 @@ export type CreateMasterAccessRoleRequest = {
   displayName: string;
   route?: string | null;
   parentKey?: string | null;
-  orderIndex?: number;
   isActive?: boolean;
 };
 
@@ -31,7 +29,6 @@ export type UpdateMasterAccessRoleRequest = {
   displayName?: string;
   route?: string | null;
   parentKey?: string | null;
-  orderIndex?: number;
   isActive?: boolean;
 };
 
@@ -47,7 +44,6 @@ export function toMasterAccessRoleResponse(m: any): MasterAccessRoleResponse {
     displayName: m.displayName,
     route: m.route ?? null,
     parentKey: m.parentKey ?? null,
-    orderIndex: m.orderIndex ?? 0,
     isActive: m.isActive ?? true,
     isDeleted: m.isDeleted ?? false,
     createdAt: m.createdAt,

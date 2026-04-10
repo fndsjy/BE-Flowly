@@ -1,4 +1,12 @@
 import { prismaFlowly } from "../application/database.js";
+import { logger } from "../application/logging.js";
+import {
+  invalidateMasterAccessRoleCaches,
+  type MasterAccessRoleListCacheFilters,
+  type MasterAccessRolePortalScope,
+  withMasterAccessRoleListCache,
+  withMasterAccessRolePortalScopeCache,
+} from "../application/master-access-role-cache.js";
 import { Validation } from "../validation/validation.js";
 import { MasterAccessRoleValidation } from "../validation/master-access-role-validation.js";
 import { ResponseError } from "../error/response-error.js";
@@ -22,71 +30,90 @@ const normalizeUpper = (value?: string | null) => {
 
 const normalizeRequiredUpper = (value: string) => value.trim().toUpperCase();
 
-type MasterAccessRoleClient = Prisma.TransactionClient | typeof prismaFlowly;
-
-const buildGroupWhere = (
-  resourceType: string,
-  parentKey: string | null,
-  excludeId?: string
-) => {
-  const where: {
-    isDeleted: false;
-    resourceType: string;
-    parentKey: string | null;
-    masAccessId?: { not: string };
-  } = {
-    isDeleted: false,
-    resourceType,
-    parentKey,
-  };
-
-  if (excludeId) {
-    where.masAccessId = { not: excludeId };
-  }
-
-  return where;
+type MasterAccessRolePerfTrace = {
+  portalLookupMs?: number;
+  portalMapMs?: number;
+  listQueryMs?: number;
+  resolutionMode?:
+    | "portal-only"
+    | "no-portal"
+    | "portal-scoped"
+    | "portal-scoped-empty"
+    | "portal-invalid-type";
 };
 
-const ensureUniqueOrderIndex = async (
-  tx: MasterAccessRoleClient,
-  resourceType: string,
-  parentKey: string | null
-) => {
-  const rows = await tx.masterAccessRole.findMany({
-    where: buildGroupWhere(resourceType, parentKey),
-    select: { masAccessId: true, orderIndex: true },
-  });
-
-  const seen = new Map<number, string>();
-  for (const row of rows) {
-    const existingId = seen.get(row.orderIndex);
-    if (existingId && existingId !== row.masAccessId) {
-      throw new ResponseError(
-        400,
-        "Duplicate orderIndex detected for the same parent"
-      );
-    }
-    seen.set(row.orderIndex, row.masAccessId);
-  }
+type MasterAccessRolePerfFilters = {
+  resourceType: string | undefined;
+  parentKey: string | undefined;
+  portalKey: string | undefined;
 };
 
-const getMaxOrderIndex = async (
-  tx: MasterAccessRoleClient,
-  resourceType: string,
-  parentKey: string | null,
-  excludeId?: string
-) => {
-  const last = await tx.masterAccessRole.findFirst({
-    where: buildGroupWhere(resourceType, parentKey, excludeId),
-    orderBy: { orderIndex: "desc" },
-    select: { orderIndex: true },
-  });
+type ResolvePortalScopeResult = {
+  portalScope: MasterAccessRolePortalScope | null;
+  trace: Pick<MasterAccessRolePerfTrace, "portalLookupMs" | "portalMapMs">;
+};
 
-  if (!last) {
-    return 10;
+const isEnabled = (value: string | undefined, defaultValue = false) => {
+  const normalized = value?.trim().toLowerCase();
+  if (!normalized) {
+    return defaultValue;
   }
 
-  return last.orderIndex ?? 0;
+  return normalized === "1" || normalized === "true" || normalized === "yes";
+};
+
+const parsePositiveInteger = (value: string | undefined, fallback: number) => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return fallback;
+  }
+
+  return Math.floor(parsed);
+};
+
+const masterAccessRolePerfVerbose = isEnabled(
+  process.env.MASTER_ACCESS_ROLE_PERF_LOG,
+  false
+);
+const masterAccessRoleSlowThresholdMs = parsePositiveInteger(
+  process.env.MASTER_ACCESS_ROLE_SLOW_THRESHOLD_MS,
+  2000
+);
+
+const perfNow = () => process.hrtime.bigint();
+
+const perfElapsedMs = (startedAt: bigint) =>
+  Math.round((Number(process.hrtime.bigint() - startedAt) / 1_000_000) * 100) /
+  100;
+
+const shouldLogPerf = (totalMs: number) =>
+  masterAccessRolePerfVerbose || totalMs >= masterAccessRoleSlowThresholdMs;
+
+const logListPerf = (
+  totalMs: number,
+  trace: MasterAccessRolePerfTrace,
+  filters: MasterAccessRolePerfFilters
+) => {
+  if (!shouldLogPerf(totalMs)) {
+    return;
+  }
+
+  const level =
+    totalMs >= masterAccessRoleSlowThresholdMs
+      ? logger.warn.bind(logger)
+      : logger.info.bind(logger);
+
+  level("[MASTER ACCESS ROLE PERF]", {
+    totalMs,
+    thresholdMs: masterAccessRoleSlowThresholdMs,
+    resourceType: filters.resourceType ?? null,
+    parentKey: filters.parentKey ?? null,
+    portalKey: filters.portalKey ?? null,
+    resolutionMode: trace.resolutionMode ?? null,
+    portalLookupMs: trace.portalLookupMs ?? null,
+    portalMapMs: trace.portalMapMs ?? null,
+    listQueryMs: trace.listQueryMs ?? null,
+  });
 };
 
 const ensureAdmin = async (requesterId: string) => {
@@ -145,72 +172,99 @@ const findActivePortalMenuMapping = async (
   return null;
 };
 
-const resolvePortalScope = async (portalKey?: string) => {
+const resolvePortalScope = async (
+  portalKey?: string
+): Promise<ResolvePortalScopeResult> => {
   const normalizedPortalKey = normalizeUpper(portalKey) ?? null;
   if (!normalizedPortalKey) {
-    return null;
+    return {
+      portalScope: null,
+      trace: {},
+    };
   }
 
-  const portal = await prismaFlowly.masterAccessRole.findUnique({
-    where: {
-      resourceType_resourceKey: {
-        resourceType: "PORTAL",
-        resourceKey: normalizedPortalKey,
-      },
-    },
-    select: {
-      masAccessId: true,
-      resourceKey: true,
-      isActive: true,
-      isDeleted: true,
-    },
-  });
-
-  if (!portal || portal.isDeleted || !portal.isActive) {
-    return null;
-  }
-
-  const mappings = await prismaFlowly.portalMenuMap.findMany({
-    where: {
-      portalMasAccessId: portal.masAccessId,
-      isDeleted: false,
-      isActive: true,
-    },
-    select: {
-      menuMasAccessId: true,
-      orderIndex: true,
-      menu: {
+  const trace: ResolvePortalScopeResult["trace"] = {};
+  const portalScope = await withMasterAccessRolePortalScopeCache(
+    normalizedPortalKey,
+    async () => {
+      const portalLookupStartedAt = perfNow();
+      const portal = await prismaFlowly.masterAccessRole.findUnique({
+        where: {
+          resourceType_resourceKey: {
+            resourceType: "PORTAL",
+            resourceKey: normalizedPortalKey,
+          },
+        },
         select: {
           masAccessId: true,
           resourceKey: true,
+          isActive: true,
           isDeleted: true,
         },
-      },
-    },
-  });
+      });
+      trace.portalLookupMs = perfElapsedMs(portalLookupStartedAt);
 
-  const filteredMappings = mappings.filter(
-    (mapping) => mapping.menu && !mapping.menu.isDeleted
-  );
-  const menuIds = filteredMappings.map((mapping) => mapping.menuMasAccessId);
-  const menuKeys = filteredMappings
-    .map((mapping) => mapping.menu?.resourceKey ?? null)
-    .filter((value): value is string => Boolean(value));
-  const menuOrderById = new Map(
-    filteredMappings.map((mapping) => [mapping.menuMasAccessId, mapping.orderIndex])
-  );
-  const menuOrderByKey = new Map(
-    filteredMappings
-      .filter((mapping) => mapping.menu?.resourceKey)
-      .map((mapping) => [mapping.menu?.resourceKey as string, mapping.orderIndex])
+      if (!portal || portal.isDeleted || !portal.isActive) {
+        return null;
+      }
+
+      const portalMapStartedAt = perfNow();
+      const mappings = await prismaFlowly.portalMenuMap.findMany({
+        where: {
+          portalMasAccessId: portal.masAccessId,
+          isDeleted: false,
+          isActive: true,
+        },
+        orderBy: [{ orderIndex: "asc" }, { portalMenuMapId: "asc" }],
+        select: {
+          menuMasAccessId: true,
+          orderIndex: true,
+          menu: {
+            select: {
+              masAccessId: true,
+              resourceKey: true,
+              isDeleted: true,
+            },
+          },
+        },
+      });
+      trace.portalMapMs = perfElapsedMs(portalMapStartedAt);
+
+      const filteredMappings = mappings.filter(
+        (mapping) => mapping.menu && !mapping.menu.isDeleted
+      );
+      const menuIds = filteredMappings.map((mapping) => mapping.menuMasAccessId);
+      const menuKeys = filteredMappings
+        .map((mapping) => mapping.menu?.resourceKey ?? null)
+        .filter((value): value is string => Boolean(value));
+      const menuOrderById = new Map(
+        filteredMappings.map((mapping) => [
+          mapping.menuMasAccessId,
+          mapping.orderIndex,
+        ])
+      );
+      const menuOrderByKey = new Map(
+        filteredMappings
+          .filter((mapping) => mapping.menu?.resourceKey)
+          .map((mapping) => [
+            mapping.menu?.resourceKey as string,
+            mapping.orderIndex,
+          ])
+      );
+
+      return {
+        portalMasAccessId: portal.masAccessId,
+        menuIds,
+        menuKeys,
+        menuOrderById,
+        menuOrderByKey,
+      };
+    }
   );
 
   return {
-    portalMasAccessId: portal.masAccessId,
-    menuIds,
-    menuKeys,
-    menuOrderById,
-    menuOrderByKey,
+    portalScope,
+    trace,
   };
 };
 
@@ -219,8 +273,8 @@ const sortPortalScopedRoles = (
     masAccessId: string;
     resourceType: string;
     parentKey: string | null;
-    orderIndex: number;
     displayName: string;
+    resourceKey: string;
   }>,
   filterType: string | undefined,
   menuOrderById: Map<string, number>,
@@ -228,12 +282,16 @@ const sortPortalScopedRoles = (
 ) => {
   return [...items].sort((left, right) => {
     if (filterType === "MENU") {
-      const leftOrder = menuOrderById.get(left.masAccessId) ?? left.orderIndex;
-      const rightOrder = menuOrderById.get(right.masAccessId) ?? right.orderIndex;
+      const leftOrder = menuOrderById.get(left.masAccessId) ?? Number.MAX_SAFE_INTEGER;
+      const rightOrder = menuOrderById.get(right.masAccessId) ?? Number.MAX_SAFE_INTEGER;
       if (leftOrder !== rightOrder) {
         return leftOrder - rightOrder;
       }
-      return left.displayName.localeCompare(right.displayName);
+      const displayCompare = left.displayName.localeCompare(right.displayName);
+      if (displayCompare !== 0) {
+        return displayCompare;
+      }
+      return left.resourceKey.localeCompare(right.resourceKey);
     }
 
     if (filterType === "MODULE") {
@@ -244,10 +302,15 @@ const sortPortalScopedRoles = (
       if (leftParentOrder !== rightParentOrder) {
         return leftParentOrder - rightParentOrder;
       }
-      if (left.orderIndex !== right.orderIndex) {
-        return left.orderIndex - right.orderIndex;
+      const parentCompare = (left.parentKey ?? "").localeCompare(right.parentKey ?? "");
+      if (parentCompare !== 0) {
+        return parentCompare;
       }
-      return left.displayName.localeCompare(right.displayName);
+      const displayCompare = left.displayName.localeCompare(right.displayName);
+      if (displayCompare !== 0) {
+        return displayCompare;
+      }
+      return left.resourceKey.localeCompare(right.resourceKey);
     }
 
     if (left.resourceType !== right.resourceType) {
@@ -255,12 +318,16 @@ const sortPortalScopedRoles = (
     }
 
     if (left.resourceType === "MENU") {
-      const leftOrder = menuOrderById.get(left.masAccessId) ?? left.orderIndex;
-      const rightOrder = menuOrderById.get(right.masAccessId) ?? right.orderIndex;
+      const leftOrder = menuOrderById.get(left.masAccessId) ?? Number.MAX_SAFE_INTEGER;
+      const rightOrder = menuOrderById.get(right.masAccessId) ?? Number.MAX_SAFE_INTEGER;
       if (leftOrder !== rightOrder) {
         return leftOrder - rightOrder;
       }
-      return left.displayName.localeCompare(right.displayName);
+      const displayCompare = left.displayName.localeCompare(right.displayName);
+      if (displayCompare !== 0) {
+        return displayCompare;
+      }
+      return left.resourceKey.localeCompare(right.resourceKey);
     }
 
     const leftParentOrder =
@@ -270,10 +337,15 @@ const sortPortalScopedRoles = (
     if (leftParentOrder !== rightParentOrder) {
       return leftParentOrder - rightParentOrder;
     }
-    if (left.orderIndex !== right.orderIndex) {
-      return left.orderIndex - right.orderIndex;
+    const parentCompare = (left.parentKey ?? "").localeCompare(right.parentKey ?? "");
+    if (parentCompare !== 0) {
+      return parentCompare;
     }
-    return left.displayName.localeCompare(right.displayName);
+    const displayCompare = left.displayName.localeCompare(right.displayName);
+    if (displayCompare !== 0) {
+      return displayCompare;
+    }
+    return left.resourceKey.localeCompare(right.resourceKey);
   });
 };
 
@@ -303,21 +375,9 @@ export class MasterAccessRoleService {
     }
 
     await ensureParentExists(parentKey);
-    await ensureUniqueOrderIndex(prismaFlowly, resourceType, parentKey);
 
     const createId = await generatemasAccessId();
     const now = new Date();
-    const lastOrder = await prismaFlowly.masterAccessRole.findFirst({
-      where: {
-        resourceType,
-        parentKey,
-        isDeleted: false,
-      },
-      orderBy: { orderIndex: "desc" },
-      select: { orderIndex: true },
-    });
-
-    const nextOrderIndex = (lastOrder?.orderIndex ?? 0) + 10;
     const created = await prismaFlowly.masterAccessRole.create({
       data: {
         masAccessId: createId(),
@@ -326,8 +386,7 @@ export class MasterAccessRoleService {
         displayName: req.displayName,
         route: req.route ?? null,
         parentKey,
-        orderIndex: nextOrderIndex,
-        isActive: true,
+        isActive: req.isActive ?? true,
         isDeleted: false,
         createdAt: now,
         updatedAt: now,
@@ -335,6 +394,8 @@ export class MasterAccessRoleService {
         updatedBy: requesterId,
       },
     });
+
+    invalidateMasterAccessRoleCaches();
 
     return toMasterAccessRoleResponse(created);
   }
@@ -394,130 +455,23 @@ export class MasterAccessRoleService {
     }
 
     await ensureParentExists(finalParentKey);
-
-    const groupChanged =
-      existingResourceType !== finalResourceType ||
-      existingParentKey !== finalParentKey;
-    let targetOrderIndex = req.orderIndex ?? existing.orderIndex;
     const now = new Date();
-
-    const updated = await prismaFlowly.$transaction(async (tx) => {
-      await ensureUniqueOrderIndex(tx, existingResourceType, existingParentKey);
-      if (groupChanged) {
-        await ensureUniqueOrderIndex(tx, finalResourceType, finalParentKey);
-      }
-
-      if (req.orderIndex !== undefined) {
-        const maxAllowed = await getMaxOrderIndex(
-          tx,
-          finalResourceType,
-          finalParentKey,
-          groupChanged ? req.masAccessId : undefined
-        );
-        if (req.orderIndex > maxAllowed) {
-          throw new ResponseError(
-            400,
-            `orderIndex cannot exceed ${maxAllowed}`
-          );
-        }
-      }
-
-      if (groupChanged) {
-        await tx.masterAccessRole.updateMany({
-          where: {
-            isDeleted: false,
-            resourceType: existingResourceType,
-            parentKey: existingParentKey,
-            orderIndex: { gt: existing.orderIndex },
-            masAccessId: { not: req.masAccessId },
-          },
-          data: {
-            orderIndex: { decrement: 10 },
-            updatedAt: now,
-            updatedBy: requesterId,
-          },
-        });
-
-        if (req.orderIndex === undefined) {
-          const lastOrder = await tx.masterAccessRole.findFirst({
-            where: {
-              resourceType: finalResourceType,
-              parentKey: finalParentKey,
-              isDeleted: false,
-            },
-            orderBy: { orderIndex: "desc" },
-            select: { orderIndex: true },
-          });
-          targetOrderIndex = (lastOrder?.orderIndex ?? 0) + 10;
-        } else {
-          await tx.masterAccessRole.updateMany({
-            where: {
-              isDeleted: false,
-              resourceType: finalResourceType,
-              parentKey: finalParentKey,
-              orderIndex: { gte: targetOrderIndex },
-              masAccessId: { not: req.masAccessId },
-            },
-            data: {
-              orderIndex: { increment: 10 },
-              updatedAt: now,
-              updatedBy: requesterId,
-            },
-          });
-        }
-      } else if (
-        req.orderIndex !== undefined &&
-        req.orderIndex !== existing.orderIndex
-      ) {
-        if (targetOrderIndex < existing.orderIndex) {
-          await tx.masterAccessRole.updateMany({
-            where: {
-              isDeleted: false,
-              resourceType: existingResourceType,
-              parentKey: existingParentKey,
-              orderIndex: { gte: targetOrderIndex, lt: existing.orderIndex },
-              masAccessId: { not: req.masAccessId },
-            },
-            data: {
-              orderIndex: { increment: 10 },
-              updatedAt: now,
-              updatedBy: requesterId,
-            },
-          });
-        } else {
-          await tx.masterAccessRole.updateMany({
-            where: {
-              isDeleted: false,
-              resourceType: existingResourceType,
-              parentKey: existingParentKey,
-              orderIndex: { gt: existing.orderIndex, lte: targetOrderIndex },
-              masAccessId: { not: req.masAccessId },
-            },
-            data: {
-              orderIndex: { decrement: 10 },
-              updatedAt: now,
-              updatedBy: requesterId,
-            },
-          });
-        }
-      }
-
-      return tx.masterAccessRole.update({
-        where: { masAccessId: req.masAccessId },
-        data: {
-          resourceType: finalResourceType,
-          resourceKey: finalResourceKey,
-          displayName: req.displayName ?? existing.displayName,
-          route: req.route === undefined ? existing.route : req.route,
-          parentKey:
-            req.parentKey === undefined ? existingParentKey : finalParentKey,
-          orderIndex: targetOrderIndex,
-          isActive: req.isActive ?? existing.isActive,
-          updatedAt: now,
-          updatedBy: requesterId,
-        },
-      });
+    const updated = await prismaFlowly.masterAccessRole.update({
+      where: { masAccessId: req.masAccessId },
+      data: {
+        resourceType: finalResourceType,
+        resourceKey: finalResourceKey,
+        displayName: req.displayName ?? existing.displayName,
+        route: req.route === undefined ? existing.route : req.route,
+        parentKey:
+          req.parentKey === undefined ? existingParentKey : finalParentKey,
+        isActive: req.isActive ?? existing.isActive,
+        updatedAt: now,
+        updatedBy: requesterId,
+      },
     });
+
+    invalidateMasterAccessRoleCaches();
 
     return toMasterAccessRoleResponse(updated);
   }
@@ -538,7 +492,6 @@ export class MasterAccessRoleService {
     }
 
     const normalizedResourceType = normalizeRequiredUpper(existing.resourceType);
-    const normalizedParentKey = normalizeUpper(existing.parentKey) ?? null;
     const now = new Date();
 
     await prismaFlowly.$transaction(async (tx) => {
@@ -585,26 +538,16 @@ export class MasterAccessRoleService {
           },
         });
       }
-
-      await tx.masterAccessRole.updateMany({
-        where: {
-          isDeleted: false,
-          resourceType: normalizedResourceType,
-          parentKey: normalizedParentKey,
-          orderIndex: { gt: existing.orderIndex },
-        },
-        data: {
-          orderIndex: { decrement: 10 },
-          updatedAt: now,
-          updatedBy: requesterId,
-        },
-      });
     });
+
+    invalidateMasterAccessRoleCaches();
 
     return { message: "Master access role deleted" };
   }
 
   static async list(resourceType?: string, parentKey?: string, portalKey?: string) {
+    const startedAt = perfNow();
+    const trace: MasterAccessRolePerfTrace = {};
     const normalizedType = resourceType?.trim();
     const filterType = normalizedType ? normalizedType.toUpperCase() : undefined;
     const normalizedParentKey = parentKey?.trim();
@@ -615,106 +558,165 @@ export class MasterAccessRoleService {
           ? null
           : normalizedParentKey.toUpperCase();
     const filterPortalKey = normalizeUpper(portalKey) ?? undefined;
-
-    if (filterPortalKey && filterType === "PORTAL") {
-      const portalList = await prismaFlowly.masterAccessRole.findMany({
-        where: {
-          isDeleted: false,
-          resourceType: "PORTAL",
-          resourceKey: filterPortalKey,
-        },
-        orderBy: [
-          { orderIndex: "asc" },
-          { displayName: "asc" },
-        ],
-      });
-
-      return portalList.map(toMasterAccessRoleListResponse);
-    }
-
-    if (!filterPortalKey) {
-      const list = await prismaFlowly.masterAccessRole.findMany({
-        where: {
-          isDeleted: false,
-          ...(filterType ? { resourceType: filterType } : {}),
-          ...(filterParentKey === undefined ? {} : { parentKey: filterParentKey }),
-        },
-        orderBy: [
-          { resourceType: "asc" },
-          { orderIndex: "asc" },
-          { displayName: "asc" },
-        ],
-      });
-
-      return list.map(toMasterAccessRoleListResponse);
-    }
-
-    if (
-      filterType !== undefined &&
-      filterType !== "MENU" &&
-      filterType !== "MODULE"
-    ) {
-      return [];
-    }
-
-    const portalScope = await resolvePortalScope(filterPortalKey);
-    if (!portalScope || portalScope.menuIds.length === 0) {
-      return [];
-    }
-
-    if (
-      filterType === "MODULE" &&
-      filterParentKey !== undefined &&
-      filterParentKey !== null &&
-      !portalScope.menuKeys.includes(filterParentKey)
-    ) {
-      return [];
-    }
-
-    const where: Prisma.MasterAccessRoleWhereInput = {
-      isDeleted: false,
-      ...(filterType ? { resourceType: filterType } : {}),
+    const cacheFilters: MasterAccessRoleListCacheFilters = {
+      resourceType: filterType,
+      parentKey: filterParentKey,
+      portalKey: filterPortalKey,
     };
 
-    if (filterType === "MENU") {
-      where.masAccessId = { in: portalScope.menuIds };
-      if (filterParentKey !== undefined) {
-        where.parentKey = filterParentKey;
+    return withMasterAccessRoleListCache(cacheFilters, async () => {
+      if (filterPortalKey && filterType === "PORTAL") {
+        trace.resolutionMode = "portal-only";
+        const listQueryStartedAt = perfNow();
+        const portalList = await prismaFlowly.masterAccessRole.findMany({
+          where: {
+            isDeleted: false,
+            resourceType: "PORTAL",
+            resourceKey: filterPortalKey,
+          },
+          orderBy: [{ displayName: "asc" }, { resourceKey: "asc" }],
+        });
+        trace.listQueryMs = perfElapsedMs(listQueryStartedAt);
+        logListPerf(perfElapsedMs(startedAt), trace, {
+          resourceType,
+          parentKey,
+          portalKey,
+        });
+
+        return portalList.map(toMasterAccessRoleListResponse);
       }
-    } else if (filterType === "MODULE") {
-      where.parentKey =
-        filterParentKey === undefined
-          ? { in: portalScope.menuKeys }
-          : filterParentKey;
-    } else {
-      where.OR = [
-        {
-          resourceType: "MENU",
-          masAccessId: { in: portalScope.menuIds },
-        },
-        {
-          resourceType: "MODULE",
-          parentKey: { in: portalScope.menuKeys },
-        },
-      ];
-    }
 
-    const list = await prismaFlowly.masterAccessRole.findMany({
-      where,
-      orderBy: [
-        { resourceType: "asc" },
-        { orderIndex: "asc" },
-        { displayName: "asc" },
-      ],
+      if (!filterPortalKey) {
+        trace.resolutionMode = "no-portal";
+        const listQueryStartedAt = perfNow();
+        const list = await prismaFlowly.masterAccessRole.findMany({
+          where: {
+            isDeleted: false,
+            ...(filterType ? { resourceType: filterType } : {}),
+            ...(filterParentKey === undefined
+              ? {}
+              : { parentKey: filterParentKey }),
+          },
+          orderBy: [
+            { resourceType: "asc" },
+            { parentKey: "asc" },
+            { displayName: "asc" },
+            { resourceKey: "asc" },
+          ],
+        });
+        trace.listQueryMs = perfElapsedMs(listQueryStartedAt);
+        logListPerf(perfElapsedMs(startedAt), trace, {
+          resourceType,
+          parentKey,
+          portalKey,
+        });
+
+        return list.map(toMasterAccessRoleListResponse);
+      }
+
+      if (
+        filterType !== undefined &&
+        filterType !== "MENU" &&
+        filterType !== "MODULE"
+      ) {
+        trace.resolutionMode = "portal-invalid-type";
+        logListPerf(perfElapsedMs(startedAt), trace, {
+          resourceType,
+          parentKey,
+          portalKey,
+        });
+        return [];
+      }
+
+      const {
+        portalScope,
+        trace: portalTrace,
+      } = await resolvePortalScope(filterPortalKey);
+      if (portalTrace.portalLookupMs !== undefined) {
+        trace.portalLookupMs = portalTrace.portalLookupMs;
+      }
+      if (portalTrace.portalMapMs !== undefined) {
+        trace.portalMapMs = portalTrace.portalMapMs;
+      }
+      if (!portalScope || portalScope.menuIds.length === 0) {
+        trace.resolutionMode = "portal-scoped-empty";
+        logListPerf(perfElapsedMs(startedAt), trace, {
+          resourceType,
+          parentKey,
+          portalKey,
+        });
+        return [];
+      }
+
+      trace.resolutionMode = "portal-scoped";
+
+      if (
+        filterType === "MODULE" &&
+        filterParentKey !== undefined &&
+        filterParentKey !== null &&
+        !portalScope.menuKeys.includes(filterParentKey)
+      ) {
+        logListPerf(perfElapsedMs(startedAt), trace, {
+          resourceType,
+          parentKey,
+          portalKey,
+        });
+        return [];
+      }
+
+      const where: Prisma.MasterAccessRoleWhereInput = {
+        isDeleted: false,
+        ...(filterType ? { resourceType: filterType } : {}),
+      };
+
+      if (filterType === "MENU") {
+        where.masAccessId = { in: portalScope.menuIds };
+        if (filterParentKey !== undefined) {
+          where.parentKey = filterParentKey;
+        }
+      } else if (filterType === "MODULE") {
+        where.parentKey =
+          filterParentKey === undefined
+            ? { in: portalScope.menuKeys }
+            : filterParentKey;
+      } else {
+        where.OR = [
+          {
+            resourceType: "MENU",
+            masAccessId: { in: portalScope.menuIds },
+          },
+          {
+            resourceType: "MODULE",
+            parentKey: { in: portalScope.menuKeys },
+          },
+        ];
+      }
+
+      const listQueryStartedAt = perfNow();
+      const list = await prismaFlowly.masterAccessRole.findMany({
+        where,
+        orderBy: [
+          { resourceType: "asc" },
+          { displayName: "asc" },
+          { resourceKey: "asc" },
+        ],
+      });
+      trace.listQueryMs = perfElapsedMs(listQueryStartedAt);
+
+      const sorted = sortPortalScopedRoles(
+        list,
+        filterType,
+        portalScope.menuOrderById,
+        portalScope.menuOrderByKey
+      );
+
+      logListPerf(perfElapsedMs(startedAt), trace, {
+        resourceType,
+        parentKey,
+        portalKey,
+      });
+
+      return sorted.map(toMasterAccessRoleListResponse);
     });
-
-    const sorted = sortPortalScopedRoles(
-      list,
-      filterType,
-      portalScope.menuOrderById,
-      portalScope.menuOrderByKey
-    );
-
-    return sorted.map(toMasterAccessRoleListResponse);
   }
 }

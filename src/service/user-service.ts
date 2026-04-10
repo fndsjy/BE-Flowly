@@ -1,5 +1,10 @@
 import bcrypt from "bcrypt";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
+import { logger } from "../application/logging.js";
+import {
+  invalidateProfileCache,
+  withProfileCache,
+} from "../application/profile-cache.js";
 import { ResponseError } from "../error/response-error.js";
 import {
   toLoginResponse,
@@ -96,6 +101,27 @@ type FlowlyUserWithRole = {
   };
 };
 
+type DemoPortalKey =
+  | "SUPPLIER"
+  | "CUSTOMER"
+  | "AFFILIATE"
+  | "INFLUENCER"
+  | "COMMUNITY";
+
+type DemoPortalUser = {
+  userId: string;
+  username: string;
+  email: string;
+  name: string;
+  password: string;
+  badgeNumber: string;
+  roleId: string;
+  roleName: DemoPortalKey;
+  roleLevel: number;
+  department: string | null;
+  jobDesc: string | null;
+};
+
 type ProfileContext = {
   flowlyUser: FlowlyUserWithRole | null;
   employee: EmployeeProfileRecord | null;
@@ -108,6 +134,105 @@ type ProfileContext = {
   badgeNumber: string | null;
   department: string | null;
 };
+
+type ProfilePerfTrace = {
+  flowlyUserMs?: number;
+  employeeByBadgeMs?: number;
+  employeeByUserIdMs?: number;
+  departmentMs?: number;
+  resolutionPath?: "flowly" | "employee" | "demo";
+  employeeMatch?: "badgeNumber" | "userId" | "none";
+};
+
+const DEMO_PORTAL_USERS: DemoPortalUser[] = [
+  {
+    userId: "DEMO_SUPPLIER",
+    username: "supplier.demo",
+    email: "supplier.demo@oms.local",
+    name: "Demo Supplier User",
+    password: "Portal123!",
+    badgeNumber: "SUP-DEMO-001",
+    roleId: "DEMO_SUPPLIER",
+    roleName: "SUPPLIER",
+    roleLevel: 4,
+    department: "OMS Demo Supplier",
+    jobDesc: "Demo portal supplier",
+  },
+  {
+    userId: "DEMO_CUSTOMER",
+    username: "customer.demo",
+    email: "customer.demo@oms.local",
+    name: "Demo Customer User",
+    password: "Portal123!",
+    badgeNumber: "CUS-DEMO-001",
+    roleId: "DEMO_CUSTOMER",
+    roleName: "CUSTOMER",
+    roleLevel: 4,
+    department: "OMS Demo Customer",
+    jobDesc: "Demo portal customer",
+  },
+  {
+    userId: "DEMO_AFFILIATE",
+    username: "affiliate.demo",
+    email: "affiliate.demo@oms.local",
+    name: "Demo Affiliate User",
+    password: "Portal123!",
+    badgeNumber: "AFF-DEMO-001",
+    roleId: "DEMO_AFFILIATE",
+    roleName: "AFFILIATE",
+    roleLevel: 4,
+    department: "OMS Demo Affiliate",
+    jobDesc: "Demo portal affiliate",
+  },
+  {
+    userId: "DEMO_INFLUENCER",
+    username: "influencer.demo",
+    email: "influencer.demo@oms.local",
+    name: "Demo Influencer User",
+    password: "Portal123!",
+    badgeNumber: "INF-DEMO-001",
+    roleId: "DEMO_INFLUENCER",
+    roleName: "INFLUENCER",
+    roleLevel: 4,
+    department: "OMS Demo Influencer",
+    jobDesc: "Demo portal influencer",
+  },
+  {
+    userId: "DEMO_COMMUNITY",
+    username: "community.demo",
+    email: "community.demo@oms.local",
+    name: "Demo Community User",
+    password: "Portal123!",
+    badgeNumber: "COM-DEMO-001",
+    roleId: "DEMO_COMMUNITY",
+    roleName: "COMMUNITY",
+    roleLevel: 4,
+    department: "OMS Demo Community",
+    jobDesc: "Demo portal community",
+  },
+];
+
+const normalizeLoginIdentity = (value?: string | null) =>
+  value?.trim().toLowerCase() ?? "";
+
+const isEmailLoginIdentity = (value?: string | null) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value?.trim() ?? "");
+
+const findDemoPortalUserByEmail = (value?: string | null) => {
+  const normalized = normalizeLoginIdentity(value);
+  if (!normalized) {
+    return null;
+  }
+
+  return (
+    DEMO_PORTAL_USERS.find(
+      (user) => normalizeLoginIdentity(user.email) === normalized
+    ) ?? null
+  );
+};
+
+const findDemoPortalUserById = (userId: string) =>
+  DEMO_PORTAL_USERS.find((user) => user.userId === userId) ?? null;
 
 const employeeProfileSelect = {
   UserId: true,
@@ -135,6 +260,64 @@ const employeeProfileSelect = {
   statusLMS: true,
   roleId: true,
 } as const;
+
+const isEnabled = (value: string | undefined, defaultValue = false) => {
+  const normalized = value?.trim().toLowerCase();
+  if (!normalized) {
+    return defaultValue;
+  }
+
+  return normalized === "1" || normalized === "true" || normalized === "yes";
+};
+
+const parsePositiveInteger = (value: string | undefined, fallback: number) => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return fallback;
+  }
+
+  return Math.floor(parsed);
+};
+
+const profilePerfVerbose = isEnabled(process.env.PROFILE_PERF_LOG, false);
+const profileSlowThresholdMs = parsePositiveInteger(
+  process.env.PROFILE_SLOW_THRESHOLD_MS,
+  2000
+);
+
+const profilePerfNow = () => process.hrtime.bigint();
+
+const profilePerfElapsedMs = (startedAt: bigint) =>
+  Math.round((Number(process.hrtime.bigint() - startedAt) / 1_000_000) * 100) /
+  100;
+
+const shouldLogProfilePerf = (totalMs: number) =>
+  profilePerfVerbose || totalMs >= profileSlowThresholdMs;
+
+const logProfilePerf = (
+  userId: string,
+  totalMs: number,
+  trace: ProfilePerfTrace
+) => {
+  if (!shouldLogProfilePerf(totalMs)) {
+    return;
+  }
+
+  const level =
+    totalMs >= profileSlowThresholdMs ? logger.warn.bind(logger) : logger.info.bind(logger);
+
+  level("[PROFILE PERF]", {
+    userId,
+    totalMs,
+    thresholdMs: profileSlowThresholdMs,
+    resolutionPath: trace.resolutionPath ?? null,
+    employeeMatch: trace.employeeMatch ?? null,
+    flowlyUserMs: trace.flowlyUserMs ?? null,
+    employeeByBadgeMs: trace.employeeByBadgeMs ?? null,
+    employeeByUserIdMs: trace.employeeByUserIdMs ?? null,
+    departmentMs: trace.departmentMs ?? null,
+  });
+};
 
 const normalizeOptionalText = (value?: string | null) => {
   if (value === undefined) {
@@ -170,15 +353,23 @@ const getEditableProfileFields = (
     : [...SELF_EDITABLE_PROFILE_FIELDS];
 };
 
-const findDepartmentName = async (departmentId?: number | null) => {
+const findDepartmentName = async (
+  departmentId?: number | null,
+  trace?: ProfilePerfTrace
+) => {
   if (departmentId === undefined || departmentId === null) {
     return null;
   }
 
+  const startedAt = profilePerfNow();
   const department = await prismaEmployee.em_dept.findUnique({
     where: { DEPTID: departmentId },
     select: { DEPTNAME: true },
   });
+
+  if (trace) {
+    trace.departmentMs = profilePerfElapsedMs(startedAt);
+  }
 
   return department?.DEPTNAME ?? null;
 };
@@ -216,35 +407,49 @@ const ensureUniqueEmployeeBadgeNumber = async (
 };
 
 const findEmployeeByUserId = async (
-  employeeUserId: number
+  employeeUserId: number,
+  trace?: ProfilePerfTrace
 ): Promise<EmployeeProfileRecord | null> => {
+  const startedAt = profilePerfNow();
   const employee = await prismaEmployee.em_employee.findUnique({
     where: { UserId: employeeUserId },
     select: employeeProfileSelect,
   });
 
+  if (trace) {
+    trace.employeeByUserIdMs = profilePerfElapsedMs(startedAt);
+  }
+
   return employee;
 };
 
 const findEmployeeByBadgeNumber = async (
-  badgeNumber?: string | null
+  badgeNumber?: string | null,
+  trace?: ProfilePerfTrace
 ): Promise<EmployeeProfileRecord | null> => {
   const normalized = badgeNumber?.trim();
   if (!normalized) {
     return null;
   }
 
+  const startedAt = profilePerfNow();
   const employee = await prismaEmployee.em_employee.findFirst({
     where: { BadgeNum: normalized },
     select: employeeProfileSelect,
   });
 
+  if (trace) {
+    trace.employeeByBadgeMs = profilePerfElapsedMs(startedAt);
+  }
+
   return employee;
 };
 
 const findFlowlyUserById = async (
-  userId: string
+  userId: string,
+  trace?: ProfilePerfTrace
 ): Promise<FlowlyUserWithRole | null> => {
+  const startedAt = profilePerfNow();
   const user = await prismaFlowly.user.findUnique({
     where: { userId },
     include: {
@@ -257,6 +462,10 @@ const findFlowlyUserById = async (
     },
   });
 
+  if (trace) {
+    trace.flowlyUserMs = profilePerfElapsedMs(startedAt);
+  }
+
   if (!user || user.isDeleted) {
     return null;
   }
@@ -264,10 +473,20 @@ const findFlowlyUserById = async (
   return user;
 };
 
-const resolveProfileContext = async (userId: string): Promise<ProfileContext> => {
-  const flowlyUser = await findFlowlyUserById(userId);
+const resolveProfileContext = async (
+  userId: string,
+  trace?: ProfilePerfTrace
+): Promise<ProfileContext> => {
+  const flowlyUser = await findFlowlyUserById(userId, trace);
   if (flowlyUser) {
-    const employee = await findEmployeeByBadgeNumber(flowlyUser.badgeNumber);
+    if (trace) {
+      trace.resolutionPath = "flowly";
+    }
+
+    const employee = await findEmployeeByBadgeNumber(flowlyUser.badgeNumber, trace);
+    if (trace) {
+      trace.employeeMatch = employee ? "badgeNumber" : "none";
+    }
 
     return {
       flowlyUser,
@@ -288,9 +507,14 @@ const resolveProfileContext = async (userId: string): Promise<ProfileContext> =>
     throw new ResponseError(404, "User not found");
   }
 
-  const employee = await findEmployeeByUserId(employeeUserId);
+  const employee = await findEmployeeByUserId(employeeUserId, trace);
   if (!employee) {
     throw new ResponseError(404, "User not found");
+  }
+
+  if (trace) {
+    trace.resolutionPath = "employee";
+    trace.employeeMatch = "userId";
   }
 
   const username = employee.BadgeNum?.trim() || String(employee.UserId);
@@ -314,13 +538,14 @@ const resolveProfileContext = async (userId: string): Promise<ProfileContext> =>
 };
 
 const toProfileResponse = async (
-  context: ProfileContext
+  context: ProfileContext,
+  trace?: ProfilePerfTrace
 ): Promise<UserProfileResponse> => {
   const { employee, roleLevel } = context;
   const isAdmin = roleLevel === 1;
   const departmentName =
     employee?.DeptId !== null && employee?.DeptId !== undefined
-      ? await findDepartmentName(employee.DeptId)
+      ? await findDepartmentName(employee.DeptId, trace)
       : context.department;
 
   return {
@@ -435,15 +660,51 @@ export class UserService {
       request
     ) as LoginRequest;
 
-    if (loginRequest.username) {
-      const user = await prismaFlowly.user.findUnique({
-        where: { username: loginRequest.username },
-        include: { role: true },
-      });
-      if (!user || user.isDeleted || !user.isActive) {
-        throw new ResponseError(401, "User not found or inactive");
+    const identity =
+      loginRequest.identity?.trim() ||
+      loginRequest.email?.trim() ||
+      loginRequest.username?.trim() ||
+      loginRequest.cardNo?.trim();
+
+    if (!identity) {
+      throw new ResponseError(400, "Login identity is required");
+    }
+
+    if (isEmailLoginIdentity(identity)) {
+      const demoPortalUser = findDemoPortalUserByEmail(identity);
+      if (!demoPortalUser) {
+        throw new ResponseError(401, "Invalid email or password");
       }
 
+      if (loginRequest.password !== demoPortalUser.password) {
+        throw new ResponseError(401, "Invalid email or password");
+      }
+
+      const token = generateToken({
+        userId: demoPortalUser.userId,
+        username: demoPortalUser.email,
+        roleId: demoPortalUser.roleId,
+      });
+
+      return toLoginResponse(
+        {
+          username: demoPortalUser.email,
+          name: demoPortalUser.name,
+          jobDesc: demoPortalUser.jobDesc,
+        },
+        token
+      );
+    }
+
+    const user = await prismaFlowly.user.findFirst({
+      where: {
+        isDeleted: false,
+        isActive: true,
+        username: identity,
+      },
+      include: { role: true },
+    });
+    if (user) {
       const valid = await bcrypt.compare(loginRequest.password, user.password);
       if (!valid) {
         throw new ResponseError(401, "Invalid username or password");
@@ -475,13 +736,8 @@ export class UserService {
       return toLoginResponse(user, token);
     }
 
-    const cardNo = loginRequest.cardNo?.trim();
-    if (!cardNo) {
-      throw new ResponseError(400, "Card number is required");
-    }
-
     const employee = await prismaEmployee.em_employee.findFirst({
-      where: { CardNo: cardNo },
+      where: { CardNo: identity },
       select: {
         UserId: true,
         BadgeNum: true,
@@ -494,7 +750,7 @@ export class UserService {
     });
 
     if (!employee || !employee.Password) {
-      throw new ResponseError(401, "Invalid card number");
+      throw new ResponseError(401, "Invalid badge number or password");
     }
 
     const isPasswordValid = await UserService.isEmployeePasswordValid(
@@ -502,10 +758,10 @@ export class UserService {
       employee.Password
     );
     if (!isPasswordValid) {
-      throw new ResponseError(401, "Invalid card number or password");
+      throw new ResponseError(401, "Invalid badge number or password");
     }
 
-    const employeeUsername = employee.CardNo?.trim() || cardNo;
+    const employeeUsername = employee.CardNo?.trim() || identity;
 
     const token = generateToken({
       userId: String(employee.UserId),
@@ -540,8 +796,55 @@ export class UserService {
   }
 
   static async getProfile(userId: string): Promise<UserProfileResponse> {
-    const context = await resolveProfileContext(userId);
-    return toProfileResponse(context);
+    const demoPortalUser = findDemoPortalUserById(userId);
+    if (demoPortalUser) {
+      return {
+        userId: demoPortalUser.userId,
+        username: demoPortalUser.email,
+        name: demoPortalUser.name,
+        badgeNumber: demoPortalUser.badgeNumber,
+        department: demoPortalUser.department,
+        departmentId: null,
+        employeeUserId: null,
+        roleId: demoPortalUser.roleId,
+        roleName: demoPortalUser.roleName,
+        roleLevel: demoPortalUser.roleLevel,
+        gender: null,
+        nik: null,
+        birthDay: null,
+        religion: null,
+        hireDay: null,
+        street: null,
+        city: null,
+        state: null,
+        email: demoPortalUser.email,
+        phone: null,
+        isMem: null,
+        isMemDate: null,
+        imgName: null,
+        tipe: null,
+        location: null,
+        statusLMS: false,
+        bpjsKesehatan: null,
+        bpjsKetenagakerjaan: null,
+        canEditProfile: false,
+        canEditAllProfileFields: false,
+        canEditProfilePhoto: false,
+        canChangePassword: false,
+        editableFields: [],
+      };
+    }
+
+    return withProfileCache(userId, async () => {
+      const startedAt = profilePerfNow();
+      const trace: ProfilePerfTrace = {};
+
+      const context = await resolveProfileContext(userId, trace);
+      const response = await toProfileResponse(context, trace);
+
+      logProfilePerf(userId, profilePerfElapsedMs(startedAt), trace);
+      return response;
+    });
   }
 
   static async updateProfile(
@@ -738,6 +1041,7 @@ export class UserService {
       });
     }
 
+    invalidateProfileCache(requesterUserId);
     return this.getProfile(requesterUserId);
   }
 
@@ -884,6 +1188,8 @@ export class UserService {
         updatedBy: requesterUserId,
       },
     });
+
+    invalidateProfileCache(changeReq.userId);
   }
 
   static async listRoles(requesterUserId: string) {

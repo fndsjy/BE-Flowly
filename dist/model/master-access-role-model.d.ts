@@ -5,7 +5,6 @@ export type MasterAccessRoleResponse = {
     displayName: string;
     route: string | null;
     parentKey: string | null;
-    orderIndex: number;
     isActive: boolean;
     isDeleted: boolean;
     createdAt: Date;
@@ -18,7 +17,6 @@ export type CreateMasterAccessRoleRequest = {
     displayName: string;
     route?: string | null;
     parentKey?: string | null;
-    orderIndex?: number;
     isActive?: boolean;
 };
 export type UpdateMasterAccessRoleRequest = {
@@ -28,7 +26,6 @@ export type UpdateMasterAccessRoleRequest = {
     displayName?: string;
     route?: string | null;
     parentKey?: string | null;
-    orderIndex?: number;
     isActive?: boolean;
 };
 export type DeleteMasterAccessRoleRequest = {
