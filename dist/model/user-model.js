@@ -12,6 +12,7 @@ export function toLoginResponse(user, token) {
         username: user.username,
         name: user.name,
         jobDesc: user.jobDesc ?? null,
+        mustChangePassword: Boolean(user.mustChangePassword),
         token,
         expiresIn,
         expiresAt,
@@ -22,7 +23,7 @@ export function toUserProfileResponse(user) {
         userId: user.userId,
         username: user.username,
         name: user.name,
-        badgeNumber: user.badgeNumber,
+        cardNumber: user.badgeNumber,
         department: user.department,
         departmentId: null,
         employeeUserId: null,
@@ -51,6 +52,7 @@ export function toUserProfileResponse(user) {
         canEditAllProfileFields: false,
         canEditProfilePhoto: false,
         canChangePassword: true,
+        mustChangePassword: false,
         editableFields: [],
     };
 }
@@ -59,7 +61,7 @@ export function toUserListResponse(user) {
         userId: user.userId,
         username: user.username,
         name: user.name,
-        badgeNumber: user.badgeNumber,
+        cardNumber: user.badgeNumber,
         department: user.department,
         isActive: user.isActive,
         isDeleted: user.isDeleted,

@@ -51,6 +51,21 @@ const normalizeEmployeeEmail = (value?: string | null) => {
   return trimmed && trimmed !== "-" ? trimmed : null;
 };
 
+const normalizeNullableDate = (value?: Date | string | null) => {
+  if (value === undefined || value === null) {
+    return null;
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+  const time = date.getTime();
+
+  if (Number.isNaN(time) || time === 0) {
+    return null;
+  }
+
+  return date;
+};
+
 export type EmployeeRecordInput = Omit<EmployeeResponse, "DeptName" | "statusLMS"> & {
   DeptName?: string | null;
   statusLMS?: EmployeeStatusLmsValue;
@@ -138,12 +153,12 @@ export const toEmployeeResponse = (data: EmployeeRecordInput): EmployeeResponse 
     Shift: data.Shift ?? null,
     isMem: data.isMem ?? null,
     AddBy: data.AddBy ?? null,
-    isMemDate: data.isMemDate ?? null,
+    isMemDate: normalizeNullableDate(data.isMemDate),
     isFirstLogin: data.isFirstLogin ?? null,
     ImgName: data.ImgName ?? null,
     SbuSub: data.SbuSub ?? null,
     Nik: data.Nik ?? null,
-    ResignDate: data.ResignDate ?? null,
+    ResignDate: normalizeNullableDate(data.ResignDate),
     statusLMS: toStatusLmsResponse(data.statusLMS),
     roleId: data.roleId ?? null,
     jobDesc: data.jobDesc ?? null,

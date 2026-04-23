@@ -1,8 +1,27 @@
 import { z, ZodType } from "zod";
 
-const nullableDate = z.union([z.coerce.date(), z.null()]);
+const nullableDate = z.preprocess(
+  (value) => {
+    if (value === null || value === undefined) {
+      return null;
+    }
+
+    if (typeof value === "string" && value.trim() === "") {
+      return null;
+    }
+
+    return value;
+  },
+  z.union([z.null(), z.coerce.date()])
+);
 const requiredText = (max: number) => z.string().trim().min(1).max(max);
 const optionalTrimmedText = (max: number) => z.string().trim().max(max).optional().nullable();
+const optionalShiftFlag = z.union([z.literal(0), z.literal(1)]).optional().nullable();
+const isFutureDate = (value: Date) => {
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  return value.getTime() > today.getTime();
+};
 
 export class EmployeeValidation {
   static readonly CREATE: ZodType = z
@@ -19,7 +38,7 @@ export class EmployeeValidation {
     Phone: requiredText(20),
     DeptId: z.number().int().positive(),
     CardNo: requiredText(20),
-    Shift: z.number().int().optional().nullable(),
+    Shift: optionalShiftFlag,
     isMem: z.boolean().optional().nullable(),
     SbuSub: z.number().int().positive().optional().nullable(),
     isMemDate: nullableDate.optional(),
@@ -36,11 +55,19 @@ export class EmployeeValidation {
     BPJSKtngkerjaan: optionalTrimmedText(50),
   })
     .superRefine((data, ctx) => {
+      if (isFutureDate(data.BirthDay)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["BirthDay"],
+          message: "Tanggal lahir tidak boleh melebihi hari ini",
+        });
+      }
+
       if (data.CardNo !== data.BadgeNum) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["CardNo"],
-          message: "Card number harus sama dengan badge number",
+          message: "Card number tidak sinkron dengan nomor internal",
         });
       }
 
@@ -68,7 +95,7 @@ export class EmployeeValidation {
     Phone: requiredText(20),
     DeptId: z.number().int().positive(),
     CardNo: requiredText(20),
-    Shift: z.number().int().optional().nullable(),
+    Shift: optionalShiftFlag,
     isMem: z.boolean().optional().nullable(),
     SbuSub: z.number().int().positive().optional().nullable(),
     isMemDate: nullableDate.optional(),
@@ -85,11 +112,19 @@ export class EmployeeValidation {
     BPJSKtngkerjaan: optionalTrimmedText(50),
   })
     .superRefine((data, ctx) => {
+      if (isFutureDate(data.BirthDay)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["BirthDay"],
+          message: "Tanggal lahir tidak boleh melebihi hari ini",
+        });
+      }
+
       if (data.CardNo !== data.BadgeNum) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["CardNo"],
-          message: "Card number harus sama dengan badge number",
+          message: "Card number tidak sinkron dengan nomor internal",
         });
       }
 

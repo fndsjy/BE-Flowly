@@ -28,4 +28,16 @@ export declare function generateCaseFeedbackCommentId(): Promise<() => string>;
 export declare function generateCaseNotificationId(): Promise<() => string>;
 export declare function generateCaseNotificationMessageId(): Promise<() => string>;
 export declare function generateCaseNotificationTemplateId(): Promise<() => string>;
+export declare function generateNotificationTemplateId(): Promise<() => string>;
+export declare function generateNotificationTemplatePortalId(): Promise<() => string>;
+export declare function generateNotificationOutboxId(): Promise<() => string>;
+export declare function generateOnboardingPortalTemplateId(): Promise<string>;
+export declare function generateOnboardingStageTemplateId(): Promise<() => string>;
+export declare function generateOnboardingStageMaterialId(): Promise<() => string>;
+export declare function generateOnboardingStageExamId(): Promise<() => string>;
+export declare function generateOnboardingAssignmentId(): Promise<() => string>;
+export declare function generateOnboardingStageProgressId(): Promise<() => string>;
+export declare function generateOnboardingMaterialProgressId(): Promise<() => string>;
+export declare function generateOnboardingExamAttemptId(): Promise<() => string>;
+export declare function generateOnboardingDecisionId(): Promise<() => string>;
 //# sourceMappingURL=id-generator.d.ts.map

@@ -19,7 +19,10 @@ export class UserController {
       }
 
       const payload = verifyToken(token);
-      const request: CreateUserRequest = req.body as CreateUserRequest;
+      const request: CreateUserRequest = {
+        ...req.body,
+        cardNumber: req.body?.cardNumber ?? req.body?.badgeNumber,
+      } as CreateUserRequest;
       const response = await UserService.register(request, payload.userId);
 
       res.status(201).json({ response });
@@ -89,7 +92,10 @@ export class UserController {
       }
 
       const payload = verifyToken(token);
-      const request: UpdateProfileRequest = req.body as UpdateProfileRequest;
+      const request: UpdateProfileRequest = {
+        ...req.body,
+        cardNumber: req.body?.cardNumber ?? req.body?.badgeNumber,
+      } as UpdateProfileRequest;
       const response = await UserService.updateProfile(payload.userId, request);
 
       res.status(200).json({ response });
@@ -125,7 +131,17 @@ export class UserController {
       const request: ChangePasswordRequest = req.body as ChangePasswordRequest;
       await UserService.changePassword(payload.userId, request);
 
-      res.status(200).json({ message: "Password updated successfully" });
+      res.clearCookie("access_token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        path: "/",
+      });
+
+      res.status(200).json({
+        message: "Password updated successfully",
+        forceRelogin: true,
+      });
     } catch (error) {
       next(error);
     }

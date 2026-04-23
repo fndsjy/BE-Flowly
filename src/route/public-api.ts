@@ -30,6 +30,8 @@ import { CaseFeedbackCommentController } from "../controller/case-feedback-comme
 import { CaseFeedbackApprovalController } from "../controller/case-feedback-approval-controller.js";
 import { CaseNotificationMessageController } from "../controller/case-notification-message-controller.js";
 import { CaseNotificationTemplateController } from "../controller/case-notification-template-controller.js";
+import { NotificationTemplateController } from "../controller/notification-template-controller.js";
+import { OnboardingController } from "../controller/onboarding-controller.js";
 import { OnboardingMaterialController } from "../controller/onboarding-material-controller.js";
 
 export const publicRouter = express.Router();
@@ -66,8 +68,13 @@ v1.post("/employee", EmployeeController.create);
 v1.put("/employee", EmployeeController.update);
 v1.delete("/employee", EmployeeController.remove);
 v1.get("/employee/departments", EmployeeController.listDepartments);
+v1.get("/employee/finger-machines", EmployeeController.listFingerMachines);
 v1.get("/employee", EmployeeController.listForPIC);
 v1.patch("/employee/job-desc", EmployeeController.updateJobDesc);
+v1.get("/onboarding/me", OnboardingController.listMyWorkspace);
+v1.get("/onboarding/admin-monitoring", OnboardingController.listAdminMonitoring);
+v1.get("/onboarding/employee-summary", OnboardingController.listEmployeeSummary);
+v1.post("/onboarding/start-employees", OnboardingController.startEmployees);
 
 v1.post("/pilar", PilarController.create);
 v1.put("/pilar", PilarController.update);
@@ -95,6 +102,22 @@ v1.put("/procedure-sop", ProcedureSopController.update);
 v1.delete("/procedure-sop", ProcedureSopController.softDelete);
 v1.get("/procedure-sop", ProcedureSopController.list);
 v1.get("/procedure-sop/file/:sopId", ProcedureSopController.download);
+v1.get(
+  "/onboarding-material/assignments",
+  OnboardingMaterialController.listAssignments
+);
+v1.get(
+  "/onboarding-material/source-materials",
+  OnboardingMaterialController.listSourceMaterials
+);
+v1.post(
+  "/onboarding-material/assignments",
+  OnboardingMaterialController.createAssignment
+);
+v1.delete(
+  "/onboarding-material/assignments",
+  OnboardingMaterialController.deleteAssignment
+);
 v1.get("/onboarding-material/file/:fileName", OnboardingMaterialController.download);
 
 v1.post("/master-ik", MasterIkController.create);
@@ -148,6 +171,11 @@ v1.delete(
   CaseNotificationTemplateController.softDelete
 );
 v1.get("/case-notification-template", CaseNotificationTemplateController.list);
+
+v1.post("/notification-template", NotificationTemplateController.create);
+v1.put("/notification-template", NotificationTemplateController.update);
+v1.delete("/notification-template", NotificationTemplateController.softDelete);
+v1.get("/notification-template", NotificationTemplateController.list);
 
 v1.post("/case-notification-message", CaseNotificationMessageController.create);
 v1.put("/case-notification-message", CaseNotificationMessageController.update);

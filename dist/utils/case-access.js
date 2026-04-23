@@ -12,12 +12,12 @@ const resolveEmployeeId = async (userId, flowlyUser) => {
             return employee.UserId;
         }
     }
-    const badgeNumber = flowlyUser?.badgeNumber?.trim();
-    if (!badgeNumber) {
+    const cardNumber = flowlyUser?.cardNumber?.trim();
+    if (!cardNumber) {
         return null;
     }
     const employee = await prismaEmployee.em_employee.findFirst({
-        where: { BadgeNum: badgeNumber },
+        where: { CardNo: cardNumber },
         select: { UserId: true },
     });
     return employee?.UserId ?? null;
@@ -41,7 +41,9 @@ export const resolveCaseAccess = async (requesterId) => {
         const canCrud = canCrudModule(moduleAccessMap, "CASE");
         const canRead = canReadModule(moduleAccessMap, "CASE") || canCrud;
         if (!canRead) {
-            const employeeId = await resolveEmployeeId(requesterId, flowlyUser);
+            const employeeId = await resolveEmployeeId(requesterId, {
+                cardNumber: flowlyUser.badgeNumber,
+            });
             if (employeeId !== null) {
                 return {
                     actorType: "EMPLOYEE",

@@ -393,6 +393,87 @@ model CaseNotificationTemplate {
   @@map("case_notification_template")
 }
 
+/// Generic notification template for OMS portal notifications
+model NotificationTemplate {
+  notificationTemplateId String                       @id @db.NVarChar(20)
+  templateName           String                       @db.NVarChar(100)
+  channel                String                       @db.NVarChar(20)
+  eventKey               String                       @db.NVarChar(50)
+  recipientRole          String                       @db.NVarChar(30)
+  messageTemplate        String                       @db.NVarChar(1000)
+  isActive               Boolean                      @default(true)
+  createdAt              DateTime                     @default(now())
+  createdBy              String?                      @db.NVarChar(20)
+  updatedAt              DateTime                     @updatedAt
+  updatedBy              String?                      @db.NVarChar(20)
+  isDeleted              Boolean                      @default(false)
+  deletedAt              DateTime?
+  deletedBy              String?                      @db.NVarChar(20)
+  portalMappings         NotificationTemplatePortal[]
+  outboxes               NotificationOutbox[]
+
+  @@index([channel, eventKey, recipientRole, isActive, isDeleted])
+  @@map("notification_template")
+}
+
+/// Portal mapping for generic OMS notification templates
+model NotificationTemplatePortal {
+  notificationTemplatePortalId String               @id @db.NVarChar(20)
+  notificationTemplateId       String               @db.NVarChar(20)
+  portalKey                    String               @db.NVarChar(50)
+  isActive                     Boolean              @default(true)
+  createdAt                    DateTime             @default(now())
+  createdBy                    String?              @db.NVarChar(20)
+  updatedAt                    DateTime             @updatedAt
+  updatedBy                    String?              @db.NVarChar(20)
+  isDeleted                    Boolean              @default(false)
+  deletedAt                    DateTime?
+  deletedBy                    String?              @db.NVarChar(20)
+  template                     NotificationTemplate @relation(fields: [notificationTemplateId], references: [notificationTemplateId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([notificationTemplateId, portalKey, isDeleted])
+  @@index([notificationTemplateId, isDeleted, isActive])
+  @@index([portalKey, isDeleted, isActive])
+  @@map("notification_template_portal")
+}
+
+/// Generic notification outbox for OMS portals
+model NotificationOutbox {
+  notificationOutboxId   String                @id @db.NVarChar(20)
+  notificationTemplateId String?               @db.NVarChar(20)
+  portalKey              String                @db.NVarChar(50)
+  eventKey               String                @db.NVarChar(50)
+  recipientRole          String?               @db.NVarChar(30)
+  recipientReferenceType String?               @db.NVarChar(50)
+  recipientReferenceId   String?               @db.NVarChar(100)
+  contextReferenceType   String?               @db.NVarChar(50)
+  contextReferenceId     String?               @db.NVarChar(100)
+  phoneNumber            String                @db.NVarChar(30)
+  message                String                @db.NVarChar(1000)
+  status                 String                @default("PENDING") @db.NVarChar(20)
+  attempts               Int                   @default(0)
+  lastError              String?               @db.NVarChar(500)
+  provider               String?               @db.NVarChar(50)
+  sentAt                 DateTime?
+  meta                   String?               @db.NVarChar(Max)
+  isActive               Boolean               @default(true)
+  createdAt              DateTime              @default(now())
+  createdBy              String?               @db.NVarChar(20)
+  updatedAt              DateTime              @updatedAt
+  updatedBy              String?               @db.NVarChar(20)
+  isDeleted              Boolean               @default(false)
+  deletedAt              DateTime?
+  deletedBy              String?               @db.NVarChar(20)
+  template               NotificationTemplate? @relation(fields: [notificationTemplateId], references: [notificationTemplateId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([notificationTemplateId])
+  @@index([portalKey, eventKey, isDeleted, isActive])
+  @@index([recipientReferenceType, recipientReferenceId, isDeleted])
+  @@index([contextReferenceType, contextReferenceId, isDeleted])
+  @@index([status, isDeleted])
+  @@map("notification_outbox")
+}
+
 /// Case attachments (photo/video documentation)
 model CaseAttachment {
   caseAttachmentId String     @id @db.NVarChar(20)
@@ -766,6 +847,290 @@ model PortalMenuMap {
   @@index([portalMasAccessId, isDeleted, isActive])
   @@index([menuMasAccessId, isDeleted, isActive])
   @@map("portal_menu_map")
+}
+
+/// Onboarding portal-level template and default training window
+model OnboardingPortalTemplate {
+  /// e.g., "OPT100426-00001"
+  onboardingPortalTemplateId String                    @id @db.NVarChar(100)
+  portalKey                  String                    @db.NVarChar(50)
+  portalName                 String                    @db.NVarChar(100)
+  defaultDurationDay         Int                       @default(90)
+  isActive                   Boolean                   @default(true)
+  isDeleted                  Boolean                   @default(false)
+  createdAt                  DateTime                  @default(now())
+  createdBy                  String?                   @db.NVarChar(20)
+  updatedAt                  DateTime                  @updatedAt
+  updatedBy                  String?                   @db.NVarChar(20)
+  deletedAt                  DateTime?
+  deletedBy                  String?                   @db.NVarChar(20)
+  stageTemplates             OnboardingStageTemplate[]
+  assignments                OnboardingAssignment[]
+
+  @@unique([portalKey])
+  @@index([isDeleted, isActive])
+  @@map("onboarding_portal_template")
+}
+
+/// Ordered onboarding stages per portal template
+model OnboardingStageTemplate {
+  /// e.g., "OST100426-00001"
+  onboardingStageTemplateId  String                    @id @db.NVarChar(100)
+  onboardingPortalTemplateId String                    @db.NVarChar(100)
+  stageOrder                 Int
+  stageCode                  String                    @db.NVarChar(50)
+  stageName                  String                    @db.NVarChar(100)
+  stageDescription           String?                   @db.NVarChar(1000)
+  isActive                   Boolean                   @default(true)
+  isDeleted                  Boolean                   @default(false)
+  createdAt                  DateTime                  @default(now())
+  createdBy                  String?                   @db.NVarChar(20)
+  updatedAt                  DateTime                  @updatedAt
+  updatedBy                  String?                   @db.NVarChar(20)
+  deletedAt                  DateTime?
+  deletedBy                  String?                   @db.NVarChar(20)
+  portalTemplate             OnboardingPortalTemplate  @relation(fields: [onboardingPortalTemplateId], references: [onboardingPortalTemplateId], onDelete: NoAction, onUpdate: NoAction)
+  stageMaterials             OnboardingStageMaterial[]
+  stageExams                 OnboardingStageExam[]
+  stageProgresses            OnboardingStageProgress[]
+
+  @@unique([onboardingPortalTemplateId, stageOrder])
+  @@unique([onboardingPortalTemplateId, stageCode])
+  @@index([onboardingPortalTemplateId, isDeleted, isActive])
+  @@map("onboarding_stage_template")
+}
+
+/// Material mapping for each onboarding stage
+model OnboardingStageMaterial {
+  /// e.g., "OSM100426-00001"
+  onboardingStageMaterialId String                       @id @db.NVarChar(100)
+  onboardingStageTemplateId String                       @db.NVarChar(100)
+  materiId                  Int
+  orderIndex                Int                          @default(0)
+  isRequired                Boolean                      @default(true)
+  note                      String?                      @db.NVarChar(1000)
+  isActive                  Boolean                      @default(true)
+  isDeleted                 Boolean                      @default(false)
+  createdAt                 DateTime                     @default(now())
+  createdBy                 String?                      @db.NVarChar(20)
+  updatedAt                 DateTime                     @updatedAt
+  updatedBy                 String?                      @db.NVarChar(20)
+  deletedAt                 DateTime?
+  deletedBy                 String?                      @db.NVarChar(20)
+  stageTemplate             OnboardingStageTemplate      @relation(fields: [onboardingStageTemplateId], references: [onboardingStageTemplateId], onDelete: NoAction, onUpdate: NoAction)
+  materialProgresses        OnboardingMaterialProgress[]
+
+  @@unique([onboardingStageTemplateId, materiId])
+  @@index([onboardingStageTemplateId, isDeleted, isActive])
+  @@index([materiId, isDeleted, isActive])
+  @@map("onboarding_stage_material")
+}
+
+/// Exam mapping for each onboarding stage
+model OnboardingStageExam {
+  /// e.g., "OSE100426-00001"
+  onboardingStageExamId     String                  @id @db.NVarChar(100)
+  onboardingStageTemplateId String                  @db.NVarChar(100)
+  examId                    Int
+  passScore                 Int?
+  orderIndex                Int                     @default(0)
+  note                      String?                 @db.NVarChar(1000)
+  isActive                  Boolean                 @default(true)
+  isDeleted                 Boolean                 @default(false)
+  createdAt                 DateTime                @default(now())
+  createdBy                 String?                 @db.NVarChar(20)
+  updatedAt                 DateTime                @updatedAt
+  updatedBy                 String?                 @db.NVarChar(20)
+  deletedAt                 DateTime?
+  deletedBy                 String?                 @db.NVarChar(20)
+  stageTemplate             OnboardingStageTemplate @relation(fields: [onboardingStageTemplateId], references: [onboardingStageTemplateId], onDelete: NoAction, onUpdate: NoAction)
+  examAttempts              OnboardingExamAttempt[]
+
+  @@unique([onboardingStageTemplateId, examId])
+  @@index([onboardingStageTemplateId, isDeleted, isActive])
+  @@index([examId, isDeleted, isActive])
+  @@map("onboarding_stage_exam")
+}
+
+/// Runtime onboarding assignment per participant and portal attempt
+model OnboardingAssignment {
+  /// e.g., "OAS100426-00001"
+  onboardingAssignmentId       String                       @id @db.NVarChar(100)
+  onboardingPortalTemplateId   String                       @db.NVarChar(100)
+  portalKey                    String                       @db.NVarChar(50)
+  participantReferenceType     String                       @db.NVarChar(50)
+  participantReferenceId       String                       @db.NVarChar(100)
+  startedAt                    DateTime
+  durationDay                  Int                          @default(90)
+  dueAt                        DateTime
+  status                       String                       @db.NVarChar(30)
+  currentStageOrder            Int?
+  assignedAt                   DateTime                     @default(now())
+  assignedBy                   String?                      @db.NVarChar(20)
+  note                         String?                      @db.NVarChar(1000)
+  completedAt                  DateTime?
+  completedBy                  String?                      @db.NVarChar(20)
+  failedAt                     DateTime?
+  failedBy                     String?                      @db.NVarChar(20)
+  parentOnboardingAssignmentId String?                      @db.NVarChar(100)
+  isActive                     Boolean                      @default(true)
+  isDeleted                    Boolean                      @default(false)
+  createdAt                    DateTime                     @default(now())
+  createdBy                    String?                      @db.NVarChar(20)
+  updatedAt                    DateTime                     @updatedAt
+  updatedBy                    String?                      @db.NVarChar(20)
+  deletedAt                    DateTime?
+  deletedBy                    String?                      @db.NVarChar(20)
+  portalTemplate               OnboardingPortalTemplate     @relation(fields: [onboardingPortalTemplateId], references: [onboardingPortalTemplateId], onDelete: NoAction, onUpdate: NoAction)
+  parentAssignment             OnboardingAssignment?        @relation("OnboardingAssignmentRetry", fields: [parentOnboardingAssignmentId], references: [onboardingAssignmentId], onDelete: NoAction, onUpdate: NoAction)
+  retryAssignments             OnboardingAssignment[]       @relation("OnboardingAssignmentRetry")
+  stageProgresses              OnboardingStageProgress[]
+  materialProgresses           OnboardingMaterialProgress[]
+  examAttempts                 OnboardingExamAttempt[]
+  decisions                    OnboardingDecision[]
+
+  @@index([onboardingPortalTemplateId, isDeleted, isActive])
+  @@index([portalKey, status, isDeleted, isActive])
+  @@index([participantReferenceType, participantReferenceId, isDeleted, isActive])
+  @@index([parentOnboardingAssignmentId])
+  @@map("onboarding_assignment")
+}
+
+/// Runtime progress snapshot per stage within an onboarding assignment
+model OnboardingStageProgress {
+  /// e.g., "OSP100426-00001"
+  onboardingStageProgressId String                       @id @db.NVarChar(100)
+  onboardingAssignmentId    String                       @db.NVarChar(100)
+  onboardingStageTemplateId String                       @db.NVarChar(100)
+  stageOrder                Int
+  stageCode                 String                       @db.NVarChar(50)
+  stageName                 String                       @db.NVarChar(100)
+  status                    String                       @db.NVarChar(30)
+  remedialCount             Int                          @default(0)
+  startedAt                 DateTime?
+  passedAt                  DateTime?
+  completedAt               DateTime?
+  failedAt                  DateTime?
+  note                      String?                      @db.NVarChar(1000)
+  isActive                  Boolean                      @default(true)
+  isDeleted                 Boolean                      @default(false)
+  createdAt                 DateTime                     @default(now())
+  createdBy                 String?                      @db.NVarChar(20)
+  updatedAt                 DateTime                     @updatedAt
+  updatedBy                 String?                      @db.NVarChar(20)
+  deletedAt                 DateTime?
+  deletedBy                 String?                      @db.NVarChar(20)
+  assignment                OnboardingAssignment         @relation(fields: [onboardingAssignmentId], references: [onboardingAssignmentId], onDelete: NoAction, onUpdate: NoAction)
+  stageTemplate             OnboardingStageTemplate      @relation(fields: [onboardingStageTemplateId], references: [onboardingStageTemplateId], onDelete: NoAction, onUpdate: NoAction)
+  materialProgresses        OnboardingMaterialProgress[]
+  examAttempts              OnboardingExamAttempt[]
+
+  @@unique([onboardingAssignmentId, stageOrder])
+  @@index([onboardingAssignmentId, status, isDeleted, isActive])
+  @@index([onboardingStageTemplateId, isDeleted, isActive])
+  @@map("onboarding_stage_progress")
+}
+
+/// Runtime read/open progress per selected onboarding material file
+model OnboardingMaterialProgress {
+  /// e.g., "OMP100426-00001"
+  onboardingMaterialProgressId String                  @id @db.NVarChar(100)
+  onboardingAssignmentId       String                  @db.NVarChar(100)
+  onboardingStageProgressId    String                  @db.NVarChar(100)
+  onboardingStageMaterialId    String                  @db.NVarChar(100)
+  materiId                     Int
+  /// 0 means the progress is tracked on material level without a file row
+  sourceFileId                 Int                     @default(0)
+  fileName                     String?                 @db.NVarChar(255)
+  fileTitle                    String?                 @db.NVarChar(255)
+  status                       String                  @db.NVarChar(30)
+  readAt                       DateTime?
+  lastReadAt                   DateTime?
+  completedAt                  DateTime?
+  openCount                    Int                     @default(0)
+  note                         String?                 @db.NVarChar(1000)
+  isActive                     Boolean                 @default(true)
+  isDeleted                    Boolean                 @default(false)
+  createdAt                    DateTime                @default(now())
+  createdBy                    String?                 @db.NVarChar(20)
+  updatedAt                    DateTime                @updatedAt
+  updatedBy                    String?                 @db.NVarChar(20)
+  deletedAt                    DateTime?
+  deletedBy                    String?                 @db.NVarChar(20)
+  assignment                   OnboardingAssignment    @relation(fields: [onboardingAssignmentId], references: [onboardingAssignmentId], onDelete: NoAction, onUpdate: NoAction)
+  stageProgress                OnboardingStageProgress @relation(fields: [onboardingStageProgressId], references: [onboardingStageProgressId], onDelete: NoAction, onUpdate: NoAction)
+  stageMaterial                OnboardingStageMaterial @relation(fields: [onboardingStageMaterialId], references: [onboardingStageMaterialId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([onboardingStageProgressId, onboardingStageMaterialId, sourceFileId])
+  @@index([onboardingAssignmentId, onboardingStageProgressId, isDeleted, isActive])
+  @@index([onboardingStageMaterialId, isDeleted, isActive])
+  @@index([materiId, isDeleted, isActive])
+  @@index([sourceFileId])
+  @@map("onboarding_material_progress")
+}
+
+/// Runtime history of each exam attempt, including remedial attempts
+model OnboardingExamAttempt {
+  /// e.g., "OEA100426-00001"
+  onboardingExamAttemptId   String                  @id @db.NVarChar(100)
+  onboardingAssignmentId    String                  @db.NVarChar(100)
+  onboardingStageProgressId String                  @db.NVarChar(100)
+  onboardingStageExamId     String                  @db.NVarChar(100)
+  examId                    Int
+  attemptNo                 Int
+  startedAt                 DateTime
+  submittedAt               DateTime?
+  endedAt                   DateTime?
+  totalQuestionCount        Int?
+  answeredQuestionCount     Int?
+  correctQuestionCount      Int?
+  score                     Float?
+  status                    String                  @db.NVarChar(30)
+  employeeExamSessionId     String?                 @db.NVarChar(50)
+  note                      String?                 @db.NVarChar(1000)
+  isActive                  Boolean                 @default(true)
+  isDeleted                 Boolean                 @default(false)
+  createdAt                 DateTime                @default(now())
+  createdBy                 String?                 @db.NVarChar(20)
+  updatedAt                 DateTime                @updatedAt
+  updatedBy                 String?                 @db.NVarChar(20)
+  deletedAt                 DateTime?
+  deletedBy                 String?                 @db.NVarChar(20)
+  assignment                OnboardingAssignment    @relation(fields: [onboardingAssignmentId], references: [onboardingAssignmentId], onDelete: NoAction, onUpdate: NoAction)
+  stageProgress             OnboardingStageProgress @relation(fields: [onboardingStageProgressId], references: [onboardingStageProgressId], onDelete: NoAction, onUpdate: NoAction)
+  stageExam                 OnboardingStageExam     @relation(fields: [onboardingStageExamId], references: [onboardingStageExamId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([onboardingStageProgressId, attemptNo])
+  @@index([onboardingAssignmentId, isDeleted, isActive])
+  @@index([onboardingStageProgressId, status, isDeleted, isActive])
+  @@index([onboardingStageExamId, isDeleted, isActive])
+  @@index([employeeExamSessionId])
+  @@map("onboarding_exam_attempt")
+}
+
+/// Decision log after onboarding expiry or manager/PIC review
+model OnboardingDecision {
+  /// e.g., "ODC100426-00001"
+  onboardingDecisionId   String               @id @db.NVarChar(100)
+  onboardingAssignmentId String               @db.NVarChar(100)
+  decisionType           String               @db.NVarChar(30)
+  nextDurationDay        Int?
+  note                   String?              @db.NVarChar(2000)
+  decidedAt              DateTime             @default(now())
+  decidedBy              String?              @db.NVarChar(20)
+  isActive               Boolean              @default(true)
+  isDeleted              Boolean              @default(false)
+  createdAt              DateTime             @default(now())
+  createdBy              String?              @db.NVarChar(20)
+  updatedAt              DateTime             @updatedAt
+  updatedBy              String?              @db.NVarChar(20)
+  deletedAt              DateTime?
+  deletedBy              String?              @db.NVarChar(20)
+  assignment             OnboardingAssignment @relation(fields: [onboardingAssignmentId], references: [onboardingAssignmentId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([onboardingAssignmentId, decidedAt])
+  @@index([decisionType, isDeleted, isActive])
+  @@map("onboarding_decision")
 }
 
 /// Audit log for tracking CRUD and revision actions

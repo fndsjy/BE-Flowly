@@ -9,7 +9,10 @@ export class UserController {
                 throw new ResponseError(401, "Unauthorized");
             }
             const payload = verifyToken(token);
-            const request = req.body;
+            const request = {
+                ...req.body,
+                cardNumber: req.body?.cardNumber ?? req.body?.badgeNumber,
+            };
             const response = await UserService.register(request, payload.userId);
             res.status(201).json({ response });
         }
@@ -71,7 +74,10 @@ export class UserController {
                 throw new ResponseError(401, "Unauthorized");
             }
             const payload = verifyToken(token);
-            const request = req.body;
+            const request = {
+                ...req.body,
+                cardNumber: req.body?.cardNumber ?? req.body?.badgeNumber,
+            };
             const response = await UserService.updateProfile(payload.userId, request);
             res.status(200).json({ response });
         }
@@ -102,7 +108,16 @@ export class UserController {
             const payload = verifyToken(token);
             const request = req.body;
             await UserService.changePassword(payload.userId, request);
-            res.status(200).json({ message: "Password updated successfully" });
+            res.clearCookie("access_token", {
+                httpOnly: true,
+                secure: false,
+                sameSite: "strict",
+                path: "/",
+            });
+            res.status(200).json({
+                message: "Password updated successfully",
+                forceRelogin: true,
+            });
         }
         catch (error) {
             next(error);

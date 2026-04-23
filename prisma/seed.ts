@@ -8,6 +8,8 @@ import {
   generateAcessRoleId,
   generateFishboneCategoryId,
   generatePortalMenuMapId,
+  generateOnboardingPortalTemplateId,
+  generateOnboardingStageTemplateId,
 } from "../src/utils/id-generator.js";
 
 // 🔹 Daftar Role
@@ -97,6 +99,7 @@ const masAccessItems = [
   { resourceType: "MENU", resourceKey: "COMMUNITY_LEARNING", displayName: "Learning", route: "https://lms.domas.co.id/", parentKey: null },
   { resourceType: "MENU", resourceKey: "COMMUNITY_ADMIN", displayName: "Administrator", route: "/community/administrator", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING", displayName: "Onboarding", route: "/portal-administrator/onboarding", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMINISTRATOR_NOTIF_TEMPLATE", displayName: "Template Notif", route: "/portal-administrator/notification-template", parentKey: null },
   { resourceType: "MODULE", resourceKey: "PILAR", displayName: "Pilar", route: "/pilar", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU", displayName: "SBU", route: "/pilar/sbu", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU_SUB", displayName: "SBU Sub", route: "/pilar/sbu/sbu_sub", parentKey: "ORGANISASI" },
@@ -168,6 +171,7 @@ const portalMenuMappings = [
   { portalKey: "COMMUNITY", menuKey: "COMMUNITY_LEARNING", orderIndex: 30 },
   { portalKey: "COMMUNITY", menuKey: "COMMUNITY_ADMIN", orderIndex: 40 },
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING", orderIndex: 10 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_NOTIF_TEMPLATE", orderIndex: 20 },
 ];
 
 type accessRoleseed = {
@@ -203,6 +207,43 @@ const fishboneCategories = [
   { categoryCode: "METHOD", categoryName: "Method (Metode)" },
   { categoryCode: "MANAGEMENT", categoryName: "Management (Manajemen)" },
   { categoryCode: "ENVIRONMENT", categoryName: "Environment (Lingkungan)" },
+];
+
+const onboardingPortalDefaults = [
+  { portalKey: "EMPLOYEE", portalName: "Employee" },
+  { portalKey: "SUPPLIER", portalName: "Supplier" },
+  { portalKey: "CUSTOMER", portalName: "Customer" },
+  { portalKey: "AFFILIATE", portalName: "Affiliate" },
+  { portalKey: "INFLUENCER", portalName: "Influencer" },
+  { portalKey: "COMMUNITY", portalName: "Community" },
+  { portalKey: "ADMINISTRATOR", portalName: "Administrator" },
+];
+
+const defaultOnboardingStages = [
+  {
+    stageOrder: 1,
+    stageCode: "STAGE_1",
+    stageName: "Pengenalan & Persiapan",
+    stageDescription: "Tahap awal untuk pengenalan portal, akun, aturan dasar, dan target onboarding.",
+  },
+  {
+    stageOrder: 2,
+    stageCode: "STAGE_2",
+    stageName: "Materi Inti",
+    stageDescription: "Tahap pembelajaran inti untuk materi wajib yang relevan dengan portal peserta.",
+  },
+  {
+    stageOrder: 3,
+    stageCode: "STAGE_3",
+    stageName: "Pendalaman & Praktik",
+    stageDescription: "Tahap pendalaman untuk praktik, penguatan pemahaman, dan kesiapan menjalankan peran.",
+  },
+  {
+    stageOrder: 4,
+    stageCode: "STAGE_4",
+    stageName: "Evaluasi & Penyelesaian",
+    stageDescription: "Tahap akhir untuk evaluasi onboarding, penyelesaian administrasi, dan handoff lanjutan.",
+  },
 ];
 
 
@@ -410,6 +451,86 @@ async function main() {
         isDeleted: false,
       },
     });
+  }
+
+  const makeOnboardingStageTemplateId = await generateOnboardingStageTemplateId();
+  for (const portal of onboardingPortalDefaults) {
+    const existingPortalTemplate = await prisma.onboardingPortalTemplate.findUnique({
+      where: { portalKey: portal.portalKey },
+      select: { onboardingPortalTemplateId: true },
+    });
+
+    const portalTemplate = existingPortalTemplate
+      ? await prisma.onboardingPortalTemplate.update({
+          where: { onboardingPortalTemplateId: existingPortalTemplate.onboardingPortalTemplateId },
+          data: {
+            portalName: portal.portalName,
+            defaultDurationDay: 91,
+            isActive: true,
+            isDeleted: false,
+            deletedAt: null,
+            deletedBy: null,
+          },
+          select: {
+            onboardingPortalTemplateId: true,
+            portalKey: true,
+          },
+        })
+      : await prisma.onboardingPortalTemplate.create({
+          data: {
+            onboardingPortalTemplateId: await generateOnboardingPortalTemplateId(),
+            portalKey: portal.portalKey,
+            portalName: portal.portalName,
+            defaultDurationDay: 91,
+            isActive: true,
+            isDeleted: false,
+          },
+          select: {
+            onboardingPortalTemplateId: true,
+            portalKey: true,
+          },
+        });
+
+    for (const stage of defaultOnboardingStages) {
+      const existingStage = await prisma.onboardingStageTemplate.findUnique({
+        where: {
+          onboardingPortalTemplateId_stageCode: {
+            onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+            stageCode: stage.stageCode,
+          },
+        },
+        select: { onboardingStageTemplateId: true },
+      });
+
+      if (existingStage?.onboardingStageTemplateId) {
+        await prisma.onboardingStageTemplate.update({
+          where: { onboardingStageTemplateId: existingStage.onboardingStageTemplateId },
+          data: {
+            stageOrder: stage.stageOrder,
+            stageName: stage.stageName,
+            stageDescription: stage.stageDescription,
+            isActive: true,
+            isDeleted: false,
+            deletedAt: null,
+            deletedBy: null,
+          },
+        });
+        continue;
+      }
+
+      await prisma.onboardingStageTemplate.create({
+        data: {
+          onboardingStageTemplateId: makeOnboardingStageTemplateId(),
+          onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+          stageOrder: stage.stageOrder,
+          stageCode: stage.stageCode,
+          stageName: stage.stageName,
+          stageDescription: stage.stageDescription,
+          isActive: true,
+          isDeleted: false,
+        },
+      });
+    }
   }
 
   console.log("Seed completed successfully.");

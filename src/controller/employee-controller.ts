@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { EmployeeService } from "../service/employee-service.js";
+import { FingerMachineService } from "../service/finger-machine-service.js";
 import { verifyToken } from "../utils/auth.js";
 import { ResponseError } from "../error/response-error.js";
 
@@ -68,6 +69,24 @@ export class EmployeeController {
   static async listDepartments(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await EmployeeService.listDepartments();
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async listFingerMachines(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await FingerMachineService.list(payload.userId);
 
       res.status(200).json({ response });
     } catch (err) {

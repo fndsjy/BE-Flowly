@@ -124,11 +124,11 @@ const resolveCommenterEmployeeId = async (requesterId, access) => {
         where: { userId: requesterId, isDeleted: false },
         select: { badgeNumber: true },
     });
-    const badgeNumber = flowlyUser?.badgeNumber?.trim();
-    if (!badgeNumber)
+    const cardNumber = flowlyUser?.badgeNumber?.trim();
+    if (!cardNumber)
         return null;
     const employee = await prismaEmployee.em_employee.findFirst({
-        where: { BadgeNum: badgeNumber },
+        where: { CardNo: cardNumber },
         select: { UserId: true },
     });
     return employee?.UserId ?? null;

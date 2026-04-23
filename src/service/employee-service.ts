@@ -15,6 +15,7 @@ import {
   resolveActorType,
   writeAuditLog,
 } from "../utils/audit-log.js";
+import { ensureHrdCrudAccess } from "../utils/hrd-access.js";
 import { Validation } from "../validation/validation.js";
 import { EmployeeValidation } from "../validation/employee-validation.js";
 
@@ -80,9 +81,52 @@ const normalizeOptionalText = (value?: string | null) => {
   return trimmed.length > 0 ? trimmed : null;
 };
 
+const normalizeEmailText = (value?: string | null) => {
+  const normalized = normalizeOptionalText(value);
+  return normalized ? normalized.toLowerCase() : normalized;
+};
+
+const normalizeIdentifierForCompare = (value?: string | null) => {
+  const trimmed = value?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed.toUpperCase() : null;
+};
+
+const normalizePhoneForCompare = (value?: string | null) => {
+  const digits = value?.replace(/\D+/g, "") ?? "";
+  return digits.length > 0 ? digits : null;
+};
+
+const normalizeEmailForCompare = (value?: string | null) => {
+  const normalized = normalizeEmailText(value);
+  return normalized && normalized !== "-" ? normalized : null;
+};
+
 const normalizeRequiredText = (value: string | undefined, fallback: string) => {
   const trimmed = value?.trim();
   return trimmed && trimmed.length > 0 ? trimmed : fallback;
+};
+
+const normalizeGenderInput = (value?: string | null) => {
+  if (value === undefined) return undefined;
+  if (value === null) return null;
+
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  const normalized = trimmed.toLowerCase().replace(/[\s_-]/g, "");
+  if (
+    ["l", "m", "male", "man", "lakilaki", "lelaki", "pria"].includes(normalized)
+  ) {
+    return "male";
+  }
+
+  if (
+    ["p", "f", "female", "woman", "perempuan", "wanita"].includes(normalized)
+  ) {
+    return "female";
+  }
+
+  return trimmed;
 };
 
 const normalizeStatusLmsInput = (value?: string | null) => {
@@ -92,11 +136,6 @@ const normalizeStatusLmsInput = (value?: string | null) => {
   }
 
   return normalized === "1" || normalized === "true" || normalized === "yes";
-};
-
-const normalizeAccessLevel = (value: string) => {
-  const upper = value.trim().toUpperCase();
-  return upper === "FULL" ? "CRUD" : upper;
 };
 
 const toLegacyActorId = (value: string) => {
@@ -149,105 +188,98 @@ const ensureDepartmentExists = async (deptId?: number | null) => {
   }
 };
 
-const ensureUniqueBadgeNumber = async (badgeNum: string, excludeUserId?: number) => {
-  const existing = await prismaEmployee.em_employee.findFirst({
-    where: {
-      BadgeNum: badgeNum,
-      ...(excludeUserId ? { UserId: { not: excludeUserId } } : {}),
-    },
-    select: { UserId: true },
-  });
-
-  if (existing) {
-    throw new ResponseError(400, "Badge number already used by another employee");
-  }
+type EmployeeUniquenessCandidate = {
+  UserId: number;
+  BadgeNum: string;
+  CardNo: string | null;
+  Nik: string | null;
+  Phone: string | null;
+  email: string | null;
 };
 
-const ensureCanManageEmployees = async (requesterUserId: string) => {
-  const requester = await prismaFlowly.user.findUnique({
-    where: { userId: requesterUserId },
-    include: { role: true },
-  });
+const listEmployeeUniquenessCandidates = async (
+  excludeUserId?: number
+): Promise<EmployeeUniquenessCandidate[]> => {
+  const where = excludeUserId ? { UserId: { not: excludeUserId } } : undefined;
 
-  if (!requester) {
-    throw new ResponseError(401, "Unauthorized");
-  }
-
-  if (requester.role.roleLevel === 1) {
-    return;
-  }
-
-  const masterMenu = await prismaFlowly.masterAccessRole.findUnique({
-    where: {
-      resourceType_resourceKey: {
-        resourceType: "MENU",
-        resourceKey: "HRD",
-      },
-    },
-    select: { masAccessId: true },
-  });
-
-  const subjectFilters = [{ subjectType: "USER", subjectId: requesterUserId }];
-  if (requester.roleId) {
-    subjectFilters.unshift({ subjectType: "ROLE", subjectId: requester.roleId });
-  }
-
-  const accessRoles = await prismaFlowly.accessRole.findMany({
-    where: {
-      isDeleted: false,
-      resourceType: "MENU",
-      OR: subjectFilters,
-      ...(masterMenu
-        ? {
-            AND: [
-              {
-                OR: [{ resourceKey: "HRD" }, { masAccessId: masterMenu.masAccessId }],
-              },
-            ],
-          }
-        : { resourceKey: "HRD" }),
-    },
+  return prismaEmployee.em_employee.findMany({
+    ...(where ? { where } : {}),
     select: {
-      subjectType: true,
-      accessLevel: true,
-      isActive: true,
+      UserId: true,
+      BadgeNum: true,
+      CardNo: true,
+      Nik: true,
+      Phone: true,
+      email: true,
     },
   });
+};
 
-  let finalLevel: "READ" | "CRUD" | null = null;
-  const applyLevel = (level: string, override: boolean) => {
-    const normalized = normalizeAccessLevel(level);
-    if (normalized !== "READ" && normalized !== "CRUD") {
-      return;
-    }
+const hasMatchingIdentifier = (
+  employee: EmployeeUniquenessCandidate,
+  normalizedValue: string
+) =>
+  normalizeIdentifierForCompare(employee.BadgeNum) === normalizedValue ||
+  normalizeIdentifierForCompare(employee.CardNo) === normalizedValue;
 
-    if (!finalLevel || override) {
-      finalLevel = normalized;
-      return;
-    }
+const ensureEmployeeUniqueFields = async (params: {
+  badgeNum: string;
+  cardNo: string;
+  nik: string;
+  phone: string;
+  email: string;
+  excludeUserId?: number;
+}) => {
+  const candidates = await listEmployeeUniquenessCandidates(params.excludeUserId);
+  const normalizedBadgeNum = normalizeIdentifierForCompare(params.badgeNum);
+  const normalizedCardNo = normalizeIdentifierForCompare(params.cardNo);
+  const normalizedNik = normalizeIdentifierForCompare(params.nik);
+  const normalizedPhone = normalizePhoneForCompare(params.phone);
+  const normalizedEmail = normalizeEmailForCompare(params.email);
 
-    if (finalLevel === "READ" && normalized === "CRUD") {
-      finalLevel = normalized;
-    }
-  };
-
-  for (const access of accessRoles.filter((item) => item.subjectType === "ROLE")) {
-    if (!access.isActive) {
-      continue;
-    }
-    applyLevel(access.accessLevel, false);
+  if (
+    normalizedBadgeNum &&
+    candidates.some((employee) =>
+      hasMatchingIdentifier(employee, normalizedBadgeNum)
+    )
+  ) {
+    throw new ResponseError(400, "Badge number sudah dipakai karyawan lain");
   }
 
-  for (const access of accessRoles.filter((item) => item.subjectType === "USER")) {
-    if (!access.isActive) {
-      finalLevel = null;
-      continue;
-    }
-    applyLevel(access.accessLevel, true);
+  if (
+    normalizedCardNo &&
+    candidates.some((employee) =>
+      hasMatchingIdentifier(employee, normalizedCardNo)
+    )
+  ) {
+    throw new ResponseError(400, "Card number sudah dipakai karyawan lain");
   }
 
-  if (finalLevel !== "CRUD") {
-    throw new ResponseError(403, "Menu HRD CRUD access required");
+  if (
+    normalizedNik &&
+    candidates.some(
+      (employee) => normalizeIdentifierForCompare(employee.Nik) === normalizedNik
+    )
+  ) {
+    throw new ResponseError(400, "NIK sudah dipakai karyawan lain");
+  }
+
+  if (
+    normalizedPhone &&
+    candidates.some(
+      (employee) => normalizePhoneForCompare(employee.Phone) === normalizedPhone
+    )
+  ) {
+    throw new ResponseError(400, "Nomor telepon sudah dipakai karyawan lain");
+  }
+
+  if (
+    normalizedEmail &&
+    candidates.some(
+      (employee) => normalizeEmailForCompare(employee.email) === normalizedEmail
+    )
+  ) {
+    throw new ResponseError(400, "Email sudah dipakai karyawan lain");
   }
 };
 
@@ -257,11 +289,12 @@ const buildEmployeeCreateData = (
 ) => {
   const now = new Date();
   const badgeNum = request.BadgeNum.trim();
+  const cardNo = request.CardNo.trim();
 
   return {
     BadgeNum: badgeNum,
     Name: normalizeOptionalText(request.Name) ?? null,
-    Gender: normalizeOptionalText(request.Gender) ?? null,
+    Gender: normalizeGenderInput(request.Gender) ?? null,
     BirthDay: request.BirthDay ?? null,
     HireDay: request.HireDay ?? null,
     Street: normalizeOptionalText(request.Street) ?? null,
@@ -270,14 +303,15 @@ const buildEmployeeCreateData = (
     isLokasi: normalizeOptionalText(request.isLokasi) ?? null,
     Phone: normalizeOptionalText(request.Phone) ?? null,
     DeptId: request.DeptId ?? null,
-    CardNo: badgeNum,
+    Password: null,
+    CardNo: cardNo,
     Shift: request.Shift ?? null,
     isMem: request.isMem ?? false,
     AddBy: toLegacyActorId(requesterUserId),
     Created_at: now,
     Lastupdate: now,
     isMemDate: request.isMem ? request.isMemDate ?? null : null,
-    isFirstLogin: 0,
+    isFirstLogin: 1,
     ImgName: "domas.png",
     SbuSub: request.SbuSub ?? null,
     Nik: normalizeOptionalText(request.Nik) ?? null,
@@ -288,7 +322,7 @@ const buildEmployeeCreateData = (
     jobDesc: normalizeOptionalText(request.jobDesc) ?? null,
     city: normalizeOptionalText(request.city) ?? null,
     state: normalizeRequiredText(request.state, "Indonesia"),
-    email: normalizeOptionalText(request.email) ?? null,
+    email: normalizeEmailText(request.email) ?? null,
     IPMsnFinger: normalizeRequiredText(request.IPMsnFinger, "-"),
     BPJSKshtn: normalizeOptionalText(request.BPJSKshtn) ?? null,
     BPJSKtngkerjaan: normalizeOptionalText(request.BPJSKtngkerjaan) ?? null,
@@ -297,11 +331,12 @@ const buildEmployeeCreateData = (
 
 const buildEmployeeUpdateData = (request: UpdateEmployeeRequest) => {
   const badgeNum = request.BadgeNum.trim();
+  const cardNo = request.CardNo.trim();
   const data: Record<string, unknown> = {
     Lastupdate: new Date(),
     BadgeNum: badgeNum,
     Name: normalizeOptionalText(request.Name) ?? null,
-    Gender: normalizeOptionalText(request.Gender) ?? null,
+    Gender: normalizeGenderInput(request.Gender) ?? null,
     BirthDay: request.BirthDay ?? null,
     HireDay: request.HireDay ?? null,
     Street: normalizeOptionalText(request.Street) ?? null,
@@ -310,7 +345,7 @@ const buildEmployeeUpdateData = (request: UpdateEmployeeRequest) => {
     isLokasi: normalizeOptionalText(request.isLokasi) ?? null,
     Phone: normalizeOptionalText(request.Phone) ?? null,
     DeptId: request.DeptId ?? null,
-    CardNo: badgeNum,
+    CardNo: cardNo,
     Shift: request.Shift ?? null,
     isMem: request.isMem ?? false,
     isMemDate: request.isMem ? request.isMemDate ?? null : null,
@@ -322,7 +357,7 @@ const buildEmployeeUpdateData = (request: UpdateEmployeeRequest) => {
     jobDesc: normalizeOptionalText(request.jobDesc) ?? null,
     city: normalizeOptionalText(request.city) ?? null,
     state: normalizeRequiredText(request.state, "Indonesia"),
-    email: normalizeOptionalText(request.email) ?? null,
+    email: normalizeEmailText(request.email) ?? null,
     IPMsnFinger: normalizeRequiredText(request.IPMsnFinger, "-"),
     BPJSKshtn: normalizeOptionalText(request.BPJSKshtn) ?? null,
     BPJSKtngkerjaan: normalizeOptionalText(request.BPJSKtngkerjaan) ?? null,
@@ -481,7 +516,7 @@ export class EmployeeService {
   }
 
   static async create(requesterUserId: string, request: CreateEmployeeRequest) {
-    await ensureCanManageEmployees(requesterUserId);
+    await ensureHrdCrudAccess(requesterUserId);
 
     const validated = Validation.validate(
       EmployeeValidation.CREATE,
@@ -489,7 +524,13 @@ export class EmployeeService {
     ) as CreateEmployeeRequest;
 
     await ensureDepartmentExists(validated.DeptId);
-    await ensureUniqueBadgeNumber(validated.BadgeNum.trim());
+    await ensureEmployeeUniqueFields({
+      badgeNum: validated.BadgeNum,
+      cardNo: validated.CardNo,
+      nik: validated.Nik,
+      phone: validated.Phone,
+      email: validated.email,
+    });
 
     const created = await prismaEmployee.em_employee.create({
       data: buildEmployeeCreateData(validated, requesterUserId),
@@ -512,7 +553,7 @@ export class EmployeeService {
   }
 
   static async update(requesterUserId: string, request: UpdateEmployeeRequest) {
-    await ensureCanManageEmployees(requesterUserId);
+    await ensureHrdCrudAccess(requesterUserId);
 
     const validated = Validation.validate(
       EmployeeValidation.UPDATE,
@@ -532,9 +573,14 @@ export class EmployeeService {
       await ensureDepartmentExists(validated.DeptId);
     }
 
-    if (validated.BadgeNum !== undefined) {
-      await ensureUniqueBadgeNumber(validated.BadgeNum.trim(), validated.userId);
-    }
+    await ensureEmployeeUniqueFields({
+      badgeNum: validated.BadgeNum,
+      cardNo: validated.CardNo,
+      nik: validated.Nik,
+      phone: validated.Phone,
+      email: validated.email,
+      excludeUserId: validated.userId,
+    });
 
     const updated = await prismaEmployee.em_employee.update({
       where: { UserId: validated.userId },
@@ -566,7 +612,7 @@ export class EmployeeService {
   }
 
   static async remove(requesterUserId: string, request: DeleteEmployeeRequest) {
-    await ensureCanManageEmployees(requesterUserId);
+    await ensureHrdCrudAccess(requesterUserId);
 
     const validated = Validation.validate(
       EmployeeValidation.DELETE,
@@ -606,7 +652,7 @@ export class EmployeeService {
     requesterUserId: string,
     request: UpdateEmployeeJobDescRequest
   ) {
-    await ensureCanManageEmployees(requesterUserId);
+    await ensureHrdCrudAccess(requesterUserId);
 
     const updateReq = Validation.validate(
       EmployeeValidation.UPDATE_JOB_DESC,

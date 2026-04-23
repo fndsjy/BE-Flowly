@@ -66,11 +66,11 @@ const resolveRequesterEmployeeId = async (params: {
     where: { userId: requesterId, isDeleted: false },
     select: { badgeNumber: true },
   });
-  const badgeNumber = user?.badgeNumber?.trim();
-  if (!badgeNumber) return null;
+  const cardNumber = user?.badgeNumber?.trim();
+  if (!cardNumber) return null;
 
   const employee = await prismaEmployee.em_employee.findFirst({
-    where: { BadgeNum: badgeNumber },
+    where: { CardNo: cardNumber },
     select: { UserId: true },
   });
 

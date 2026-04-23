@@ -2,12 +2,17 @@ import { z, ZodType } from "zod";
 const optionalText = (max) => z.union([z.string().trim().max(max), z.null()]).optional();
 const optionalRequiredText = (max) => z.string().trim().min(1).max(max).optional();
 const optionalNullableDate = z.union([z.coerce.date(), z.null()]).optional();
+const isFutureDate = (value) => {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    return value.getTime() > today.getTime();
+};
 export class UserValidation {
     static REGISTER = z.object({
         username: z.string().min(3).max(30),
         name: z.string().min(1).max(100),
         password: z.string().min(6).max(100),
-        badgeNumber: z.string().min(1, "Badge number is required"),
+        cardNumber: z.string().min(1, "Card number is required"),
         roleId: z.string().optional(),
     });
     static LOGIN = z.object({
@@ -40,9 +45,10 @@ export class UserValidation {
         oldPassword: z.string().min(1),
         newPassword: z.string().min(6).max(100),
     });
-    static UPDATE_PROFILE = z.object({
+    static UPDATE_PROFILE = z
+        .object({
         name: optionalRequiredText(40),
-        badgeNumber: optionalRequiredText(24),
+        cardNumber: optionalRequiredText(24),
         gender: optionalRequiredText(8),
         nik: optionalRequiredText(20),
         birthDay: z.coerce.date().optional(),
@@ -62,7 +68,17 @@ export class UserValidation {
         statusLMS: z.boolean().optional(),
         bpjsKesehatan: optionalText(50),
         bpjsKetenagakerjaan: optionalText(50),
-    }).strict();
+    })
+        .strict()
+        .superRefine((data, ctx) => {
+        if (data.birthDay && isFutureDate(data.birthDay)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["birthDay"],
+                message: "Tanggal lahir tidak boleh melebihi hari ini",
+            });
+        }
+    });
     static CHANGE_ROLE = z.object({
         userId: z.string().min(1).max(20),
         newRoleId: z.string().min(1).max(20),
