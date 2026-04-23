@@ -43,7 +43,7 @@ const addAllow = (targetRead: Set<number>, targetCrud: Set<number>, id: number, 
 
 const resolveEmployeeId = async (
   userId: string,
-  flowlyUser?: { badgeNumber?: string | null } | null
+  flowlyUser?: { cardNumber?: string | null } | null
 ): Promise<number | null> => {
   const numericId = Number(userId);
   if (!Number.isNaN(numericId)) {
@@ -56,13 +56,13 @@ const resolveEmployeeId = async (
     }
   }
 
-  const badgeNumber = flowlyUser?.badgeNumber?.trim();
-  if (!badgeNumber) {
+  const cardNumber = flowlyUser?.cardNumber?.trim();
+  if (!cardNumber) {
     return null;
   }
 
   const employee = await prismaEmployee.em_employee.findFirst({
-    where: { BadgeNum: badgeNumber },
+    where: { CardNo: cardNumber },
     select: { UserId: true }
   });
 
@@ -93,7 +93,9 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
   const pilarPicIds = new Set<number>();
   const sbuPicIds = new Set<number>();
 
-  const employeeId = await resolveEmployeeId(userId, flowlyUser);
+  const employeeId = await resolveEmployeeId(userId, flowlyUser ? {
+    cardNumber: flowlyUser.badgeNumber,
+  } : null);
   const isEmployeeUser = employeeId !== null;
   if (isEmployeeUser) {
     const chartMembers = await prismaFlowly.chartMember.findMany({
@@ -524,7 +526,10 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
   }
 
   if (shouldCheckEmployee) {
-    const employeeId = await resolveEmployeeId(userId, flowlyUser);
+    const employeeId = await resolveEmployeeId(
+      userId,
+      flowlyUser ? { cardNumber: flowlyUser.badgeNumber } : null
+    );
     if (employeeId !== null) {
       isEmployeeUser = true;
     }

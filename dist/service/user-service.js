@@ -17,7 +17,7 @@ const SELF_EDITABLE_PROFILE_FIELDS = [
 const ADMIN_EDITABLE_PROFILE_FIELDS = [
     ...SELF_EDITABLE_PROFILE_FIELDS,
     "name",
-    "badgeNumber",
+    "cardNumber",
     "gender",
     "nik",
     "birthDay",
@@ -41,7 +41,7 @@ const DEMO_PORTAL_USERS = [
         email: "supplier.demo@oms.local",
         name: "Demo Supplier User",
         password: "Portal123!",
-        badgeNumber: "SUP-DEMO-001",
+        cardNumber: "SUP-DEMO-001",
         roleId: "DEMO_SUPPLIER",
         roleName: "SUPPLIER",
         roleLevel: 4,
@@ -54,7 +54,7 @@ const DEMO_PORTAL_USERS = [
         email: "customer.demo@oms.local",
         name: "Demo Customer User",
         password: "Portal123!",
-        badgeNumber: "CUS-DEMO-001",
+        cardNumber: "CUS-DEMO-001",
         roleId: "DEMO_CUSTOMER",
         roleName: "CUSTOMER",
         roleLevel: 4,
@@ -67,7 +67,7 @@ const DEMO_PORTAL_USERS = [
         email: "affiliate.demo@oms.local",
         name: "Demo Affiliate User",
         password: "Portal123!",
-        badgeNumber: "AFF-DEMO-001",
+        cardNumber: "AFF-DEMO-001",
         roleId: "DEMO_AFFILIATE",
         roleName: "AFFILIATE",
         roleLevel: 4,
@@ -80,7 +80,7 @@ const DEMO_PORTAL_USERS = [
         email: "influencer.demo@oms.local",
         name: "Demo Influencer User",
         password: "Portal123!",
-        badgeNumber: "INF-DEMO-001",
+        cardNumber: "INF-DEMO-001",
         roleId: "DEMO_INFLUENCER",
         roleName: "INFLUENCER",
         roleLevel: 4,
@@ -93,7 +93,7 @@ const DEMO_PORTAL_USERS = [
         email: "community.demo@oms.local",
         name: "Demo Community User",
         password: "Portal123!",
-        badgeNumber: "COM-DEMO-001",
+        cardNumber: "COM-DEMO-001",
         roleId: "DEMO_COMMUNITY",
         roleName: "COMMUNITY",
         roleLevel: 4,
@@ -111,9 +111,10 @@ const findDemoPortalUserByEmail = (value) => {
     return (DEMO_PORTAL_USERS.find((user) => normalizeLoginIdentity(user.email) === normalized) ?? null);
 };
 const findDemoPortalUserById = (userId) => DEMO_PORTAL_USERS.find((user) => user.userId === userId) ?? null;
+const isEmployeeFirstLogin = (value) => Number(value ?? 0) !== 0;
 const employeeProfileSelect = {
     UserId: true,
-    BadgeNum: true,
+    CardNo: true,
     Name: true,
     Gender: true,
     BirthDay: true,
@@ -136,6 +137,7 @@ const employeeProfileSelect = {
     BPJSKtngkerjaan: true,
     statusLMS: true,
     roleId: true,
+    isFirstLogin: true,
 };
 const isEnabled = (value, defaultValue = false) => {
     const normalized = value?.trim().toLowerCase();
@@ -169,7 +171,7 @@ const logProfilePerf = (userId, totalMs, trace) => {
         resolutionPath: trace.resolutionPath ?? null,
         employeeMatch: trace.employeeMatch ?? null,
         flowlyUserMs: trace.flowlyUserMs ?? null,
-        employeeByBadgeMs: trace.employeeByBadgeMs ?? null,
+        employeeByCardMs: trace.employeeByCardMs ?? null,
         employeeByUserIdMs: trace.employeeByUserIdMs ?? null,
         departmentMs: trace.departmentMs ?? null,
     });
@@ -184,12 +186,44 @@ const normalizeOptionalText = (value) => {
     const trimmed = value.trim();
     return trimmed.length > 0 ? trimmed : null;
 };
+const normalizeGenderInput = (value) => {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    const trimmed = value.trim();
+    if (!trimmed) {
+        return null;
+    }
+    const normalized = trimmed.toLowerCase().replace(/[\s_-]/g, "");
+    if (["l", "m", "male", "man", "lakilaki", "lelaki", "pria"].includes(normalized)) {
+        return "male";
+    }
+    if (["p", "f", "female", "woman", "perempuan", "wanita"].includes(normalized)) {
+        return "female";
+    }
+    return trimmed;
+};
 const normalizeProfileEmail = (value) => {
     if (value === undefined || value === null) {
         return null;
     }
     const trimmed = value.trim();
     return trimmed && trimmed !== "-" ? trimmed : null;
+};
+const normalizeProfileEmailForCompare = (value) => {
+    const normalized = normalizeProfileEmail(value);
+    return normalized ? normalized.toLowerCase() : null;
+};
+const normalizeProfileIdentifierForCompare = (value) => {
+    const trimmed = value?.trim();
+    return trimmed && trimmed.length > 0 ? trimmed.toUpperCase() : null;
+};
+const normalizeProfilePhoneForCompare = (value) => {
+    const digits = value?.replace(/\D+/g, "") ?? "";
+    return digits.length > 0 ? digits : null;
 };
 const getEditableProfileFields = (isAdmin, hasEmployeeProfile) => {
     if (!hasEmployeeProfile) {
@@ -225,16 +259,43 @@ const ensureDepartmentExists = async (departmentId) => {
         throw new ResponseError(400, "Department not found");
     }
 };
-const ensureUniqueEmployeeBadgeNumber = async (badgeNumber, excludeUserId) => {
-    const existing = await prismaEmployee.em_employee.findFirst({
-        where: {
-            BadgeNum: badgeNumber,
-            ...(excludeUserId ? { UserId: { not: excludeUserId } } : {}),
+const listEmployeeProfileUniquenessCandidates = async (excludeUserId) => {
+    const where = excludeUserId ? { UserId: { not: excludeUserId } } : undefined;
+    return prismaEmployee.em_employee.findMany({
+        ...(where ? { where } : {}),
+        select: {
+            UserId: true,
+            BadgeNum: true,
+            CardNo: true,
+            Nik: true,
+            Phone: true,
+            email: true,
         },
-        select: { UserId: true },
     });
-    if (existing) {
-        throw new ResponseError(400, "Badge number already used by another employee");
+};
+const hasMatchingProfileCardNumber = (employee, normalizedValue) => normalizeProfileIdentifierForCompare(employee.BadgeNum) === normalizedValue ||
+    normalizeProfileIdentifierForCompare(employee.CardNo) === normalizedValue;
+const ensureUniqueEmployeeProfileFields = async (params) => {
+    const candidates = await listEmployeeProfileUniquenessCandidates(params.excludeUserId);
+    const normalizedCardNumber = normalizeProfileIdentifierForCompare(params.cardNumber);
+    const normalizedNik = normalizeProfileIdentifierForCompare(params.nik);
+    const normalizedPhone = normalizeProfilePhoneForCompare(params.phone);
+    const normalizedEmail = normalizeProfileEmailForCompare(params.email);
+    if (normalizedCardNumber &&
+        candidates.some((employee) => hasMatchingProfileCardNumber(employee, normalizedCardNumber))) {
+        throw new ResponseError(400, "Card number sudah dipakai karyawan lain");
+    }
+    if (normalizedNik &&
+        candidates.some((employee) => normalizeProfileIdentifierForCompare(employee.Nik) === normalizedNik)) {
+        throw new ResponseError(400, "NIK sudah dipakai karyawan lain");
+    }
+    if (normalizedPhone &&
+        candidates.some((employee) => normalizeProfilePhoneForCompare(employee.Phone) === normalizedPhone)) {
+        throw new ResponseError(400, "Nomor telepon sudah dipakai karyawan lain");
+    }
+    if (normalizedEmail &&
+        candidates.some((employee) => normalizeProfileEmailForCompare(employee.email) === normalizedEmail)) {
+        throw new ResponseError(400, "Email sudah dipakai karyawan lain");
     }
 };
 const findEmployeeByUserId = async (employeeUserId, trace) => {
@@ -248,18 +309,18 @@ const findEmployeeByUserId = async (employeeUserId, trace) => {
     }
     return employee;
 };
-const findEmployeeByBadgeNumber = async (badgeNumber, trace) => {
-    const normalized = badgeNumber?.trim();
+const findEmployeeByCardNumber = async (cardNumber, trace) => {
+    const normalized = cardNumber?.trim();
     if (!normalized) {
         return null;
     }
     const startedAt = profilePerfNow();
     const employee = await prismaEmployee.em_employee.findFirst({
-        where: { BadgeNum: normalized },
+        where: { CardNo: normalized },
         select: employeeProfileSelect,
     });
     if (trace) {
-        trace.employeeByBadgeMs = profilePerfElapsedMs(startedAt);
+        trace.employeeByCardMs = profilePerfElapsedMs(startedAt);
     }
     return employee;
 };
@@ -282,7 +343,10 @@ const findFlowlyUserById = async (userId, trace) => {
     if (!user || user.isDeleted) {
         return null;
     }
-    return user;
+    return {
+        ...user,
+        cardNumber: user.badgeNumber,
+    };
 };
 const resolveProfileContext = async (userId, trace) => {
     const flowlyUser = await findFlowlyUserById(userId, trace);
@@ -290,9 +354,9 @@ const resolveProfileContext = async (userId, trace) => {
         if (trace) {
             trace.resolutionPath = "flowly";
         }
-        const employee = await findEmployeeByBadgeNumber(flowlyUser.badgeNumber, trace);
+        const employee = await findEmployeeByCardNumber(flowlyUser.cardNumber, trace);
         if (trace) {
-            trace.employeeMatch = employee ? "badgeNumber" : "none";
+            trace.employeeMatch = employee ? "cardNumber" : "none";
         }
         return {
             flowlyUser,
@@ -303,7 +367,7 @@ const resolveProfileContext = async (userId, trace) => {
             userId: flowlyUser.userId,
             username: flowlyUser.username,
             name: employee?.Name ?? flowlyUser.name,
-            badgeNumber: employee?.BadgeNum ?? flowlyUser.badgeNumber,
+            cardNumber: employee?.CardNo ?? flowlyUser.cardNumber,
             department: flowlyUser.department,
         };
     }
@@ -319,7 +383,7 @@ const resolveProfileContext = async (userId, trace) => {
         trace.resolutionPath = "employee";
         trace.employeeMatch = "userId";
     }
-    const username = employee.BadgeNum?.trim() || String(employee.UserId);
+    const username = employee.CardNo?.trim() || String(employee.UserId);
     const name = employee.Name ?? username;
     return {
         flowlyUser: null,
@@ -332,7 +396,7 @@ const resolveProfileContext = async (userId, trace) => {
         userId: String(employee.UserId),
         username,
         name,
-        badgeNumber: employee.BadgeNum ?? null,
+        cardNumber: employee.CardNo ?? null,
         department: null,
     };
 };
@@ -346,7 +410,7 @@ const toProfileResponse = async (context, trace) => {
         userId: context.userId,
         username: context.username,
         name: employee?.Name ?? context.name,
-        badgeNumber: employee?.BadgeNum ?? context.badgeNumber ?? null,
+        cardNumber: employee?.CardNo ?? context.cardNumber ?? null,
         department: departmentName ?? null,
         departmentId: employee?.DeptId ?? null,
         employeeUserId: employee?.UserId ?? null,
@@ -375,6 +439,7 @@ const toProfileResponse = async (context, trace) => {
         canEditAllProfileFields: Boolean(employee) && isAdmin,
         canEditProfilePhoto: Boolean(employee) && isAdmin,
         canChangePassword: true,
+        mustChangePassword: isEmployeeFirstLogin(employee?.isFirstLogin),
         editableFields: getEditableProfileFields(isAdmin, Boolean(employee)),
     };
 };
@@ -412,9 +477,9 @@ export class UserService {
                 throw new ResponseError(500, "Default role (level 4) not found");
             }
         }
-        const badgeNumber = registerRequest.badgeNumber.trim();
-        if (!badgeNumber) {
-            throw new ResponseError(400, "Badge number is required");
+        const cardNumber = registerRequest.cardNumber.trim();
+        if (!cardNumber) {
+            throw new ResponseError(400, "Card number is required");
         }
         const userId = await generateUserId();
         const hashed = await bcrypt.hash(registerRequest.password, 10);
@@ -424,7 +489,7 @@ export class UserService {
                 ...registerRequest,
                 password: hashed,
                 roleId: roleToAssign.roleId,
-                badgeNumber,
+                badgeNumber: cardNumber,
                 createdBy: requesterUserId,
                 updatedBy: requesterUserId,
                 isActive: true,
@@ -459,6 +524,7 @@ export class UserService {
                 username: demoPortalUser.email,
                 name: demoPortalUser.name,
                 jobDesc: demoPortalUser.jobDesc,
+                mustChangePassword: false,
             }, token);
         }
         const user = await prismaFlowly.user.findFirst({
@@ -499,20 +565,20 @@ export class UserService {
             where: { CardNo: identity },
             select: {
                 UserId: true,
-                BadgeNum: true,
                 CardNo: true,
                 Name: true,
                 Password: true,
                 roleId: true,
                 jobDesc: true,
+                isFirstLogin: true,
             },
         });
         if (!employee || !employee.Password) {
-            throw new ResponseError(401, "Invalid badge number or password");
+            throw new ResponseError(401, "Invalid card number or password");
         }
         const isPasswordValid = await UserService.isEmployeePasswordValid(loginRequest.password, employee.Password);
         if (!isPasswordValid) {
-            throw new ResponseError(401, "Invalid badge number or password");
+            throw new ResponseError(401, "Invalid card number or password");
         }
         const employeeUsername = employee.CardNo?.trim() || identity;
         const token = generateToken({
@@ -524,6 +590,7 @@ export class UserService {
             username: employeeUsername,
             name: employee.Name ?? employeeUsername,
             jobDesc: employee.jobDesc ?? null,
+            mustChangePassword: isEmployeeFirstLogin(employee.isFirstLogin),
         }, token);
     }
     static async isEmployeePasswordValid(password, storedPassword) {
@@ -545,7 +612,7 @@ export class UserService {
                 userId: demoPortalUser.userId,
                 username: demoPortalUser.email,
                 name: demoPortalUser.name,
-                badgeNumber: demoPortalUser.badgeNumber,
+                cardNumber: demoPortalUser.cardNumber,
                 department: demoPortalUser.department,
                 departmentId: null,
                 employeeUserId: null,
@@ -574,6 +641,7 @@ export class UserService {
                 canEditAllProfileFields: false,
                 canEditProfilePhoto: false,
                 canChangePassword: false,
+                mustChangePassword: false,
                 editableFields: [],
             };
         }
@@ -607,9 +675,40 @@ export class UserService {
         if (validated.departmentId !== undefined) {
             await ensureDepartmentExists(validated.departmentId);
         }
-        if (validated.badgeNumber !== undefined &&
-            validated.badgeNumber.trim() !== context.employee.BadgeNum) {
-            await ensureUniqueEmployeeBadgeNumber(validated.badgeNumber.trim(), context.employee.UserId);
+        const nextCardNumber = validated.cardNumber !== undefined ? validated.cardNumber.trim() : undefined;
+        const nextNik = validated.nik !== undefined ? validated.nik.trim() : undefined;
+        const nextPhone = validated.phone !== undefined
+            ? normalizeOptionalText(validated.phone)
+            : undefined;
+        const nextEmail = validated.email !== undefined
+            ? normalizeOptionalText(validated.email)
+            : undefined;
+        const changedUniqueFields = {};
+        if (nextCardNumber !== undefined &&
+            normalizeProfileIdentifierForCompare(nextCardNumber) !==
+                normalizeProfileIdentifierForCompare(context.employee.CardNo)) {
+            changedUniqueFields.cardNumber = nextCardNumber;
+        }
+        if (nextNik !== undefined &&
+            normalizeProfileIdentifierForCompare(nextNik) !==
+                normalizeProfileIdentifierForCompare(context.employee.Nik)) {
+            changedUniqueFields.nik = nextNik;
+        }
+        if (nextPhone !== undefined &&
+            normalizeProfilePhoneForCompare(nextPhone) !==
+                normalizeProfilePhoneForCompare(context.employee.Phone)) {
+            changedUniqueFields.phone = nextPhone;
+        }
+        if (nextEmail !== undefined &&
+            normalizeProfileEmailForCompare(nextEmail) !==
+                normalizeProfileEmailForCompare(context.employee.email)) {
+            changedUniqueFields.email = nextEmail;
+        }
+        if (Object.keys(changedUniqueFields).length > 0) {
+            await ensureUniqueEmployeeProfileFields({
+                ...changedUniqueFields,
+                excludeUserId: context.employee.UserId,
+            });
         }
         const employeeUpdateData = {
             Lastupdate: new Date(),
@@ -617,13 +716,13 @@ export class UserService {
         if (validated.name !== undefined) {
             employeeUpdateData.Name = validated.name.trim();
         }
-        if (validated.badgeNumber !== undefined) {
-            const badgeNumber = validated.badgeNumber.trim();
-            employeeUpdateData.BadgeNum = badgeNumber;
-            employeeUpdateData.CardNo = badgeNumber;
+        if (validated.cardNumber !== undefined) {
+            const cardNumber = validated.cardNumber.trim();
+            employeeUpdateData.BadgeNum = cardNumber;
+            employeeUpdateData.CardNo = cardNumber;
         }
         if (validated.gender !== undefined) {
-            employeeUpdateData.Gender = validated.gender.trim();
+            employeeUpdateData.Gender = normalizeGenderInput(validated.gender) ?? null;
         }
         if (validated.nik !== undefined) {
             employeeUpdateData.Nik = validated.nik.trim();
@@ -693,7 +792,7 @@ export class UserService {
         });
         const shouldSyncFlowlyUser = context.flowlyUser &&
             (validated.name !== undefined ||
-                validated.badgeNumber !== undefined ||
+                validated.cardNumber !== undefined ||
                 validated.departmentId !== undefined);
         if (context.flowlyUser && shouldSyncFlowlyUser) {
             const flowlyUserUpdateData = {
@@ -702,8 +801,8 @@ export class UserService {
             if (validated.name !== undefined) {
                 flowlyUserUpdateData.name = validated.name.trim();
             }
-            if (validated.badgeNumber !== undefined) {
-                flowlyUserUpdateData.badgeNumber = validated.badgeNumber.trim();
+            if (validated.cardNumber !== undefined) {
+                flowlyUserUpdateData.badgeNumber = validated.cardNumber.trim();
             }
             if (validated.departmentId !== undefined) {
                 flowlyUserUpdateData.department = await findDepartmentName(validated.departmentId);
@@ -780,6 +879,7 @@ export class UserService {
             where: { UserId: employeeUserId },
             data: {
                 Password: hashed,
+                isFirstLogin: 0,
                 Lastupdate: new Date(),
             },
         });

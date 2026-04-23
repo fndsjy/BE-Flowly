@@ -373,6 +373,65 @@ exports.Prisma.CaseNotificationTemplateScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.NotificationTemplateScalarFieldEnum = {
+  notificationTemplateId: 'notificationTemplateId',
+  templateName: 'templateName',
+  channel: 'channel',
+  eventKey: 'eventKey',
+  recipientRole: 'recipientRole',
+  messageTemplate: 'messageTemplate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.NotificationTemplatePortalScalarFieldEnum = {
+  notificationTemplatePortalId: 'notificationTemplatePortalId',
+  notificationTemplateId: 'notificationTemplateId',
+  portalKey: 'portalKey',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.NotificationOutboxScalarFieldEnum = {
+  notificationOutboxId: 'notificationOutboxId',
+  notificationTemplateId: 'notificationTemplateId',
+  portalKey: 'portalKey',
+  eventKey: 'eventKey',
+  recipientRole: 'recipientRole',
+  recipientReferenceType: 'recipientReferenceType',
+  recipientReferenceId: 'recipientReferenceId',
+  contextReferenceType: 'contextReferenceType',
+  contextReferenceId: 'contextReferenceId',
+  phoneNumber: 'phoneNumber',
+  message: 'message',
+  status: 'status',
+  attempts: 'attempts',
+  lastError: 'lastError',
+  provider: 'provider',
+  sentAt: 'sentAt',
+  meta: 'meta',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.CaseAttachmentScalarFieldEnum = {
   caseAttachmentId: 'caseAttachmentId',
   caseId: 'caseId',
@@ -640,6 +699,195 @@ exports.Prisma.PortalMenuMapScalarFieldEnum = {
   deletedBy: 'deletedBy'
 };
 
+exports.Prisma.OnboardingPortalTemplateScalarFieldEnum = {
+  onboardingPortalTemplateId: 'onboardingPortalTemplateId',
+  portalKey: 'portalKey',
+  portalName: 'portalName',
+  defaultDurationDay: 'defaultDurationDay',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingStageTemplateScalarFieldEnum = {
+  onboardingStageTemplateId: 'onboardingStageTemplateId',
+  onboardingPortalTemplateId: 'onboardingPortalTemplateId',
+  stageOrder: 'stageOrder',
+  stageCode: 'stageCode',
+  stageName: 'stageName',
+  stageDescription: 'stageDescription',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingStageMaterialScalarFieldEnum = {
+  onboardingStageMaterialId: 'onboardingStageMaterialId',
+  onboardingStageTemplateId: 'onboardingStageTemplateId',
+  materiId: 'materiId',
+  orderIndex: 'orderIndex',
+  isRequired: 'isRequired',
+  note: 'note',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingStageExamScalarFieldEnum = {
+  onboardingStageExamId: 'onboardingStageExamId',
+  onboardingStageTemplateId: 'onboardingStageTemplateId',
+  examId: 'examId',
+  passScore: 'passScore',
+  orderIndex: 'orderIndex',
+  note: 'note',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingAssignmentScalarFieldEnum = {
+  onboardingAssignmentId: 'onboardingAssignmentId',
+  onboardingPortalTemplateId: 'onboardingPortalTemplateId',
+  portalKey: 'portalKey',
+  participantReferenceType: 'participantReferenceType',
+  participantReferenceId: 'participantReferenceId',
+  startedAt: 'startedAt',
+  durationDay: 'durationDay',
+  dueAt: 'dueAt',
+  status: 'status',
+  currentStageOrder: 'currentStageOrder',
+  assignedAt: 'assignedAt',
+  assignedBy: 'assignedBy',
+  note: 'note',
+  completedAt: 'completedAt',
+  completedBy: 'completedBy',
+  failedAt: 'failedAt',
+  failedBy: 'failedBy',
+  parentOnboardingAssignmentId: 'parentOnboardingAssignmentId',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingStageProgressScalarFieldEnum = {
+  onboardingStageProgressId: 'onboardingStageProgressId',
+  onboardingAssignmentId: 'onboardingAssignmentId',
+  onboardingStageTemplateId: 'onboardingStageTemplateId',
+  stageOrder: 'stageOrder',
+  stageCode: 'stageCode',
+  stageName: 'stageName',
+  status: 'status',
+  remedialCount: 'remedialCount',
+  startedAt: 'startedAt',
+  passedAt: 'passedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  note: 'note',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingMaterialProgressScalarFieldEnum = {
+  onboardingMaterialProgressId: 'onboardingMaterialProgressId',
+  onboardingAssignmentId: 'onboardingAssignmentId',
+  onboardingStageProgressId: 'onboardingStageProgressId',
+  onboardingStageMaterialId: 'onboardingStageMaterialId',
+  materiId: 'materiId',
+  sourceFileId: 'sourceFileId',
+  fileName: 'fileName',
+  fileTitle: 'fileTitle',
+  status: 'status',
+  readAt: 'readAt',
+  lastReadAt: 'lastReadAt',
+  completedAt: 'completedAt',
+  openCount: 'openCount',
+  note: 'note',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingExamAttemptScalarFieldEnum = {
+  onboardingExamAttemptId: 'onboardingExamAttemptId',
+  onboardingAssignmentId: 'onboardingAssignmentId',
+  onboardingStageProgressId: 'onboardingStageProgressId',
+  onboardingStageExamId: 'onboardingStageExamId',
+  examId: 'examId',
+  attemptNo: 'attemptNo',
+  startedAt: 'startedAt',
+  submittedAt: 'submittedAt',
+  endedAt: 'endedAt',
+  totalQuestionCount: 'totalQuestionCount',
+  answeredQuestionCount: 'answeredQuestionCount',
+  correctQuestionCount: 'correctQuestionCount',
+  score: 'score',
+  status: 'status',
+  employeeExamSessionId: 'employeeExamSessionId',
+  note: 'note',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
+exports.Prisma.OnboardingDecisionScalarFieldEnum = {
+  onboardingDecisionId: 'onboardingDecisionId',
+  onboardingAssignmentId: 'onboardingAssignmentId',
+  decisionType: 'decisionType',
+  nextDurationDay: 'nextDurationDay',
+  note: 'note',
+  decidedAt: 'decidedAt',
+  decidedBy: 'decidedBy',
+  isActive: 'isActive',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   logId: 'logId',
   module: 'module',
@@ -679,6 +927,9 @@ exports.Prisma.ModelName = {
   CaseNotificationOutbox: 'CaseNotificationOutbox',
   CaseNotificationMessage: 'CaseNotificationMessage',
   CaseNotificationTemplate: 'CaseNotificationTemplate',
+  NotificationTemplate: 'NotificationTemplate',
+  NotificationTemplatePortal: 'NotificationTemplatePortal',
+  NotificationOutbox: 'NotificationOutbox',
   CaseAttachment: 'CaseAttachment',
   MasterFishbone: 'MasterFishbone',
   CaseFishboneMaster: 'CaseFishboneMaster',
@@ -695,6 +946,15 @@ exports.Prisma.ModelName = {
   AccessRole: 'AccessRole',
   MasterAccessRole: 'MasterAccessRole',
   PortalMenuMap: 'PortalMenuMap',
+  OnboardingPortalTemplate: 'OnboardingPortalTemplate',
+  OnboardingStageTemplate: 'OnboardingStageTemplate',
+  OnboardingStageMaterial: 'OnboardingStageMaterial',
+  OnboardingStageExam: 'OnboardingStageExam',
+  OnboardingAssignment: 'OnboardingAssignment',
+  OnboardingStageProgress: 'OnboardingStageProgress',
+  OnboardingMaterialProgress: 'OnboardingMaterialProgress',
+  OnboardingExamAttempt: 'OnboardingExamAttempt',
+  OnboardingDecision: 'OnboardingDecision',
   AuditLog: 'AuditLog'
 };
 

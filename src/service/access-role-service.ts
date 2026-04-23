@@ -171,7 +171,7 @@ const ensureOrgResourceExists = async (resourceType: string, resourceKey: string
 
 const resolveEmployeeIdForFocus = async (
   requesterId: string,
-  requester: { badgeNumber?: string | null } | null
+  requester: { cardNumber?: string | null } | null
 ): Promise<number | null> => {
   const numericId = Number(requesterId);
   if (!Number.isNaN(numericId)) {
@@ -184,13 +184,13 @@ const resolveEmployeeIdForFocus = async (
     }
   }
 
-  const badgeNumber = requester?.badgeNumber?.trim();
-  if (!badgeNumber) {
+  const cardNumber = requester?.cardNumber?.trim();
+  if (!cardNumber) {
     return null;
   }
 
   const employee = await prismaEmployee.em_employee.findFirst({
-    where: { BadgeNum: badgeNumber },
+    where: { CardNo: cardNumber },
     select: { UserId: true }
   });
   return employee?.UserId ?? null;
@@ -198,7 +198,7 @@ const resolveEmployeeIdForFocus = async (
 
 const resolveFocusPilarIds = async (
   requesterId: string,
-  requester: { badgeNumber?: string | null } | null
+  requester: { cardNumber?: string | null } | null
 ): Promise<number[]> => {
   const employeeId = await resolveEmployeeIdForFocus(requesterId, requester);
   if (!employeeId) {
@@ -533,7 +533,10 @@ export class AccessRoleService {
     }
 
     if (!isAdmin && !isEmployeeUser) {
-      const employeeId = await resolveEmployeeIdForFocus(requesterId, requester);
+      const employeeId = await resolveEmployeeIdForFocus(
+        requesterId,
+        requester ? { cardNumber: requester.badgeNumber } : null
+      );
       if (employeeId) {
         isEmployeeUser = true;
       }
@@ -576,7 +579,10 @@ export class AccessRoleService {
           sbuSubRead: Array.from(accessContext.sbuSub.read),
           sbuSubCrud: Array.from(accessContext.sbuSub.crud)
         };
-    const focusPilarIds = await resolveFocusPilarIds(requesterId, requester);
+    const focusPilarIds = await resolveFocusPilarIds(
+      requesterId,
+      requester ? { cardNumber: requester.badgeNumber } : null
+    );
 
     if (!isAdmin && isEmployeeUser) {
       const menuAccess: AccessRoleSummaryResponse["menuAccess"] = [];

@@ -30,12 +30,12 @@ const resolveEmployeeId = async (userId, flowlyUser) => {
             return employee.UserId;
         }
     }
-    const badgeNumber = flowlyUser?.badgeNumber?.trim();
-    if (!badgeNumber) {
+    const cardNumber = flowlyUser?.cardNumber?.trim();
+    if (!cardNumber) {
         return null;
     }
     const employee = await prismaEmployee.em_employee.findFirst({
-        where: { BadgeNum: badgeNumber },
+        where: { CardNo: cardNumber },
         select: { UserId: true }
     });
     return employee?.UserId ?? null;
@@ -61,7 +61,9 @@ export const getAccessContext = async (userId) => {
     const pilarCrud = new Set();
     const pilarPicIds = new Set();
     const sbuPicIds = new Set();
-    const employeeId = await resolveEmployeeId(userId, flowlyUser);
+    const employeeId = await resolveEmployeeId(userId, flowlyUser ? {
+        cardNumber: flowlyUser.badgeNumber,
+    } : null);
     const isEmployeeUser = employeeId !== null;
     if (isEmployeeUser) {
         const chartMembers = await prismaFlowly.chartMember.findMany({
@@ -423,7 +425,7 @@ export const getModuleAccessMap = async (userId) => {
         isEmployeeUser = true;
     }
     if (shouldCheckEmployee) {
-        const employeeId = await resolveEmployeeId(userId, flowlyUser);
+        const employeeId = await resolveEmployeeId(userId, flowlyUser ? { cardNumber: flowlyUser.badgeNumber } : null);
         if (employeeId !== null) {
             isEmployeeUser = true;
         }

@@ -11,7 +11,7 @@ export type CreateUserRequest = {
   username: string;
   name: string;
   password: string;
-  badgeNumber: string;
+  cardNumber: string;
   roleId?: string;
 };
 
@@ -27,6 +27,7 @@ export type LoginResponse = {
   username: string;
   name: string;
   jobDesc?: string | null;
+  mustChangePassword: boolean;
   token: string;
   expiresIn: number; // dalam detik (misal: 10800 = 3 jam)
   expiresAt: string; // timestamp ISO saat token kedaluwarsa
@@ -39,7 +40,7 @@ export type ChangePasswordRequest = {
 
 export type UpdateProfileRequest = {
   name?: string;
-  badgeNumber?: string;
+  cardNumber?: string;
   gender?: string;
   nik?: string;
   birthDay?: Date;
@@ -70,7 +71,7 @@ export type UserProfileResponse = {
   userId: string;
   username: string;
   name: string;
-  badgeNumber: string | null;
+  cardNumber: string | null;
   department: string | null;
   departmentId: number | null;
   employeeUserId: number | null;
@@ -99,6 +100,7 @@ export type UserProfileResponse = {
   canEditAllProfileFields: boolean;
   canEditProfilePhoto: boolean;
   canChangePassword: boolean;
+  mustChangePassword: boolean;
   editableFields: string[];
 };
 
@@ -106,7 +108,7 @@ export type UserListResponse = {
   userId: string;
   username: string;
   name: string;
-  badgeNumber: string;
+  cardNumber: string;
   department: string | null;
   isActive: boolean;
   isDeleted: boolean;
@@ -128,7 +130,10 @@ export function toUserResponse(user: User): UserResponse {
   };
 }
 
-type LoginIdentity = Pick<User, "username" | "name"> & { jobDesc?: string | null };
+type LoginIdentity = Pick<User, "username" | "name"> & {
+  jobDesc?: string | null;
+  mustChangePassword?: boolean;
+};
 
 export function toLoginResponse(user: LoginIdentity, token: string): LoginResponse {
   const expiresIn = getTokenExpiresIn(token); // dalam detik
@@ -137,6 +142,7 @@ export function toLoginResponse(user: LoginIdentity, token: string): LoginRespon
     username: user.username,
     name: user.name,
     jobDesc: user.jobDesc ?? null,
+    mustChangePassword: Boolean(user.mustChangePassword),
     token,
     expiresIn,
     expiresAt,
@@ -148,7 +154,7 @@ export function toUserProfileResponse(user: User & { role: { roleName: string; r
     userId: user.userId,
     username: user.username,
     name: user.name,
-    badgeNumber: user.badgeNumber,
+    cardNumber: user.badgeNumber,
     department: user.department,
     departmentId: null,
     employeeUserId: null,
@@ -177,6 +183,7 @@ export function toUserProfileResponse(user: User & { role: { roleName: string; r
     canEditAllProfileFields: false,
     canEditProfilePhoto: false,
     canChangePassword: true,
+    mustChangePassword: false,
     editableFields: [],
   };
 }
@@ -186,7 +193,7 @@ export function toUserListResponse(user: User & { role: { roleName: string } }):
     userId: user.userId,
     username: user.username,
     name: user.name,
-    badgeNumber: user.badgeNumber,
+    cardNumber: user.badgeNumber,
     department: user.department,
     isActive: user.isActive,
     isDeleted: user.isDeleted,

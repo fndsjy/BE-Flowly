@@ -8,7 +8,7 @@ export type CreateUserRequest = {
     username: string;
     name: string;
     password: string;
-    badgeNumber: string;
+    cardNumber: string;
     roleId?: string;
 };
 export type LoginRequest = {
@@ -22,6 +22,7 @@ export type LoginResponse = {
     username: string;
     name: string;
     jobDesc?: string | null;
+    mustChangePassword: boolean;
     token: string;
     expiresIn: number;
     expiresAt: string;
@@ -32,7 +33,7 @@ export type ChangePasswordRequest = {
 };
 export type UpdateProfileRequest = {
     name?: string;
-    badgeNumber?: string;
+    cardNumber?: string;
     gender?: string;
     nik?: string;
     birthDay?: Date;
@@ -61,7 +62,7 @@ export type UserProfileResponse = {
     userId: string;
     username: string;
     name: string;
-    badgeNumber: string | null;
+    cardNumber: string | null;
     department: string | null;
     departmentId: number | null;
     employeeUserId: number | null;
@@ -90,13 +91,14 @@ export type UserProfileResponse = {
     canEditAllProfileFields: boolean;
     canEditProfilePhoto: boolean;
     canChangePassword: boolean;
+    mustChangePassword: boolean;
     editableFields: string[];
 };
 export type UserListResponse = {
     userId: string;
     username: string;
     name: string;
-    badgeNumber: string;
+    cardNumber: string;
     department: string | null;
     isActive: boolean;
     isDeleted: boolean;
@@ -112,6 +114,7 @@ export type RoleListResponse = {
 export declare function toUserResponse(user: User): UserResponse;
 type LoginIdentity = Pick<User, "username" | "name"> & {
     jobDesc?: string | null;
+    mustChangePassword?: boolean;
 };
 export declare function toLoginResponse(user: LoginIdentity, token: string): LoginResponse;
 export declare function toUserProfileResponse(user: User & {

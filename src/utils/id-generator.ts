@@ -1,328 +1,155 @@
-// src/utils/id-generator.ts
 import { prismaFlowly } from "../application/database.js";
 
 const prisma = prismaFlowly;
 
-function getDDMMYY(): string {
+type IdSequenceRow = {
+  generatedId: string | null;
+};
+
+const getDDMMYY = () => {
   const now = new Date();
   const year = String(now.getFullYear()).slice(-2);
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   return `${day}${month}${year}`;
-}
+};
 
-// ✅ Helper: extract sequence number safely
-function extractSeqFromId(id: string): number {
+const makeTodayPrefix = (code: string) => `${code}${getDDMMYY()}`;
+
+const escapeSqlIdentifier = (value: string) => `[${value.replace(/]/g, "]]")}]`;
+
+const extractSeqFromId = (id: string): number => {
   const parts = id.split("-");
-  // Jika tidak ada "-", atau bagian ke-2 tidak angka → fallback ke 0
   const rawSeq = parts.length > 1 ? (parts[1] ?? "") : "";
-  const num = parseInt(rawSeq, 10);
-  return isNaN(num) ? 0 : num;
-}
+  const sequence = parseInt(rawSeq, 10);
+  return Number.isNaN(sequence) ? 0 : sequence;
+};
 
-export async function generateUserId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `USR${today}`;
+const formatGeneratedId = (prefix: string, sequence: number, minimumDigits: number) =>
+  `${prefix}-${String(sequence).padStart(minimumDigits, "0")}`;
 
-  // Ambil ID terbesar hari ini (termasuk deleted — hindari duplikat)
-  const existing = await prisma.user.findFirst({
-    where: { userId: { startsWith: prefix } },
-    select: { userId: true },
-    orderBy: { userId: "desc" }, // leksikografis descending: USRxx-0010 > USRxx-0009
-  });
+const getNextSequence = async (
+  tableName: string,
+  idColumnName: string,
+  prefix: string
+): Promise<number> => {
+  const table = escapeSqlIdentifier(tableName);
+  const column = escapeSqlIdentifier(idColumnName);
 
-  let nextSeq = 1;
-  if (existing?.userId) {
-    const currentSeq = extractSeqFromId(existing.userId);
-    nextSeq = currentSeq + 1;
+  const rows = await prisma.$queryRawUnsafe<IdSequenceRow[]>(
+    `
+      SELECT TOP 1 ${column} AS generatedId
+      FROM [dbo].${table}
+      WHERE ${column} LIKE @P1
+      ORDER BY
+        TRY_CONVERT(BIGINT, SUBSTRING(${column}, CHARINDEX('-', ${column}) + 1, LEN(${column}))) DESC,
+        LEN(SUBSTRING(${column}, CHARINDEX('-', ${column}) + 1, LEN(${column}))) DESC,
+        ${column} DESC
+    `,
+    `${prefix}-%`
+  );
+
+  const latestId = rows[0]?.generatedId;
+  if (!latestId) {
+    return 1;
   }
 
-  return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+  return extractSeqFromId(latestId) + 1;
+};
+
+const generateSingleId = async (
+  tableName: string,
+  idColumnName: string,
+  prefix: string,
+  minimumDigits: number
+) => {
+  const nextSequence = await getNextSequence(tableName, idColumnName, prefix);
+  return formatGeneratedId(prefix, nextSequence, minimumDigits);
+};
+
+const generateIdFactory = async (
+  tableName: string,
+  idColumnName: string,
+  prefix: string,
+  minimumDigits: number
+) => {
+  let nextSequence = await getNextSequence(tableName, idColumnName, prefix);
+
+  return () => formatGeneratedId(prefix, nextSequence++, minimumDigits);
+};
+
+export async function generateUserId(): Promise<string> {
+  return generateSingleId("users", "userId", makeTodayPrefix("USR"), 4);
 }
 
 export async function generateRoleId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `ROL${today}`;
-
-  const existing = await prisma.role.findFirst({
-    where: { roleId: { startsWith: prefix } },
-    select: { roleId: true },
-    orderBy: { roleId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.roleId) {
-    const currentSeq = extractSeqFromId(existing.roleId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+  return generateSingleId("roles", "roleId", makeTodayPrefix("ROL"), 4);
 }
 
 export async function generateChartId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `CHT${today}`;
-
-  const existing = await prisma.chart.findFirst({
-    where: { chartId: { startsWith: prefix } },
-    select: { chartId: true },
-    orderBy: { chartId: "desc" }
-  });
-
-  let nextSeq = 1;
-  if (existing?.chartId) {
-    const currentSeq = extractSeqFromId(existing.chartId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("chart", "chartId", makeTodayPrefix("CHT"), 5);
 }
 
 export async function generateChartMemberId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `CHM${today}`;
-
-  const existing = await prisma.chartMember.findFirst({
-    where: { memberChartId: { startsWith: prefix } },
-    select: { memberChartId: true },
-    orderBy: { memberChartId: "desc" }
-  });
-
-  let nextSeq = 1;
-  if (existing?.memberChartId) {
-    const currentSeq = extractSeqFromId(existing.memberChartId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("chart_member", "memberChartId", makeTodayPrefix("CHM"), 5);
 }
 
 export async function generateJabatanId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `JBT${today}`;
-
-  const existing = await prisma.jabatan.findFirst({
-    where: { jabatanId: { startsWith: prefix } },
-    select: { jabatanId: true },
-    orderBy: { jabatanId: "desc" }
-  });
-
-  let nextSeq = 1;
-  if (existing?.jabatanId) {
-    const currentSeq = extractSeqFromId(existing.jabatanId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("jabatan", "jabatanId", makeTodayPrefix("JBT"), 5);
 }
 
 export async function generateAcessRoleId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `ACR${today}`;
-
-  const existing = await prisma.accessRole.findFirst({
-    where: { accessId: { startsWith: prefix } },
-    select: { accessId: true },
-    orderBy: { accessId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.accessId) {
-    const currentSeq = extractSeqFromId(existing.accessId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("access_role", "accessId", makeTodayPrefix("ACR"), 5);
 }
 
 export async function generatemasAccessId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `MAR${today}`;
-
-  const existing = await prisma.masterAccessRole.findFirst({
-    where: { masAccessId: { startsWith: prefix } },
-    select: { masAccessId: true },
-    orderBy: { masAccessId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.masAccessId) {
-    const currentSeq = extractSeqFromId(existing.masAccessId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+  return generateIdFactory("master_access_role", "masAccessId", makeTodayPrefix("MAR"), 5);
 }
 
 export async function generatePortalMenuMapId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `PMM${today}`;
-
-  const existing = await prisma.portalMenuMap.findFirst({
-    where: { portalMenuMapId: { startsWith: prefix } },
-    select: { portalMenuMapId: true },
-    orderBy: { portalMenuMapId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.portalMenuMapId) {
-    const currentSeq = extractSeqFromId(existing.portalMenuMapId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+  return generateIdFactory("portal_menu_map", "portalMenuMapId", makeTodayPrefix("PMM"), 5);
 }
 
 export async function generateProcedureSopId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `SOP${today}`;
-
-  const existing = await prisma.procedureSop.findFirst({
-    where: { sopId: { startsWith: prefix } },
-    select: { sopId: true },
-    orderBy: { sopId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.sopId) {
-    const currentSeq = extractSeqFromId(existing.sopId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("procedure_sop", "sopId", makeTodayPrefix("SOP"), 5);
 }
 
 export async function generateMasterIkId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `IK${today}`;
-
-  const existing = await prisma.masterIK.findFirst({
-    where: { ikId: { startsWith: prefix } },
-    select: { ikId: true },
-    orderBy: { ikId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.ikId) {
-    const currentSeq = extractSeqFromId(existing.ikId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("master_ik", "ikId", makeTodayPrefix("IK"), 5);
 }
 
 export async function generateProcedureSopIkId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `SIK${today}`;
-
-  const existing = await prisma.procedureSopIK.findFirst({
-    where: { sopIkId: { startsWith: prefix } },
-    select: { sopIkId: true },
-    orderBy: { sopIkId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.sopIkId) {
-    const currentSeq = extractSeqFromId(existing.sopIkId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+  return generateIdFactory("procedure_sop_ik", "sopIkId", makeTodayPrefix("SIK"), 5);
 }
 
 export async function generateMasterFishboneId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `FBN${today}`;
-
-  const existing = await prisma.masterFishbone.findFirst({
-    where: { fishboneId: { startsWith: prefix } },
-    select: { fishboneId: true },
-    orderBy: { fishboneId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.fishboneId) {
-    const currentSeq = extractSeqFromId(existing.fishboneId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId("master_fishbone", "fishboneId", makeTodayPrefix("FBN"), 5);
 }
 
 export async function generateFishboneCategoryId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `FCG${today}`;
-
-  const existing = await prisma.fishboneCategory.findFirst({
-    where: { fishboneCategoryId: { startsWith: prefix } },
-    select: { fishboneCategoryId: true },
-    orderBy: { fishboneCategoryId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.fishboneCategoryId) {
-    const currentSeq = extractSeqFromId(existing.fishboneCategoryId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(5, "0")}`;
+  return generateSingleId(
+    "fishbone_category",
+    "fishboneCategoryId",
+    makeTodayPrefix("FCG"),
+    5
+  );
 }
 
 export async function generateFishboneCauseId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `FBC${today}`;
-
-  const existing = await prisma.fishboneCause.findFirst({
-    where: { fishboneCauseId: { startsWith: prefix } },
-    select: { fishboneCauseId: true },
-    orderBy: { fishboneCauseId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.fishboneCauseId) {
-    const currentSeq = extractSeqFromId(existing.fishboneCauseId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+  return generateIdFactory("fishbone_cause", "fishboneCauseId", makeTodayPrefix("FBC"), 5);
 }
 
 export async function generateFishboneItemId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `FBI${today}`;
-
-  const existing = await prisma.fishboneItem.findFirst({
-    where: { fishboneItemId: { startsWith: prefix } },
-    select: { fishboneItemId: true },
-    orderBy: { fishboneItemId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.fishboneItemId) {
-    const currentSeq = extractSeqFromId(existing.fishboneItemId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+  return generateIdFactory("fishbone_item", "fishboneItemId", makeTodayPrefix("FBI"), 5);
 }
 
 export async function generateFishboneItemCauseId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `FIC${today}`;
-
-  const existing = await prisma.fishboneItemCause.findFirst({
-    where: { fishboneItemCauseId: { startsWith: prefix } },
-    select: { fishboneItemCauseId: true },
-    orderBy: { fishboneItemCauseId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.fishboneItemCauseId) {
-    const currentSeq = extractSeqFromId(existing.fishboneItemCauseId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(5, "0")}`;
+  return generateIdFactory(
+    "fishbone_item_cause",
+    "fishboneItemCauseId",
+    makeTodayPrefix("FIC"),
+    5
+  );
 }
 
 export async function generateProcedureIkId(): Promise<string> {
@@ -330,276 +157,206 @@ export async function generateProcedureIkId(): Promise<string> {
 }
 
 export async function generateCaseId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `CAS${today}`;
-
-  const existing = await prisma.caseHeader.findFirst({
-    where: { caseId: { startsWith: prefix } },
-    select: { caseId: true },
-    orderBy: { caseId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseId) {
-    const currentSeq = extractSeqFromId(existing.caseId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+  return generateSingleId("case_header", "caseId", makeTodayPrefix("CAS"), 4);
 }
 
 export async function generateCaseDepartmentId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CSD${today}`;
-
-  const existing = await prisma.caseDepartment.findFirst({
-    where: { caseDepartmentId: { startsWith: prefix } },
-    select: { caseDepartmentId: true },
-    orderBy: { caseDepartmentId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseDepartmentId) {
-    const currentSeq = extractSeqFromId(existing.caseDepartmentId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_department",
+    "caseDepartmentId",
+    makeTodayPrefix("CSD"),
+    4
+  );
 }
 
 export async function generateCaseDepartmentAssigneeId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CDA${today}`;
-
-  const existing = await (prisma as typeof prisma & {
-    caseDepartmentAssignee: {
-      findFirst: (args: unknown) => Promise<{ caseDepartmentAssigneeId: string } | null>;
-    };
-  }).caseDepartmentAssignee.findFirst({
-    where: { caseDepartmentAssigneeId: { startsWith: prefix } },
-    select: { caseDepartmentAssigneeId: true },
-    orderBy: { caseDepartmentAssigneeId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseDepartmentAssigneeId) {
-    const currentSeq = extractSeqFromId(existing.caseDepartmentAssigneeId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_department_assignee",
+    "caseDepartmentAssigneeId",
+    makeTodayPrefix("CDA"),
+    4
+  );
 }
 
 export async function generateCaseAttachmentId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CAD${today}`;
-
-  const existing = await prisma.caseAttachment.findFirst({
-    where: { caseAttachmentId: { startsWith: prefix } },
-    select: { caseAttachmentId: true },
-    orderBy: { caseAttachmentId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseAttachmentId) {
-    const currentSeq = extractSeqFromId(existing.caseAttachmentId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory("case_attachment", "caseAttachmentId", makeTodayPrefix("CAD"), 4);
 }
 
 export async function generateCaseFishboneId(): Promise<string> {
-  const today = getDDMMYY();
-  const prefix = `CFB${today}`;
-
-  const existing = await prisma.caseFishboneMaster.findFirst({
-    where: { caseFishboneId: { startsWith: prefix } },
-    select: { caseFishboneId: true },
-    orderBy: { caseFishboneId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseFishboneId) {
-    const currentSeq = extractSeqFromId(existing.caseFishboneId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return `${prefix}-${String(nextSeq).padStart(4, "0")}`;
+  return generateSingleId("case_fishbone_master", "caseFishboneId", makeTodayPrefix("CFB"), 4);
 }
 
 export async function generateCaseFishboneCauseId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CFC${today}`;
-
-  const existing = await prisma.caseFishboneCause.findFirst({
-    where: { caseFishboneCauseId: { startsWith: prefix } },
-    select: { caseFishboneCauseId: true },
-    orderBy: { caseFishboneCauseId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseFishboneCauseId) {
-    const currentSeq = extractSeqFromId(existing.caseFishboneCauseId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_fishbone_cause",
+    "caseFishboneCauseId",
+    makeTodayPrefix("CFC"),
+    4
+  );
 }
 
 export async function generateCaseFishboneItemId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CFI${today}`;
-
-  const existing = await prisma.caseFishboneItem.findFirst({
-    where: { caseFishboneItemId: { startsWith: prefix } },
-    select: { caseFishboneItemId: true },
-    orderBy: { caseFishboneItemId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseFishboneItemId) {
-    const currentSeq = extractSeqFromId(existing.caseFishboneItemId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_fishbone_item",
+    "caseFishboneItemId",
+    makeTodayPrefix("CFI"),
+    4
+  );
 }
 
 export async function generateCaseFishboneItemCauseId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CFIC${today}`;
-
-  const existing = await prisma.caseFishboneItemCause.findFirst({
-    where: { caseFishboneItemCauseId: { startsWith: prefix } },
-    select: { caseFishboneItemCauseId: true },
-    orderBy: { caseFishboneItemCauseId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseFishboneItemCauseId) {
-    const currentSeq = extractSeqFromId(existing.caseFishboneItemCauseId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_fishbone_item_cause",
+    "caseFishboneItemCauseId",
+    makeTodayPrefix("CFIC"),
+    4
+  );
 }
 
 export async function generateCasePdcaItemId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CPD${today}`;
-
-  const existing = await (prisma as typeof prisma & {
-    casePdcaItem: {
-      findFirst: (args: unknown) => Promise<{ casePdcaItemId: string } | null>;
-    };
-  }).casePdcaItem.findFirst({
-    where: { casePdcaItemId: { startsWith: prefix } },
-    select: { casePdcaItemId: true },
-    orderBy: { casePdcaItemId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.casePdcaItemId) {
-    const currentSeq = extractSeqFromId(existing.casePdcaItemId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory("case_pdca_item", "casePdcaItemId", makeTodayPrefix("CPD"), 4);
 }
 
 export async function generateCaseFeedbackCommentId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CFC${today}`;
-
-  const existing = await (prisma as typeof prisma & {
-    caseFeedbackComment: {
-      findFirst: (
-        args: unknown
-      ) => Promise<{ caseFeedbackCommentId: string } | null>;
-    };
-  }).caseFeedbackComment.findFirst({
-    where: { caseFeedbackCommentId: { startsWith: prefix } },
-    select: { caseFeedbackCommentId: true },
-    orderBy: { caseFeedbackCommentId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseFeedbackCommentId) {
-    const currentSeq = extractSeqFromId(existing.caseFeedbackCommentId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_feedback_comment",
+    "caseFeedbackCommentId",
+    makeTodayPrefix("CFC"),
+    4
+  );
 }
 
 export async function generateCaseNotificationId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CNO${today}`;
-
-  const existing = await (prisma as typeof prisma & {
-    caseNotificationOutbox: { findFirst: (args: unknown) => Promise<{ caseNotificationId: string } | null> };
-  }).caseNotificationOutbox.findFirst({
-    where: { caseNotificationId: { startsWith: prefix } },
-    select: { caseNotificationId: true },
-    orderBy: { caseNotificationId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseNotificationId) {
-    const currentSeq = extractSeqFromId(existing.caseNotificationId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_notification_outbox",
+    "caseNotificationId",
+    makeTodayPrefix("CNO"),
+    4
+  );
 }
 
 export async function generateCaseNotificationMessageId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CNM${today}`;
-
-  const existing = await (prisma as typeof prisma & {
-    caseNotificationMessage: {
-      findFirst: (
-        args: unknown
-      ) => Promise<{ caseNotificationMessageId: string } | null>;
-    };
-  }).caseNotificationMessage.findFirst({
-    where: { caseNotificationMessageId: { startsWith: prefix } },
-    select: { caseNotificationMessageId: true },
-    orderBy: { caseNotificationMessageId: "desc" },
-  });
-
-  let nextSeq = 1;
-  if (existing?.caseNotificationMessageId) {
-    const currentSeq = extractSeqFromId(existing.caseNotificationMessageId);
-    nextSeq = currentSeq + 1;
-  }
-
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+  return generateIdFactory(
+    "case_notification_message",
+    "caseNotificationMessageId",
+    makeTodayPrefix("CNM"),
+    4
+  );
 }
 
 export async function generateCaseNotificationTemplateId(): Promise<() => string> {
-  const today = getDDMMYY();
-  const prefix = `CNT${today}`;
+  return generateIdFactory(
+    "case_notification_template",
+    "caseNotificationTemplateId",
+    makeTodayPrefix("CNT"),
+    4
+  );
+}
 
-  const existing = await (prisma as typeof prisma & {
-    caseNotificationTemplate: {
-      findFirst: (
-        args: unknown
-      ) => Promise<{ caseNotificationTemplateId: string } | null>;
-    };
-  }).caseNotificationTemplate.findFirst({
-    where: { caseNotificationTemplateId: { startsWith: prefix } },
-    select: { caseNotificationTemplateId: true },
-    orderBy: { caseNotificationTemplateId: "desc" },
-  });
+export async function generateNotificationTemplateId(): Promise<() => string> {
+  return generateIdFactory(
+    "notification_template",
+    "notificationTemplateId",
+    makeTodayPrefix("NTF"),
+    4
+  );
+}
 
-  let nextSeq = 1;
-  if (existing?.caseNotificationTemplateId) {
-    const currentSeq = extractSeqFromId(existing.caseNotificationTemplateId);
-    nextSeq = currentSeq + 1;
-  }
+export async function generateNotificationTemplatePortalId(): Promise<() => string> {
+  return generateIdFactory(
+    "notification_template_portal",
+    "notificationTemplatePortalId",
+    makeTodayPrefix("NTP"),
+    4
+  );
+}
 
-  return () => `${prefix}-${String(nextSeq++).padStart(4, "0")}`;
+export async function generateNotificationOutboxId(): Promise<() => string> {
+  return generateIdFactory(
+    "notification_outbox",
+    "notificationOutboxId",
+    makeTodayPrefix("NOB"),
+    4
+  );
+}
+
+export async function generateOnboardingPortalTemplateId(): Promise<string> {
+  return generateSingleId(
+    "onboarding_portal_template",
+    "onboardingPortalTemplateId",
+    makeTodayPrefix("OPT"),
+    5
+  );
+}
+
+export async function generateOnboardingStageTemplateId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_stage_template",
+    "onboardingStageTemplateId",
+    makeTodayPrefix("OST"),
+    5
+  );
+}
+
+export async function generateOnboardingStageMaterialId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_stage_material",
+    "onboardingStageMaterialId",
+    makeTodayPrefix("OSM"),
+    5
+  );
+}
+
+export async function generateOnboardingStageExamId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_stage_exam",
+    "onboardingStageExamId",
+    makeTodayPrefix("OSE"),
+    5
+  );
+}
+
+export async function generateOnboardingAssignmentId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_assignment",
+    "onboardingAssignmentId",
+    makeTodayPrefix("OAS"),
+    5
+  );
+}
+
+export async function generateOnboardingStageProgressId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_stage_progress",
+    "onboardingStageProgressId",
+    makeTodayPrefix("OSP"),
+    5
+  );
+}
+
+export async function generateOnboardingMaterialProgressId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_material_progress",
+    "onboardingMaterialProgressId",
+    makeTodayPrefix("OMP"),
+    5
+  );
+}
+
+export async function generateOnboardingExamAttemptId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_exam_attempt",
+    "onboardingExamAttemptId",
+    makeTodayPrefix("OEA"),
+    5
+  );
+}
+
+export async function generateOnboardingDecisionId(): Promise<() => string> {
+  return generateIdFactory(
+    "onboarding_decision",
+    "onboardingDecisionId",
+    makeTodayPrefix("ODC"),
+    5
+  );
 }

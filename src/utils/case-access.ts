@@ -12,7 +12,7 @@ export type CaseAccess = {
 
 const resolveEmployeeId = async (
   userId: string,
-  flowlyUser?: { badgeNumber?: string | null } | null
+  flowlyUser?: { cardNumber?: string | null } | null
 ): Promise<number | null> => {
   const numericId = Number(userId);
   if (!Number.isNaN(numericId)) {
@@ -25,13 +25,13 @@ const resolveEmployeeId = async (
     }
   }
 
-  const badgeNumber = flowlyUser?.badgeNumber?.trim();
-  if (!badgeNumber) {
+  const cardNumber = flowlyUser?.cardNumber?.trim();
+  if (!cardNumber) {
     return null;
   }
 
   const employee = await prismaEmployee.em_employee.findFirst({
-    where: { BadgeNum: badgeNumber },
+    where: { CardNo: cardNumber },
     select: { UserId: true },
   });
 
@@ -60,7 +60,9 @@ export const resolveCaseAccess = async (requesterId: string): Promise<CaseAccess
     const canRead = canReadModule(moduleAccessMap, "CASE") || canCrud;
 
     if (!canRead) {
-      const employeeId = await resolveEmployeeId(requesterId, flowlyUser);
+      const employeeId = await resolveEmployeeId(requesterId, {
+        cardNumber: flowlyUser.badgeNumber,
+      });
       if (employeeId !== null) {
         return {
           actorType: "EMPLOYEE",

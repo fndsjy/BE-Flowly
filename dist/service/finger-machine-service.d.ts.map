@@ -1,0 +1,1 @@
+{"version":3,"file":"finger-machine-service.d.ts","sourceRoot":"","sources":["../../src/service/finger-machine-service.ts"],"names":[],"mappings":"AASA,MAAM,WAAW,qBAAqB;IACpC,EAAE,EAAE,MAAM,CAAC;IACX,EAAE,EAAE,MAAM,CAAC;IACX,YAAY,EAAE,MAAM,GAAG,IAAI,CAAC;IAC5B,OAAO,EAAE,OAAO,CAAC;IACjB,KAAK,EAAE,MAAM,CAAC;CACf;AAqVD,qBAAa,oBAAoB;WAClB,IAAI,CAAC,eAAe,EAAE,MAAM;CAiC1C"}
