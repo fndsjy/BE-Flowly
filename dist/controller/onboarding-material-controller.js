@@ -179,15 +179,15 @@ export class OnboardingMaterialController {
             const fileType = Number.isInteger(fileTypeValue) ? fileTypeValue : null;
             const trackingRequest = parseMaterialReadTrackingRequest(req, fileName);
             const fullPath = path.join(resolveSourceDirectory(fileName, fileType), fileName);
+            if (trackingRequest) {
+                await OnboardingService.startMaterialRead(payload.userId, trackingRequest);
+            }
             try {
                 await fs.access(fullPath);
             }
             catch {
                 res.redirect(302, FALLBACK_PREVIEW_URL);
                 return;
-            }
-            if (trackingRequest) {
-                await OnboardingService.startMaterialRead(payload.userId, trackingRequest);
             }
             res.setHeader("Content-Type", resolveMimeType(fileName));
             res.setHeader("Content-Disposition", `inline; filename="${fileName}"`);

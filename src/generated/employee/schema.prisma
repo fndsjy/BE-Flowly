@@ -898,7 +898,7 @@ model em_schedule3 {
   scheduleId     Int
   soalId         Int
   urutanSoal     Int
-  materiId       Int
+  materiId       Int?
   urutanTipeSoal Int
   tipeSoal       Int
   em_schedule1   em_schedule1 @relation(fields: [scheduleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_schedule3_schedule1")

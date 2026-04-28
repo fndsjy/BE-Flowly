@@ -1,6 +1,7 @@
 // prisma/seed.ts
-import { prismaFlowly as prisma } from "../src/application/database.js";
+import { prismaEmployee, prismaFlowly as prisma } from "../src/application/database.js";
 import bcrypt from "bcrypt";
+import { OnboardingEmployeeScheduleSyncService } from "../src/service/onboarding-employee-schedule-sync-service.js";
 import {
   generateUserId,
   generateRoleId,
@@ -533,6 +534,21 @@ async function main() {
     }
   }
 
+  if (process.env.SEED_ONBOARDING_EMPLOYEE_SCHEDULES === "true") {
+    const syncedSchedules = await OnboardingEmployeeScheduleSyncService.syncAll();
+    const totalQuestions = syncedSchedules.reduce(
+      (sum, result) => sum + result.questionCount,
+      0
+    );
+    console.log(
+      `Synced ${syncedSchedules.length} onboarding employee schedules with ${totalQuestions} questions.`
+    );
+  } else {
+    console.log(
+      "Skipping onboarding employee schedule sync. Set SEED_ONBOARDING_EMPLOYEE_SCHEDULES=true to enable it."
+    );
+  }
+
   console.log("Seed completed successfully.");
 }
 
@@ -543,4 +559,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await prismaEmployee.$disconnect();
   });

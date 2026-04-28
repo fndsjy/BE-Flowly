@@ -48809,7 +48809,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingStageProgressId: string
     onboardingStageExamId: string
-    examId: number
+    examId: number | null
     attemptNo: number
     startedAt: Date
     submittedAt: Date | null
@@ -48931,7 +48931,7 @@ export namespace Prisma {
       onboardingAssignmentId: string
       onboardingStageProgressId: string
       onboardingStageExamId: string
-      examId: number
+      examId: number | null
       attemptNo: number
       startedAt: Date
       submittedAt: Date | null
@@ -57177,7 +57177,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFilter<"OnboardingExamAttempt"> | string
     onboardingStageProgressId?: StringFilter<"OnboardingExamAttempt"> | string
     onboardingStageExamId?: StringFilter<"OnboardingExamAttempt"> | string
-    examId?: IntFilter<"OnboardingExamAttempt"> | number
+    examId?: IntNullableFilter<"OnboardingExamAttempt"> | number | null
     attemptNo?: IntFilter<"OnboardingExamAttempt"> | number
     startedAt?: DateTimeFilter<"OnboardingExamAttempt"> | Date | string
     submittedAt?: DateTimeNullableFilter<"OnboardingExamAttempt"> | Date | string | null
@@ -57207,7 +57207,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingStageProgressId?: SortOrder
     onboardingStageExamId?: SortOrder
-    examId?: SortOrder
+    examId?: SortOrderInput | SortOrder
     attemptNo?: SortOrder
     startedAt?: SortOrder
     submittedAt?: SortOrderInput | SortOrder
@@ -57241,7 +57241,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFilter<"OnboardingExamAttempt"> | string
     onboardingStageProgressId?: StringFilter<"OnboardingExamAttempt"> | string
     onboardingStageExamId?: StringFilter<"OnboardingExamAttempt"> | string
-    examId?: IntFilter<"OnboardingExamAttempt"> | number
+    examId?: IntNullableFilter<"OnboardingExamAttempt"> | number | null
     attemptNo?: IntFilter<"OnboardingExamAttempt"> | number
     startedAt?: DateTimeFilter<"OnboardingExamAttempt"> | Date | string
     submittedAt?: DateTimeNullableFilter<"OnboardingExamAttempt"> | Date | string | null
@@ -57271,7 +57271,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingStageProgressId?: SortOrder
     onboardingStageExamId?: SortOrder
-    examId?: SortOrder
+    examId?: SortOrderInput | SortOrder
     attemptNo?: SortOrder
     startedAt?: SortOrder
     submittedAt?: SortOrderInput | SortOrder
@@ -57306,7 +57306,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringWithAggregatesFilter<"OnboardingExamAttempt"> | string
     onboardingStageProgressId?: StringWithAggregatesFilter<"OnboardingExamAttempt"> | string
     onboardingStageExamId?: StringWithAggregatesFilter<"OnboardingExamAttempt"> | string
-    examId?: IntWithAggregatesFilter<"OnboardingExamAttempt"> | number
+    examId?: IntNullableWithAggregatesFilter<"OnboardingExamAttempt"> | number | null
     attemptNo?: IntWithAggregatesFilter<"OnboardingExamAttempt"> | number
     startedAt?: DateTimeWithAggregatesFilter<"OnboardingExamAttempt"> | Date | string
     submittedAt?: DateTimeNullableWithAggregatesFilter<"OnboardingExamAttempt"> | Date | string | null
@@ -62719,7 +62719,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptCreateInput = {
     onboardingExamAttemptId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -62749,7 +62749,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingStageProgressId: string
     onboardingStageExamId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -62773,7 +62773,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptUpdateInput = {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62803,7 +62803,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingStageProgressId?: StringFieldUpdateOperationsInput | string
     onboardingStageExamId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62830,7 +62830,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingStageProgressId: string
     onboardingStageExamId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -62854,7 +62854,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptUpdateManyMutationInput = {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62881,7 +62881,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingStageProgressId?: StringFieldUpdateOperationsInput | string
     onboardingStageExamId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76642,7 +76642,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptCreateWithoutStageExamInput = {
     onboardingExamAttemptId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -76670,7 +76670,7 @@ export namespace Prisma {
     onboardingExamAttemptId: string
     onboardingAssignmentId: string
     onboardingStageProgressId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -76774,7 +76774,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFilter<"OnboardingExamAttempt"> | string
     onboardingStageProgressId?: StringFilter<"OnboardingExamAttempt"> | string
     onboardingStageExamId?: StringFilter<"OnboardingExamAttempt"> | string
-    examId?: IntFilter<"OnboardingExamAttempt"> | number
+    examId?: IntNullableFilter<"OnboardingExamAttempt"> | number | null
     attemptNo?: IntFilter<"OnboardingExamAttempt"> | number
     startedAt?: DateTimeFilter<"OnboardingExamAttempt"> | Date | string
     submittedAt?: DateTimeNullableFilter<"OnboardingExamAttempt"> | Date | string | null
@@ -77097,7 +77097,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptCreateWithoutAssignmentInput = {
     onboardingExamAttemptId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -77125,7 +77125,7 @@ export namespace Prisma {
     onboardingExamAttemptId: string
     onboardingStageProgressId: string
     onboardingStageExamId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -77593,7 +77593,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptCreateWithoutStageProgressInput = {
     onboardingExamAttemptId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -77621,7 +77621,7 @@ export namespace Prisma {
     onboardingExamAttemptId: string
     onboardingAssignmentId: string
     onboardingStageExamId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -81562,7 +81562,7 @@ export namespace Prisma {
     onboardingExamAttemptId: string
     onboardingAssignmentId: string
     onboardingStageProgressId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -81586,7 +81586,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptUpdateWithoutStageExamInput = {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -81614,7 +81614,7 @@ export namespace Prisma {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingStageProgressId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -81640,7 +81640,7 @@ export namespace Prisma {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingStageProgressId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -81741,7 +81741,7 @@ export namespace Prisma {
     onboardingExamAttemptId: string
     onboardingStageProgressId: string
     onboardingStageExamId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -82021,7 +82021,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptUpdateWithoutAssignmentInput = {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82049,7 +82049,7 @@ export namespace Prisma {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
     onboardingStageProgressId?: StringFieldUpdateOperationsInput | string
     onboardingStageExamId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82075,7 +82075,7 @@ export namespace Prisma {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
     onboardingStageProgressId?: StringFieldUpdateOperationsInput | string
     onboardingStageExamId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82176,7 +82176,7 @@ export namespace Prisma {
     onboardingExamAttemptId: string
     onboardingAssignmentId: string
     onboardingStageExamId: string
-    examId: number
+    examId?: number | null
     attemptNo: number
     startedAt: Date | string
     submittedAt?: Date | string | null
@@ -82272,7 +82272,7 @@ export namespace Prisma {
 
   export type OnboardingExamAttemptUpdateWithoutStageProgressInput = {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82300,7 +82300,7 @@ export namespace Prisma {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingStageExamId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82326,7 +82326,7 @@ export namespace Prisma {
     onboardingExamAttemptId?: StringFieldUpdateOperationsInput | string
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingStageExamId?: StringFieldUpdateOperationsInput | string
-    examId?: IntFieldUpdateOperationsInput | number
+    examId?: NullableIntFieldUpdateOperationsInput | number | null
     attemptNo?: IntFieldUpdateOperationsInput | number
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

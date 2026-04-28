@@ -227,15 +227,15 @@ export class OnboardingMaterialController {
       const trackingRequest = parseMaterialReadTrackingRequest(req, fileName);
       const fullPath = path.join(resolveSourceDirectory(fileName, fileType), fileName);
 
+      if (trackingRequest) {
+        await OnboardingService.startMaterialRead(payload.userId, trackingRequest);
+      }
+
       try {
         await fs.access(fullPath);
       } catch {
         res.redirect(302, FALLBACK_PREVIEW_URL);
         return;
-      }
-
-      if (trackingRequest) {
-        await OnboardingService.startMaterialRead(payload.userId, trackingRequest);
       }
 
       res.setHeader("Content-Type", resolveMimeType(fileName));

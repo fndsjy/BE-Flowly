@@ -1076,7 +1076,7 @@ model OnboardingExamAttempt {
   onboardingAssignmentId    String                  @db.NVarChar(100)
   onboardingStageProgressId String                  @db.NVarChar(100)
   onboardingStageExamId     String                  @db.NVarChar(100)
-  examId                    Int
+  examId                    Int?
   attemptNo                 Int
   startedAt                 DateTime
   submittedAt               DateTime?
