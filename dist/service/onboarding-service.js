@@ -4,6 +4,7 @@ import { logger } from "../application/logging.js";
 import {} from "../model/onboarding-model.js";
 import { ResponseError } from "../error/response-error.js";
 import { OnboardingMaterialService } from "./onboarding-material-service.js";
+import { OnboardingExamResultSyncService } from "./onboarding-exam-result-sync-service.js";
 import { generateNotificationOutboxId, generateOnboardingAssignmentId, generateOnboardingMaterialProgressId, generateOnboardingStageProgressId, } from "../utils/id-generator.js";
 import { resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
 import { ensureHrdCrudAccess, ensureHrdReadAccess, } from "../utils/hrd-access.js";
@@ -16,9 +17,12 @@ const OMS_FIRST_LOGIN_EVENT_KEY = "OMS_FIRST_LOGIN";
 const ONBOARDING_ASSIGNMENT_CONTEXT_TYPE = "ONBOARDING_ASSIGNMENT";
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const CHANNEL_EMAIL = "EMAIL";
+const ONBOARDING_EMPLOYEE_BATCH_CODE = "ONB";
+const DEFAULT_CERTIFICATE_ASSET_BASE_URL = "https://lms.domas.co.id/assets/img/sertifikat/peserta";
 const FINAL_ASSIGNMENT_STATUSES = new Set([
     "COMPLETED",
     "PASSED",
+    "PASSED_TO_LMS",
     "PASSED_OVERRIDE",
     "FAILED",
     "FAIL_FINAL",
@@ -43,6 +47,27 @@ const normalizeNote = (value) => {
     return trimmed && trimmed.length > 0 ? trimmed : null;
 };
 const normalizeUpper = (value) => (value ?? "").trim().toUpperCase();
+const getOnboardingScheduleName = (portalKey, stageCode) => `ONBOARDING|${normalizePortalKey(portalKey)}|${stageCode}`.slice(0, 255);
+const resolveCertificateAssetBaseUrl = () => (normalizeNote(process.env.LMS_CERTIFICATE_ASSET_BASE_URL) ??
+    DEFAULT_CERTIFICATE_ASSET_BASE_URL).replace(/\/+$/, "");
+const encodeCertificatePath = (fileName) => fileName
+    .split("/")
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+const toCertificatePdfFileName = (fileName) => {
+    const withoutQuery = fileName.split("?")[0] ?? fileName;
+    if (/\.[^.\\/]+$/.test(withoutQuery)) {
+        return fileName.replace(/\.[^.\\/?.]+(?=\?|$)/, ".pdf");
+    }
+    return `${fileName}.pdf`;
+};
+const buildCertificateAssetUrls = (fileName) => {
+    const baseUrl = resolveCertificateAssetBaseUrl();
+    return {
+        imageUrl: `${baseUrl}/${encodeCertificatePath(fileName)}`,
+        pdfUrl: `${baseUrl}/${encodeCertificatePath(toCertificatePdfFileName(fileName))}`,
+    };
+};
 const normalizePhone = (value) => {
     if (!value)
         return null;
@@ -150,6 +175,33 @@ const parseWorkspaceSelectionMetadata = (note) => {
         };
     }
 };
+const parseWorkspaceExamSelectionMetadata = (note) => {
+    const normalizedNote = normalizeNote(note);
+    if (!normalizedNote) {
+        return {
+            mode: "ALL",
+            selectedQuestionIds: [],
+        };
+    }
+    try {
+        const parsed = JSON.parse(normalizedNote);
+        const selectedQuestionIds = Array.isArray(parsed.selectedQuestionIds)
+            ? Array.from(new Set(parsed.selectedQuestionIds
+                .map((value) => Number(value))
+                .filter((value) => Number.isInteger(value) && value > 0)))
+            : [];
+        return {
+            mode: parsed.mode === "SELECTED" && selectedQuestionIds.length > 0 ? "SELECTED" : "ALL",
+            selectedQuestionIds,
+        };
+    }
+    catch {
+        return {
+            mode: "ALL",
+            selectedQuestionIds: [],
+        };
+    }
+};
 const filterWorkspaceSelectedFiles = (files, metadata) => {
     if (metadata.mode !== "SELECTED" || metadata.selectedFileIds.length === 0) {
         return files;
@@ -158,7 +210,63 @@ const filterWorkspaceSelectedFiles = (files, metadata) => {
     const filtered = files.filter((file) => selectedFileIds.has(file.id));
     return filtered.length > 0 ? filtered : files;
 };
+const buildWorkspaceExamSummaries = (stageExams, examNameMap, questionsByExam, questionTypeMap) => stageExams.map((stageExam) => {
+    const selection = parseWorkspaceExamSelectionMetadata(stageExam.note);
+    const sourceQuestions = questionsByExam.get(stageExam.examId) ?? [];
+    const selectedQuestionSet = new Set(selection.selectedQuestionIds);
+    const selectedQuestions = selection.mode === "SELECTED" && selectedQuestionSet.size > 0
+        ? sourceQuestions.filter((question) => selectedQuestionSet.has(question.id))
+        : sourceQuestions;
+    const questionsToUse = selectedQuestions.length > 0 ? selectedQuestions : sourceQuestions;
+    const questionTypes = Array.from(new Set(questionsToUse.map((question) => {
+        const typeName = question.question_type != null
+            ? questionTypeMap.get(question.question_type)
+            : null;
+        return normalizeNote(typeName) ?? "Pilihan ganda";
+    })));
+    return {
+        onboardingStageExamId: stageExam.onboardingStageExamId,
+        examId: stageExam.examId,
+        examName: examNameMap.get(stageExam.examId) ?? `Ujian ${stageExam.examId}`,
+        passScore: stageExam.passScore,
+        orderIndex: stageExam.orderIndex,
+        questionCount: questionsToUse.length,
+        durationSeconds: questionsToUse.reduce((sum, question) => sum + Math.max(0, Number.isFinite(question.time_limit) ? question.time_limit : 0), 0),
+        questionTypes,
+    };
+});
 const buildMaterialProgressKey = (onboardingStageMaterialId, sourceFileId) => `${onboardingStageMaterialId}:${Number(sourceFileId ?? 0)}`;
+const resolveSelectedSourceFileIds = (sourceFileIds, note) => {
+    const metadata = parseWorkspaceSelectionMetadata(note);
+    if (metadata.mode !== "SELECTED") {
+        return sourceFileIds;
+    }
+    const selectedFileIds = new Set(metadata.selectedFileIds);
+    const filtered = sourceFileIds.filter((sourceFileId) => selectedFileIds.has(sourceFileId));
+    return filtered.length > 0 ? filtered : sourceFileIds;
+};
+const hasMaterialReadSignal = (progress) => Boolean(progress &&
+    (normalizeUpper(progress.status) === "COMPLETED" ||
+        progress.readAt ||
+        progress.lastReadAt ||
+        progress.completedAt ||
+        Number(progress.openCount ?? 0) > 0));
+const areStageMaterialsReadyForExam = (params) => {
+    const progressMap = new Map(params.materialProgresses.map((progress) => [
+        buildMaterialProgressKey(progress.onboardingStageMaterialId, progress.sourceFileId),
+        progress,
+    ]));
+    return params.stageMaterials.every((stageMaterial) => {
+        const sourceFileIds = params.sourceMaterialMap
+            .get(stageMaterial.materiId)
+            ?.files.map((file) => file.id) ?? [];
+        const selectedFileIds = resolveSelectedSourceFileIds(sourceFileIds, stageMaterial.note);
+        if (selectedFileIds.length === 0) {
+            return true;
+        }
+        return selectedFileIds.every((sourceFileId) => hasMaterialReadSignal(progressMap.get(buildMaterialProgressKey(stageMaterial.onboardingStageMaterialId, sourceFileId))));
+    });
+};
 const getMostRecentDate = (values) => values.reduce((latest, value) => {
     if (!value) {
         return latest;
@@ -338,6 +446,9 @@ export class OnboardingService {
         if (!participantReferenceId) {
             return { portals: [] };
         }
+        await OnboardingExamResultSyncService.syncReleasedResults({
+            participantReferenceIds: [participantReferenceId],
+        });
         const [assignments, sourceMaterials] = await Promise.all([
             prismaFlowly.onboardingAssignment.findMany({
                 where: {
@@ -378,6 +489,20 @@ export class OnboardingService {
                                     openCount: true,
                                 },
                             },
+                            examAttempts: {
+                                where: {
+                                    isDeleted: false,
+                                    isActive: true,
+                                },
+                                orderBy: [{ attemptNo: "desc" }, { createdAt: "desc" }],
+                                select: {
+                                    score: true,
+                                    status: true,
+                                    submittedAt: true,
+                                    endedAt: true,
+                                    note: true,
+                                },
+                            },
                             stageTemplate: {
                                 select: {
                                     onboardingStageTemplateId: true,
@@ -396,6 +521,20 @@ export class OnboardingService {
                                             note: true,
                                         },
                                     },
+                                    stageExams: {
+                                        where: {
+                                            isDeleted: false,
+                                            isActive: true,
+                                        },
+                                        orderBy: [{ orderIndex: "asc" }, { createdAt: "asc" }],
+                                        select: {
+                                            onboardingStageExamId: true,
+                                            examId: true,
+                                            passScore: true,
+                                            orderIndex: true,
+                                            note: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -411,7 +550,178 @@ export class OnboardingService {
                 latestByPortal.set(portalKey, assignment);
             }
         }
+        const employeeId = Number(participantReferenceId);
+        const scheduleNameToPortalKey = new Map();
+        for (const assignment of assignments) {
+            const portalKey = normalizePortalKey(assignment.portalTemplate?.portalKey ?? assignment.portalKey);
+            for (const stageProgress of assignment.stageProgresses) {
+                scheduleNameToPortalKey.set(getOnboardingScheduleName(portalKey, stageProgress.stageCode), portalKey);
+            }
+        }
+        const onboardingSchedules = scheduleNameToPortalKey.size > 0
+            ? await prismaEmployee.em_schedule1.findMany({
+                where: {
+                    scheName: {
+                        in: Array.from(scheduleNameToPortalKey.keys()),
+                    },
+                    is_batch: ONBOARDING_EMPLOYEE_BATCH_CODE,
+                },
+                select: {
+                    Id: true,
+                    scheName: true,
+                },
+            })
+            : [];
+        const scheduleIdToPortalKey = new Map();
+        for (const schedule of onboardingSchedules) {
+            const portalKey = schedule.scheName
+                ? scheduleNameToPortalKey.get(schedule.scheName)
+                : null;
+            if (portalKey) {
+                scheduleIdToPortalKey.set(schedule.Id, portalKey);
+            }
+        }
+        const onboardingScheduleIds = Array.from(scheduleIdToPortalKey.keys());
+        const certificateRows = Number.isInteger(employeeId) && employeeId > 0
+            ? await prismaEmployee.em_certificates_result.findMany({
+                where: {
+                    empl_id: employeeId,
+                    status: "A",
+                    ...(onboardingScheduleIds.length > 0
+                        ? {
+                            OR: [
+                                {
+                                    cert_number: {
+                                        startsWith: "DOMAS/ONB/",
+                                    },
+                                },
+                                {
+                                    schedule_id: {
+                                        in: onboardingScheduleIds,
+                                    },
+                                },
+                            ],
+                        }
+                        : {
+                            cert_number: {
+                                startsWith: "DOMAS/ONB/",
+                            },
+                        }),
+                },
+                orderBy: [{ created_date: "desc" }, { cert_number: "desc" }],
+                select: {
+                    cert_number: true,
+                    cert_templ_id: true,
+                    cert_name: true,
+                    created_date: true,
+                    status: true,
+                    generated_by: true,
+                    schedule_id: true,
+                },
+            })
+            : [];
+        const certificateTemplateIds = Array.from(new Set(certificateRows.map((certificate) => certificate.cert_templ_id)));
+        const certificateTemplates = certificateTemplateIds.length > 0
+            ? await prismaEmployee.em_certificate_templates.findMany({
+                where: {
+                    certificate_id: {
+                        in: certificateTemplateIds,
+                    },
+                },
+                select: {
+                    certificate_id: true,
+                    certificate_name: true,
+                    name: true,
+                },
+            })
+            : [];
+        const certificateTemplateMap = new Map(certificateTemplates.map((template) => [template.certificate_id, template]));
+        const fallbackCertificatePortalKey = Array.from(latestByPortal.keys())[0] ?? DEFAULT_PORTAL_KEY;
+        const certificatesByPortal = new Map();
+        for (const certificate of certificateRows) {
+            const fileName = normalizeNote(certificate.cert_name);
+            if (!fileName) {
+                continue;
+            }
+            const template = certificateTemplateMap.get(certificate.cert_templ_id);
+            const portalKey = certificate.schedule_id != null
+                ? scheduleIdToPortalKey.get(certificate.schedule_id) ??
+                    fallbackCertificatePortalKey
+                : fallbackCertificatePortalKey;
+            const certificateName = normalizeNote(template?.certificate_name) ??
+                normalizeNote(template?.name) ??
+                "Sertifikat Onboarding";
+            const urls = buildCertificateAssetUrls(fileName);
+            const existing = certificatesByPortal.get(portalKey) ?? [];
+            existing.push({
+                certNumber: certificate.cert_number,
+                certificateTemplateId: certificate.cert_templ_id,
+                certificateName,
+                fileName,
+                imageUrl: urls.imageUrl,
+                pdfUrl: urls.pdfUrl,
+                status: certificate.status,
+                issuedAt: certificate.created_date,
+                generatedBy: normalizeNote(certificate.generated_by),
+                scheduleId: certificate.schedule_id,
+            });
+            certificatesByPortal.set(portalKey, existing);
+        }
         const sourceMaterialMap = new Map(sourceMaterials.map((material) => [material.materialId, material]));
+        const workspaceExamIds = Array.from(new Set(assignments.flatMap((assignment) => assignment.stageProgresses.flatMap((stageProgress) => stageProgress.stageTemplate.stageExams.map((stageExam) => stageExam.examId)))));
+        const [sourceExams, sourceExamQuestions, sourceQuestionTypes] = workspaceExamIds.length > 0
+            ? await Promise.all([
+                prismaEmployee.em_exams.findMany({
+                    where: {
+                        id: {
+                            in: workspaceExamIds,
+                        },
+                    },
+                    select: {
+                        id: true,
+                        exam_name: true,
+                    },
+                }),
+                prismaEmployee.em_questions1.findMany({
+                    where: {
+                        exam_id: {
+                            in: workspaceExamIds,
+                        },
+                        OR: [{ status: "A" }, { status: null }],
+                    },
+                    select: {
+                        id: true,
+                        exam_id: true,
+                        question_type: true,
+                        time_limit: true,
+                    },
+                    orderBy: [{ exam_id: "asc" }, { id: "asc" }],
+                }),
+                prismaEmployee.em_questtype.findMany({
+                    select: {
+                        Id: true,
+                        TypeName: true,
+                    },
+                }),
+            ])
+            : [[], [], []];
+        const sourceExamNameMap = new Map(sourceExams.map((exam) => [
+            exam.id,
+            normalizeNote(exam.exam_name) ?? `Ujian ${exam.id}`,
+        ]));
+        const sourceQuestionTypeMap = new Map(sourceQuestionTypes.map((type) => [
+            type.Id,
+            normalizeNote(type.TypeName) ?? `Tipe ${type.Id}`,
+        ]));
+        const sourceQuestionsByExam = new Map();
+        for (const question of sourceExamQuestions) {
+            if (!question.exam_id) {
+                continue;
+            }
+            const existing = sourceQuestionsByExam.get(question.exam_id) ?? [];
+            existing.push(question);
+            sourceQuestionsByExam.set(question.exam_id, existing);
+        }
         const portals = Array.from(latestByPortal.values()).map((assignment) => ({
             onboardingAssignmentId: assignment.onboardingAssignmentId,
             onboardingPortalTemplateId: assignment.onboardingPortalTemplateId,
@@ -424,8 +734,10 @@ export class OnboardingService {
             dueAt: assignment.dueAt,
             currentStageOrder: assignment.currentStageOrder,
             note: normalizeNote(assignment.note),
+            certificates: certificatesByPortal.get(normalizePortalKey(assignment.portalTemplate?.portalKey ?? assignment.portalKey)) ?? [],
             stages: assignment.stageProgresses.map((stageProgress) => {
                 const stageCompletedAt = stageProgress.completedAt ?? stageProgress.passedAt;
+                const latestExamAttempt = stageProgress.examAttempts[0] ?? null;
                 const materialProgressMap = new Map(stageProgress.materialProgresses.map((progress) => [
                     buildMaterialProgressKey(progress.onboardingStageMaterialId, progress.sourceFileId),
                     {
@@ -454,6 +766,15 @@ export class OnboardingService {
                     completedAt: stageProgress.completedAt,
                     failedAt: stageProgress.failedAt,
                     note: normalizeNote(stageProgress.note),
+                    examScore: latestExamAttempt?.score ?? null,
+                    examAttemptStatus: latestExamAttempt?.status ?? null,
+                    examSubmittedAt: latestExamAttempt?.submittedAt ?? null,
+                    examReviewedAt: latestExamAttempt?.endedAt ??
+                        stageProgress.passedAt ??
+                        stageProgress.completedAt,
+                    examNote: normalizeUpper(latestExamAttempt?.status) === "WAITING_ADMIN"
+                        ? null
+                        : normalizeNote(latestExamAttempt?.note) ?? null,
                     materials: stageProgress.stageTemplate.stageMaterials.map((stageMaterial) => {
                         const sourceMaterial = sourceMaterialMap.get(stageMaterial.materiId);
                         const sourceFiles = (sourceMaterial?.files ?? []).map((file) => ({
@@ -546,6 +867,7 @@ export class OnboardingService {
                                 null,
                         };
                     }),
+                    exams: buildWorkspaceExamSummaries(stageProgress.stageTemplate.stageExams, sourceExamNameMap, sourceQuestionsByExam, sourceQuestionTypeMap),
                 };
             }),
         }));
@@ -554,6 +876,9 @@ export class OnboardingService {
     static async listAdminMonitoring(requesterUserId) {
         await ensureAdminMonitoringAccess(requesterUserId);
         const portalKeys = Array.from(ONBOARDING_ADMIN_PORTAL_KEYS);
+        await OnboardingExamResultSyncService.syncReleasedResults({
+            portalKeys,
+        });
         const [portalTemplatesRaw, assignmentsRaw, sourceMaterials] = await Promise.all([
             prismaFlowly.onboardingPortalTemplate.findMany({
                 where: {
@@ -845,6 +1170,7 @@ export class OnboardingService {
                             fileSelectionMode,
                             readFileCount: selectedFiles.filter((file) => Boolean(file.readAt ||
                                 file.lastReadAt ||
+                                file.completedAt ||
                                 file.openCount > 0)).length,
                             status: aggregateProgress.status,
                             readAt: aggregateProgress.readAt ?? materialLevelProgress?.readAt ?? null,
@@ -860,8 +1186,22 @@ export class OnboardingService {
                             note: selectionMetadata.rawNote ??
                                 normalizeNote(sourceMaterial?.assignmentNote) ??
                                 null,
+                            files: selectedFiles,
                         };
                     });
+                    const totalMaterialCount = materials.reduce((sum, material) => sum + Math.max(material.fileCount, 1), 0);
+                    const readMaterialCount = materials.reduce((sum, material) => {
+                        if (material.fileCount > 0) {
+                            return sum + material.readFileCount;
+                        }
+                        return sum +
+                            (material.readAt ||
+                                material.lastReadAt ||
+                                material.completedAt ||
+                                material.openCount > 0
+                                ? 1
+                                : 0);
+                    }, 0);
                     return {
                         onboardingStageProgressId: stageProgress?.onboardingStageProgressId ?? null,
                         onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
@@ -876,10 +1216,8 @@ export class OnboardingService {
                         completedAt: stageProgress?.completedAt ?? null,
                         failedAt: stageProgress?.failedAt ?? null,
                         note: normalizeNote(stageProgress?.note),
-                        totalMaterialCount: materials.length,
-                        readMaterialCount: materials.filter((material) => Boolean(material.readAt ||
-                            material.lastReadAt ||
-                            material.openCount > 0)).length,
+                        totalMaterialCount,
+                        readMaterialCount,
                         totalOpenCount: materials.reduce((sum, material) => sum + Number(material.openCount ?? 0), 0),
                         firstReadAt: getEarliestDate(materials.map((material) => material.readAt)),
                         lastReadAt: getMostRecentDate(materials.map((material) => material.lastReadAt)),
@@ -958,6 +1296,10 @@ export class OnboardingService {
         const actorId = trimAuditActor(requesterUserId);
         const transactionTime = new Date();
         const createMaterialProgressId = await generateOnboardingMaterialProgressId();
+        const sourceMaterialMap = new Map((await OnboardingMaterialService.listSourceMaterials()).map((material) => [
+            material.materialId,
+            material,
+        ]));
         return prismaFlowly.$transaction(async (tx) => {
             const stageProgress = await tx.onboardingStageProgress.findFirst({
                 where: {
@@ -998,6 +1340,7 @@ export class OnboardingService {
                 select: {
                     onboardingStageMaterialId: true,
                     materiId: true,
+                    note: true,
                 },
             });
             if (!stageMaterial) {
@@ -1086,6 +1429,59 @@ export class OnboardingService {
                         deletedBy: null,
                     },
                 });
+            const stageMaterials = await tx.onboardingStageMaterial.findMany({
+                where: {
+                    onboardingStageTemplateId: stageProgress.onboardingStageTemplateId,
+                    isDeleted: false,
+                    isActive: true,
+                },
+                select: {
+                    onboardingStageMaterialId: true,
+                    materiId: true,
+                    note: true,
+                },
+            });
+            const materialProgresses = await tx.onboardingMaterialProgress.findMany({
+                where: {
+                    onboardingStageProgressId: stageProgress.onboardingStageProgressId,
+                    isDeleted: false,
+                    isActive: true,
+                },
+                select: {
+                    onboardingMaterialProgressId: true,
+                    onboardingStageMaterialId: true,
+                    sourceFileId: true,
+                    status: true,
+                    readAt: true,
+                    lastReadAt: true,
+                    completedAt: true,
+                    openCount: true,
+                },
+            });
+            const normalizedFinalStageStatus = normalizeUpper(finalStageStatus);
+            const shouldMoveToExam = areStageMaterialsReadyForExam({
+                stageMaterials,
+                materialProgresses,
+                sourceMaterialMap,
+            }) &&
+                (normalizedFinalStageStatus === "PENDING" ||
+                    normalizedFinalStageStatus === "NOT_STARTED" ||
+                    normalizedFinalStageStatus === "READING");
+            const returnedStageStatus = shouldMoveToExam
+                ? "WAITING_EXAM"
+                : finalStageStatus;
+            if (returnedStageStatus !== finalStageStatus) {
+                await tx.onboardingStageProgress.update({
+                    where: {
+                        onboardingStageProgressId: stageProgress.onboardingStageProgressId,
+                    },
+                    data: {
+                        startedAt: stageProgress.startedAt ?? transactionTime,
+                        status: returnedStageStatus,
+                        updatedBy: actorId,
+                    },
+                });
+            }
             return {
                 onboardingMaterialProgressId: materialProgress.onboardingMaterialProgressId,
                 onboardingAssignmentId: stageProgress.onboardingAssignmentId,
@@ -1093,7 +1489,7 @@ export class OnboardingService {
                 onboardingStageMaterialId: stageMaterial.onboardingStageMaterialId,
                 sourceFileId: normalizedSourceFileId,
                 status: materialProgress.status,
-                stageStatus: finalStageStatus,
+                stageStatus: returnedStageStatus,
                 readAt: materialProgress.readAt,
                 lastReadAt: materialProgress.lastReadAt,
                 openCount: materialProgress.openCount,

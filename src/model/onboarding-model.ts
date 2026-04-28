@@ -81,6 +81,30 @@ export interface OnboardingWorkspaceMaterialResponse {
   note: string | null;
 }
 
+export interface OnboardingWorkspaceExamResponse {
+  onboardingStageExamId: string;
+  examId: number;
+  examName: string;
+  passScore: number | null;
+  orderIndex: number;
+  questionCount: number;
+  durationSeconds: number;
+  questionTypes: string[];
+}
+
+export interface OnboardingWorkspaceCertificateResponse {
+  certNumber: string;
+  certificateTemplateId: number;
+  certificateName: string | null;
+  fileName: string;
+  imageUrl: string;
+  pdfUrl: string;
+  status: string | null;
+  issuedAt: Date | null;
+  generatedBy: string | null;
+  scheduleId: number | null;
+}
+
 export interface OnboardingWorkspaceStageResponse {
   onboardingStageProgressId: string;
   onboardingStageTemplateId: string;
@@ -95,7 +119,13 @@ export interface OnboardingWorkspaceStageResponse {
   completedAt: Date | null;
   failedAt: Date | null;
   note: string | null;
+  examScore: number | null;
+  examAttemptStatus: string | null;
+  examSubmittedAt: Date | null;
+  examReviewedAt: Date | null;
+  examNote: string | null;
   materials: OnboardingWorkspaceMaterialResponse[];
+  exams: OnboardingWorkspaceExamResponse[];
 }
 
 export interface OnboardingWorkspacePortalResponse {
@@ -110,6 +140,7 @@ export interface OnboardingWorkspacePortalResponse {
   currentStageOrder: number | null;
   note: string | null;
   stages: OnboardingWorkspaceStageResponse[];
+  certificates: OnboardingWorkspaceCertificateResponse[];
 }
 
 export interface MyOnboardingWorkspaceResponse {
@@ -135,6 +166,7 @@ export interface AdminOnboardingMonitoringMaterialResponse {
   completedAt: Date | null;
   openCount: number;
   note: string | null;
+  files: OnboardingWorkspaceMaterialFileResponse[];
 }
 
 export interface AdminOnboardingMonitoringStageTemplateResponse {
