@@ -51,6 +51,19 @@ export class NotificationTemplateController {
             next(err);
         }
     }
+    static async sendWhatsappTest(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await NotificationTemplateService.sendWhatsappTest(payload.userId);
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
     static async list(req, res, next) {
         try {
             const token = req.cookies.access_token;

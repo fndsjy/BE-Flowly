@@ -94,6 +94,7 @@ export type UserProfileResponse = {
   tipe: string | null;
   location: string | null;
   statusLMS: boolean;
+  onboardingPassed: boolean;
   bpjsKesehatan: string | null;
   bpjsKetenagakerjaan: string | null;
   canEditProfile: boolean;
@@ -177,6 +178,7 @@ export function toUserProfileResponse(user: User & { role: { roleName: string; r
     tipe: null,
     location: null,
     statusLMS: false,
+    onboardingPassed: false,
     bpjsKesehatan: null,
     bpjsKetenagakerjaan: null,
     canEditProfile: false,

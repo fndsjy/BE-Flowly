@@ -46,6 +46,7 @@ export function toUserProfileResponse(user) {
         tipe: null,
         location: null,
         statusLMS: false,
+        onboardingPassed: false,
         bpjsKesehatan: null,
         bpjsKetenagakerjaan: null,
         canEditProfile: false,

@@ -160,6 +160,12 @@ export class UserController {
                 sameSite: "strict",
                 path: "/",
             });
+            res.clearCookie("customer_access_token", {
+                httpOnly: true,
+                secure: false,
+                sameSite: "strict",
+                path: "/",
+            });
             res.status(200).json({ message: "Logout successful" });
         }
         catch (error) {

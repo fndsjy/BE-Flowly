@@ -26,6 +26,7 @@ const normalizeRequiredUpper = (value: string) => value.trim().toUpperCase();
 const allowedSubjectTypes = new Set(["ROLE", "USER"]);
 const allowedAccessLevels = new Set(["READ", "CRUD"]);
 const orgResourceTypes = new Set(["PILAR", "SBU", "SBU_SUB"]);
+const ONBOARDING_DECISION_MODULE_KEY = "ONBOARDING_DECISION";
 
 const normalizeAccessLevel = (value: string) => {
   const upper = normalizeRequiredUpper(value);
@@ -265,6 +266,45 @@ const resolveFocusPilarIds = async (
   }
 
   return Array.from(focus);
+};
+
+const hasActiveOnboardingDecisionPicAssignment = async (
+  requesterId: string,
+  requester: { cardNumber?: string | null } | null
+) => {
+  const employeeId = await resolveEmployeeIdForFocus(requesterId, requester);
+  if (!employeeId) {
+    return false;
+  }
+
+  const [pilarPic, sbuPic, sbuSubPic] = await Promise.all([
+    prismaEmployee.em_pilar.findFirst({
+      where: {
+        pic: employeeId,
+        status: "A",
+        OR: [{ isDeleted: false }, { isDeleted: null }]
+      },
+      select: { id: true }
+    }),
+    prismaEmployee.em_sbu.findFirst({
+      where: {
+        pic: employeeId,
+        status: "A",
+        OR: [{ isDeleted: false }, { isDeleted: null }]
+      },
+      select: { id: true }
+    }),
+    prismaEmployee.em_sbu_sub.findFirst({
+      where: {
+        pic: employeeId,
+        status: "A",
+        OR: [{ isDeleted: false }, { isDeleted: null }]
+      },
+      select: { id: true }
+    })
+  ]);
+
+  return Boolean(pilarPic || sbuPic || sbuSubPic);
 };
 
 export class AccessRoleService {
@@ -583,6 +623,13 @@ export class AccessRoleService {
       requesterId,
       requester ? { cardNumber: requester.badgeNumber } : null
     );
+    const hasOnboardingPicDecisionAccess =
+      !isAdmin && isEmployeeUser
+        ? await hasActiveOnboardingDecisionPicAssignment(
+            requesterId,
+            requester ? { cardNumber: requester.badgeNumber } : null
+          )
+        : false;
 
     if (!isAdmin && isEmployeeUser) {
       const menuAccess: AccessRoleSummaryResponse["menuAccess"] = [];
@@ -614,6 +661,9 @@ export class AccessRoleService {
         applyEmployeeRead("MODULE", "CHART_MEMBER");
       }
       applyEmployeeRead("MODULE", "CASE");
+      if (hasOnboardingPicDecisionAccess) {
+        applyEmployeeRead("MODULE", ONBOARDING_DECISION_MODULE_KEY);
+      }
 
       return {
         isAdmin,
@@ -768,6 +818,9 @@ export class AccessRoleService {
       if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
         applyEmployeeRead("MODULE", "CHART");
         applyEmployeeRead("MODULE", "CHART_MEMBER");
+      }
+      if (hasOnboardingPicDecisionAccess) {
+        applyEmployeeRead("MODULE", ONBOARDING_DECISION_MODULE_KEY);
       }
     }
 

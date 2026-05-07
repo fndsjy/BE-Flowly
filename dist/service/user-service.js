@@ -34,6 +34,13 @@ const ADMIN_EDITABLE_PROFILE_FIELDS = [
     "bpjsKesehatan",
     "bpjsKetenagakerjaan",
 ];
+const EMPLOYEE_ONBOARDING_PORTAL_KEY = "EMPLOYEE";
+const EMPLOYEE_PARTICIPANT_REFERENCE_TYPE = "EMPLOYEE";
+const BLOCKED_EMPLOYEE_ONBOARDING_LOGIN_STATUSES = new Set([
+    "CANCELLED",
+    "FAIL_FINAL",
+    "TRANSFER_REVIEW",
+]);
 const DEMO_PORTAL_USERS = [
     {
         userId: "DEMO_SUPPLIER",
@@ -102,6 +109,7 @@ const DEMO_PORTAL_USERS = [
     },
 ];
 const normalizeLoginIdentity = (value) => value?.trim().toLowerCase() ?? "";
+const normalizeUpper = (value) => value?.trim().toUpperCase() ?? "";
 const isEmailLoginIdentity = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value?.trim() ?? "");
 const findDemoPortalUserByEmail = (value) => {
     const normalized = normalizeLoginIdentity(value);
@@ -112,6 +120,26 @@ const findDemoPortalUserByEmail = (value) => {
 };
 const findDemoPortalUserById = (userId) => DEMO_PORTAL_USERS.find((user) => user.userId === userId) ?? null;
 const isEmployeeFirstLogin = (value) => Number(value ?? 0) !== 0;
+const canEmployeeLoginByOnboardingStatus = async (employeeUserId) => {
+    const assignment = await prismaFlowly.onboardingAssignment.findFirst({
+        where: {
+            portalKey: EMPLOYEE_ONBOARDING_PORTAL_KEY,
+            participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+            participantReferenceId: String(employeeUserId),
+            isActive: true,
+            isDeleted: false,
+        },
+        orderBy: [{ updatedAt: "desc" }, { startedAt: "desc" }],
+        select: {
+            status: true,
+        },
+    });
+    if (!assignment) {
+        return false;
+    }
+    return !BLOCKED_EMPLOYEE_ONBOARDING_LOGIN_STATUSES.has(assignment.status.trim().toUpperCase());
+};
+const PASSED_ONBOARDING_STAGE_STATUSES = new Set(["PASSED", "COMPLETED"]);
 const employeeProfileSelect = {
     UserId: true,
     CardNo: true,
@@ -246,6 +274,35 @@ const findDepartmentName = async (departmentId, trace) => {
         trace.departmentMs = profilePerfElapsedMs(startedAt);
     }
     return department?.DEPTNAME ?? null;
+};
+const hasPassedOnboarding = async (employeeUserId) => {
+    if (employeeUserId === undefined || employeeUserId === null) {
+        return false;
+    }
+    const assignment = await prismaFlowly.onboardingAssignment.findFirst({
+        where: {
+            participantReferenceType: "EMPLOYEE",
+            participantReferenceId: String(employeeUserId),
+            isActive: true,
+            isDeleted: false,
+        },
+        orderBy: [{ startedAt: "desc" }, { createdAt: "desc" }],
+        select: {
+            stageProgresses: {
+                where: {
+                    isActive: true,
+                    isDeleted: false,
+                },
+                select: {
+                    status: true,
+                },
+            },
+        },
+    });
+    if (!assignment || assignment.stageProgresses.length === 0) {
+        return false;
+    }
+    return assignment.stageProgresses.every((stage) => PASSED_ONBOARDING_STAGE_STATUSES.has(normalizeUpper(stage.status)));
 };
 const ensureDepartmentExists = async (departmentId) => {
     if (departmentId === undefined || departmentId === null) {
@@ -406,6 +463,7 @@ const toProfileResponse = async (context, trace) => {
     const departmentName = employee?.DeptId !== null && employee?.DeptId !== undefined
         ? await findDepartmentName(employee.DeptId, trace)
         : context.department;
+    const onboardingPassed = await hasPassedOnboarding(employee?.UserId);
     return {
         userId: context.userId,
         username: context.username,
@@ -433,6 +491,7 @@ const toProfileResponse = async (context, trace) => {
         tipe: employee?.Tipe ?? null,
         location: employee?.isLokasi ?? null,
         statusLMS: employee?.statusLMS ?? false,
+        onboardingPassed,
         bpjsKesehatan: employee?.BPJSKshtn ?? null,
         bpjsKetenagakerjaan: employee?.BPJSKtngkerjaan ?? null,
         canEditProfile: Boolean(employee),
@@ -580,6 +639,10 @@ export class UserService {
         if (!isPasswordValid) {
             throw new ResponseError(401, "Invalid card number or password");
         }
+        const canLoginByOnboarding = await canEmployeeLoginByOnboardingStatus(employee.UserId);
+        if (!canLoginByOnboarding) {
+            throw new ResponseError(403, "Onboarding karyawan belum aktif. Silakan hubungi HRD.");
+        }
         const employeeUsername = employee.CardNo?.trim() || identity;
         const token = generateToken({
             userId: String(employee.UserId),
@@ -635,6 +698,7 @@ export class UserService {
                 tipe: null,
                 location: null,
                 statusLMS: false,
+                onboardingPassed: false,
                 bpjsKesehatan: null,
                 bpjsKetenagakerjaan: null,
                 canEditProfile: false,

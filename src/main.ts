@@ -7,7 +7,13 @@ console.log("Now =", new Date().toString());
 import { web } from "./application/web.js";
 import { logger } from "./application/logging.js";
 import { startNotificationOutboxWorker } from "./worker/notification-outbox-worker.js";
-import { prismaEmployee, prismaFlowly } from "./application/database.js";
+import { startOnboardingExpiryWorker } from "./worker/onboarding-expiry-worker.js";
+import {
+    optidomDatabaseEnabled,
+    prismaEmployee,
+    prismaFlowly,
+    prismaOptidom,
+} from "./application/database.js";
 
 // const corsOptions = {
 //   origin: [
@@ -47,6 +53,11 @@ const connectWithRetry = async (
 const bootstrap = async () => {
     await connectWithRetry("flowly", () => prismaFlowly.$connect());
     await connectWithRetry("employee", () => prismaEmployee.$connect());
+    if (optidomDatabaseEnabled) {
+        await connectWithRetry("optidom", () => prismaOptidom.$connect());
+    } else {
+        logger.info("[PRISMA] optidom skipped because OPTIDOM_DATABASE_URL is not configured");
+    }
 
     web.listen(5174, "0.0.0.0", () => {
         logger.info("🚀 Flowly Server is running on http://10.0.1.16:5174 and http://localhost:5174");
@@ -59,6 +70,15 @@ const bootstrap = async () => {
         logger.info("Notification outbox worker disabled via DISABLE_OUTBOX_WORKER.");
     } else {
         startNotificationOutboxWorker();
+    }
+
+    const disableOnboardingExpiryWorker =
+        String(process.env.DISABLE_ONBOARDING_EXPIRY_WORKER ?? "").toLowerCase() === "true";
+
+    if (disableOnboardingExpiryWorker) {
+        logger.info("Onboarding expiry worker disabled via DISABLE_ONBOARDING_EXPIRY_WORKER.");
+    } else {
+        startOnboardingExpiryWorker();
     }
 };
 

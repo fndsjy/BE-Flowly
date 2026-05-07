@@ -65,6 +65,22 @@ export type UpdateNotificationTemplateRequest = {
 export type DeleteNotificationTemplateRequest = {
     notificationTemplateId: string;
 };
+export type TestNotificationRecipientResult = {
+    userId: number;
+    employeeName: string | null;
+    phoneNumber: string | null;
+    notificationOutboxId: string | null;
+    status: string;
+    error: string | null;
+};
+export type TestWhatsappNotificationResponse = {
+    configuredUserIds: number[];
+    sent: number;
+    pending: number;
+    failed: number;
+    skipped: number;
+    recipients: TestNotificationRecipientResult[];
+};
 export declare const toNotificationTemplatePortalMappingResponse: (item: NotificationTemplatePortalMappingRecord) => NotificationTemplatePortalMappingResponse;
 export declare function toNotificationTemplateResponse(item: NotificationTemplateRecord): NotificationTemplateResponse;
 export declare const toNotificationTemplateListResponse: typeof toNotificationTemplateResponse;

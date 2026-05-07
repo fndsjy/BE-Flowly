@@ -1,5 +1,6 @@
 import { PrismaClient as FlowlyClient } from "../generated/flowly/client.js";
 import { PrismaClient as EmployeeClient } from "../generated/employee/client.js";
+import { PrismaClient as OptidomClient } from "../generated/optidom/client.js";
 import { logger } from "./logging.js";
 
 const isEnabled = (value: string | undefined, defaultValue = false) => {
@@ -12,6 +13,7 @@ const enablePrismaQueryLog = isEnabled(process.env.PRISMA_LOG_QUERY, false);
 const enablePrismaInfoLog = isEnabled(process.env.PRISMA_LOG_INFO, false);
 const enablePrismaWarnLog = isEnabled(process.env.PRISMA_LOG_WARN, false);
 const keepAliveEnabled = isEnabled(process.env.PRISMA_KEEPALIVE_ENABLED, true);
+export const optidomDatabaseEnabled = Boolean(process.env.OPTIDOM_DATABASE_URL?.trim());
 
 const parsePositiveInteger = (value: string | undefined, fallback: number) => {
     const parsed = Number(value);
@@ -24,7 +26,11 @@ const parsePositiveInteger = (value: string | undefined, fallback: number) => {
 
 const keepAliveIntervalMs = parsePositiveInteger(
     process.env.PRISMA_KEEPALIVE_INTERVAL_MS,
-    4 * 60 * 1000
+    30 * 1000
+);
+const keepAliveSlowThresholdMs = parsePositiveInteger(
+    process.env.PRISMA_KEEPALIVE_SLOW_THRESHOLD_MS,
+    2000
 );
 
 const prismaLogConfig = [
@@ -42,9 +48,13 @@ export const prismaEmployee = new EmployeeClient({
     log: prismaLogConfig,
 });
 
+export const prismaOptidom = new OptidomClient({
+    log: prismaLogConfig,
+});
+
 const scheduleKeepAlive = (
     label: string,
-    client: FlowlyClient | EmployeeClient
+    client: FlowlyClient | EmployeeClient | OptidomClient
 ) => {
     if (!keepAliveEnabled) {
         return;
@@ -58,7 +68,16 @@ const scheduleKeepAlive = (
 
         running = true;
         try {
+            const startedAt = process.hrtime.bigint();
             await client.$queryRaw`SELECT 1`;
+            const elapsedMs =
+                Number(process.hrtime.bigint() - startedAt) / 1_000_000;
+            if (elapsedMs >= keepAliveSlowThresholdMs) {
+                logger.warn(`[PRISMA ${label} KEEPALIVE SLOW]`, {
+                    elapsedMs: Math.round(elapsedMs * 100) / 100,
+                    thresholdMs: keepAliveSlowThresholdMs,
+                });
+            }
         } catch (error) {
             const message =
                 error instanceof Error ? error.message : "Unknown keepalive error";
@@ -82,6 +101,10 @@ if (enablePrismaQueryLog) {
     prismaEmployee.$on("query", (e: any) => {
         logger.info(`[PRISMA EMPLOYEE QUERY] ${e.query} | ${e.duration}ms`);
     });
+
+    prismaOptidom.$on("query", (e: any) => {
+        logger.info(`[PRISMA OPTIDOM QUERY] ${e.query} | ${e.duration}ms`);
+    });
 }
 
 prismaFlowly.$on("error", (e: any) => {
@@ -92,6 +115,10 @@ prismaEmployee.$on("error", (e: any) => {
     logger.error(`[PRISMA EMPLOYEE ERROR]`, { message: e.message, target: e.target });
 });
 
+prismaOptidom.$on("error", (e: any) => {
+    logger.error(`[PRISMA OPTIDOM ERROR]`, { message: e.message, target: e.target });
+});
+
 if (enablePrismaInfoLog) {
     prismaFlowly.$on("info", (e: any) => {
         logger.info(`[PRISMA FLOWLY INFO]`, { message: e.message });
@@ -99,6 +126,10 @@ if (enablePrismaInfoLog) {
 
     prismaEmployee.$on("info", (e: any) => {
         logger.info(`[PRISMA EMPLOYEE INFO]`, { message: e.message });
+    });
+
+    prismaOptidom.$on("info", (e: any) => {
+        logger.info(`[PRISMA OPTIDOM INFO]`, { message: e.message });
     });
 }
 
@@ -110,7 +141,14 @@ if (enablePrismaWarnLog) {
     prismaEmployee.$on("warn", (e: any) => {
         logger.info(`[PRISMA EMPLOYEE WARN]`, { message: e.message });
     });
+
+    prismaOptidom.$on("warn", (e: any) => {
+        logger.info(`[PRISMA OPTIDOM WARN]`, { message: e.message });
+    });
 }
 
 scheduleKeepAlive("FLOWLY", prismaFlowly);
 scheduleKeepAlive("EMPLOYEE", prismaEmployee);
+if (optidomDatabaseEnabled) {
+    scheduleKeepAlive("OPTIDOM", prismaOptidom);
+}
