@@ -1,4 +1,5 @@
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
+import { invalidateProfileCache } from "../application/profile-cache.js";
 const EMPLOYEE_PARTICIPANT_REFERENCE_TYPE = "EMPLOYEE";
 const FINISHED_FLAG = "Y";
 const RELEASED_FLAG = 1;
@@ -23,6 +24,7 @@ const uniqueTexts = (values) => Array.from(new Set((values ?? [])
 const isAssignmentBlockedFromSync = (status) => {
     const normalized = normalizeUpper(status);
     return (normalized === "CANCELLED" ||
+        normalized === "TRANSFER_REVIEW" ||
         normalized === "FAILED" ||
         normalized === "FAIL_FINAL");
 };
@@ -74,6 +76,7 @@ export class OnboardingExamResultSyncService {
                             select: {
                                 status: true,
                                 currentStageOrder: true,
+                                participantReferenceId: true,
                             },
                         },
                     },
@@ -242,6 +245,7 @@ export class OnboardingExamResultSyncService {
                     });
                 }
             });
+            invalidateProfileCache(attempt.stageProgress.assignment.participantReferenceId);
             synced += 1;
         }
         return { synced };

@@ -73,6 +73,24 @@ export type DeleteNotificationTemplateRequest = {
   notificationTemplateId: string;
 };
 
+export type TestNotificationRecipientResult = {
+  userId: number;
+  employeeName: string | null;
+  phoneNumber: string | null;
+  notificationOutboxId: string | null;
+  status: string;
+  error: string | null;
+};
+
+export type TestWhatsappNotificationResponse = {
+  configuredUserIds: number[];
+  sent: number;
+  pending: number;
+  failed: number;
+  skipped: number;
+  recipients: TestNotificationRecipientResult[];
+};
+
 export const toNotificationTemplatePortalMappingResponse = (
   item: NotificationTemplatePortalMappingRecord
 ): NotificationTemplatePortalMappingResponse => ({

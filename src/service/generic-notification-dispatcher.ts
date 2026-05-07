@@ -108,7 +108,7 @@ const resolveChannel = (item: {
   return normalizeChannel(typeof meta.channel === "string" ? meta.channel : null);
 };
 
-const dispatchOutboxItem = async (item: {
+export const dispatchGenericNotificationOutboxItem = async (item: {
   notificationOutboxId: string;
   phoneNumber: string;
   message: string;
@@ -223,7 +223,7 @@ export const processGenericNotificationOutbox = async () => {
 
     for (const item of items) {
       try {
-        await dispatchOutboxItem(item);
+        await dispatchGenericNotificationOutboxItem(item);
       } catch (error) {
         logger.warn("Failed to dispatch generic notification", {
           notificationOutboxId: item.notificationOutboxId,

@@ -48,4 +48,24 @@ export class OnboardingValidation {
     fileName: optionalText(255).optional(),
     fileTitle: optionalText(255).optional(),
   });
+
+  static readonly DECIDE_ONBOARDING: ZodType = z.object({
+    onboardingAssignmentId: z.string().trim().min(1).max(100),
+    decisionType: z
+      .string()
+      .trim()
+      .transform((value) => value.toUpperCase())
+      .refine(
+        (value) =>
+            value === "PASS_OVERRIDE" ||
+            value === "EXTEND" ||
+            value === "FAIL_FINAL" ||
+            value === "FREEZE_TRANSFER_REVIEW",
+        {
+          message: "Keputusan onboarding tidak valid",
+        }
+      ),
+    nextDurationDay: z.number().int().positive().max(3650).optional().nullable(),
+    note: optionalText(2000).optional(),
+  });
 }

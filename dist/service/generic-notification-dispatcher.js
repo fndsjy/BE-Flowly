@@ -79,7 +79,7 @@ const resolveChannel = (item) => {
     const meta = parseMeta(item.meta);
     return normalizeChannel(typeof meta.channel === "string" ? meta.channel : null);
 };
-const dispatchOutboxItem = async (item) => {
+export const dispatchGenericNotificationOutboxItem = async (item) => {
     const attempts = item.attempts + 1;
     const channel = resolveChannel(item);
     const message = item.message.trim();
@@ -152,7 +152,7 @@ export const processGenericNotificationOutbox = async () => {
         });
         for (const item of items) {
             try {
-                await dispatchOutboxItem(item);
+                await dispatchGenericNotificationOutboxItem(item);
             }
             catch (error) {
                 logger.warn("Failed to dispatch generic notification", {

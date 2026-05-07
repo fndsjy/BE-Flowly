@@ -16,6 +16,19 @@ export class OnboardingController {
             next(err);
         }
     }
+    static async listPicMonitoring(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await OnboardingService.listPicMonitoring(payload.userId);
+            res.status(200).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
     static async listMyWorkspace(req, res, next) {
         try {
             const token = req.cookies.access_token;
@@ -50,6 +63,19 @@ export class OnboardingController {
             const payload = verifyToken(token);
             const response = await OnboardingService.startEmployees(payload.userId, req.body);
             res.status(201).json({ response });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+    static async decideOnboarding(req, res, next) {
+        try {
+            const token = req.cookies.access_token;
+            if (!token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(token);
+            const response = await OnboardingService.decideOnboarding(payload.userId, req.body);
+            res.status(200).json({ response });
         }
         catch (err) {
             next(err);

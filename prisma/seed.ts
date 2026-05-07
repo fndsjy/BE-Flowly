@@ -11,6 +11,8 @@ import {
   generatePortalMenuMapId,
   generateOnboardingPortalTemplateId,
   generateOnboardingStageTemplateId,
+  generateNotificationTemplateId,
+  generateNotificationTemplatePortalId,
 } from "../src/utils/id-generator.js";
 
 // 🔹 Daftar Role
@@ -74,6 +76,7 @@ const masAccessItems = [
   { resourceType: "MENU", resourceKey: "EMPLOYEE_LEARNING", displayName: "Learning", route: "https://lms.domas.co.id/", parentKey: null },
   { resourceType: "MENU", resourceKey: "ORGANISASI", displayName: "Organisasi", route: "/pilar", parentKey: null },
   { resourceType: "MENU", resourceKey: "PROSEDUR", displayName: "Prosedur", route: "/prosedur", parentKey: null },
+  { resourceType: "MENU", resourceKey: "FISHBONE", displayName: "Fishbone", route: "/fishbone", parentKey: null },
   { resourceType: "MENU", resourceKey: "A3", displayName: "A3", route: "/a3", parentKey: null },
   { resourceType: "MENU", resourceKey: "ABSENSI", displayName: "Absensi", route: "/absensi", parentKey: null },
   { resourceType: "MENU", resourceKey: "HRD", displayName: "HRD", route: "/hrd", parentKey: null },
@@ -100,6 +103,9 @@ const masAccessItems = [
   { resourceType: "MENU", resourceKey: "COMMUNITY_LEARNING", displayName: "Learning", route: "https://lms.domas.co.id/", parentKey: null },
   { resourceType: "MENU", resourceKey: "COMMUNITY_ADMIN", displayName: "Administrator", route: "/community/administrator", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING", displayName: "Onboarding", route: "/portal-administrator/onboarding", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_STAGES", displayName: "Tahap onboarding", route: "/portal-administrator/onboarding-stages", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_MATERIALS", displayName: "Materi onboarding", route: "/portal-administrator/onboarding-materials", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_EXAMS", displayName: "Ujian onboarding", route: "/portal-administrator/onboarding-exams", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_NOTIF_TEMPLATE", displayName: "Template Notif", route: "/portal-administrator/notification-template", parentKey: null },
   { resourceType: "MODULE", resourceKey: "PILAR", displayName: "Pilar", route: "/pilar", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU", displayName: "SBU", route: "/pilar/sbu", parentKey: "ORGANISASI" },
@@ -110,6 +116,7 @@ const masAccessItems = [
   { resourceType: "MODULE", resourceKey: "ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/onboarding/checklist", parentKey: "ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/onboarding/assessments", parentKey: "ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/onboarding/certificates", parentKey: "ONBOARDING" },
+  { resourceType: "MODULE", resourceKey: "ONBOARDING_DECISION", displayName: "Keputusan Onboarding", route: "/onboarding/decision", parentKey: "ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "ADMIN_USERS", displayName: "Users", route: "/administrator/users", parentKey: "ADMIN" },
   { resourceType: "MODULE", resourceKey: "ADMIN_JABATAN", displayName: "Jabatan", route: "/administrator/jabatan", parentKey: "ADMIN" },
   { resourceType: "MODULE", resourceKey: "ADMIN_ACCESS_ROLE", displayName: "Hak Akses", route: "/administrator/access-role", parentKey: "ADMIN" },
@@ -172,7 +179,10 @@ const portalMenuMappings = [
   { portalKey: "COMMUNITY", menuKey: "COMMUNITY_LEARNING", orderIndex: 30 },
   { portalKey: "COMMUNITY", menuKey: "COMMUNITY_ADMIN", orderIndex: 40 },
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING", orderIndex: 10 },
-  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_NOTIF_TEMPLATE", orderIndex: 20 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_STAGES", orderIndex: 20 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_MATERIALS", orderIndex: 30 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_EXAMS", orderIndex: 40 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_NOTIF_TEMPLATE", orderIndex: 50 },
 ];
 
 type accessRoleseed = {
@@ -244,6 +254,27 @@ const defaultOnboardingStages = [
     stageCode: "STAGE_4",
     stageName: "Evaluasi & Penyelesaian",
     stageDescription: "Tahap akhir untuk evaluasi onboarding, penyelesaian administrasi, dan handoff lanjutan.",
+  },
+];
+
+const notificationTemplateDefaults = [
+  {
+    templateName: "WA Peserta - Onboarding dimulai",
+    channel: "WHATSAPP",
+    eventKey: "ONBOARDING_STARTED",
+    recipientRole: "PARTICIPANT",
+    portalKeys: ["EMPLOYEE"],
+    messageTemplate:
+      "Halo {recipientName},\n\nOnboarding Anda untuk {portalName} sudah dimulai pada {startedDate}.\nDeadline: {dueDate}\n\nSilakan login menggunakan password OMS Anda yang sudah ada melalui {loginUrl}.",
+  },
+  {
+    templateName: "WA PIC SBU Sub - Onboarding dimulai",
+    channel: "WHATSAPP",
+    eventKey: "ONBOARDING_STARTED",
+    recipientRole: "SBU_SUB_PIC",
+    portalKeys: ["EMPLOYEE"],
+    messageTemplate:
+      "Halo {recipientName},\n\n{employeeName} ({cardNumber}) mulai onboarding {portalName} pada {startedDate}.\nSBU Sub: {sbuSubName}\nSBU: {sbuName}\nPilar: {pilarName}\nPosisi: {positionName}\nDeadline: {dueDate}\n\nPantau progres onboarding melalui {hrdUrl}.",
   },
 ];
 
@@ -531,11 +562,119 @@ async function main() {
           isDeleted: false,
         },
       });
+      }
     }
-  }
 
-  if (process.env.SEED_ONBOARDING_EMPLOYEE_SCHEDULES === "true") {
-    const syncedSchedules = await OnboardingEmployeeScheduleSyncService.syncAll();
+    const makeNotificationTemplateId = await generateNotificationTemplateId();
+    const makeNotificationTemplatePortalId =
+      await generateNotificationTemplatePortalId();
+    for (const template of notificationTemplateDefaults) {
+      const portalKeys = Array.from(
+        new Set(template.portalKeys.map((portalKey) => portalKey.toUpperCase()))
+      ).sort();
+      const existingTemplate = await prisma.notificationTemplate.findFirst({
+        where: {
+          isDeleted: false,
+          channel: template.channel,
+          eventKey: template.eventKey,
+          recipientRole: template.recipientRole,
+          portalMappings: {
+            some: {
+              portalKey: { in: portalKeys },
+              isDeleted: false,
+            },
+          },
+        },
+        include: {
+          portalMappings: {
+            where: { isDeleted: false },
+          },
+        },
+      });
+
+      const now = new Date();
+      const notificationTemplateId = existingTemplate?.notificationTemplateId;
+      const savedTemplate = notificationTemplateId
+        ? await prisma.notificationTemplate.update({
+            where: { notificationTemplateId },
+            data: {
+              templateName: template.templateName,
+              isActive: true,
+              isDeleted: false,
+              deletedAt: null,
+              deletedBy: null,
+              updatedAt: now,
+              updatedBy: "SEED",
+            },
+            include: {
+              portalMappings: {
+                where: { isDeleted: false },
+              },
+            },
+          })
+        : await prisma.notificationTemplate.create({
+            data: {
+              notificationTemplateId: makeNotificationTemplateId(),
+              templateName: template.templateName,
+              channel: template.channel,
+              eventKey: template.eventKey,
+              recipientRole: template.recipientRole,
+              messageTemplate: template.messageTemplate,
+              isActive: true,
+              isDeleted: false,
+              createdAt: now,
+              createdBy: "SEED",
+              updatedAt: now,
+              updatedBy: "SEED",
+            },
+            include: {
+              portalMappings: {
+                where: { isDeleted: false },
+              },
+            },
+          });
+
+      for (const portalKey of portalKeys) {
+        const existingMapping = savedTemplate.portalMappings.find(
+          (mapping) => mapping.portalKey === portalKey
+        );
+
+        if (existingMapping) {
+          await prisma.notificationTemplatePortal.update({
+            where: {
+              notificationTemplatePortalId:
+                existingMapping.notificationTemplatePortalId,
+            },
+            data: {
+              isActive: true,
+              isDeleted: false,
+              deletedAt: null,
+              deletedBy: null,
+              updatedAt: now,
+              updatedBy: "SEED",
+            },
+          });
+          continue;
+        }
+
+        await prisma.notificationTemplatePortal.create({
+          data: {
+            notificationTemplatePortalId: makeNotificationTemplatePortalId(),
+            notificationTemplateId: savedTemplate.notificationTemplateId,
+            portalKey,
+            isActive: true,
+            isDeleted: false,
+            createdAt: now,
+            createdBy: "SEED",
+            updatedAt: now,
+            updatedBy: "SEED",
+          },
+        });
+      }
+    }
+
+    if (process.env.SEED_ONBOARDING_EMPLOYEE_SCHEDULES === "true") {
+      const syncedSchedules = await OnboardingEmployeeScheduleSyncService.syncAll();
     const totalQuestions = syncedSchedules.reduce(
       (sum, result) => sum + result.questionCount,
       0

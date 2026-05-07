@@ -1,5 +1,7 @@
 import { PrismaClient as FlowlyClient } from "../generated/flowly/client.js";
 import { PrismaClient as EmployeeClient } from "../generated/employee/client.js";
+import { PrismaClient as OptidomClient } from "../generated/optidom/client.js";
+export declare const optidomDatabaseEnabled: boolean;
 export declare const prismaFlowly: FlowlyClient<{
     log: ({
         emit: "event";
@@ -30,4 +32,19 @@ export declare const prismaEmployee: EmployeeClient<{
         level: "warn";
     })[];
 }, "error" | "query" | "info" | "warn", import("../generated/employee/runtime/library.js").DefaultArgs>;
+export declare const prismaOptidom: OptidomClient<{
+    log: ({
+        emit: "event";
+        level: "query";
+    } | {
+        emit: "event";
+        level: "error";
+    } | {
+        emit: "event";
+        level: "info";
+    } | {
+        emit: "event";
+        level: "warn";
+    })[];
+}, "error" | "query" | "info" | "warn", import("../generated/optidom/runtime/library.js").DefaultArgs>;
 //# sourceMappingURL=database.d.ts.map

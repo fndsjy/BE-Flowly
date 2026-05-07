@@ -34,6 +34,8 @@ import { NotificationTemplateController } from "../controller/notification-templ
 import { OnboardingController } from "../controller/onboarding-controller.js";
 import { OnboardingExamController } from "../controller/onboarding-exam-controller.js";
 import { OnboardingMaterialController } from "../controller/onboarding-material-controller.js";
+import { OnboardingStageController } from "../controller/onboarding-stage-controller.js";
+import { CustomerSsoController } from "../controller/customer-sso-controller.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -48,6 +50,9 @@ v1.patch("/password", UserController.changePassword);
 v1.patch("/role", UserController.changeRole);
 v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
+v1.post("/customer-sso/login", CustomerSsoController.login);
+v1.get("/customer-sso/profile", CustomerSsoController.getProfile);
+v1.post("/customer-sso/logout", CustomerSsoController.logout);
 
 v1.post("/master-access-role", MasterAccessRoleController.create);
 v1.put("/master-access-role", MasterAccessRoleController.update);
@@ -74,8 +79,10 @@ v1.get("/employee", EmployeeController.listForPIC);
 v1.patch("/employee/job-desc", EmployeeController.updateJobDesc);
 v1.get("/onboarding/me", OnboardingController.listMyWorkspace);
 v1.get("/onboarding/admin-monitoring", OnboardingController.listAdminMonitoring);
+v1.get("/onboarding/pic-monitoring", OnboardingController.listPicMonitoring);
 v1.get("/onboarding/employee-summary", OnboardingController.listEmployeeSummary);
 v1.post("/onboarding/start-employees", OnboardingController.startEmployees);
+v1.post("/onboarding/decision", OnboardingController.decideOnboarding);
 v1.post("/onboarding/exam/start", OnboardingController.startExam);
 v1.post("/onboarding/exam/answer", OnboardingController.saveExamAnswer);
 v1.post("/onboarding/exam/warning", OnboardingController.recordExamWarning);
@@ -124,6 +131,22 @@ v1.delete(
   OnboardingMaterialController.deleteAssignment
 );
 v1.get("/onboarding-material/file/:fileName", OnboardingMaterialController.download);
+v1.get(
+  "/onboarding-stage/customer-learning",
+  OnboardingStageController.listCustomerLearning
+);
+v1.get(
+  "/onboarding-stage/customer-learning/file",
+  OnboardingMaterialController.downloadCustomerLearningFile
+);
+v1.post(
+  "/onboarding-stage/customer-learning/file-open",
+  OnboardingStageController.recordCustomerLearningFileOpen
+);
+v1.get("/onboarding-stage", OnboardingStageController.list);
+v1.post("/onboarding-stage", OnboardingStageController.create);
+v1.put("/onboarding-stage", OnboardingStageController.update);
+v1.delete("/onboarding-stage", OnboardingStageController.delete);
 v1.get("/onboarding-exam/assignments", OnboardingExamController.listAssignments);
 v1.get("/onboarding-exam/source-exams", OnboardingExamController.listSourceExams);
 v1.post("/onboarding-exam/assignments", OnboardingExamController.createAssignment);
@@ -185,6 +208,10 @@ v1.get("/case-notification-template", CaseNotificationTemplateController.list);
 
 v1.post("/notification-template", NotificationTemplateController.create);
 v1.put("/notification-template", NotificationTemplateController.update);
+v1.post(
+  "/notification-template/test-whatsapp",
+  NotificationTemplateController.sendWhatsappTest
+);
 v1.delete("/notification-template", NotificationTemplateController.softDelete);
 v1.get("/notification-template", NotificationTemplateController.list);
 

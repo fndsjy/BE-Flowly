@@ -7,6 +7,7 @@ import {
   generateOnboardingExamAttemptId,
 } from "../utils/id-generator.js";
 import { OnboardingEmployeeScheduleSyncService } from "./onboarding-employee-schedule-sync-service.js";
+import { OnboardingService } from "./onboarding-service.js";
 import { OnboardingMaterialService } from "./onboarding-material-service.js";
 
 type StartRuntimeExamRequest = {
@@ -65,6 +66,16 @@ const EXAM_NOTIFICATION_CONTEXT_TYPE = "ONBOARDING_EXAM_SESSION";
 const EXAM_STARTED_EVENT_KEY = "ONBOARDING_EXAM_STARTED";
 const EXAM_FINISHED_EVENT_KEY = "ONBOARDING_EXAM_FINISHED";
 const EXAM_MONITOR_RECIPIENT_ROLE = "EXAM_MONITOR";
+const LOCKED_ASSIGNMENT_STATUSES = new Set([
+  "TRANSFER_REVIEW",
+  "FAILED",
+  "FAIL_FINAL",
+  "CANCELLED",
+  "PASSED",
+  "PASSED_TO_LMS",
+  "PASSED_OVERRIDE",
+  "COMPLETED",
+]);
 const TRUE_FALSE_OPTIONS = [
   {
     value: "True",
@@ -295,7 +306,7 @@ const toLegacyAnswerText = (value: string | null | undefined) => {
     return null;
   }
 
-  return normalizeWhitespace(text).replace(/\s+/g, "#");
+  return normalizeWhitespace(text).toLowerCase().replace(/\s+/g, "#");
 };
 
 const findSelectedOption = (
@@ -895,6 +906,37 @@ const getAuthorizedStageProgress = async (
   return stageProgress;
 };
 
+const ensureExamSessionAssignmentOpen = async (
+  requesterUserId: string,
+  examsId: string
+) => {
+  await OnboardingService.expireOverdueAssignments({
+    participantReferenceIds: [requesterUserId],
+  });
+
+  const attempt = await prismaFlowly.onboardingExamAttempt.findFirst({
+    where: {
+      employeeExamSessionId: examsId,
+      isDeleted: false,
+    },
+    select: {
+      assignment: {
+        select: {
+          status: true,
+        },
+      },
+    },
+  });
+
+  const assignmentStatus = normalizeUpper(attempt?.assignment.status);
+  if (LOCKED_ASSIGNMENT_STATUSES.has(assignmentStatus)) {
+    throw new ResponseError(
+      403,
+      "Onboarding sudah terkunci karena gagal atau sudah selesai"
+    );
+  }
+};
+
 type AuthorizedStageProgress = Awaited<ReturnType<typeof getAuthorizedStageProgress>>;
 type RuntimeSourceMaterial = Awaited<
   ReturnType<typeof OnboardingMaterialService.listSourceMaterials>
@@ -1202,6 +1244,10 @@ export class OnboardingExamRuntimeService {
     if (!Number.isInteger(employeeId) || employeeId <= 0) {
       throw new ResponseError(403, "Akun ini tidak terhubung ke employee");
     }
+
+    await OnboardingService.expireOverdueAssignments({
+      participantReferenceIds: [requesterUserId],
+    });
 
     const [stageProgress, employee] = await Promise.all([
       getAuthorizedStageProgress(requesterUserId, onboardingStageProgressId),
@@ -1519,6 +1565,8 @@ export class OnboardingExamRuntimeService {
       throw new ResponseError(403, "Akun ini tidak terhubung ke employee");
     }
 
+    await ensureExamSessionAssignmentOpen(requesterUserId, examsId);
+
     const session = await prismaEmployee.em_session_exams.findFirst({
       where: {
         exams_id: examsId,
@@ -1647,6 +1695,8 @@ export class OnboardingExamRuntimeService {
       throw new ResponseError(403, "Akun ini tidak terhubung ke employee");
     }
 
+    await ensureExamSessionAssignmentOpen(requesterUserId, examsId);
+
     const session = await prismaEmployee.em_session_exams.findFirst({
       where: {
         exams_id: examsId,
@@ -1719,6 +1769,8 @@ export class OnboardingExamRuntimeService {
     if (!Number.isInteger(employeeId) || employeeId <= 0) {
       throw new ResponseError(403, "Akun ini tidak terhubung ke employee");
     }
+
+    await ensureExamSessionAssignmentOpen(requesterUserId, examsId);
 
     const session = await prismaEmployee.em_session_exams.findFirst({
       where: {

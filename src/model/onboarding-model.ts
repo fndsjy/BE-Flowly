@@ -29,21 +29,61 @@ export interface StartEmployeeOnboardingResponse {
   skipped: EmployeeOnboardingSkipItem[];
 }
 
+export interface EmployeeOnboardingPlacementDetailResponse {
+  source: string;
+  label: string;
+  roleLabel: string;
+  positionName: string | null;
+  jabatanName: string | null;
+  pilarName: string | null;
+  sbuName: string | null;
+  sbuSubName: string | null;
+  sbuSubPicName: string | null;
+}
+
 export interface EmployeeOnboardingSummaryResponse {
   userId: number;
   employeeName: string | null;
-  onboardingAssignmentId: string;
+  onboardingAssignmentId: string | null;
   portalKey: string;
-  status: string;
-  startedAt: Date;
-  dueAt: Date;
+  status: string | null;
+  startedAt: Date | null;
+  dueAt: Date | null;
+  failedAt: Date | null;
   currentStageOrder: number | null;
   hasActiveAssignment: boolean;
   canStart: boolean;
+  requiresDecision: boolean;
+  hasOnboardingPlacement: boolean;
+  onboardingPlacementSources: string[];
+  onboardingPlacementDetails: EmployeeOnboardingPlacementDetailResponse[];
+  onboardingBlockReason: string | null;
 }
 
 export interface ListEmployeeOnboardingSummaryRequest {
   portalKey?: string;
+}
+
+export type OnboardingDecisionType =
+  | "PASS_OVERRIDE"
+  | "EXTEND"
+  | "FAIL_FINAL"
+  | "FREEZE_TRANSFER_REVIEW";
+
+export interface DecideOnboardingRequest {
+  onboardingAssignmentId: string;
+  decisionType: OnboardingDecisionType;
+  nextDurationDay?: number | null;
+  note?: string | null;
+}
+
+export interface DecideOnboardingResponse {
+  onboardingAssignmentId: string;
+  decisionType: OnboardingDecisionType;
+  status: string;
+  dueAt: Date;
+  currentStageOrder: number | null;
+  note: string | null;
 }
 
 export interface OnboardingWorkspaceMaterialFileResponse {
@@ -120,6 +160,7 @@ export interface OnboardingWorkspaceStageResponse {
   failedAt: Date | null;
   note: string | null;
   examScore: number | null;
+  examPreviousScore: number | null;
   examAttemptStatus: string | null;
   examSubmittedAt: Date | null;
   examReviewedAt: Date | null;
@@ -192,6 +233,12 @@ export interface AdminOnboardingMonitoringStageResponse {
   completedAt: Date | null;
   failedAt: Date | null;
   note: string | null;
+  examScore: number | null;
+  examPreviousScore: number | null;
+  examAttemptStatus: string | null;
+  examSubmittedAt: Date | null;
+  examReviewedAt: Date | null;
+  examNote: string | null;
   totalMaterialCount: number;
   readMaterialCount: number;
   totalOpenCount: number;
@@ -201,6 +248,7 @@ export interface AdminOnboardingMonitoringStageResponse {
 }
 
 export interface AdminOnboardingMonitoringParticipantResponse {
+  onboardingAssignmentId: string;
   participantId: string;
   participantReferenceType: string;
   participantReferenceId: string;
@@ -220,6 +268,7 @@ export interface AdminOnboardingMonitoringParticipantResponse {
   totalOpenCount: number;
   firstReadAt: Date | null;
   lastReadAt: Date | null;
+  canFreezeForTransferReview?: boolean;
   stages: AdminOnboardingMonitoringStageResponse[];
 }
 

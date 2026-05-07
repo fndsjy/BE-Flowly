@@ -85,6 +85,7 @@ export type UserProfileResponse = {
     tipe: string | null;
     location: string | null;
     statusLMS: boolean;
+    onboardingPassed: boolean;
     bpjsKesehatan: string | null;
     bpjsKetenagakerjaan: string | null;
     canEditProfile: boolean;
