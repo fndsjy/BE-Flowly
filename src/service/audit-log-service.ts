@@ -43,6 +43,11 @@ export class AuditLogService {
     if (request.action) whereClause.action = request.action;
     if (request.actorId) whereClause.actorId = request.actorId;
     if (request.actorType) whereClause.actorType = request.actorType;
+    if (request.portalKey && request.portalKey !== "ALL") {
+      whereClause.meta = {
+        contains: `"portalKey":"${request.portalKey.trim().toUpperCase()}"`,
+      };
+    }
 
     if (request.dateFrom || request.dateTo) {
       whereClause.createdAt = {};

@@ -306,6 +306,9 @@ export interface StartOnboardingMaterialReadResponse {
   onboardingStageProgressId: string;
   onboardingStageMaterialId: string;
   sourceFileId: number;
+  fileName: string | null;
+  fileType: number | null;
+  fileUrl: string | null;
   status: string;
   stageStatus: string;
   readAt: Date | null;

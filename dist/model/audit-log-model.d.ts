@@ -26,6 +26,7 @@ export type ListAuditLogRequest = {
     action?: string;
     actorId?: string;
     actorType?: string;
+    portalKey?: string;
     dateFrom?: Date;
     dateTo?: Date;
     q?: string;

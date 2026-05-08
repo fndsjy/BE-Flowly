@@ -107,6 +107,7 @@ const masAccessItems = [
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_MATERIALS", displayName: "Materi onboarding", route: "/portal-administrator/onboarding-materials", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_EXAMS", displayName: "Ujian onboarding", route: "/portal-administrator/onboarding-exams", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_NOTIF_TEMPLATE", displayName: "Template Notif", route: "/portal-administrator/notification-template", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMINISTRATOR_AUDIT_LOG", displayName: "Audit Log", route: "/portal-administrator/audit-log", parentKey: null },
   { resourceType: "MODULE", resourceKey: "PILAR", displayName: "Pilar", route: "/pilar", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU", displayName: "SBU", route: "/pilar/sbu", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU_SUB", displayName: "SBU Sub", route: "/pilar/sbu/sbu_sub", parentKey: "ORGANISASI" },
@@ -183,6 +184,7 @@ const portalMenuMappings = [
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_MATERIALS", orderIndex: 30 },
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_EXAMS", orderIndex: 40 },
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_NOTIF_TEMPLATE", orderIndex: 50 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_AUDIT_LOG", orderIndex: 60 },
 ];
 
 type accessRoleseed = {

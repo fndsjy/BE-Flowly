@@ -205,7 +205,12 @@ const streamExternalOnboardingFile = async (res, params) => {
     if (!response.ok || !response.body) {
         throw new ResponseError(404, "File onboarding tidak ditemukan");
     }
-    res.setHeader("Content-Type", response.headers.get("content-type") ?? resolveMimeType(params.fileName));
+    const sourceContentType = response.headers.get("content-type");
+    const contentType = !sourceContentType ||
+        /^application\/octet-stream\b/i.test(sourceContentType)
+        ? resolveMimeType(params.fileName)
+        : sourceContentType;
+    res.setHeader("Content-Type", contentType);
     res.setHeader("Content-Disposition", `${params.disposition}; filename="${params.fileName}"`);
     res.setHeader("Cache-Control", "no-store, private");
     res.setHeader("Pragma", "no-cache");
@@ -562,6 +567,7 @@ const sendOfficePdfPreview = async (req, res, params) => {
 };
 const sendOnboardingFile = async (req, res, params) => {
     const fileName = normalizeFileName(params.fileName);
+    const fileUrl = normalizeQueryText(params.fileUrl);
     if (params.disposition === "inline" && isOfficeFile(fileName)) {
         await sendOfficePdfPreview(req, res, {
             fileName,
@@ -570,20 +576,19 @@ const sendOnboardingFile = async (req, res, params) => {
         });
         return;
     }
+    if (fileUrl && isHttpUrl(fileUrl)) {
+        await streamExternalOnboardingFile(res, {
+            fileName,
+            fileUrl,
+            disposition: params.disposition,
+        });
+        return;
+    }
     const fullPath = path.join(resolveSourceDirectory(fileName, params.fileType), fileName);
     try {
         await fs.access(fullPath);
     }
     catch {
-        const fileUrl = normalizeQueryText(params.fileUrl);
-        if (fileUrl && isHttpUrl(fileUrl)) {
-            await streamExternalOnboardingFile(res, {
-                fileName,
-                fileUrl,
-                disposition: params.disposition,
-            });
-            return;
-        }
         res.redirect(302, FALLBACK_PREVIEW_URL);
         return;
     }
@@ -729,13 +734,19 @@ export class OnboardingMaterialController {
                 }
             }
             const trackingRequest = parseMaterialReadTrackingRequest(req, fileName);
+            let resolvedFileName = fileName;
+            let resolvedFileType = fileType;
+            let resolvedFileUrl = null;
             if (trackingRequest && requesterUserId) {
-                await OnboardingService.startMaterialRead(requesterUserId, trackingRequest);
+                const materialRead = await OnboardingService.startMaterialRead(requesterUserId, trackingRequest);
+                resolvedFileName = materialRead.fileName ?? fileName;
+                resolvedFileType = materialRead.fileType ?? fileType;
+                resolvedFileUrl = materialRead.fileUrl;
             }
             await sendOnboardingFile(req, res, {
-                fileName,
-                fileType,
-                fileUrl: null,
+                fileName: resolvedFileName,
+                fileType: resolvedFileType,
+                fileUrl: resolvedFileUrl,
                 disposition,
             });
         }

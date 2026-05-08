@@ -269,9 +269,16 @@ const streamExternalOnboardingFile = async (
     throw new ResponseError(404, "File onboarding tidak ditemukan");
   }
 
+  const sourceContentType = response.headers.get("content-type");
+  const contentType =
+    !sourceContentType ||
+    /^application\/octet-stream\b/i.test(sourceContentType)
+      ? resolveMimeType(params.fileName)
+      : sourceContentType;
+
   res.setHeader(
     "Content-Type",
-    response.headers.get("content-type") ?? resolveMimeType(params.fileName)
+    contentType
   );
   res.setHeader(
     "Content-Disposition",
@@ -779,11 +786,21 @@ const sendOnboardingFile = async (
   }
 ) => {
   const fileName = normalizeFileName(params.fileName);
+  const fileUrl = normalizeQueryText(params.fileUrl);
   if (params.disposition === "inline" && isOfficeFile(fileName)) {
     await sendOfficePdfPreview(req, res, {
       fileName,
       fileType: params.fileType,
       fileUrl: params.fileUrl ?? null,
+    });
+    return;
+  }
+
+  if (fileUrl && isHttpUrl(fileUrl)) {
+    await streamExternalOnboardingFile(res, {
+      fileName,
+      fileUrl,
+      disposition: params.disposition,
     });
     return;
   }
@@ -796,16 +813,6 @@ const sendOnboardingFile = async (
   try {
     await fs.access(fullPath);
   } catch {
-    const fileUrl = normalizeQueryText(params.fileUrl);
-    if (fileUrl && isHttpUrl(fileUrl)) {
-      await streamExternalOnboardingFile(res, {
-        fileName,
-        fileUrl,
-        disposition: params.disposition,
-      });
-      return;
-    }
-
     res.redirect(302, FALLBACK_PREVIEW_URL);
     return;
   }
@@ -995,15 +1002,24 @@ export class OnboardingMaterialController {
         }
       }
       const trackingRequest = parseMaterialReadTrackingRequest(req, fileName);
+      let resolvedFileName = fileName;
+      let resolvedFileType = fileType;
+      let resolvedFileUrl: string | null = null;
 
       if (trackingRequest && requesterUserId) {
-        await OnboardingService.startMaterialRead(requesterUserId, trackingRequest);
+        const materialRead = await OnboardingService.startMaterialRead(
+          requesterUserId,
+          trackingRequest
+        );
+        resolvedFileName = materialRead.fileName ?? fileName;
+        resolvedFileType = materialRead.fileType ?? fileType;
+        resolvedFileUrl = materialRead.fileUrl;
       }
 
       await sendOnboardingFile(req, res, {
-        fileName,
-        fileType,
-        fileUrl: null,
+        fileName: resolvedFileName,
+        fileType: resolvedFileType,
+        fileUrl: resolvedFileUrl,
         disposition,
       });
     } catch (err) {
