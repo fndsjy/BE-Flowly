@@ -36,11 +36,13 @@ import { OnboardingExamController } from "../controller/onboarding-exam-controll
 import { OnboardingMaterialController } from "../controller/onboarding-material-controller.js";
 import { OnboardingStageController } from "../controller/onboarding-stage-controller.js";
 import { CustomerSsoController } from "../controller/customer-sso-controller.js";
+import { auditMutationMiddleware } from "../middleware/audit-middleware.js";
 
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
 
 const v1 = express.Router();
+v1.use(auditMutationMiddleware);
 v1.post("/register", UserController.register);
 v1.post("/login", UserController.login);
 v1.get("/profile", UserController.getProfile);

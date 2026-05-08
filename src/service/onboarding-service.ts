@@ -4142,6 +4142,33 @@ export class OnboardingService {
         throw new ResponseError(404, "Materi onboarding tidak ditemukan");
       }
 
+      const sourceMaterial = sourceMaterialMap.get(stageMaterial.materiId);
+      const sourceFiles = sourceMaterial?.files ?? [];
+      const selectedSourceFileIds = new Set(
+        resolveSelectedSourceFileIds(
+          sourceFiles.map((file) => file.id),
+          stageMaterial.note
+        )
+      );
+      const sourceFile =
+        normalizedSourceFileId > 0
+          ? sourceFiles.find((file) => file.id === normalizedSourceFileId) ?? null
+          : null;
+
+      if (normalizedSourceFileId > 0) {
+        if (!sourceFile || !selectedSourceFileIds.has(sourceFile.id)) {
+          throw new ResponseError(404, "File materi onboarding tidak ditemukan");
+        }
+
+        const requestedFileName = normalizeNote(validated.fileName);
+        if (
+          requestedFileName &&
+          normalizeUpper(sourceFile.fileName) !== normalizeUpper(requestedFileName)
+        ) {
+          throw new ResponseError(403, "Anda tidak memiliki akses ke file ini");
+        }
+      }
+
       const finalStageStatus =
         !stageProgress.startedAt &&
         (normalizeUpper(stageProgress.status) === "PENDING" ||
@@ -4298,6 +4325,9 @@ export class OnboardingService {
         onboardingStageProgressId: stageProgress.onboardingStageProgressId,
         onboardingStageMaterialId: stageMaterial.onboardingStageMaterialId,
         sourceFileId: normalizedSourceFileId,
+        fileName: sourceFile?.fileName ?? normalizeNote(validated.fileName),
+        fileType: sourceFile?.fileType ?? null,
+        fileUrl: sourceFile?.url ?? null,
         status: materialProgress.status,
         stageStatus: returnedStageStatus,
         readAt: materialProgress.readAt,

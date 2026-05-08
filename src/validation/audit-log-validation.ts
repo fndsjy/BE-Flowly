@@ -8,6 +8,7 @@ export class AuditLogValidation {
     action: z.string().max(20).optional(),
     actorId: z.string().max(20).optional(),
     actorType: z.string().max(20).optional(),
+    portalKey: z.string().trim().max(50).optional(),
     dateFrom: z.coerce.date().optional(),
     dateTo: z.coerce.date().optional(),
     q: z.string().max(200).optional(),

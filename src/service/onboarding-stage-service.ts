@@ -910,7 +910,7 @@ export class OnboardingStageService {
               id: file.id,
               title: file.title,
               fileName: file.fileName,
-              url: null,
+              url: file.url,
               fileType: file.fileType,
               onboardingMaterialProgressId:
                 materialProgress?.onboardingMaterialProgressId ?? null,

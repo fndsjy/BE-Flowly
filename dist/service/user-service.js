@@ -545,7 +545,8 @@ export class UserService {
         const user = await prismaFlowly.user.create({
             data: {
                 userId,
-                ...registerRequest,
+                username: registerRequest.username,
+                name: registerRequest.name,
                 password: hashed,
                 roleId: roleToAssign.roleId,
                 badgeNumber: cardNumber,
