@@ -14,6 +14,7 @@ import { OnboardingMaterialService } from "./onboarding-material-service.js";
 
 type CreateOnboardingStageRequest = {
   onboardingPortalTemplateId: string;
+  programType?: string | null;
   stageName: string;
   stageDescription?: string | null;
 };
@@ -31,6 +32,7 @@ type DeleteOnboardingStageRequest = {
 
 type OnboardingStageTemplateResponse = {
   onboardingStageTemplateId: string;
+  programType: string;
   stageOrder: number;
   stageCode: string;
   stageName: string;
@@ -92,6 +94,7 @@ type CustomerLearningMaterialResponse = {
 type CustomerLearningStageResponse = {
   onboardingStageTemplateId: string;
   onboardingStageProgressId: string | null;
+  programType: string;
   stageOrder: number;
   stageCode: string;
   stageName: string;
@@ -106,6 +109,7 @@ type CustomerLearningStagesResponse = {
     onboardingPortalTemplateId: string;
     portalKey: string;
     portalName: string;
+    programType: string;
   } | null;
   stages: CustomerLearningStageResponse[];
 };
@@ -126,9 +130,11 @@ type CustomerProgramAccess = {
 type CustomerLearningStagesRequest = {
   custId?: string | null;
   bypassProgramFilter?: boolean;
+  programType?: string | null;
 };
 
 type CustomerLearningFileOpenRequest = {
+  programType?: string | null;
   onboardingAssignmentId?: string | null;
   onboardingStageProgressId?: string | null;
   onboardingStageMaterialId?: string | null;
@@ -176,6 +182,12 @@ const ONBOARDING_ADMIN_PORTAL_KEYS = [
 
 const CUSTOMER_PORTAL_KEY = "CUSTOMER";
 const CUSTOMER_PARTICIPANT_REFERENCE_TYPE = "CUSTOMER";
+const PROGRAM_TYPE_ONBOARDING = "ONBOARDING";
+const PROGRAM_TYPE_LEARNING = "LEARNING";
+
+type OnboardingProgramType =
+  | typeof PROGRAM_TYPE_ONBOARDING
+  | typeof PROGRAM_TYPE_LEARNING;
 
 const PORTAL_ORDER_MAP = new Map<string, number>(
   ONBOARDING_ADMIN_PORTAL_KEYS.map((portalKey, index) => [
@@ -189,7 +201,16 @@ const normalizeOptionalText = (value: string | null | undefined) => {
   return trimmed ? trimmed : null;
 };
 
-const normalizeUpper = (value: string) => value.trim().toUpperCase();
+const normalizeUpper = (value: string | null | undefined) =>
+  value?.trim().toUpperCase() ?? "";
+
+const normalizeProgramType = (
+  value: string | null | undefined,
+  fallback: OnboardingProgramType = PROGRAM_TYPE_ONBOARDING
+): OnboardingProgramType =>
+  normalizeUpper(value) === PROGRAM_TYPE_LEARNING
+    ? PROGRAM_TYPE_LEARNING
+    : fallback;
 
 const toAuditActor = (value: string | null | undefined) =>
   (normalizeOptionalText(value) ?? "CUSTOMER_PORTAL").slice(0, 20);
@@ -353,6 +374,7 @@ const filterCustomerMaterialFiles = <
 
 type CustomerLearningRuntimeStageTemplate = {
   onboardingStageTemplateId: string;
+  programType: string;
   stageOrder: number;
   stageCode: string;
   stageName: string;
@@ -481,6 +503,7 @@ const toCustomerLearningRuntime = (assignment: {
 
 const ensureCustomerLearningRuntime = async (params: {
   custId: string | null | undefined;
+  programType: OnboardingProgramType;
   portalTemplate: {
     onboardingPortalTemplateId: string;
     portalKey: string;
@@ -508,6 +531,7 @@ const ensureCustomerLearningRuntime = async (params: {
       where: {
         onboardingPortalTemplateId: params.portalTemplate.onboardingPortalTemplateId,
         portalKey: CUSTOMER_PORTAL_KEY,
+        programType: params.programType,
         participantReferenceType: CUSTOMER_PARTICIPANT_REFERENCE_TYPE,
         participantReferenceId,
         isDeleted: false,
@@ -526,6 +550,7 @@ const ensureCustomerLearningRuntime = async (params: {
           onboardingPortalTemplateId:
             params.portalTemplate.onboardingPortalTemplateId,
           portalKey: CUSTOMER_PORTAL_KEY,
+          programType: params.programType,
           participantReferenceType: CUSTOMER_PARTICIPANT_REFERENCE_TYPE,
           participantReferenceId,
           startedAt: now,
@@ -535,7 +560,10 @@ const ensureCustomerLearningRuntime = async (params: {
           currentStageOrder: params.stageTemplates[0]?.stageOrder ?? null,
           assignedAt: now,
           assignedBy: actorId,
-          note: "Auto-created by customer onboarding portal",
+          note:
+            params.programType === PROGRAM_TYPE_LEARNING
+              ? "Auto-created by customer LMS portal"
+              : "Auto-created by customer onboarding portal",
           completedAt: null,
           completedBy: null,
           failedAt: null,
@@ -562,6 +590,7 @@ const ensureCustomerLearningRuntime = async (params: {
         isDeleted: false,
       },
       select: {
+        onboardingStageProgressId: true,
         onboardingStageTemplateId: true,
         stageOrder: true,
       },
@@ -569,15 +598,33 @@ const ensureCustomerLearningRuntime = async (params: {
     const existingTemplateIds = new Set(
       existingStageProgresses.map((stage) => stage.onboardingStageTemplateId)
     );
-    const existingStageOrders = new Set(
-      existingStageProgresses.map((stage) => stage.stageOrder)
+    const existingStageProgressByOrder = new Map(
+      existingStageProgresses.map((stage) => [stage.stageOrder, stage] as const)
     );
 
     for (const stageTemplate of params.stageTemplates) {
-      if (
-        existingTemplateIds.has(stageTemplate.onboardingStageTemplateId) ||
-        existingStageOrders.has(stageTemplate.stageOrder)
-      ) {
+      if (existingTemplateIds.has(stageTemplate.onboardingStageTemplateId)) {
+        continue;
+      }
+
+      const existingProgressWithSameOrder = existingStageProgressByOrder.get(
+        stageTemplate.stageOrder
+      );
+      if (existingProgressWithSameOrder) {
+        await tx.onboardingStageProgress.update({
+          where: {
+            onboardingStageProgressId:
+              existingProgressWithSameOrder.onboardingStageProgressId,
+          },
+          data: {
+            onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+            stageCode: stageTemplate.stageCode,
+            stageName: stageTemplate.stageName,
+            updatedAt: now,
+            updatedBy: actorId,
+          },
+        });
+        existingTemplateIds.add(stageTemplate.onboardingStageTemplateId);
         continue;
       }
 
@@ -658,6 +705,7 @@ const ensureAdminAccess = async (requesterId: string) => {
 
 const toStageResponse = (stage: {
   onboardingStageTemplateId: string;
+  programType: string;
   stageOrder: number;
   stageCode: string;
   stageName: string;
@@ -670,6 +718,7 @@ const toStageResponse = (stage: {
   };
 }): OnboardingStageTemplateResponse => ({
   onboardingStageTemplateId: stage.onboardingStageTemplateId,
+  programType: normalizeProgramType(stage.programType),
   stageOrder: stage.stageOrder,
   stageCode: stage.stageCode,
   stageName: stage.stageName,
@@ -714,9 +763,14 @@ const listPortalTemplates = async () => {
         where: {
           isDeleted: false,
         },
-        orderBy: [{ stageOrder: "asc" }, { createdAt: "asc" }],
+        orderBy: [
+          { programType: "asc" },
+          { stageOrder: "asc" },
+          { createdAt: "asc" },
+        ],
         select: {
           onboardingStageTemplateId: true,
+          programType: true,
           stageOrder: true,
           stageCode: true,
           stageName: true,
@@ -761,10 +815,15 @@ const listPortalTemplates = async () => {
     .map(toPortalResponse);
 };
 
-const getNextStageOrder = async (onboardingPortalTemplateId: string) => {
+const getNextStageOrder = async (
+  onboardingPortalTemplateId: string,
+  programType: OnboardingProgramType
+) => {
   const latest = await prismaFlowly.onboardingStageTemplate.findFirst({
     where: {
       onboardingPortalTemplateId,
+      programType,
+      isDeleted: false,
     },
     orderBy: [{ stageOrder: "desc" }, { createdAt: "desc" }],
     select: {
@@ -777,22 +836,27 @@ const getNextStageOrder = async (onboardingPortalTemplateId: string) => {
 
 const buildStageCode = async (
   onboardingPortalTemplateId: string,
+  programType: OnboardingProgramType,
   stageOrder: number
 ) => {
   const existingRows = await prismaFlowly.onboardingStageTemplate.findMany({
     where: {
       onboardingPortalTemplateId,
+      programType,
+      isDeleted: false,
     },
     select: {
       stageCode: true,
     },
   });
   const existingCodes = new Set(existingRows.map((row) => normalizeUpper(row.stageCode)));
-  let candidate = `STAGE_${stageOrder}`;
+  const prefix =
+    programType === PROGRAM_TYPE_LEARNING ? "LEARNING_STAGE" : "STAGE";
+  let candidate = `${prefix}_${stageOrder}`;
   let suffix = 2;
 
   while (existingCodes.has(candidate)) {
-    candidate = `STAGE_${stageOrder}_${suffix}`;
+    candidate = `${prefix}_${stageOrder}_${suffix}`;
     suffix += 1;
   }
 
@@ -810,6 +874,10 @@ export class OnboardingStageService {
   static async listCustomerLearningStages(
     request: CustomerLearningStagesRequest = {}
   ): Promise<CustomerLearningStagesResponse> {
+    const programType = normalizeProgramType(
+      request.programType,
+      PROGRAM_TYPE_ONBOARDING
+    );
     const customerProgramAccessPromise = request.bypassProgramFilter
       ? Promise.resolve<CustomerProgramAccess>({
           pretail: null,
@@ -829,6 +897,7 @@ export class OnboardingStageService {
         include: {
           stageTemplates: {
             where: {
+              programType,
               isActive: true,
               isDeleted: false,
             },
@@ -877,6 +946,7 @@ export class OnboardingStageService {
       ? null
       : await ensureCustomerLearningRuntime({
           custId: request.custId,
+          programType,
           portalTemplate,
           stageTemplates: accessibleStageTemplates,
         });
@@ -886,7 +956,7 @@ export class OnboardingStageService {
         const stageProgress =
           runtime?.stageProgressByTemplateId.get(
             stageTemplate.onboardingStageTemplateId
-          ) ?? runtime?.stageProgressByOrder.get(stageTemplate.stageOrder) ?? null;
+          ) ?? null;
         const materials = stageTemplate.stageMaterials.map((stageMaterial) => {
           const sourceMaterial = sourceMaterialMap.get(stageMaterial.materiId);
           const selectedFileIds = parseSelectedMaterialFileIds(
@@ -961,6 +1031,7 @@ export class OnboardingStageService {
           onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
           onboardingStageProgressId:
             stageProgress?.onboardingStageProgressId ?? null,
+          programType,
           stageOrder: stageTemplate.stageOrder,
           stageCode: stageTemplate.stageCode,
           stageName: stageTemplate.stageName,
@@ -980,6 +1051,7 @@ export class OnboardingStageService {
         onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
         portalKey: portalTemplate.portalKey,
         portalName: portalTemplate.portalName,
+        programType,
       },
       stages,
     };
@@ -988,6 +1060,10 @@ export class OnboardingStageService {
   static async authorizeCustomerLearningFileAccess(
     request: CustomerLearningFileAccessRequest
   ): Promise<CustomerLearningFileAccessResponse> {
+    const programType = normalizeProgramType(
+      request.programType,
+      PROGRAM_TYPE_ONBOARDING
+    );
     const onboardingStageMaterialId = normalizeOptionalText(
       request.onboardingStageMaterialId
     );
@@ -1002,6 +1078,7 @@ export class OnboardingStageService {
           isDeleted: false,
           isActive: true,
           stageTemplate: {
+            programType,
             isDeleted: false,
             isActive: true,
             portalTemplate: {
@@ -1060,6 +1137,7 @@ export class OnboardingStageService {
         assignment: {
           select: {
             portalKey: true,
+            programType: true,
             participantReferenceType: true,
             participantReferenceId: true,
           },
@@ -1075,7 +1153,8 @@ export class OnboardingStageService {
       normalizeUpper(stageProgress.assignment.portalKey) !== CUSTOMER_PORTAL_KEY ||
       normalizeUpper(stageProgress.assignment.participantReferenceType) !==
         CUSTOMER_PARTICIPANT_REFERENCE_TYPE ||
-      stageProgress.assignment.participantReferenceId !== participantReferenceId
+      stageProgress.assignment.participantReferenceId !== participantReferenceId ||
+      normalizeProgramType(stageProgress.assignment.programType) !== programType
     ) {
       throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
     }
@@ -1102,19 +1181,33 @@ export class OnboardingStageService {
     const stageMaterial = await prismaFlowly.onboardingStageMaterial.findFirst({
       where: {
         onboardingStageMaterialId,
-        onboardingStageTemplateId: stageProgress.onboardingStageTemplateId,
         isDeleted: false,
         isActive: true,
+        stageTemplate: {
+          programType,
+          isDeleted: false,
+          isActive: true,
+          portalTemplate: {
+            portalKey: CUSTOMER_PORTAL_KEY,
+            isDeleted: false,
+            isActive: true,
+          },
+        },
       },
       select: {
         onboardingStageMaterialId: true,
         onboardingStageTemplateId: true,
         materiId: true,
         note: true,
+        stageTemplate: {
+          select: {
+            stageOrder: true,
+          },
+        },
       },
     });
 
-    if (!stageMaterial) {
+    if (!stageMaterial || stageMaterial.stageTemplate.stageOrder !== stageProgress.stageOrder) {
       throw new ResponseError(404, "Materi onboarding tidak ditemukan");
     }
 
@@ -1146,6 +1239,10 @@ export class OnboardingStageService {
     );
     const onboardingStageMaterialId = normalizeOptionalText(
       request.onboardingStageMaterialId
+    );
+    const programType = normalizeProgramType(
+      request.programType,
+      PROGRAM_TYPE_ONBOARDING
     );
 
     if (
@@ -1181,6 +1278,7 @@ export class OnboardingStageService {
             select: {
               onboardingAssignmentId: true,
               portalKey: true,
+              programType: true,
               participantReferenceType: true,
               participantReferenceId: true,
               currentStageOrder: true,
@@ -1199,7 +1297,8 @@ export class OnboardingStageService {
           CUSTOMER_PORTAL_KEY ||
         normalizeUpper(stageProgress.assignment.participantReferenceType) !==
           CUSTOMER_PARTICIPANT_REFERENCE_TYPE ||
-        stageProgress.assignment.participantReferenceId !== participantReferenceId
+        stageProgress.assignment.participantReferenceId !== participantReferenceId ||
+        normalizeProgramType(stageProgress.assignment.programType) !== programType
       ) {
         throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
       }
@@ -1214,17 +1313,31 @@ export class OnboardingStageService {
       const stageMaterial = await tx.onboardingStageMaterial.findFirst({
         where: {
           onboardingStageMaterialId,
-          onboardingStageTemplateId: stageProgress.onboardingStageTemplateId,
           isDeleted: false,
           isActive: true,
+          stageTemplate: {
+            programType,
+            isDeleted: false,
+            isActive: true,
+            portalTemplate: {
+              portalKey: CUSTOMER_PORTAL_KEY,
+              isDeleted: false,
+              isActive: true,
+            },
+          },
         },
         select: {
           onboardingStageMaterialId: true,
           materiId: true,
+          stageTemplate: {
+            select: {
+              stageOrder: true,
+            },
+          },
         },
       });
 
-      if (!stageMaterial) {
+      if (!stageMaterial || stageMaterial.stageTemplate.stageOrder !== stageProgress.stageOrder) {
         throw new ResponseError(404, "Materi onboarding tidak ditemukan");
       }
 
@@ -1356,6 +1469,7 @@ export class OnboardingStageService {
       OnboardingStageValidation.CREATE_STAGE,
       request
     ) as CreateOnboardingStageRequest;
+    const programType = normalizeProgramType(validated.programType);
 
     const portalTemplate = await prismaFlowly.onboardingPortalTemplate.findFirst({
       where: {
@@ -1374,10 +1488,12 @@ export class OnboardingStageService {
 
     const now = new Date();
     const stageOrder = await getNextStageOrder(
-      portalTemplate.onboardingPortalTemplateId
+      portalTemplate.onboardingPortalTemplateId,
+      programType
     );
     const stageCode = await buildStageCode(
       portalTemplate.onboardingPortalTemplateId,
+      programType,
       stageOrder
     );
     const makeStageId = await generateOnboardingStageTemplateId();
@@ -1386,6 +1502,7 @@ export class OnboardingStageService {
       data: {
         onboardingStageTemplateId: makeStageId(),
         onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+        programType,
         stageOrder,
         stageCode,
         stageName: validated.stageName.trim(),

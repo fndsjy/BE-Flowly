@@ -44,13 +44,16 @@ import { OnboardingValidation } from "../validation/onboarding-validation.js";
 
 const DEFAULT_PORTAL_KEY = "EMPLOYEE";
 const EMPLOYEE_PARTICIPANT_REFERENCE_TYPE = "EMPLOYEE";
+const PROGRAM_TYPE_ONBOARDING = "ONBOARDING";
 const PARTICIPANT_RECIPIENT_ROLE = "PARTICIPANT";
 const HRD_RECIPIENT_ROLE = "HRD";
 const SBU_SUB_PIC_RECIPIENT_ROLE = "SBU_SUB_PIC";
 const OMS_FIRST_LOGIN_EVENT_KEY = "OMS_FIRST_LOGIN";
 const ONBOARDING_STARTED_EVENT_KEY = "ONBOARDING_STARTED";
 const ONBOARDING_OVERDUE_FAILED_EVENT_KEY = "ONBOARDING_OVERDUE_FAILED";
+const ONBOARDING_PIC_DECISION_EVENT_KEY = "ONBOARDING_PIC_DECISION";
 const ONBOARDING_ASSIGNMENT_CONTEXT_TYPE = "ONBOARDING_ASSIGNMENT";
+const ONBOARDING_DECISION_CONTEXT_TYPE = "ONBOARDING_DECISION";
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const CHANNEL_EMAIL = "EMAIL";
 const ONBOARDING_EMPLOYEE_BATCH_CODE = "ONB";
@@ -59,6 +62,7 @@ const DECISION_PASS_OVERRIDE = "PASS_OVERRIDE";
 const DECISION_EXTEND = "EXTEND";
 const DECISION_FAIL_FINAL = "FAIL_FINAL";
 const DECISION_FREEZE_TRANSFER_REVIEW = "FREEZE_TRANSFER_REVIEW";
+const DECISION_CANCEL_TRANSFER_REVIEW = "CANCEL_TRANSFER_REVIEW";
 const ASSIGNMENT_STATUS_TRANSFER_REVIEW = "TRANSFER_REVIEW";
 const DEFAULT_EXTENSION_DURATION_DAYS = 90;
 const DEFAULT_CERTIFICATE_ASSET_BASE_URL =
@@ -68,7 +72,6 @@ const FINAL_ASSIGNMENT_STATUSES = new Set([
   "PASSED",
   "PASSED_TO_LMS",
   "PASSED_OVERRIDE",
-  ASSIGNMENT_STATUS_TRANSFER_REVIEW,
   "FAILED",
   "FAIL_FINAL",
   "CANCELLED",
@@ -1150,6 +1153,15 @@ const formatIndonesianDate = (value: Date) =>
     year: "numeric",
   });
 
+const formatIndonesianDateTime = (value: Date) =>
+  value.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
 const resolveHrdDecisionUrl = () => {
   const loginUrl = resolveOmsLoginUrl();
   if (/\/login$/i.test(loginUrl)) {
@@ -1207,15 +1219,94 @@ const groupSbuSubPicRecipientsByEmployee = (
   return grouped;
 };
 
+const getOnboardingDecisionLabel = (decisionType: string) => {
+  switch (normalizeUpper(decisionType)) {
+    case DECISION_PASS_OVERRIDE:
+      return "Diluluskan OMS";
+    case DECISION_EXTEND:
+      return "Onboarding diulang/diperpanjang";
+    case DECISION_FAIL_FINAL:
+      return "Gagal onboarding final";
+    case DECISION_FREEZE_TRANSFER_REVIEW:
+      return "Dibekukan untuk review HRD";
+    case DECISION_CANCEL_TRANSFER_REVIEW:
+      return "Bekukan onboarding dibatalkan";
+    case AUTO_FAILED_DECISION_TYPE:
+      return "Gagal otomatis karena melewati tenggat";
+    default:
+      return decisionType;
+  }
+};
+
+const getOnboardingPicDecisionHrdTemplate = (decisionType: string) => {
+  switch (normalizeUpper(decisionType)) {
+    case DECISION_PASS_OVERRIDE:
+      return [
+        "[Info Keputusan PIC SBU Sub]",
+        "PIC {decisionActorName} ({decisionActorBadge}) meluluskan onboarding {employeeName} ({cardNumber}) di {portalName}.",
+        "Status saat ini: {status}.",
+        "Catatan PIC: {decisionNote}.",
+        "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
+        "Detail: {decisionUrl}",
+      ].join("\n");
+    case DECISION_EXTEND:
+      return [
+        "[Info Keputusan PIC SBU Sub]",
+        "PIC {decisionActorName} ({decisionActorBadge}) meminta {employeeName} ({cardNumber}) mengulang onboarding {portalName} selama {nextDurationDay} hari.",
+        "Deadline baru: {dueDate}.",
+        "Catatan PIC: {decisionNote}.",
+        "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
+        "Detail: {decisionUrl}",
+      ].join("\n");
+    case DECISION_FREEZE_TRANSFER_REVIEW:
+      return [
+        "[Onboarding Dibekukan oleh PIC SBU Sub]",
+        "PIC {decisionActorName} ({decisionActorBadge}) membekukan onboarding {employeeName} ({cardNumber}) di {portalName}.",
+        "Status beku ini tidak menonaktifkan akun peserta. Peserta masih bisa login OMS.",
+        "Catatan/alasan PIC: {decisionNote}.",
+        "HRD wajib mengetahui untuk review lanjutan, tetapi keputusan beku dibuat oleh PIC SBU Sub.",
+        "Detail: {decisionUrl}",
+      ].join("\n");
+    case DECISION_CANCEL_TRANSFER_REVIEW:
+      return [
+        "[Beku Onboarding Dibatalkan]",
+        "PIC {decisionActorName} ({decisionActorBadge}) membatalkan status beku onboarding {employeeName} ({cardNumber}) di {portalName}.",
+        "Status saat ini: {status}. Peserta kembali melanjutkan onboarding.",
+        "Catatan PIC: {decisionNote}.",
+        "HRD menerima notifikasi ini untuk monitoring. Keputusan pembatalan dibuat oleh PIC SBU Sub.",
+        "Detail: {decisionUrl}",
+      ].join("\n");
+    case DECISION_FAIL_FINAL:
+      return [
+        "[Gagal Onboarding Final]",
+        "PIC {decisionActorName} ({decisionActorBadge}) menggagalkan onboarding {employeeName} ({cardNumber}) di {portalName}.",
+        "Akun employee dinonaktifkan dan peserta tidak bisa login OMS.",
+        "Alasan PIC: {decisionNote}.",
+        "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
+        "Detail: {decisionUrl}",
+      ].join("\n");
+    default:
+      return [
+        "[Info Keputusan PIC SBU Sub]",
+        "PIC {decisionActorName} ({decisionActorBadge}) mengambil keputusan onboarding untuk {employeeName} ({cardNumber}) di {portalName}: {decisionLabel}.",
+        "Status saat ini: {status}. Deadline: {dueDate}.",
+        "Catatan PIC: {decisionNote}.",
+        "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
+        "Detail: {decisionUrl}",
+      ].join("\n");
+  }
+};
+
 const parseConfiguredHrdNotificationUserIds = () =>
   Array.from(
     new Set(
-      (
-        process.env.ONBOARDING_HRD_NOTIFY_USER_IDS ??
-        process.env.ONBOARDING_HRD_NOTIFY_USER_ID ??
-        ""
-      )
-        .split(",")
+      [
+        process.env.ONBOARDING_HRD_NOTIFY_USER_IDS,
+        process.env.ONBOARDING_HRD_NOTIFY_USER_ID,
+        process.env.ONBOARDING_EXAM_MONITOR_USER_IDS,
+        process.env.ONBOARDING_EXAM_MONITOR_USER_ID,
+      ]
+        .flatMap((value) => (value ?? "").split(","))
         .map((value) => value.trim())
         .filter((value) => value.length > 0)
     )
@@ -1573,6 +1664,267 @@ const enqueueOnboardingOverdueNotification = async (params: {
     logger.warn("Failed to enqueue onboarding overdue notification", {
       onboardingAssignmentId: params.assignment.onboardingAssignmentId,
       error: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+const enqueueOnboardingPicDecisionNotification = async (params: {
+  assignment: {
+    onboardingAssignmentId: string;
+    portalKey: string;
+    participantReferenceId: string;
+    dueAt: Date;
+    portalTemplate?: {
+      portalName: string;
+    } | null;
+  };
+  employee: {
+    UserId: number;
+    CardNo: string | null;
+    BadgeNum: string | null;
+    Name: string | null;
+  } | null;
+  onboardingDecisionId: string;
+  decisionType: string;
+  nextStatus: string;
+  nextDueAt: Date;
+  nextDurationDay: number | null;
+  note: string | null;
+  decidedAt: Date;
+  decidedByUserId: string;
+}) => {
+  try {
+    const recipients = await resolveHrdNotificationRecipients();
+    if (recipients.length === 0) {
+      logger.warn("No HRD recipients available for onboarding PIC decision notification", {
+        onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+        onboardingDecisionId: params.onboardingDecisionId,
+      });
+      return;
+    }
+
+    const existing = await prismaFlowly.notificationOutbox.findMany({
+      where: {
+        eventKey: ONBOARDING_PIC_DECISION_EVENT_KEY,
+        recipientRole: HRD_RECIPIENT_ROLE,
+        contextReferenceType: ONBOARDING_DECISION_CONTEXT_TYPE,
+        contextReferenceId: params.onboardingDecisionId,
+        isDeleted: false,
+      },
+      select: {
+        recipientReferenceId: true,
+      },
+    });
+    const existingRecipientIds = new Set(
+      existing.map((item) => Number(item.recipientReferenceId))
+    );
+    const nextRecipients = recipients.filter(
+      (recipient) => !existingRecipientIds.has(recipient.userId)
+    );
+    if (nextRecipients.length === 0) {
+      return;
+    }
+
+    const notificationTemplates: NotificationTemplateForOutbox[] = [
+      {
+        notificationTemplateId: null,
+        channel: CHANNEL_WHATSAPP,
+        messageTemplate: getOnboardingPicDecisionHrdTemplate(params.decisionType),
+      },
+    ];
+
+    const requesterEmployeeId = await resolveRequesterEmployeeId(
+      params.decidedByUserId
+    );
+    const [decisionActorEmployee, decisionActorUser] = await Promise.all([
+      requesterEmployeeId
+        ? prismaEmployee.em_employee.findUnique({
+            where: { UserId: requesterEmployeeId },
+            select: {
+              UserId: true,
+              CardNo: true,
+              BadgeNum: true,
+              Name: true,
+            },
+          })
+        : null,
+      prismaFlowly.user.findUnique({
+        where: { userId: params.decidedByUserId },
+        select: {
+          userId: true,
+          name: true,
+          badgeNumber: true,
+        },
+      }),
+    ]);
+
+    const createNotificationOutboxId = await generateNotificationOutboxId();
+    const employeeName =
+      normalizeNote(params.employee?.Name) ??
+      `Employee ${params.assignment.participantReferenceId}`;
+    const cardNumber =
+      normalizeNote(params.employee?.CardNo) ??
+      normalizeNote(params.employee?.BadgeNum) ??
+      params.assignment.participantReferenceId;
+    const portalName =
+      normalizeNote(params.assignment.portalTemplate?.portalName) ??
+      normalizePortalKey(params.assignment.portalKey);
+    const decisionActorName =
+      normalizeNote(decisionActorEmployee?.Name) ??
+      normalizeNote(decisionActorUser?.name) ??
+      `PIC ${params.decidedByUserId}`;
+    const decisionActorBadge =
+      normalizeNote(decisionActorEmployee?.CardNo) ??
+      normalizeNote(decisionActorEmployee?.BadgeNum) ??
+      normalizeNote(decisionActorUser?.badgeNumber) ??
+      params.decidedByUserId;
+    const decisionLabel = getOnboardingDecisionLabel(params.decisionType);
+    const decisionUrl = resolveHrdDecisionUrl();
+    const decisionNote = params.note ?? "-";
+
+    const outboxes: Prisma.NotificationOutboxCreateManyInput[] = [];
+    for (const recipient of nextRecipients) {
+      for (const template of notificationTemplates) {
+        const channel = normalizeUpper(template.channel);
+        const context = {
+          recipientName: recipient.recipientName,
+          employeeName,
+          cardNumber,
+          portalName,
+          portalKey: params.assignment.portalKey,
+          decisionLabel,
+          decisionType: params.decisionType,
+          status: params.nextStatus,
+          dueDate: formatIndonesianDate(params.nextDueAt),
+          nextDurationDay: params.nextDurationDay ?? "",
+          decisionNote,
+          decisionAt: formatIndonesianDateTime(params.decidedAt),
+          decisionActorName,
+          decisionActorBadge,
+          decisionUrl,
+          supportName: resolveSupportName(),
+          supportPhone: resolveSupportPhone(),
+        };
+        const phoneNumber =
+          channel === CHANNEL_WHATSAPP ? recipient.phoneNumber ?? "" : "";
+        const email = channel === CHANNEL_EMAIL ? recipient.email ?? "" : recipient.email;
+
+        if (channel === CHANNEL_WHATSAPP && !phoneNumber) {
+          logger.warn(
+            "Skipping HRD onboarding PIC decision notification without phone",
+            {
+              onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+              onboardingDecisionId: params.onboardingDecisionId,
+              recipientUserId: recipient.userId,
+            }
+          );
+          continue;
+        }
+
+        outboxes.push({
+          notificationOutboxId: createNotificationOutboxId(),
+          notificationTemplateId: template.notificationTemplateId,
+          portalKey: params.assignment.portalKey,
+          eventKey: ONBOARDING_PIC_DECISION_EVENT_KEY,
+          recipientRole: HRD_RECIPIENT_ROLE,
+          recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+          recipientReferenceId: String(recipient.userId),
+          contextReferenceType: ONBOARDING_DECISION_CONTEXT_TYPE,
+          contextReferenceId: params.onboardingDecisionId,
+          phoneNumber,
+          message: trimMessage(renderTemplate(template.messageTemplate, context)),
+          status: "PENDING",
+          attempts: 0,
+          lastError: null,
+          provider: null,
+          sentAt: null,
+          meta: JSON.stringify({
+            channel,
+            email,
+            onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+            onboardingDecisionId: params.onboardingDecisionId,
+            employeeName,
+            cardNumber,
+            portalKey: params.assignment.portalKey,
+            portalName,
+            decisionType: params.decisionType,
+            decisionLabel,
+            status: params.nextStatus,
+            dueDate: context.dueDate,
+            nextDurationDay: params.nextDurationDay,
+            decisionNote,
+            decisionAt: context.decisionAt,
+            decisionActorName,
+            decisionActorBadge,
+            decisionUrl,
+          }),
+          isActive: true,
+          isDeleted: false,
+          createdAt: params.decidedAt,
+          createdBy: params.decidedByUserId.slice(0, 20),
+          updatedAt: params.decidedAt,
+          updatedBy: params.decidedByUserId.slice(0, 20),
+          deletedAt: null,
+          deletedBy: null,
+        });
+      }
+    }
+
+    if (outboxes.length === 0) {
+      return;
+    }
+
+    await prismaFlowly.notificationOutbox.createMany({
+      data: outboxes,
+    });
+  } catch (error) {
+    logger.warn("Failed to enqueue onboarding PIC decision notification", {
+      onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+      onboardingDecisionId: params.onboardingDecisionId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+const deactivateEmployeeAccountForFailedOnboarding = async (params: {
+  assignment: {
+    onboardingAssignmentId: string;
+    participantReferenceType: string;
+    participantReferenceId: string;
+  };
+  updatedAt: Date;
+}) => {
+  if (
+    normalizeUpper(params.assignment.participantReferenceType) !==
+    EMPLOYEE_PARTICIPANT_REFERENCE_TYPE
+  ) {
+    return;
+  }
+
+  const employeeUserId = Number(params.assignment.participantReferenceId);
+  if (!Number.isInteger(employeeUserId) || employeeUserId <= 0) {
+    logger.warn("Skipping failed onboarding employee deactivation with invalid id", {
+      onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+      participantReferenceId: params.assignment.participantReferenceId,
+    });
+    return;
+  }
+
+  const updateResult = await prismaEmployee.em_employee.updateMany({
+    where: {
+      UserId: employeeUserId,
+    },
+    data: {
+      status: "I",
+      statusLMS: false,
+      Lastupdate: params.updatedAt,
+    },
+  });
+
+  if (updateResult.count === 0) {
+    logger.warn("Failed onboarding employee account was not found to deactivate", {
+      onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+      employeeUserId,
     });
   }
 };
@@ -2264,6 +2616,7 @@ export class OnboardingService {
 
     const assignments = await prismaFlowly.onboardingAssignment.findMany({
       where: {
+        programType: PROGRAM_TYPE_ONBOARDING,
         isDeleted: false,
         isActive: true,
         dueAt: {
@@ -2446,6 +2799,7 @@ export class OnboardingService {
     const actorId = trimAuditActor(requesterUserId);
     const now = new Date();
     const createDecisionId = await generateOnboardingDecisionId();
+    const onboardingDecisionId = createDecisionId();
 
     const assignment = await prismaFlowly.onboardingAssignment.findFirst({
       where: {
@@ -2453,6 +2807,11 @@ export class OnboardingService {
         isDeleted: false,
       },
       include: {
+        portalTemplate: {
+          select: {
+            portalName: true,
+          },
+        },
         stageProgresses: {
           where: {
             isDeleted: false,
@@ -2496,7 +2855,7 @@ export class OnboardingService {
       );
     }
     const decisionActorLabel = canDecideAsHrd ? "HRD" : "PIC";
-    const canFreezeForTransferReview =
+    const canDirectSbuSubDecision =
       canDecideAsHrd ||
       (await ensureDirectSbuSubPicCanAccessParticipant(
         requesterUserId,
@@ -2506,11 +2865,43 @@ export class OnboardingService {
 
     if (
       decisionType === DECISION_FREEZE_TRANSFER_REVIEW &&
-      !canFreezeForTransferReview
+      !canDirectSbuSubDecision
     ) {
       throw new ResponseError(
         403,
         "Hanya HRD atau PIC SBU Sub langsung yang bisa membekukan onboarding untuk review perpindahan departemen"
+      );
+    }
+
+    if (
+      decisionType === DECISION_CANCEL_TRANSFER_REVIEW &&
+      !canDirectSbuSubDecision
+    ) {
+      throw new ResponseError(
+        403,
+        "Hanya HRD atau PIC SBU Sub langsung yang bisa membatalkan status beku onboarding"
+      );
+    }
+
+    const normalizedAssignmentStatus = normalizeUpper(assignment.status);
+    if (
+      decisionType === DECISION_FAIL_FINAL &&
+      normalizedAssignmentStatus !== "FAILED" &&
+      !canDirectSbuSubDecision
+    ) {
+      throw new ResponseError(
+        403,
+        "Hanya HRD atau PIC SBU Sub langsung yang bisa menggagalkan onboarding yang masih berjalan"
+      );
+    }
+
+    if (
+      decisionType === DECISION_CANCEL_TRANSFER_REVIEW &&
+      normalizedAssignmentStatus !== ASSIGNMENT_STATUS_TRANSFER_REVIEW
+    ) {
+      throw new ResponseError(
+        400,
+        "Onboarding ini tidak sedang dibekukan"
       );
     }
 
@@ -2724,11 +3115,66 @@ export class OnboardingService {
             updatedBy: actorId,
           },
         });
+      } else if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW) {
+        nextStatus = "IN_PROGRESS";
+        nextCurrentStageOrder = currentStageOrder;
+
+        const cancelFreezeNote =
+          note ??
+          `${decisionActorLabel} membatalkan status beku onboarding. Peserta kembali melanjutkan onboarding pada tahap sebelumnya.`;
+
+        await tx.onboardingAssignment.update({
+          where: {
+            onboardingAssignmentId: assignment.onboardingAssignmentId,
+          },
+          data: {
+            status: nextStatus,
+            currentStageOrder: nextCurrentStageOrder,
+            completedAt: null,
+            completedBy: null,
+            failedAt: null,
+            failedBy: null,
+            note: cancelFreezeNote,
+            updatedAt: now,
+            updatedBy: actorId,
+          },
+        });
+
+        for (const stage of activeStages) {
+          const stageStatus = normalizeUpper(stage.status);
+          if (stageStatus === "PASSED" || stageStatus === "COMPLETED") {
+            continue;
+          }
+
+          const isCurrentStage = stage.stageOrder === currentStageOrder;
+          const latestAttemptStatus = normalizeUpper(stage.examAttempts[0]?.status);
+          const restoredStatus = isCurrentStage
+            ? latestAttemptStatus === "WAITING_ADMIN"
+              ? "WAITING_ADMIN"
+              : latestAttemptStatus === "REMEDIAL" || stage.remedialCount > 0
+                ? "REMEDIAL"
+                : "READING"
+            : "LOCKED";
+
+          await tx.onboardingStageProgress.update({
+            where: {
+              onboardingStageProgressId: stage.onboardingStageProgressId,
+            },
+            data: {
+              status: restoredStatus,
+              failedAt: null,
+              startedAt: isCurrentStage ? stage.startedAt ?? now : stage.startedAt,
+              note: cancelFreezeNote,
+              updatedAt: now,
+              updatedBy: actorId,
+            },
+          });
+        }
       }
 
       await tx.onboardingDecision.create({
         data: {
-          onboardingDecisionId: createDecisionId(),
+          onboardingDecisionId,
           onboardingAssignmentId: assignment.onboardingAssignmentId,
           decisionType,
           nextDurationDay,
@@ -2747,7 +3193,45 @@ export class OnboardingService {
       });
     });
 
+    if (decisionType === DECISION_FAIL_FINAL) {
+      await deactivateEmployeeAccountForFailedOnboarding({
+        assignment,
+        updatedAt: now,
+      });
+    }
+
     invalidateProfileCache(assignment.participantReferenceId);
+
+    if (!canDecideAsHrd) {
+      const participantId = Number(assignment.participantReferenceId);
+      const employee =
+        Number.isInteger(participantId) && participantId > 0
+          ? await prismaEmployee.em_employee.findUnique({
+              where: {
+                UserId: participantId,
+              },
+              select: {
+                UserId: true,
+                CardNo: true,
+                BadgeNum: true,
+                Name: true,
+              },
+            })
+          : null;
+
+      await enqueueOnboardingPicDecisionNotification({
+        assignment,
+        employee,
+        onboardingDecisionId,
+        decisionType,
+        nextStatus,
+        nextDueAt,
+        nextDurationDay,
+        note,
+        decidedAt: now,
+        decidedByUserId: requesterUserId,
+      });
+    }
 
     return {
       onboardingAssignmentId: assignment.onboardingAssignmentId,
@@ -3372,6 +3856,7 @@ export class OnboardingService {
         include: {
           stageTemplates: {
             where: {
+              programType: PROGRAM_TYPE_ONBOARDING,
               isActive: true,
               isDeleted: false,
             },
@@ -3403,6 +3888,7 @@ export class OnboardingService {
       prismaFlowly.onboardingAssignment.findMany({
         where: {
           portalKey: { in: portalKeys },
+          programType: PROGRAM_TYPE_ONBOARDING,
           ...(options.participantEmployeeIds
             ? {
                 participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
@@ -4032,10 +4518,14 @@ export class OnboardingService {
     for (const portal of response.portals) {
       for (const participant of portal.participants) {
         const participantEmployeeId = Number(participant.participantReferenceId);
+        const participantStatus = normalizeUpper(participant.status);
+        const canDirectSbuSubAct =
+          participantStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW ||
+          !isFinalAssignmentStatus(participant.status);
         participant.canFreezeForTransferReview =
           Number.isInteger(participantEmployeeId) &&
           directSbuSubParticipantIds.has(participantEmployeeId) &&
-          !isFinalAssignmentStatus(participant.status);
+          canDirectSbuSubAct;
       }
     }
 
@@ -4479,6 +4969,7 @@ export class OnboardingService {
     const stageTemplates = await prismaFlowly.onboardingStageTemplate.findMany({
       where: {
         onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+        programType: PROGRAM_TYPE_ONBOARDING,
         isActive: true,
         isDeleted: false,
       },
@@ -4565,6 +5056,7 @@ export class OnboardingService {
         ? await prismaFlowly.onboardingAssignment.findMany({
             where: {
               portalKey,
+              programType: PROGRAM_TYPE_ONBOARDING,
               participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
               participantReferenceId: {
                 in: eligibleEmployees.map((employee) => String(employee.UserId)),
@@ -4729,6 +5221,7 @@ export class OnboardingService {
         onboardingAssignmentId,
         onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
         portalKey,
+        programType: PROGRAM_TYPE_ONBOARDING,
         participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
         participantReferenceId: String(employee.UserId),
         startedAt,

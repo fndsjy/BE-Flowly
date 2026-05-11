@@ -50,7 +50,13 @@ export class OnboardingStageController {
     try {
       const access = await ensureCustomerLearningAccess(req);
       const response = await OnboardingStageService.listCustomerLearningStages(
-        access
+        {
+          ...access,
+          programType:
+            typeof req.query.programType === "string"
+              ? req.query.programType
+              : null,
+        }
       );
 
       res.status(200).json({ response });

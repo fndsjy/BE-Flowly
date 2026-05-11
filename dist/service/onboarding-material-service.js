@@ -264,7 +264,11 @@ export class OnboardingMaterialService {
                             isActive: true,
                             isDeleted: false,
                         },
-                        orderBy: [{ stageOrder: "asc" }, { stageCode: "asc" }],
+                        orderBy: [
+                            { programType: "asc" },
+                            { stageOrder: "asc" },
+                            { stageCode: "asc" },
+                        ],
                         include: {
                             stageMaterials: {
                                 where: {
@@ -294,6 +298,7 @@ export class OnboardingMaterialService {
             portalOrderIndex: getPortalOrderIndex(portalTemplate.portalKey),
             stages: portalTemplate.stageTemplates.map((stageTemplate) => ({
                 onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+                programType: stageTemplate.programType,
                 stageNumber: stageTemplate.stageOrder,
                 stageLabel: stageTemplate.stageName,
                 stageTitle: normalizeOptionalText(stageTemplate.stageDescription) ??
@@ -323,6 +328,7 @@ export class OnboardingMaterialService {
                     assignments.push({
                         assignmentId: stageMaterial.onboardingStageMaterialId,
                         onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+                        programType: stageTemplate.programType,
                         employeeMaterialId: stageMaterial.materiId,
                         materialCode: sourceMaterial?.materialCode ?? `MAT-${stageMaterial.materiId}`,
                         materialTitle: sourceMaterial?.materialTitle ?? `Materi ${stageMaterial.materiId}`,
@@ -355,6 +361,9 @@ export class OnboardingMaterialService {
         assignments.sort((left, right) => {
             if (left.portalOrderIndex !== right.portalOrderIndex) {
                 return left.portalOrderIndex - right.portalOrderIndex;
+            }
+            if (left.programType !== right.programType) {
+                return left.programType.localeCompare(right.programType);
             }
             if (left.stageNumber !== right.stageNumber) {
                 return left.stageNumber - right.stageNumber;

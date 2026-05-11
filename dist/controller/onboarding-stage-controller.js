@@ -41,7 +41,12 @@ export class OnboardingStageController {
     static async listCustomerLearning(req, res, next) {
         try {
             const access = await ensureCustomerLearningAccess(req);
-            const response = await OnboardingStageService.listCustomerLearningStages(access);
+            const response = await OnboardingStageService.listCustomerLearningStages({
+                ...access,
+                programType: typeof req.query.programType === "string"
+                    ? req.query.programType
+                    : null,
+            });
             res.status(200).json({ response });
         }
         catch (err) {

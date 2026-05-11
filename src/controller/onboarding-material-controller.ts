@@ -925,6 +925,7 @@ export class OnboardingMaterialController {
         onboardingStageMaterialId: normalizeQueryText(
           req.query.onboardingStageMaterialId
         ),
+        programType: normalizeQueryText(req.query.programType),
         sourceFileId,
         fileName,
         fileTitle: normalizeQueryText(req.query.fileTitle),
@@ -939,6 +940,7 @@ export class OnboardingMaterialController {
         await OnboardingStageService.recordCustomerLearningFileOpen(
           access.custId,
           {
+            programType: request.programType,
             onboardingAssignmentId: request.onboardingAssignmentId,
             onboardingStageProgressId: request.onboardingStageProgressId,
             onboardingStageMaterialId: request.onboardingStageMaterialId,

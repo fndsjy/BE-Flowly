@@ -39,6 +39,7 @@ type OnboardingSourceExamResponse = {
 
 type OnboardingExamPortalStageResponse = {
   onboardingStageTemplateId: string;
+  programType: string;
   stageNumber: number;
   stageLabel: string;
   stageTitle: string;
@@ -55,6 +56,7 @@ type OnboardingExamPortalResponse = {
 type OnboardingExamAssignmentResponse = {
   assignmentId: string;
   onboardingStageTemplateId: string;
+  programType: string;
   examId: number;
   examCode: string;
   examName: string;
@@ -591,7 +593,11 @@ export class OnboardingExamService {
               isActive: true,
               isDeleted: false,
             },
-            orderBy: [{ stageOrder: "asc" }, { stageCode: "asc" }],
+            orderBy: [
+              { programType: "asc" },
+              { stageOrder: "asc" },
+              { stageCode: "asc" },
+            ],
             include: {
               stageExams: {
                 where: {
@@ -623,6 +629,7 @@ export class OnboardingExamService {
         portalOrderIndex: getPortalOrderIndex(portalTemplate.portalKey),
         stages: portalTemplate.stageTemplates.map((stageTemplate) => ({
           onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+          programType: stageTemplate.programType,
           stageNumber: stageTemplate.stageOrder,
           stageLabel: stageTemplate.stageName,
           stageTitle:
@@ -684,6 +691,7 @@ export class OnboardingExamService {
             portalKey: portalTemplate.portalKey,
             portalLabel: portalTemplate.portalName,
             portalOrderIndex,
+            programType: stageTemplate.programType,
             stageNumber: stageTemplate.stageOrder,
             stageLabel: stageTemplate.stageName,
             orderIndex: stageExam.orderIndex,
@@ -701,6 +709,9 @@ export class OnboardingExamService {
     assignments.sort((left, right) => {
       if (left.portalOrderIndex !== right.portalOrderIndex) {
         return left.portalOrderIndex - right.portalOrderIndex;
+      }
+      if (left.programType !== right.programType) {
+        return left.programType.localeCompare(right.programType);
       }
       if (left.stageNumber !== right.stageNumber) {
         return left.stageNumber - right.stageNumber;

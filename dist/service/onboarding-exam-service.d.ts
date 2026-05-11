@@ -28,6 +28,7 @@ type OnboardingSourceExamResponse = {
 };
 type OnboardingExamPortalStageResponse = {
     onboardingStageTemplateId: string;
+    programType: string;
     stageNumber: number;
     stageLabel: string;
     stageTitle: string;
@@ -42,6 +43,7 @@ type OnboardingExamPortalResponse = {
 type OnboardingExamAssignmentResponse = {
     assignmentId: string;
     onboardingStageTemplateId: string;
+    programType: string;
     examId: number;
     examCode: string;
     examName: string;

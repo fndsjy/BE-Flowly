@@ -1,6 +1,7 @@
 import { OnboardingMaterialService } from "./onboarding-material-service.js";
 type CreateOnboardingStageRequest = {
     onboardingPortalTemplateId: string;
+    programType?: string | null;
     stageName: string;
     stageDescription?: string | null;
 };
@@ -15,6 +16,7 @@ type DeleteOnboardingStageRequest = {
 };
 type OnboardingStageTemplateResponse = {
     onboardingStageTemplateId: string;
+    programType: string;
     stageOrder: number;
     stageCode: string;
     stageName: string;
@@ -71,6 +73,7 @@ type CustomerLearningMaterialResponse = {
 type CustomerLearningStageResponse = {
     onboardingStageTemplateId: string;
     onboardingStageProgressId: string | null;
+    programType: string;
     stageOrder: number;
     stageCode: string;
     stageName: string;
@@ -84,14 +87,17 @@ type CustomerLearningStagesResponse = {
         onboardingPortalTemplateId: string;
         portalKey: string;
         portalName: string;
+        programType: string;
     } | null;
     stages: CustomerLearningStageResponse[];
 };
 type CustomerLearningStagesRequest = {
     custId?: string | null;
     bypassProgramFilter?: boolean;
+    programType?: string | null;
 };
 type CustomerLearningFileOpenRequest = {
+    programType?: string | null;
     onboardingAssignmentId?: string | null;
     onboardingStageProgressId?: string | null;
     onboardingStageMaterialId?: string | null;

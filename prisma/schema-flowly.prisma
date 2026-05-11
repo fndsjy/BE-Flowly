@@ -877,6 +877,7 @@ model OnboardingStageTemplate {
   /// e.g., "OST100426-00001"
   onboardingStageTemplateId  String                    @id @db.NVarChar(100)
   onboardingPortalTemplateId String                    @db.NVarChar(100)
+  programType                String                    @default("ONBOARDING") @db.NVarChar(30)
   stageOrder                 Int
   stageCode                  String                    @db.NVarChar(50)
   stageName                  String                    @db.NVarChar(100)
@@ -894,9 +895,10 @@ model OnboardingStageTemplate {
   stageExams                 OnboardingStageExam[]
   stageProgresses            OnboardingStageProgress[]
 
-  @@unique([onboardingPortalTemplateId, stageOrder])
-  @@unique([onboardingPortalTemplateId, stageCode])
+  @@unique([onboardingPortalTemplateId, programType, stageOrder])
+  @@unique([onboardingPortalTemplateId, programType, stageCode])
   @@index([onboardingPortalTemplateId, isDeleted, isActive])
+  @@index([onboardingPortalTemplateId, programType, isDeleted, isActive])
   @@map("onboarding_stage_template")
 }
 
@@ -958,6 +960,7 @@ model OnboardingAssignment {
   onboardingAssignmentId       String                       @id @db.NVarChar(100)
   onboardingPortalTemplateId   String                       @db.NVarChar(100)
   portalKey                    String                       @db.NVarChar(50)
+  programType                  String                       @default("ONBOARDING") @db.NVarChar(30)
   participantReferenceType     String                       @db.NVarChar(50)
   participantReferenceId       String                       @db.NVarChar(100)
   startedAt                    DateTime
@@ -991,6 +994,7 @@ model OnboardingAssignment {
 
   @@index([onboardingPortalTemplateId, isDeleted, isActive])
   @@index([portalKey, status, isDeleted, isActive])
+  @@index([portalKey, programType, status, isDeleted, isActive])
   @@index([participantReferenceType, participantReferenceId, isDeleted, isActive])
   @@index([parentOnboardingAssignmentId])
   @@map("onboarding_assignment")

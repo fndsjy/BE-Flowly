@@ -16,6 +16,8 @@ const ONBOARDING_ADMIN_PORTAL_KEYS = [
 ];
 const CUSTOMER_PORTAL_KEY = "CUSTOMER";
 const CUSTOMER_PARTICIPANT_REFERENCE_TYPE = "CUSTOMER";
+const PROGRAM_TYPE_ONBOARDING = "ONBOARDING";
+const PROGRAM_TYPE_LEARNING = "LEARNING";
 const PORTAL_ORDER_MAP = new Map(ONBOARDING_ADMIN_PORTAL_KEYS.map((portalKey, index) => [
     portalKey,
     (index + 1) * 10,
@@ -24,7 +26,10 @@ const normalizeOptionalText = (value) => {
     const trimmed = value?.trim();
     return trimmed ? trimmed : null;
 };
-const normalizeUpper = (value) => value.trim().toUpperCase();
+const normalizeUpper = (value) => value?.trim().toUpperCase() ?? "";
+const normalizeProgramType = (value, fallback = PROGRAM_TYPE_ONBOARDING) => normalizeUpper(value) === PROGRAM_TYPE_LEARNING
+    ? PROGRAM_TYPE_LEARNING
+    : fallback;
 const toAuditActor = (value) => (normalizeOptionalText(value) ?? "CUSTOMER_PORTAL").slice(0, 20);
 const addDays = (value, day) => new Date(value.getTime() + day * 24 * 60 * 60 * 1000);
 const normalizeSourceFileId = (value) => {
@@ -193,6 +198,7 @@ const ensureCustomerLearningRuntime = async (params) => {
             where: {
                 onboardingPortalTemplateId: params.portalTemplate.onboardingPortalTemplateId,
                 portalKey: CUSTOMER_PORTAL_KEY,
+                programType: params.programType,
                 participantReferenceType: CUSTOMER_PARTICIPANT_REFERENCE_TYPE,
                 participantReferenceId,
                 isDeleted: false,
@@ -209,6 +215,7 @@ const ensureCustomerLearningRuntime = async (params) => {
                     onboardingAssignmentId: createAssignmentId(),
                     onboardingPortalTemplateId: params.portalTemplate.onboardingPortalTemplateId,
                     portalKey: CUSTOMER_PORTAL_KEY,
+                    programType: params.programType,
                     participantReferenceType: CUSTOMER_PARTICIPANT_REFERENCE_TYPE,
                     participantReferenceId,
                     startedAt: now,
@@ -218,7 +225,9 @@ const ensureCustomerLearningRuntime = async (params) => {
                     currentStageOrder: params.stageTemplates[0]?.stageOrder ?? null,
                     assignedAt: now,
                     assignedBy: actorId,
-                    note: "Auto-created by customer onboarding portal",
+                    note: params.programType === PROGRAM_TYPE_LEARNING
+                        ? "Auto-created by customer LMS portal"
+                        : "Auto-created by customer onboarding portal",
                     completedAt: null,
                     completedBy: null,
                     failedAt: null,
@@ -244,15 +253,32 @@ const ensureCustomerLearningRuntime = async (params) => {
                 isDeleted: false,
             },
             select: {
+                onboardingStageProgressId: true,
                 onboardingStageTemplateId: true,
                 stageOrder: true,
             },
         });
         const existingTemplateIds = new Set(existingStageProgresses.map((stage) => stage.onboardingStageTemplateId));
-        const existingStageOrders = new Set(existingStageProgresses.map((stage) => stage.stageOrder));
+        const existingStageProgressByOrder = new Map(existingStageProgresses.map((stage) => [stage.stageOrder, stage]));
         for (const stageTemplate of params.stageTemplates) {
-            if (existingTemplateIds.has(stageTemplate.onboardingStageTemplateId) ||
-                existingStageOrders.has(stageTemplate.stageOrder)) {
+            if (existingTemplateIds.has(stageTemplate.onboardingStageTemplateId)) {
+                continue;
+            }
+            const existingProgressWithSameOrder = existingStageProgressByOrder.get(stageTemplate.stageOrder);
+            if (existingProgressWithSameOrder) {
+                await tx.onboardingStageProgress.update({
+                    where: {
+                        onboardingStageProgressId: existingProgressWithSameOrder.onboardingStageProgressId,
+                    },
+                    data: {
+                        onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+                        stageCode: stageTemplate.stageCode,
+                        stageName: stageTemplate.stageName,
+                        updatedAt: now,
+                        updatedBy: actorId,
+                    },
+                });
+                existingTemplateIds.add(stageTemplate.onboardingStageTemplateId);
                 continue;
             }
             await tx.onboardingStageProgress.create({
@@ -328,6 +354,7 @@ const ensureAdminAccess = async (requesterId) => {
 };
 const toStageResponse = (stage) => ({
     onboardingStageTemplateId: stage.onboardingStageTemplateId,
+    programType: normalizeProgramType(stage.programType),
     stageOrder: stage.stageOrder,
     stageCode: stage.stageCode,
     stageName: stage.stageName,
@@ -362,9 +389,14 @@ const listPortalTemplates = async () => {
                 where: {
                     isDeleted: false,
                 },
-                orderBy: [{ stageOrder: "asc" }, { createdAt: "asc" }],
+                orderBy: [
+                    { programType: "asc" },
+                    { stageOrder: "asc" },
+                    { createdAt: "asc" },
+                ],
                 select: {
                     onboardingStageTemplateId: true,
+                    programType: true,
                     stageOrder: true,
                     stageCode: true,
                     stageName: true,
@@ -406,10 +438,12 @@ const listPortalTemplates = async () => {
     })
         .map(toPortalResponse);
 };
-const getNextStageOrder = async (onboardingPortalTemplateId) => {
+const getNextStageOrder = async (onboardingPortalTemplateId, programType) => {
     const latest = await prismaFlowly.onboardingStageTemplate.findFirst({
         where: {
             onboardingPortalTemplateId,
+            programType,
+            isDeleted: false,
         },
         orderBy: [{ stageOrder: "desc" }, { createdAt: "desc" }],
         select: {
@@ -418,20 +452,23 @@ const getNextStageOrder = async (onboardingPortalTemplateId) => {
     });
     return Number(latest?.stageOrder ?? 0) + 1;
 };
-const buildStageCode = async (onboardingPortalTemplateId, stageOrder) => {
+const buildStageCode = async (onboardingPortalTemplateId, programType, stageOrder) => {
     const existingRows = await prismaFlowly.onboardingStageTemplate.findMany({
         where: {
             onboardingPortalTemplateId,
+            programType,
+            isDeleted: false,
         },
         select: {
             stageCode: true,
         },
     });
     const existingCodes = new Set(existingRows.map((row) => normalizeUpper(row.stageCode)));
-    let candidate = `STAGE_${stageOrder}`;
+    const prefix = programType === PROGRAM_TYPE_LEARNING ? "LEARNING_STAGE" : "STAGE";
+    let candidate = `${prefix}_${stageOrder}`;
     let suffix = 2;
     while (existingCodes.has(candidate)) {
-        candidate = `STAGE_${stageOrder}_${suffix}`;
+        candidate = `${prefix}_${stageOrder}_${suffix}`;
         suffix += 1;
     }
     return candidate;
@@ -444,6 +481,7 @@ export class OnboardingStageService {
         };
     }
     static async listCustomerLearningStages(request = {}) {
+        const programType = normalizeProgramType(request.programType, PROGRAM_TYPE_ONBOARDING);
         const customerProgramAccessPromise = request.bypassProgramFilter
             ? Promise.resolve({
                 pretail: null,
@@ -463,6 +501,7 @@ export class OnboardingStageService {
                 include: {
                     stageTemplates: {
                         where: {
+                            programType,
                             isActive: true,
                             isDeleted: false,
                         },
@@ -501,12 +540,13 @@ export class OnboardingStageService {
             ? null
             : await ensureCustomerLearningRuntime({
                 custId: request.custId,
+                programType,
                 portalTemplate,
                 stageTemplates: accessibleStageTemplates,
             });
         const stages = accessibleStageTemplates
             .map((stageTemplate) => {
-            const stageProgress = runtime?.stageProgressByTemplateId.get(stageTemplate.onboardingStageTemplateId) ?? runtime?.stageProgressByOrder.get(stageTemplate.stageOrder) ?? null;
+            const stageProgress = runtime?.stageProgressByTemplateId.get(stageTemplate.onboardingStageTemplateId) ?? null;
             const materials = stageTemplate.stageMaterials.map((stageMaterial) => {
                 const sourceMaterial = sourceMaterialMap.get(stageMaterial.materiId);
                 const selectedFileIds = parseSelectedMaterialFileIds(stageMaterial.note);
@@ -556,6 +596,7 @@ export class OnboardingStageService {
             return {
                 onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
                 onboardingStageProgressId: stageProgress?.onboardingStageProgressId ?? null,
+                programType,
                 stageOrder: stageTemplate.stageOrder,
                 stageCode: stageTemplate.stageCode,
                 stageName: stageTemplate.stageName,
@@ -571,11 +612,13 @@ export class OnboardingStageService {
                 onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
                 portalKey: portalTemplate.portalKey,
                 portalName: portalTemplate.portalName,
+                programType,
             },
             stages,
         };
     }
     static async authorizeCustomerLearningFileAccess(request) {
+        const programType = normalizeProgramType(request.programType, PROGRAM_TYPE_ONBOARDING);
         const onboardingStageMaterialId = normalizeOptionalText(request.onboardingStageMaterialId);
         if (!onboardingStageMaterialId) {
             throw new ResponseError(400, "Materi onboarding tidak valid");
@@ -587,6 +630,7 @@ export class OnboardingStageService {
                     isDeleted: false,
                     isActive: true,
                     stageTemplate: {
+                        programType,
                         isDeleted: false,
                         isActive: true,
                         portalTemplate: {
@@ -633,6 +677,7 @@ export class OnboardingStageService {
                 assignment: {
                     select: {
                         portalKey: true,
+                        programType: true,
                         participantReferenceType: true,
                         participantReferenceId: true,
                     },
@@ -645,7 +690,8 @@ export class OnboardingStageService {
         if (normalizeUpper(stageProgress.assignment.portalKey) !== CUSTOMER_PORTAL_KEY ||
             normalizeUpper(stageProgress.assignment.participantReferenceType) !==
                 CUSTOMER_PARTICIPANT_REFERENCE_TYPE ||
-            stageProgress.assignment.participantReferenceId !== participantReferenceId) {
+            stageProgress.assignment.participantReferenceId !== participantReferenceId ||
+            normalizeProgramType(stageProgress.assignment.programType) !== programType) {
             throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
         }
         const customerProgramAccess = await getCustomerProgramAccess(participantReferenceId);
@@ -658,18 +704,32 @@ export class OnboardingStageService {
         const stageMaterial = await prismaFlowly.onboardingStageMaterial.findFirst({
             where: {
                 onboardingStageMaterialId,
-                onboardingStageTemplateId: stageProgress.onboardingStageTemplateId,
                 isDeleted: false,
                 isActive: true,
+                stageTemplate: {
+                    programType,
+                    isDeleted: false,
+                    isActive: true,
+                    portalTemplate: {
+                        portalKey: CUSTOMER_PORTAL_KEY,
+                        isDeleted: false,
+                        isActive: true,
+                    },
+                },
             },
             select: {
                 onboardingStageMaterialId: true,
                 onboardingStageTemplateId: true,
                 materiId: true,
                 note: true,
+                stageTemplate: {
+                    select: {
+                        stageOrder: true,
+                    },
+                },
             },
         });
-        if (!stageMaterial) {
+        if (!stageMaterial || stageMaterial.stageTemplate.stageOrder !== stageProgress.stageOrder) {
             throw new ResponseError(404, "Materi onboarding tidak ditemukan");
         }
         return {
@@ -687,6 +747,7 @@ export class OnboardingStageService {
         const onboardingAssignmentId = normalizeOptionalText(request.onboardingAssignmentId);
         const onboardingStageProgressId = normalizeOptionalText(request.onboardingStageProgressId);
         const onboardingStageMaterialId = normalizeOptionalText(request.onboardingStageMaterialId);
+        const programType = normalizeProgramType(request.programType, PROGRAM_TYPE_ONBOARDING);
         if (!onboardingAssignmentId ||
             !onboardingStageProgressId ||
             !onboardingStageMaterialId) {
@@ -715,6 +776,7 @@ export class OnboardingStageService {
                         select: {
                             onboardingAssignmentId: true,
                             portalKey: true,
+                            programType: true,
                             participantReferenceType: true,
                             participantReferenceId: true,
                             currentStageOrder: true,
@@ -730,7 +792,8 @@ export class OnboardingStageService {
                 CUSTOMER_PORTAL_KEY ||
                 normalizeUpper(stageProgress.assignment.participantReferenceType) !==
                     CUSTOMER_PARTICIPANT_REFERENCE_TYPE ||
-                stageProgress.assignment.participantReferenceId !== participantReferenceId) {
+                stageProgress.assignment.participantReferenceId !== participantReferenceId ||
+                normalizeProgramType(stageProgress.assignment.programType) !== programType) {
                 throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
             }
             if (normalizeUpper(stageProgress.status) === "LOCKED") {
@@ -739,16 +802,30 @@ export class OnboardingStageService {
             const stageMaterial = await tx.onboardingStageMaterial.findFirst({
                 where: {
                     onboardingStageMaterialId,
-                    onboardingStageTemplateId: stageProgress.onboardingStageTemplateId,
                     isDeleted: false,
                     isActive: true,
+                    stageTemplate: {
+                        programType,
+                        isDeleted: false,
+                        isActive: true,
+                        portalTemplate: {
+                            portalKey: CUSTOMER_PORTAL_KEY,
+                            isDeleted: false,
+                            isActive: true,
+                        },
+                    },
                 },
                 select: {
                     onboardingStageMaterialId: true,
                     materiId: true,
+                    stageTemplate: {
+                        select: {
+                            stageOrder: true,
+                        },
+                    },
                 },
             });
-            if (!stageMaterial) {
+            if (!stageMaterial || stageMaterial.stageTemplate.stageOrder !== stageProgress.stageOrder) {
                 throw new ResponseError(404, "Materi onboarding tidak ditemukan");
             }
             const finalStageStatus = !stageProgress.startedAt ||
@@ -855,6 +932,7 @@ export class OnboardingStageService {
     static async create(requesterId, request) {
         await ensureAdminAccess(requesterId);
         const validated = Validation.validate(OnboardingStageValidation.CREATE_STAGE, request);
+        const programType = normalizeProgramType(validated.programType);
         const portalTemplate = await prismaFlowly.onboardingPortalTemplate.findFirst({
             where: {
                 onboardingPortalTemplateId: validated.onboardingPortalTemplateId,
@@ -869,13 +947,14 @@ export class OnboardingStageService {
             throw new ResponseError(404, "Portal onboarding tidak ditemukan");
         }
         const now = new Date();
-        const stageOrder = await getNextStageOrder(portalTemplate.onboardingPortalTemplateId);
-        const stageCode = await buildStageCode(portalTemplate.onboardingPortalTemplateId, stageOrder);
+        const stageOrder = await getNextStageOrder(portalTemplate.onboardingPortalTemplateId, programType);
+        const stageCode = await buildStageCode(portalTemplate.onboardingPortalTemplateId, programType, stageOrder);
         const makeStageId = await generateOnboardingStageTemplateId();
         const created = await prismaFlowly.onboardingStageTemplate.create({
             data: {
                 onboardingStageTemplateId: makeStageId(),
                 onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+                programType,
                 stageOrder,
                 stageCode,
                 stageName: validated.stageName.trim(),
