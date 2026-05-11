@@ -57,7 +57,7 @@ export interface EmployeeOnboardingSummaryResponse {
 export interface ListEmployeeOnboardingSummaryRequest {
     portalKey?: string;
 }
-export type OnboardingDecisionType = "PASS_OVERRIDE" | "EXTEND" | "FAIL_FINAL" | "FREEZE_TRANSFER_REVIEW";
+export type OnboardingDecisionType = "PASS_OVERRIDE" | "EXTEND" | "FAIL_FINAL" | "FREEZE_TRANSFER_REVIEW" | "CANCEL_TRANSFER_REVIEW";
 export interface DecideOnboardingRequest {
     onboardingAssignmentId: string;
     decisionType: OnboardingDecisionType;

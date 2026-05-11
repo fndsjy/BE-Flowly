@@ -8,12 +8,17 @@ const optionalDate = z.preprocess((value) => {
     }
     return value;
 }, z.coerce.date().optional());
-const optionalText = (max) => z
+const optionalText = (max) => z.preprocess((value) => {
+    if (value === null || value === undefined) {
+        return undefined;
+    }
+    return value;
+}, z
     .string()
     .trim()
     .max(max)
     .optional()
-    .transform((value) => (value && value.length > 0 ? value : undefined));
+    .transform((value) => (value && value.length > 0 ? value : undefined)));
 export class OnboardingValidation {
     static START_EMPLOYEE = z.object({
         portalKey: z.string().trim().min(1).max(50).optional(),
@@ -37,7 +42,8 @@ export class OnboardingValidation {
         fileName: optionalText(255).optional(),
         fileTitle: optionalText(255).optional(),
     });
-    static DECIDE_ONBOARDING = z.object({
+    static DECIDE_ONBOARDING = z
+        .object({
         onboardingAssignmentId: z.string().trim().min(1).max(100),
         decisionType: z
             .string()
@@ -46,11 +52,21 @@ export class OnboardingValidation {
             .refine((value) => value === "PASS_OVERRIDE" ||
             value === "EXTEND" ||
             value === "FAIL_FINAL" ||
-            value === "FREEZE_TRANSFER_REVIEW", {
+            value === "FREEZE_TRANSFER_REVIEW" ||
+            value === "CANCEL_TRANSFER_REVIEW", {
             message: "Keputusan onboarding tidak valid",
         }),
         nextDurationDay: z.number().int().positive().max(3650).optional().nullable(),
         note: optionalText(2000).optional(),
+    })
+        .superRefine((value, ctx) => {
+        if (value.decisionType === "FAIL_FINAL" && !value.note) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["note"],
+                message: "Alasan wajib diisi ketika PIC ingin menetapkan bawahan gagal onboarding final",
+            });
+        }
     });
 }
 //# sourceMappingURL=onboarding-validation.js.map

@@ -21,6 +21,7 @@ type OnboardingMaterialSource = {
 };
 type OnboardingMaterialPortalStageResponse = {
     onboardingStageTemplateId: string;
+    programType: string;
     stageNumber: number;
     stageLabel: string;
     stageTitle: string;
@@ -35,6 +36,7 @@ type OnboardingMaterialPortalResponse = {
 type OnboardingMaterialAssignmentResponse = {
     assignmentId: string;
     onboardingStageTemplateId: string;
+    programType: string;
     employeeMaterialId: number;
     materialCode: string;
     materialTitle: string;

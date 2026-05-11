@@ -41435,6 +41435,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateMinAggregateOutputType = {
     onboardingStageTemplateId: string | null
     onboardingPortalTemplateId: string | null
+    programType: string | null
     stageOrder: number | null
     stageCode: string | null
     stageName: string | null
@@ -41452,6 +41453,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateMaxAggregateOutputType = {
     onboardingStageTemplateId: string | null
     onboardingPortalTemplateId: string | null
+    programType: string | null
     stageOrder: number | null
     stageCode: string | null
     stageName: string | null
@@ -41469,6 +41471,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateCountAggregateOutputType = {
     onboardingStageTemplateId: number
     onboardingPortalTemplateId: number
+    programType: number
     stageOrder: number
     stageCode: number
     stageName: number
@@ -41496,6 +41499,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateMinAggregateInputType = {
     onboardingStageTemplateId?: true
     onboardingPortalTemplateId?: true
+    programType?: true
     stageOrder?: true
     stageCode?: true
     stageName?: true
@@ -41513,6 +41517,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateMaxAggregateInputType = {
     onboardingStageTemplateId?: true
     onboardingPortalTemplateId?: true
+    programType?: true
     stageOrder?: true
     stageCode?: true
     stageName?: true
@@ -41530,6 +41535,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateCountAggregateInputType = {
     onboardingStageTemplateId?: true
     onboardingPortalTemplateId?: true
+    programType?: true
     stageOrder?: true
     stageCode?: true
     stageName?: true
@@ -41634,6 +41640,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateGroupByOutputType = {
     onboardingStageTemplateId: string
     onboardingPortalTemplateId: string
+    programType: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -41670,6 +41677,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     onboardingStageTemplateId?: boolean
     onboardingPortalTemplateId?: boolean
+    programType?: boolean
     stageOrder?: boolean
     stageCode?: boolean
     stageName?: boolean
@@ -41694,6 +41702,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateSelectScalar = {
     onboardingStageTemplateId?: boolean
     onboardingPortalTemplateId?: boolean
+    programType?: boolean
     stageOrder?: boolean
     stageCode?: boolean
     stageName?: boolean
@@ -41708,7 +41717,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type OnboardingStageTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"onboardingStageTemplateId" | "onboardingPortalTemplateId" | "stageOrder" | "stageCode" | "stageName" | "stageDescription" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["onboardingStageTemplate"]>
+  export type OnboardingStageTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"onboardingStageTemplateId" | "onboardingPortalTemplateId" | "programType" | "stageOrder" | "stageCode" | "stageName" | "stageDescription" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["onboardingStageTemplate"]>
   export type OnboardingStageTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portalTemplate?: boolean | OnboardingPortalTemplateDefaultArgs<ExtArgs>
     stageMaterials?: boolean | OnboardingStageTemplate$stageMaterialsArgs<ExtArgs>
@@ -41731,6 +41740,7 @@ export namespace Prisma {
        */
       onboardingStageTemplateId: string
       onboardingPortalTemplateId: string
+      programType: string
       stageOrder: number
       stageCode: string
       stageName: string
@@ -42118,6 +42128,7 @@ export namespace Prisma {
   interface OnboardingStageTemplateFieldRefs {
     readonly onboardingStageTemplateId: FieldRef<"OnboardingStageTemplate", 'String'>
     readonly onboardingPortalTemplateId: FieldRef<"OnboardingStageTemplate", 'String'>
+    readonly programType: FieldRef<"OnboardingStageTemplate", 'String'>
     readonly stageOrder: FieldRef<"OnboardingStageTemplate", 'Int'>
     readonly stageCode: FieldRef<"OnboardingStageTemplate", 'String'>
     readonly stageName: FieldRef<"OnboardingStageTemplate", 'String'>
@@ -44788,6 +44799,7 @@ export namespace Prisma {
     onboardingAssignmentId: string | null
     onboardingPortalTemplateId: string | null
     portalKey: string | null
+    programType: string | null
     participantReferenceType: string | null
     participantReferenceId: string | null
     startedAt: Date | null
@@ -44817,6 +44829,7 @@ export namespace Prisma {
     onboardingAssignmentId: string | null
     onboardingPortalTemplateId: string | null
     portalKey: string | null
+    programType: string | null
     participantReferenceType: string | null
     participantReferenceId: string | null
     startedAt: Date | null
@@ -44846,6 +44859,7 @@ export namespace Prisma {
     onboardingAssignmentId: number
     onboardingPortalTemplateId: number
     portalKey: number
+    programType: number
     participantReferenceType: number
     participantReferenceId: number
     startedAt: number
@@ -44887,6 +44901,7 @@ export namespace Prisma {
     onboardingAssignmentId?: true
     onboardingPortalTemplateId?: true
     portalKey?: true
+    programType?: true
     participantReferenceType?: true
     participantReferenceId?: true
     startedAt?: true
@@ -44916,6 +44931,7 @@ export namespace Prisma {
     onboardingAssignmentId?: true
     onboardingPortalTemplateId?: true
     portalKey?: true
+    programType?: true
     participantReferenceType?: true
     participantReferenceId?: true
     startedAt?: true
@@ -44945,6 +44961,7 @@ export namespace Prisma {
     onboardingAssignmentId?: true
     onboardingPortalTemplateId?: true
     portalKey?: true
+    programType?: true
     participantReferenceType?: true
     participantReferenceId?: true
     startedAt?: true
@@ -45061,6 +45078,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date
@@ -45109,6 +45127,7 @@ export namespace Prisma {
     onboardingAssignmentId?: boolean
     onboardingPortalTemplateId?: boolean
     portalKey?: boolean
+    programType?: boolean
     participantReferenceType?: boolean
     participantReferenceId?: boolean
     startedAt?: boolean
@@ -45148,6 +45167,7 @@ export namespace Prisma {
     onboardingAssignmentId?: boolean
     onboardingPortalTemplateId?: boolean
     portalKey?: boolean
+    programType?: boolean
     participantReferenceType?: boolean
     participantReferenceId?: boolean
     startedAt?: boolean
@@ -45173,7 +45193,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type OnboardingAssignmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"onboardingAssignmentId" | "onboardingPortalTemplateId" | "portalKey" | "participantReferenceType" | "participantReferenceId" | "startedAt" | "durationDay" | "dueAt" | "status" | "currentStageOrder" | "assignedAt" | "assignedBy" | "note" | "completedAt" | "completedBy" | "failedAt" | "failedBy" | "parentOnboardingAssignmentId" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["onboardingAssignment"]>
+  export type OnboardingAssignmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"onboardingAssignmentId" | "onboardingPortalTemplateId" | "portalKey" | "programType" | "participantReferenceType" | "participantReferenceId" | "startedAt" | "durationDay" | "dueAt" | "status" | "currentStageOrder" | "assignedAt" | "assignedBy" | "note" | "completedAt" | "completedBy" | "failedAt" | "failedBy" | "parentOnboardingAssignmentId" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["onboardingAssignment"]>
   export type OnboardingAssignmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portalTemplate?: boolean | OnboardingPortalTemplateDefaultArgs<ExtArgs>
     parentAssignment?: boolean | OnboardingAssignment$parentAssignmentArgs<ExtArgs>
@@ -45203,6 +45223,7 @@ export namespace Prisma {
       onboardingAssignmentId: string
       onboardingPortalTemplateId: string
       portalKey: string
+      programType: string
       participantReferenceType: string
       participantReferenceId: string
       startedAt: Date
@@ -45605,6 +45626,7 @@ export namespace Prisma {
     readonly onboardingAssignmentId: FieldRef<"OnboardingAssignment", 'String'>
     readonly onboardingPortalTemplateId: FieldRef<"OnboardingAssignment", 'String'>
     readonly portalKey: FieldRef<"OnboardingAssignment", 'String'>
+    readonly programType: FieldRef<"OnboardingAssignment", 'String'>
     readonly participantReferenceType: FieldRef<"OnboardingAssignment", 'String'>
     readonly participantReferenceId: FieldRef<"OnboardingAssignment", 'String'>
     readonly startedAt: FieldRef<"OnboardingAssignment", 'DateTime'>
@@ -52472,6 +52494,7 @@ export namespace Prisma {
   export const OnboardingStageTemplateScalarFieldEnum: {
     onboardingStageTemplateId: 'onboardingStageTemplateId',
     onboardingPortalTemplateId: 'onboardingPortalTemplateId',
+    programType: 'programType',
     stageOrder: 'stageOrder',
     stageCode: 'stageCode',
     stageName: 'stageName',
@@ -52533,6 +52556,7 @@ export namespace Prisma {
     onboardingAssignmentId: 'onboardingAssignmentId',
     onboardingPortalTemplateId: 'onboardingPortalTemplateId',
     portalKey: 'portalKey',
+    programType: 'programType',
     participantReferenceType: 'participantReferenceType',
     participantReferenceId: 'participantReferenceId',
     startedAt: 'startedAt',
@@ -56374,6 +56398,7 @@ export namespace Prisma {
     NOT?: OnboardingStageTemplateWhereInput | OnboardingStageTemplateWhereInput[]
     onboardingStageTemplateId?: StringFilter<"OnboardingStageTemplate"> | string
     onboardingPortalTemplateId?: StringFilter<"OnboardingStageTemplate"> | string
+    programType?: StringFilter<"OnboardingStageTemplate"> | string
     stageOrder?: IntFilter<"OnboardingStageTemplate"> | number
     stageCode?: StringFilter<"OnboardingStageTemplate"> | string
     stageName?: StringFilter<"OnboardingStageTemplate"> | string
@@ -56395,6 +56420,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateOrderByWithRelationInput = {
     onboardingStageTemplateId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
+    programType?: SortOrder
     stageOrder?: SortOrder
     stageCode?: SortOrder
     stageName?: SortOrder
@@ -56415,12 +56441,13 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateWhereUniqueInput = Prisma.AtLeast<{
     onboardingStageTemplateId?: string
-    onboardingPortalTemplateId_stageOrder?: OnboardingStageTemplateOnboardingPortalTemplateIdStageOrderCompoundUniqueInput
-    onboardingPortalTemplateId_stageCode?: OnboardingStageTemplateOnboardingPortalTemplateIdStageCodeCompoundUniqueInput
+    onboardingPortalTemplateId_programType_stageOrder?: OnboardingStageTemplateOnboardingPortalTemplateIdProgramTypeStageOrderCompoundUniqueInput
+    onboardingPortalTemplateId_programType_stageCode?: OnboardingStageTemplateOnboardingPortalTemplateIdProgramTypeStageCodeCompoundUniqueInput
     AND?: OnboardingStageTemplateWhereInput | OnboardingStageTemplateWhereInput[]
     OR?: OnboardingStageTemplateWhereInput[]
     NOT?: OnboardingStageTemplateWhereInput | OnboardingStageTemplateWhereInput[]
     onboardingPortalTemplateId?: StringFilter<"OnboardingStageTemplate"> | string
+    programType?: StringFilter<"OnboardingStageTemplate"> | string
     stageOrder?: IntFilter<"OnboardingStageTemplate"> | number
     stageCode?: StringFilter<"OnboardingStageTemplate"> | string
     stageName?: StringFilter<"OnboardingStageTemplate"> | string
@@ -56437,11 +56464,12 @@ export namespace Prisma {
     stageMaterials?: OnboardingStageMaterialListRelationFilter
     stageExams?: OnboardingStageExamListRelationFilter
     stageProgresses?: OnboardingStageProgressListRelationFilter
-  }, "onboardingStageTemplateId" | "onboardingPortalTemplateId_stageOrder" | "onboardingPortalTemplateId_stageCode">
+  }, "onboardingStageTemplateId" | "onboardingPortalTemplateId_programType_stageOrder" | "onboardingPortalTemplateId_programType_stageCode">
 
   export type OnboardingStageTemplateOrderByWithAggregationInput = {
     onboardingStageTemplateId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
+    programType?: SortOrder
     stageOrder?: SortOrder
     stageCode?: SortOrder
     stageName?: SortOrder
@@ -56467,6 +56495,7 @@ export namespace Prisma {
     NOT?: OnboardingStageTemplateScalarWhereWithAggregatesInput | OnboardingStageTemplateScalarWhereWithAggregatesInput[]
     onboardingStageTemplateId?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
     onboardingPortalTemplateId?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
+    programType?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
     stageOrder?: IntWithAggregatesFilter<"OnboardingStageTemplate"> | number
     stageCode?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
     stageName?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
@@ -56700,6 +56729,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFilter<"OnboardingAssignment"> | string
     onboardingPortalTemplateId?: StringFilter<"OnboardingAssignment"> | string
     portalKey?: StringFilter<"OnboardingAssignment"> | string
+    programType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
@@ -56736,6 +56766,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
+    programType?: SortOrder
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
@@ -56775,6 +56806,7 @@ export namespace Prisma {
     NOT?: OnboardingAssignmentWhereInput | OnboardingAssignmentWhereInput[]
     onboardingPortalTemplateId?: StringFilter<"OnboardingAssignment"> | string
     portalKey?: StringFilter<"OnboardingAssignment"> | string
+    programType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
@@ -56811,6 +56843,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
+    programType?: SortOrder
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
@@ -56848,6 +56881,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     onboardingPortalTemplateId?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     portalKey?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
+    programType?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     participantReferenceType?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeWithAggregatesFilter<"OnboardingAssignment"> | Date | string
@@ -61778,6 +61812,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateCreateInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -61799,6 +61834,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedCreateInput = {
     onboardingStageTemplateId: string
     onboardingPortalTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -61818,6 +61854,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUpdateInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -61839,6 +61876,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedUpdateInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -61859,6 +61897,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateCreateManyInput = {
     onboardingStageTemplateId: string
     onboardingPortalTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -61875,6 +61914,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUpdateManyMutationInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -61892,6 +61932,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedUpdateManyInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -62153,6 +62194,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -62188,6 +62230,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -62221,6 +62264,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62256,6 +62300,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62290,6 +62335,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -62318,6 +62364,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateManyMutationInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62346,6 +62393,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65716,19 +65764,22 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type OnboardingStageTemplateOnboardingPortalTemplateIdStageOrderCompoundUniqueInput = {
+  export type OnboardingStageTemplateOnboardingPortalTemplateIdProgramTypeStageOrderCompoundUniqueInput = {
     onboardingPortalTemplateId: string
+    programType: string
     stageOrder: number
   }
 
-  export type OnboardingStageTemplateOnboardingPortalTemplateIdStageCodeCompoundUniqueInput = {
+  export type OnboardingStageTemplateOnboardingPortalTemplateIdProgramTypeStageCodeCompoundUniqueInput = {
     onboardingPortalTemplateId: string
+    programType: string
     stageCode: string
   }
 
   export type OnboardingStageTemplateCountOrderByAggregateInput = {
     onboardingStageTemplateId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
+    programType?: SortOrder
     stageOrder?: SortOrder
     stageCode?: SortOrder
     stageName?: SortOrder
@@ -65750,6 +65801,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateMaxOrderByAggregateInput = {
     onboardingStageTemplateId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
+    programType?: SortOrder
     stageOrder?: SortOrder
     stageCode?: SortOrder
     stageName?: SortOrder
@@ -65767,6 +65819,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateMinOrderByAggregateInput = {
     onboardingStageTemplateId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
+    programType?: SortOrder
     stageOrder?: SortOrder
     stageCode?: SortOrder
     stageName?: SortOrder
@@ -65963,6 +66016,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
+    programType?: SortOrder
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
@@ -65997,6 +66051,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
+    programType?: SortOrder
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
@@ -66026,6 +66081,7 @@ export namespace Prisma {
     onboardingAssignmentId?: SortOrder
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
+    programType?: SortOrder
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
@@ -75860,6 +75916,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateCreateWithoutPortalTemplateInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -75879,6 +75936,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUncheckedCreateWithoutPortalTemplateInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -75908,6 +75966,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutPortalTemplateInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -75941,6 +76000,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUncheckedCreateWithoutPortalTemplateInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -76002,6 +76062,7 @@ export namespace Prisma {
     NOT?: OnboardingStageTemplateScalarWhereInput | OnboardingStageTemplateScalarWhereInput[]
     onboardingStageTemplateId?: StringFilter<"OnboardingStageTemplate"> | string
     onboardingPortalTemplateId?: StringFilter<"OnboardingStageTemplate"> | string
+    programType?: StringFilter<"OnboardingStageTemplate"> | string
     stageOrder?: IntFilter<"OnboardingStageTemplate"> | number
     stageCode?: StringFilter<"OnboardingStageTemplate"> | string
     stageName?: StringFilter<"OnboardingStageTemplate"> | string
@@ -76039,6 +76100,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFilter<"OnboardingAssignment"> | string
     onboardingPortalTemplateId?: StringFilter<"OnboardingAssignment"> | string
     portalKey?: StringFilter<"OnboardingAssignment"> | string
+    programType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
@@ -76406,6 +76468,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateCreateWithoutStageMaterialsInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -76426,6 +76489,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedCreateWithoutStageMaterialsInput = {
     onboardingStageTemplateId: string
     onboardingPortalTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -76517,6 +76581,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUpdateWithoutStageMaterialsInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -76537,6 +76602,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedUpdateWithoutStageMaterialsInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -76599,6 +76665,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateCreateWithoutStageExamsInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -76619,6 +76686,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedCreateWithoutStageExamsInput = {
     onboardingStageTemplateId: string
     onboardingPortalTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -76714,6 +76782,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUpdateWithoutStageExamsInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -76734,6 +76803,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedUpdateWithoutStageExamsInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -76836,6 +76906,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutRetryAssignmentsInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -76870,6 +76941,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -76907,6 +76979,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutParentAssignmentInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -76941,6 +77014,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -77256,6 +77330,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutRetryAssignmentsInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77290,6 +77365,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77423,6 +77499,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutStageProgressesInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -77457,6 +77534,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -77493,6 +77571,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateCreateWithoutStageProgressesInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -77513,6 +77592,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedCreateWithoutStageProgressesInput = {
     onboardingStageTemplateId: string
     onboardingPortalTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -77666,6 +77746,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutStageProgressesInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77700,6 +77781,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77742,6 +77824,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUpdateWithoutStageProgressesInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -77762,6 +77845,7 @@ export namespace Prisma {
   export type OnboardingStageTemplateUncheckedUpdateWithoutStageProgressesInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -77813,6 +77897,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutMaterialProgressesInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -77847,6 +77932,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -77989,6 +78075,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutMaterialProgressesInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78023,6 +78110,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78161,6 +78249,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutExamAttemptsInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -78195,6 +78284,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -78337,6 +78427,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutExamAttemptsInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78371,6 +78462,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78509,6 +78601,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateWithoutDecisionsInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -78543,6 +78636,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -78591,6 +78685,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutDecisionsInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78625,6 +78720,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81044,6 +81140,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateCreateManyPortalTemplateInput = {
     onboardingStageTemplateId: string
+    programType?: string
     stageOrder: number
     stageCode: string
     stageName: string
@@ -81061,6 +81158,7 @@ export namespace Prisma {
   export type OnboardingAssignmentCreateManyPortalTemplateInput = {
     onboardingAssignmentId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -81088,6 +81186,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUpdateWithoutPortalTemplateInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -81107,6 +81206,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUncheckedUpdateWithoutPortalTemplateInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -81126,6 +81226,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateUncheckedUpdateManyWithoutPortalTemplateInput = {
     onboardingStageTemplateId?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     stageOrder?: IntFieldUpdateOperationsInput | number
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
@@ -81143,6 +81244,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutPortalTemplateInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81176,6 +81278,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUncheckedUpdateWithoutPortalTemplateInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81209,6 +81312,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUncheckedUpdateManyWithoutPortalTemplateInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81666,6 +81770,7 @@ export namespace Prisma {
     onboardingAssignmentId: string
     onboardingPortalTemplateId: string
     portalKey: string
+    programType?: string
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
@@ -81783,6 +81888,7 @@ export namespace Prisma {
   export type OnboardingAssignmentUpdateWithoutParentAssignmentInput = {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81817,6 +81923,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81850,6 +81957,7 @@ export namespace Prisma {
     onboardingAssignmentId?: StringFieldUpdateOperationsInput | string
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
+    programType?: StringFieldUpdateOperationsInput | string
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string

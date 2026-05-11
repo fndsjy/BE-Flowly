@@ -68,7 +68,8 @@ export type OnboardingDecisionType =
   | "PASS_OVERRIDE"
   | "EXTEND"
   | "FAIL_FINAL"
-  | "FREEZE_TRANSFER_REVIEW";
+  | "FREEZE_TRANSFER_REVIEW"
+  | "CANCEL_TRANSFER_REVIEW";
 
 export interface DecideOnboardingRequest {
   onboardingAssignmentId: string;

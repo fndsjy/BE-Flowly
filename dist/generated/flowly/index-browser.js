@@ -717,6 +717,7 @@ exports.Prisma.OnboardingPortalTemplateScalarFieldEnum = {
 exports.Prisma.OnboardingStageTemplateScalarFieldEnum = {
   onboardingStageTemplateId: 'onboardingStageTemplateId',
   onboardingPortalTemplateId: 'onboardingPortalTemplateId',
+  programType: 'programType',
   stageOrder: 'stageOrder',
   stageCode: 'stageCode',
   stageName: 'stageName',
@@ -769,6 +770,7 @@ exports.Prisma.OnboardingAssignmentScalarFieldEnum = {
   onboardingAssignmentId: 'onboardingAssignmentId',
   onboardingPortalTemplateId: 'onboardingPortalTemplateId',
   portalKey: 'portalKey',
+  programType: 'programType',
   participantReferenceType: 'participantReferenceType',
   participantReferenceId: 'participantReferenceId',
   startedAt: 'startedAt',

@@ -259,6 +259,30 @@ const defaultOnboardingStages = [
   },
 ];
 
+const customerLearningStages = [
+  {
+    stageOrder: 1,
+    stageCode: "STAGE_1",
+    stageName: "Pengenalan & Persiapan",
+    stageDescription:
+      "Tahap awal untuk pengenalan portal, akun, aturan dasar, dan target learning.",
+  },
+  {
+    stageOrder: 2,
+    stageCode: "STAGE_2",
+    stageName: "Program POS",
+    stageDescription:
+      "Tahap pembelajaran inti untuk materi POS yang relevan dengan portal peserta.",
+  },
+  {
+    stageOrder: 3,
+    stageCode: "STAGE_3",
+    stageName: "Program Indomata",
+    stageDescription:
+      "Tahap pendalaman untuk praktik, penguatan pemahaman, dan kesiapan menjalankan peran Indomata.",
+  },
+];
+
 const notificationTemplateDefaults = [
   {
     templateName: "WA Peserta - Onboarding dimulai",
@@ -525,11 +549,25 @@ async function main() {
           },
         });
 
-    for (const stage of defaultOnboardingStages) {
+    const stagesForPortal = [
+      ...defaultOnboardingStages.map((stage) => ({
+        ...stage,
+        programType: "ONBOARDING",
+      })),
+      ...(portalTemplate.portalKey === "CUSTOMER"
+        ? customerLearningStages.map((stage) => ({
+            ...stage,
+            programType: "LEARNING",
+          }))
+        : []),
+    ];
+
+    for (const stage of stagesForPortal) {
       const existingStage = await prisma.onboardingStageTemplate.findUnique({
         where: {
-          onboardingPortalTemplateId_stageCode: {
+          onboardingPortalTemplateId_programType_stageCode: {
             onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+            programType: stage.programType,
             stageCode: stage.stageCode,
           },
         },
@@ -540,6 +578,7 @@ async function main() {
         await prisma.onboardingStageTemplate.update({
           where: { onboardingStageTemplateId: existingStage.onboardingStageTemplateId },
           data: {
+            programType: stage.programType,
             stageOrder: stage.stageOrder,
             stageName: stage.stageName,
             stageDescription: stage.stageDescription,
@@ -556,6 +595,7 @@ async function main() {
         data: {
           onboardingStageTemplateId: makeOnboardingStageTemplateId(),
           onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+          programType: stage.programType,
           stageOrder: stage.stageOrder,
           stageCode: stage.stageCode,
           stageName: stage.stageName,

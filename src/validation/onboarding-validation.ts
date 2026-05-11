@@ -16,12 +16,21 @@ const optionalDate = z.preprocess(
 );
 
 const optionalText = (max: number) =>
-  z
-    .string()
-    .trim()
-    .max(max)
-    .optional()
-    .transform((value) => (value && value.length > 0 ? value : undefined));
+  z.preprocess(
+    (value) => {
+      if (value === null || value === undefined) {
+        return undefined;
+      }
+
+      return value;
+    },
+    z
+      .string()
+      .trim()
+      .max(max)
+      .optional()
+      .transform((value) => (value && value.length > 0 ? value : undefined))
+  );
 
 export class OnboardingValidation {
   static readonly START_EMPLOYEE: ZodType = z.object({
@@ -49,23 +58,35 @@ export class OnboardingValidation {
     fileTitle: optionalText(255).optional(),
   });
 
-  static readonly DECIDE_ONBOARDING: ZodType = z.object({
-    onboardingAssignmentId: z.string().trim().min(1).max(100),
-    decisionType: z
-      .string()
-      .trim()
-      .transform((value) => value.toUpperCase())
-      .refine(
-        (value) =>
-            value === "PASS_OVERRIDE" ||
-            value === "EXTEND" ||
-            value === "FAIL_FINAL" ||
-            value === "FREEZE_TRANSFER_REVIEW",
-        {
-          message: "Keputusan onboarding tidak valid",
-        }
-      ),
-    nextDurationDay: z.number().int().positive().max(3650).optional().nullable(),
-    note: optionalText(2000).optional(),
-  });
+  static readonly DECIDE_ONBOARDING: ZodType = z
+    .object({
+      onboardingAssignmentId: z.string().trim().min(1).max(100),
+      decisionType: z
+        .string()
+        .trim()
+        .transform((value) => value.toUpperCase())
+        .refine(
+          (value) =>
+              value === "PASS_OVERRIDE" ||
+              value === "EXTEND" ||
+              value === "FAIL_FINAL" ||
+              value === "FREEZE_TRANSFER_REVIEW" ||
+              value === "CANCEL_TRANSFER_REVIEW",
+          {
+            message: "Keputusan onboarding tidak valid",
+          }
+        ),
+      nextDurationDay: z.number().int().positive().max(3650).optional().nullable(),
+      note: optionalText(2000).optional(),
+    })
+    .superRefine((value, ctx) => {
+      if (value.decisionType === "FAIL_FINAL" && !value.note) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["note"],
+          message:
+            "Alasan wajib diisi ketika PIC ingin menetapkan bawahan gagal onboarding final",
+        });
+      }
+    });
 }

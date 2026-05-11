@@ -668,6 +668,7 @@ export class OnboardingMaterialController {
                 onboardingAssignmentId: normalizeQueryText(req.query.onboardingAssignmentId),
                 onboardingStageProgressId: normalizeQueryText(req.query.onboardingStageProgressId),
                 onboardingStageMaterialId: normalizeQueryText(req.query.onboardingStageMaterialId),
+                programType: normalizeQueryText(req.query.programType),
                 sourceFileId,
                 fileName,
                 fileTitle: normalizeQueryText(req.query.fileTitle),
@@ -675,6 +676,7 @@ export class OnboardingMaterialController {
             const authorized = await OnboardingStageService.authorizeCustomerLearningFileAccess(request);
             if (!access.bypassProgramFilter && access.custId) {
                 await OnboardingStageService.recordCustomerLearningFileOpen(access.custId, {
+                    programType: request.programType,
                     onboardingAssignmentId: request.onboardingAssignmentId,
                     onboardingStageProgressId: request.onboardingStageProgressId,
                     onboardingStageMaterialId: request.onboardingStageMaterialId,

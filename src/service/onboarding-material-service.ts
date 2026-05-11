@@ -51,6 +51,7 @@ type MaterialTypeRow = {
 
 type OnboardingMaterialPortalStageResponse = {
   onboardingStageTemplateId: string;
+  programType: string;
   stageNumber: number;
   stageLabel: string;
   stageTitle: string;
@@ -67,6 +68,7 @@ type OnboardingMaterialPortalResponse = {
   type OnboardingMaterialAssignmentResponse = {
   assignmentId: string;
   onboardingStageTemplateId: string;
+  programType: string;
   employeeMaterialId: number;
   materialCode: string;
   materialTitle: string;
@@ -443,7 +445,11 @@ export class OnboardingMaterialService {
               isActive: true,
               isDeleted: false,
             },
-            orderBy: [{ stageOrder: "asc" }, { stageCode: "asc" }],
+            orderBy: [
+              { programType: "asc" },
+              { stageOrder: "asc" },
+              { stageCode: "asc" },
+            ],
             include: {
               stageMaterials: {
                 where: {
@@ -475,6 +481,7 @@ export class OnboardingMaterialService {
         portalOrderIndex: getPortalOrderIndex(portalTemplate.portalKey),
         stages: portalTemplate.stageTemplates.map((stageTemplate) => ({
           onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+          programType: stageTemplate.programType,
           stageNumber: stageTemplate.stageOrder,
           stageLabel: stageTemplate.stageName,
           stageTitle:
@@ -509,6 +516,7 @@ export class OnboardingMaterialService {
           assignments.push({
             assignmentId: stageMaterial.onboardingStageMaterialId,
             onboardingStageTemplateId: stageTemplate.onboardingStageTemplateId,
+            programType: stageTemplate.programType,
             employeeMaterialId: stageMaterial.materiId,
             materialCode: sourceMaterial?.materialCode ?? `MAT-${stageMaterial.materiId}`,
             materialTitle:
@@ -545,6 +553,9 @@ export class OnboardingMaterialService {
     assignments.sort((left, right) => {
       if (left.portalOrderIndex !== right.portalOrderIndex) {
         return left.portalOrderIndex - right.portalOrderIndex;
+      }
+      if (left.programType !== right.programType) {
+        return left.programType.localeCompare(right.programType);
       }
       if (left.stageNumber !== right.stageNumber) {
         return left.stageNumber - right.stageNumber;

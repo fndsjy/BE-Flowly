@@ -58,7 +58,6 @@ const EMPLOYEE_PARTICIPANT_REFERENCE_TYPE = "EMPLOYEE";
 const BLOCKED_EMPLOYEE_ONBOARDING_LOGIN_STATUSES = new Set([
   "CANCELLED",
   "FAIL_FINAL",
-  "TRANSFER_REVIEW",
 ]);
 
 type EditableProfileField =
@@ -88,6 +87,7 @@ type EmployeeProfileRecord = {
   email: string | null;
   BPJSKshtn: string | null;
   BPJSKtngkerjaan: string | null;
+  status: string | null;
   statusLMS: boolean;
   roleId: number | null;
   isFirstLogin: number | null;
@@ -249,6 +249,11 @@ const findDemoPortalUserById = (userId: string) =>
 const isEmployeeFirstLogin = (value?: number | null) =>
   Number(value ?? 0) !== 0;
 
+const isInactiveEmployeeStatus = (value?: string | null) => {
+  const normalized = normalizeUpper(value);
+  return normalized === "I" || normalized === "INACTIVE" || normalized === "NONACTIVE";
+};
+
 const canEmployeeLoginByOnboardingStatus = async (employeeUserId: number) => {
   const assignment = await prismaFlowly.onboardingAssignment.findFirst({
     where: {
@@ -298,6 +303,7 @@ const employeeProfileSelect = {
   email: true,
   BPJSKshtn: true,
   BPJSKtngkerjaan: true,
+  status: true,
   statusLMS: true,
   roleId: true,
   isFirstLogin: true,
@@ -948,6 +954,7 @@ export class UserService {
           Password: true,
           roleId: true,
           jobDesc: true,
+          status: true,
           isFirstLogin: true,
         },
       });
@@ -962,6 +969,13 @@ export class UserService {
     );
       if (!isPasswordValid) {
         throw new ResponseError(401, "Invalid card number or password");
+      }
+
+      if (isInactiveEmployeeStatus(employee.status)) {
+        throw new ResponseError(
+          403,
+          "Akun karyawan sudah nonaktif. Silakan hubungi HRD."
+        );
       }
 
       const canLoginByOnboarding = await canEmployeeLoginByOnboardingStatus(
