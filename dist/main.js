@@ -43,8 +43,11 @@ const bootstrap = async () => {
     else {
         logger.info("[PRISMA] optidom skipped because OPTIDOM_DATABASE_URL is not configured");
     }
-    web.listen(5174, "0.0.0.0", () => {
-        logger.info("🚀 Flowly Server is running on http://10.0.1.16:5174 and http://localhost:5174");
+    // web.listen(5174, "0.0.0.0", () => {
+    //     logger.info("🚀 Flowly Server is running on http://10.0.1.155:5174 and http://localhost:5174");
+    // });
+    web.listen(5110, "0.0.0.0", () => {
+        logger.info("🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110");
     });
     const disableOutboxWorker = String(process.env.DISABLE_OUTBOX_WORKER ?? "").toLowerCase() === "true";
     if (disableOutboxWorker) {
