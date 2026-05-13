@@ -22,6 +22,7 @@ export interface EmployeeResponse {
     SbuSub: number | null;
     Nik: string | null;
     ResignDate: Date | null;
+    status: string | null;
     statusLMS: string;
     roleId: number | null;
     jobDesc: string | null;
@@ -39,8 +40,9 @@ export interface EmployeeDepartmentResponse {
     DEPTNAME: string | null;
 }
 type EmployeeStatusLmsValue = boolean | string | null | undefined;
-export type EmployeeRecordInput = Omit<EmployeeResponse, "DeptName" | "statusLMS"> & {
+export type EmployeeRecordInput = Omit<EmployeeResponse, "DeptName" | "status" | "statusLMS"> & {
     DeptName?: string | null;
+    status?: string | null;
     statusLMS?: EmployeeStatusLmsValue;
 };
 type RequiredEmployeeMutationFields = {

@@ -1437,23 +1437,26 @@ export class OnboardingExamRuntimeService {
         : {}),
     }));
 
-    const questionDurations = await prismaEmployee.em_questions1.findMany({
+    const scheduleTypeDurations = await prismaEmployee.em_schedule4.findMany({
       where: {
-        id: {
-          in: soalUrut.map((item) => item.id),
-        },
+        scheduleId: syncResult.scheduleId,
       },
       select: {
-        id: true,
-        time_limit: true,
+        jumlahSoal: true,
+        durasiPerTipe: true,
       },
     });
+    const durationMinutesFromSchedule = scheduleTypeDurations.reduce((sum, row) => {
+      const questionCount = Number(row.jumlahSoal ?? 0);
+      const duration = Number(row.durasiPerTipe ?? 0);
+      return questionCount > 0 && Number.isFinite(duration) && duration > 0
+        ? sum + duration
+        : sum;
+    }, 0);
     const durationSeconds =
-      questionDurations.reduce(
-        (sum, question) =>
-          sum + Math.max(0, Number.isFinite(question.time_limit) ? question.time_limit : 0),
-        0
-      ) || DEFAULT_EXAM_DURATION_SECONDS;
+      durationMinutesFromSchedule > 0
+        ? durationMinutesFromSchedule * 60
+        : DEFAULT_EXAM_DURATION_SECONDS;
     const durationMinutes = Math.max(1, Math.ceil(durationSeconds / 60));
     const startTime = new Date();
     const tokenExpiresAt = addSeconds(startTime, durationSeconds);

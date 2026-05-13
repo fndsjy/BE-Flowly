@@ -1,0 +1,427 @@
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:01:37.554Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:01:37.566Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:01:37.582Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:01:37.585Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:01:37.589Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:01:37.607Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:04:10.656Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:04:10.671Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:04:10.697Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:04:10.700Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:04:10.703Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:04:10.720Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:05:58.549Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:05:58.587Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:05:58.603Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:05:58.607Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:05:58.610Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:05:58.631Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:10:55.185Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:10:55.252Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:10:55.309Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:10:55.312Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:10:55.315Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:10:55.348Z"}
+{"elapsedMs":15023.89,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T03:16:24.503Z"}
+{"elapsedMs":15025.57,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T03:16:24.504Z"}
+{"elapsedMs":15038.62,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T03:16:24.517Z"}
+{"clientIp":"10.0.1.16","durationMs":168,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T03:17:50.582Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2416&fileName=training_pos.pptx&disposition=inline&fileType=2&fileTitle=training+pos"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:21:26.138Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:21:26.208Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:21:26.312Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:21:26.315Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:21:26.317Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:21:26.336Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:22:39.573Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:22:39.590Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:22:39.610Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:22:39.613Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:22:39.616Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:22:39.636Z"}
+{"clientIp":"10.0.1.16","durationMs":130,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T03:24:43.112Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2416&fileName=training_pos.pptx&disposition=inline&fileType=2&fileTitle=training+pos"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T03:36:41.235Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":23,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T03:36:41.250Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T03:36:41.265Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":5,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T03:36:41.267Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":74,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:36:41.306Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:36:41.312Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":119,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:36:41.340Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":27,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:36:41.371Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":20,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T03:36:43.654Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":53,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T03:36:45.836Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM130526-00002&programType=LEARNING&sourceFileId=979&fileName=testing_word.docx&disposition=inline&fileType=2&fileTitle=testing+word"}
+{"clientIp":"10.0.1.16","durationMs":238,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T03:36:48.944Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM130526-00003&programType=LEARNING&sourceFileId=2406&fileName=ikigai_appendix.pdf&disposition=inline&fileType=2&fileTitle=ikigai+-+appendix"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:44:56.416Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:44:56.473Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:44:56.547Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:44:56.550Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:44:56.553Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:44:56.566Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T03:50:09.608Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T03:50:09.623Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T03:50:09.641Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T03:50:09.645Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T03:50:09.649Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T03:50:09.665Z"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T03:51:31.225Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":22,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T03:51:31.241Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T03:51:31.264Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":12,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T03:51:31.272Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":82,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:51:31.296Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":18,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:51:31.318Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":11,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:51:31.337Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":177,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:51:31.376Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":94,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T03:51:31.474Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":82,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T03:51:34.189Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"elapsedMs":15027.74,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T03:55:38.914Z"}
+{"elapsedMs":15025.94,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T03:55:38.916Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T04:05:59.106Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T04:05:59.119Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T04:05:59.155Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T04:05:59.160Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T04:05:59.165Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T04:05:59.186Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T04:35:39.527Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T04:35:39.546Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T04:35:39.575Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T04:35:39.578Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T04:35:39.580Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T04:35:39.595Z"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:54.265Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM130526-00002&programType=LEARNING&sourceFileId=979&fileName=testing_word.docx&disposition=inline&fileType=2&fileTitle=testing+word"}
+{"clientIp":"10.0.1.16","durationMs":20,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:54.272Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM130526-00002&programType=LEARNING&sourceFileId=979&fileName=testing_word.docx&disposition=inline&fileType=2&fileTitle=testing+word"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.655Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":13,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.662Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.666Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":19,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.673Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.690Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":13,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.696Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.705Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":19,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.706Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.715Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":31,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.720Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.764Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":5,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.765Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.772Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":13,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.777Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.911Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":9,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:35:59.917Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":220,"level":"info","message":"HTTP request completed","method":"POST","status":200,"timestamp":"2026-05-13T04:36:04.213Z","url":"/v1/api/login"}
+{"clientIp":"10.0.1.16","durationMs":62,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:04.336Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":45,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:04.481Z","url":"/v1/api/master-access-role?resourceType=PORTAL"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.631Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.647Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":66,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.693Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":79,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.695Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.699Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.702Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":206,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.872Z","url":"/v1/api/onboarding/admin-monitoring"}
+{"clientIp":"10.0.1.16","durationMs":55,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:06.930Z","url":"/v1/api/onboarding/admin-monitoring"}
+{"clientIp":"10.0.1.16","durationMs":51,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:36:07.594Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":31,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:07.630Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":73,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:07.635Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":17,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:36:07.654Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":16,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:36:23.287Z","url":"/v1/api/onboarding-material/file/testing_word.docx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":127,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:36:35.877Z","url":"/v1/api/onboarding-material/file/livekacamatasetupguide.pdf?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":245,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:36:45.658Z","url":"/v1/api/onboarding-material/file/training_pos.pptx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":25,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:36:49.515Z","url":"/v1/api/onboarding-material/file/testing_word.docx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":132,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:36:54.305Z","url":"/v1/api/onboarding-material/file/livekacamatasetupguide.pdf?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:41.931Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:41.955Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:38:45.806Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:38:45.809Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":3868,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:45.820Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:45.847Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:45.854Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":7999,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:38:53.810Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":7997,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:38:53.812Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":26,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:53.844Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":65,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:38:53.881Z","url":"/v1/api/onboarding-material/assignments"}
+{"level":"warn","listQueryMs":15229.44,"message":"[MASTER ACCESS ROLE PERF]","parentKey":null,"portalKey":"ADMINISTRATOR","portalLookupMs":null,"portalMapMs":null,"resolutionMode":"portal-scoped","resourceType":"MODULE","thresholdMs":2000,"timestamp":"2026-05-13T04:38:57.184Z","totalMs":15229.59}
+{"departmentMs":2.28,"employeeByCardMs":15036.64,"employeeByUserIdMs":null,"employeeMatch":"cardNumber","flowlyUserMs":7.75,"level":"warn","message":"[PROFILE PERF]","resolutionPath":"flowly","thresholdMs":2000,"timestamp":"2026-05-13T04:39:00.877Z","totalMs":15058.38,"userId":"USR111225-0001"}
+{"clientIp":"10.0.1.16","durationMs":15063,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:39:00.880Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:00.885Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:00.889Z","url":"/v1/api/profile"}
+{"elapsedMs":15054.33,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T04:39:08.845Z"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.519Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.540Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.568Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.592Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.601Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.604Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.612Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":165,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.727Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":186,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.745Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":86,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.816Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":141,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:39:41.889Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":243,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:39:54.812Z","url":"/v1/api/onboarding-material/file/training_pos.pptx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":258,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:40:09.702Z","url":"/v1/api/onboarding-material/file/training_pos.pptx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":19,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:40:11.333Z","url":"/v1/api/onboarding-material/file/training_pos.pptx?fileType=2"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T04:40:31.787Z","url":"/v1/api/onboarding-material/file/10_ebook_pq.pdf?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":5,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T04:40:31.791Z","url":"/v1/api/onboarding-material/file/10_ebook_pq.pdf?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.485Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.532Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.572Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.576Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":117,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.675Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":234,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.799Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":336,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.903Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.920Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.944Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":186,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.967Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":56,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:42:13.971Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":32,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:42:18.671Z","url":"/v1/api/onboarding-material/file/testing_word.docx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.481Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.513Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.534Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.548Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":76,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.602Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":83,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.613Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.617Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.622Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":25,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.630Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":116,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.639Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":23,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:13.667Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":73,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T04:46:26.085Z","url":"/v1/api/onboarding-stage"}
+{"clientIp":"10.0.1.16","durationMs":52,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:26.140Z","url":"/v1/api/onboarding-stage"}
+{"clientIp":"10.0.1.16","durationMs":125,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:26.718Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":141,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:26.732Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":63,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:26.784Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":158,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T04:46:26.896Z","url":"/v1/api/onboarding-material/assignments"}
+{"elapsedMs":15246.78,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T04:51:09.257Z"}
+{"elapsedMs":15076.58,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:01:39.233Z"}
+{"elapsedMs":15106.53,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:01:39.263Z"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T05:06:29.708Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T05:06:29.726Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T05:06:29.743Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T05:06:29.745Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T05:06:29.750Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T05:06:29.766Z"}
+{"elapsedMs":15039.68,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:11:59.090Z"}
+{"elapsedMs":15042.69,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:11:59.092Z"}
+{"elapsedMs":15043.18,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:11:59.093Z"}
+{"elapsedMs":15025.94,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:52:29.751Z"}
+{"elapsedMs":15040.66,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:52:29.767Z"}
+{"elapsedMs":15042.07,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T05:52:29.768Z"}
+{"clientIp":"10.0.1.16","durationMs":62,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.565Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":78,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.589Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.600Z","url":"/v1/api/master-access-role?resourceType=MENU&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.611Z","url":"/v1/api/master-access-role?resourceType=MODULE&portalKey=ADMINISTRATOR"}
+{"clientIp":"10.0.1.16","durationMs":110,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.623Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":109,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.631Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":134,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.660Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.670Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":5,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.681Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":54,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.706Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":74,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:18:22.723Z","url":"/v1/api/onboarding-material/assignments"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T06:21:30.971Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T06:21:30.990Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T06:21:31.021Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T06:21:31.024Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T06:21:31.027Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T06:21:31.096Z"}
+{"clientIp":"10.0.1.16","durationMs":136,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:22:07.644Z","url":"/v1/api/onboarding-stage"}
+{"clientIp":"10.0.1.16","durationMs":61,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:22:07.710Z","url":"/v1/api/onboarding-stage"}
+{"clientIp":"10.0.1.16","durationMs":68,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:22:09.968Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":80,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:22:09.976Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":31,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:22:10.002Z","url":"/v1/api/onboarding-material/source-materials"}
+{"clientIp":"10.0.1.16","durationMs":44,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:22:10.038Z","url":"/v1/api/onboarding-material/assignments"}
+{"clientIp":"10.0.1.16","durationMs":890,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T06:22:16.652Z","url":"/v1/api/onboarding-material/file/pendahuluan_ibadah.pptx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":160,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T06:22:21.442Z","url":"/v1/api/onboarding-material/file/pendahuluan_ibadah.pptx?fileType=2"}
+{"clientIp":"10.0.1.16","durationMs":44,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:23:02.566Z","url":"/v1/api/master-access-role?resourceType=PORTAL"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:23:05.440Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":7,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:23:05.442Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:23:05.451Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:23:05.453Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":282,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:23:05.705Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":289,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:23:05.721Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:23:05.726Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":86,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:23:05.793Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":64,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:23:10.816Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":214,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T06:23:18.654Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2419&fileName=script_live_host_toko_optik.pdf&disposition=inline&fileType=2&fileTitle=script+live+host+toko+optik"}
+{"clientIp":"10.0.1.16","durationMs":138,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T06:23:22.665Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2418&fileName=tiktok_live_selling_kacamata_bluelight_v2.pdf&disposition=inline&fileType=2&fileTitle=tiktok_live_selling_kacamata_bluelight_v2"}
+{"elapsedMs":15053.71,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T06:27:00.287Z"}
+{"elapsedMs":15053.86,"level":"warn","message":"[PRISMA OPTIDOM KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T06:27:00.288Z"}
+{"elapsedMs":15061.49,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T06:27:00.295Z"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:37:13.487Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:37:13.488Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:37:13.501Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:37:13.502Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":37,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:13.518Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:13.523Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:13.528Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":177,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:13.656Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":140,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:13.797Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:20.840Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:20.848Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:37:20.852Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:37:20.853Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:20.859Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:37:20.867Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:37:20.869Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":70,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:20.906Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":19,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:20.927Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:24.423Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:24.446Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:37:24.460Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":23,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:37:24.466Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:24.472Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:37:24.480Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":5,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:37:24.483Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":131,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:24.549Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":29,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:24.584Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":68,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:37:27.396Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:38:16.012Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":9,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:38:16.019Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:38:20.141Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:38:20.164Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":45,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:38:20.206Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":9,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:38:20.219Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:38:20.243Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:38:20.266Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":44,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:38:20.272Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":204,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:38:20.342Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":47,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:38:20.394Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":15,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:38:27.160Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:40.578Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:40.619Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:40:40.649Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":88,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:40:40.701Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:40.712Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:40:40.719Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":13,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:40:40.729Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":176,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:40.733Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":120,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:40.860Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":68,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:44.498Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:58.345Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:40:58.369Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":6,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:40:58.373Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:58.380Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:40:58.400Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":5,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:40:58.403Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:58.415Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":105,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:58.446Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":33,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:40:58.496Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":95,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:41:07.823Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:46:38.398Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:46:38.399Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:46:38.405Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:46:38.405Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":100,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:38.494Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:38.498Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:38.504Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":140,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:38.531Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":18,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:38.551Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:58.194Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:58.211Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:46:58.229Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":24,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:46:58.232Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:58.245Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:46:58.247Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:46:58.248Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":204,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:58.387Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":90,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:46:58.481Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":68,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:47:02.033Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:48:20.719Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:48:20.724Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:48:20.725Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":1,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:48:20.727Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:48:20.736Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:48:20.741Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":11,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:48:20.742Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":59,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:48:20.773Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":65,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:48:20.841Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:49:07.488Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:49:07.516Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:49:07.516Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:49:07.534Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:49:07.552Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":16,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:49:07.566Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:49:07.590Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":149,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:49:07.631Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":34,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:49:07.668Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":60,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:49:10.264Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:54:55.119Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":17,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:54:55.135Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:54:55.159Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:54:55.159Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":50,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:54:55.165Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:54:55.171Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:54:55.179Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":72,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:54:55.183Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":15,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T06:54:55.202Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:59:59.791Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":31,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:59:59.820Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T06:59:59.826Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":34,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T06:59:59.858Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":223,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:00:00.009Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:00:00.019Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:00:00.028Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":279,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:00:00.057Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":30,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:00:00.095Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":15,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:00:15.052Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:05:09.907Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":34,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:05:09.940Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:05:09.945Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":46,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:05:09.989Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":170,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:10.074Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:10.079Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:10.087Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":157,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T07:05:20.554Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:20.804Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:05:20.821Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":8,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:05:20.827Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:20.842Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:05:20.853Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:05:20.854Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:20.858Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":113,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T07:05:20.909Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":47,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:20.960Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":15222,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:25.124Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":53,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:05:50.719Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":223,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T07:09:35.822Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2417&fileName=livekacamatasetupguide.pdf&disposition=inline&fileType=2&fileTitle=livekacamatasetupguide"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:11:05.536Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":35,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:11:05.570Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:11:05.580Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":11,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:11:05.590Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":121,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:05.645Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":127,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:05.656Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:05.662Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":4,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:05.676Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":35,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:05.682Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":16,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:10.270Z","url":"/v1/api/onboarding-stage/customer-learning?programType=LEARNING"}
+{"clientIp":"10.0.1.16","durationMs":124,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T07:11:26.075Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2418&fileName=tiktok_live_selling_kacamata_bluelight_v2.pdf&disposition=inline&fileType=2&fileTitle=tiktok_live_selling_kacamata_bluelight_v2"}
+{"clientIp":"10.0.1.16","durationMs":188,"level":"info","message":"HTTP request completed","method":"GET","status":200,"timestamp":"2026-05-13T07:11:30.731Z","url":"/v1/api/onboarding-stage/customer-learning/file?onboardingStageMaterialId=OSM120526-00001&programType=LEARNING&sourceFileId=2417&fileName=livekacamatasetupguide.pdf&disposition=inline&fileType=2&fileTitle=livekacamatasetupguide"}
+{"clientIp":"10.0.1.16","durationMs":78,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:11:49.020Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:22:26.055Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":3,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:22:26.056Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:22:26.061Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:22:26.061Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":78,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:22:26.127Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":80,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:22:26.131Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:22:26.136Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":2,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:22:26.142Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":44,"level":"info","message":"HTTP request completed","method":"GET","status":304,"timestamp":"2026-05-13T07:22:26.173Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"info","message":"[PRISMA] flowly connected","timestamp":"2026-05-13T07:34:27.062Z"}
+{"level":"info","message":"[PRISMA] employee connected","timestamp":"2026-05-13T07:34:27.081Z"}
+{"level":"info","message":"[PRISMA] optidom connected","timestamp":"2026-05-13T07:34:27.096Z"}
+{"level":"info","message":"Notification outbox worker started (interval 10000ms).","timestamp":"2026-05-13T07:34:27.106Z"}
+{"level":"info","message":"Onboarding expiry worker started (interval 300000ms).","timestamp":"2026-05-13T07:34:27.116Z"}
+{"level":"info","message":"🚀 Flowly Server is running on http://10.0.1.155:5110 and http://localhost:5110","timestamp":"2026-05-13T07:34:27.140Z"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.436Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":43,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.466Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.502Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":32,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.523Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.526Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":34,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.528Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.544Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"clientIp":"10.0.1.16","durationMs":52,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.552Z","url":"/v1/api/onboarding-stage/customer-learning?programType=ONBOARDING"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.571Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":10,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.578Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.584Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":87,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.656Z","url":"/v1/api/customer-sso/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.672Z","url":"/v1/api/profile"}
+{"clientIp":"10.0.1.16","durationMs":20,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.690Z","url":"/v1/api/profile"}
+{"level":"warn","message":"Response error Unauthorized","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.703Z","url":"/v1/api/customer-sso/profile"}
+{"clientIp":"10.0.1.16","durationMs":35,"level":"info","message":"HTTP request completed","method":"GET","status":401,"timestamp":"2026-05-13T07:38:24.705Z","url":"/v1/api/customer-sso/profile"}
+{"elapsedMs":15040.43,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T07:49:56.483Z"}
+{"elapsedMs":15025.49,"level":"warn","message":"[PRISMA EMPLOYEE KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T07:49:56.499Z"}
+{"elapsedMs":15032.15,"level":"warn","message":"[PRISMA FLOWLY KEEPALIVE SLOW]","thresholdMs":2000,"timestamp":"2026-05-13T08:05:26.704Z"}

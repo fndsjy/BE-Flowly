@@ -8,6 +8,14 @@ const questionTypeOrder = z
     .min(1)
     .max(4)
     .transform((value) => Array.from(new Set(value)));
+const questionTypeDurations = z
+    .object({
+    MCQ: z.number().int().min(0).max(1440).optional(),
+    ESSAY: z.number().int().min(0).max(1440).optional(),
+    TRUE_FALSE: z.number().int().min(0).max(1440).optional(),
+    POLLING: z.number().int().min(0).max(1440).optional(),
+})
+    .optional();
 export class OnboardingExamValidation {
     static CREATE_ASSIGNMENT = z.object({
         onboardingStageTemplateId: z.string().trim().min(1).max(100),
@@ -15,6 +23,7 @@ export class OnboardingExamValidation {
         passScore: z.number().int().min(0).max(100).nullable().optional(),
         selectedQuestionIds: uniquePositiveIntegerArray.optional(),
         typeOrder: questionTypeOrder.optional(),
+        typeDurations: questionTypeDurations,
     });
     static UPDATE_STAGE_PASS_SCORE = z.object({
         onboardingStageTemplateId: z.string().trim().min(1).max(100),
@@ -23,6 +32,10 @@ export class OnboardingExamValidation {
     static UPDATE_STAGE_TYPE_ORDER = z.object({
         onboardingStageTemplateId: z.string().trim().min(1).max(100),
         typeOrder: questionTypeOrder,
+    });
+    static UPDATE_STAGE_TYPE_DURATIONS = z.object({
+        onboardingStageTemplateId: z.string().trim().min(1).max(100),
+        typeDurations: questionTypeDurations,
     });
     static DELETE_ASSIGNMENT = z.object({
         onboardingStageExamId: z.string().trim().min(1).max(100),

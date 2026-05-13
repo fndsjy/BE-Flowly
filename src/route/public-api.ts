@@ -154,6 +154,7 @@ v1.get("/onboarding-exam/source-exams", OnboardingExamController.listSourceExams
 v1.post("/onboarding-exam/assignments", OnboardingExamController.createAssignment);
 v1.put("/onboarding-exam/stage-pass-score", OnboardingExamController.updateStagePassScore);
 v1.put("/onboarding-exam/stage-type-order", OnboardingExamController.updateStageTypeOrder);
+v1.put("/onboarding-exam/stage-type-durations", OnboardingExamController.updateStageTypeDurations);
 v1.delete("/onboarding-exam/assignments", OnboardingExamController.deleteAssignment);
 
 v1.post("/master-ik", MasterIkController.create);

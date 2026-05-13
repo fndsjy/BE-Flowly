@@ -22,6 +22,7 @@ export interface EmployeeResponse {
   SbuSub: number | null;
   Nik: string | null;
   ResignDate: Date | null;
+  status: string | null;
   statusLMS: string;
   roleId: number | null;
   jobDesc: string | null;
@@ -66,8 +67,12 @@ const normalizeNullableDate = (value?: Date | string | null) => {
   return date;
 };
 
-export type EmployeeRecordInput = Omit<EmployeeResponse, "DeptName" | "statusLMS"> & {
+export type EmployeeRecordInput = Omit<
+  EmployeeResponse,
+  "DeptName" | "status" | "statusLMS"
+> & {
   DeptName?: string | null;
+  status?: string | null;
   statusLMS?: EmployeeStatusLmsValue;
 };
 
@@ -159,6 +164,7 @@ export const toEmployeeResponse = (data: EmployeeRecordInput): EmployeeResponse 
     SbuSub: data.SbuSub ?? null,
     Nik: data.Nik ?? null,
     ResignDate: normalizeNullableDate(data.ResignDate),
+    status: data.status ?? null,
     statusLMS: toStatusLmsResponse(data.statusLMS),
     roleId: data.roleId ?? null,
     jobDesc: data.jobDesc ?? null,

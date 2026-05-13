@@ -6,6 +6,7 @@ const AUTO_START_DATE = new Date("2026-01-01T00:00:00.000Z");
 
 type QuestionSelectionMode = "ALL" | "SELECTED";
 type QuestionCategory = "MCQ" | "ESSAY" | "TRUE_FALSE" | "POLLING";
+type QuestionTypeDurations = Record<QuestionCategory, number>;
 
 const DEFAULT_TYPE_ORDER: QuestionCategory[] = [
   "MCQ",
@@ -14,10 +15,18 @@ const DEFAULT_TYPE_ORDER: QuestionCategory[] = [
   "POLLING",
 ];
 
+const DEFAULT_TYPE_DURATIONS: QuestionTypeDurations = {
+  MCQ: 0,
+  ESSAY: 0,
+  TRUE_FALSE: 0,
+  POLLING: 0,
+};
+
 type QuestionSelectionMetadata = {
   mode: QuestionSelectionMode;
   selectedQuestionIds: number[];
   typeOrder: QuestionCategory[];
+  typeDurations: QuestionTypeDurations;
 };
 
 type EmployeeQuestion = {
@@ -93,6 +102,24 @@ const normalizeTypeOrder = (value: unknown): QuestionCategory[] => {
   return Array.from(new Set([...fromInput, ...DEFAULT_TYPE_ORDER]));
 };
 
+const normalizeTypeDurations = (value: unknown): QuestionTypeDurations => {
+  const output = { ...DEFAULT_TYPE_DURATIONS };
+  if (!value || typeof value !== "object") {
+    return output;
+  }
+
+  for (const category of DEFAULT_TYPE_ORDER) {
+    const duration = Number(
+      (value as Partial<Record<QuestionCategory, unknown>>)[category]
+    );
+    if (Number.isInteger(duration) && duration >= 0) {
+      output[category] = Math.min(duration, 1440);
+    }
+  }
+
+  return output;
+};
+
 const parseSelectionMetadata = (
   note: string | null | undefined
 ): QuestionSelectionMetadata => {
@@ -102,6 +129,7 @@ const parseSelectionMetadata = (
       mode: "ALL",
       selectedQuestionIds: [],
       typeOrder: DEFAULT_TYPE_ORDER,
+      typeDurations: DEFAULT_TYPE_DURATIONS,
     };
   }
 
@@ -110,6 +138,7 @@ const parseSelectionMetadata = (
       mode?: unknown;
       selectedQuestionIds?: unknown;
       typeOrder?: unknown;
+      typeDurations?: unknown;
     };
 
     const selectedQuestionIds = Array.isArray(parsed.selectedQuestionIds)
@@ -126,12 +155,14 @@ const parseSelectionMetadata = (
       mode: parsed.mode === "SELECTED" && selectedQuestionIds.length > 0 ? "SELECTED" : "ALL",
       selectedQuestionIds,
       typeOrder: normalizeTypeOrder(parsed.typeOrder),
+      typeDurations: normalizeTypeDurations(parsed.typeDurations),
     };
   } catch {
     return {
       mode: "ALL",
       selectedQuestionIds: [],
       typeOrder: DEFAULT_TYPE_ORDER,
+      typeDurations: DEFAULT_TYPE_DURATIONS,
     };
   }
 };
@@ -330,6 +361,8 @@ export class OnboardingEmployeeScheduleSyncService {
   private static buildScheduleSummaries(params: {
     questions: ScheduleQuestionRow[];
     activeQuestionTypes: number[];
+    questionTypeCategories: Map<number, QuestionCategory | null>;
+    typeDurations: QuestionTypeDurations;
   }) {
     const stats = new Map<number, { count: number; totalSecond: number }>();
 
@@ -349,10 +382,17 @@ export class OnboardingEmployeeScheduleSyncService {
 
     return allTypes.map((tipeSoal) => {
       const stat = stats.get(tipeSoal);
+      const category = params.questionTypeCategories.get(tipeSoal);
+      const configuredDuration =
+        category != null ? params.typeDurations[category] : 0;
       return {
         tipeSoal,
         jumlahSoal: stat?.count ?? 0,
-        durasiPerTipe: stat ? Math.ceil(stat.totalSecond / 60) : 0,
+        durasiPerTipe: stat
+          ? configuredDuration > 0
+            ? configuredDuration
+            : Math.ceil(stat.totalSecond / 60)
+          : 0,
       };
     });
   }
@@ -475,9 +515,12 @@ export class OnboardingEmployeeScheduleSyncService {
         questionsByExam,
         questionTypeCategories: activeQuestionTypes.categories,
       });
+      const stageMetadata = parseSelectionMetadata(stage.stageExams[0]?.note);
       const summaries = this.buildScheduleSummaries({
         questions: scheduleQuestions,
         activeQuestionTypes: activeQuestionTypes.ids,
+        questionTypeCategories: activeQuestionTypes.categories,
+        typeDurations: stageMetadata.typeDurations,
       });
 
       await prismaEmployee.$transaction(async (tx) => {
