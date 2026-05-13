@@ -6,5 +6,6 @@ export declare class OnboardingExamController {
     static deleteAssignment(req: Request, res: Response, next: NextFunction): Promise<void>;
     static updateStagePassScore(req: Request, res: Response, next: NextFunction): Promise<void>;
     static updateStageTypeOrder(req: Request, res: Response, next: NextFunction): Promise<void>;
+    static updateStageTypeDurations(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 //# sourceMappingURL=onboarding-exam-controller.d.ts.map

@@ -7,6 +7,10 @@ import { OnboardingExamValidation } from "../validation/onboarding-exam-validati
 import { OnboardingEmployeeScheduleSyncService } from "./onboarding-employee-schedule-sync-service.js";
 
 type AdminOnboardingExamQuestionCategory = "MCQ" | "ESSAY" | "TRUE_FALSE" | "POLLING";
+type AdminOnboardingExamTypeDurations = Record<
+  AdminOnboardingExamQuestionCategory,
+  number
+>;
 
 type OnboardingExamQuestionResponse = {
   questionId: number;
@@ -81,6 +85,7 @@ type OnboardingExamAssignmentResponse = {
   orderIndex: number;
   passScore: number | null;
   typeOrder: AdminOnboardingExamQuestionCategory[];
+  typeDurations: AdminOnboardingExamTypeDurations;
   assignmentNote: string | null;
 };
 
@@ -95,6 +100,7 @@ type CreateOnboardingStageExamRequest = {
   passScore?: number | null;
   selectedQuestionIds?: number[];
   typeOrder?: AdminOnboardingExamQuestionCategory[];
+  typeDurations?: Partial<AdminOnboardingExamTypeDurations>;
 };
 
 type UpdateOnboardingStagePassScoreRequest = {
@@ -105,6 +111,11 @@ type UpdateOnboardingStagePassScoreRequest = {
 type UpdateOnboardingStageTypeOrderRequest = {
   onboardingStageTemplateId: string;
   typeOrder: AdminOnboardingExamQuestionCategory[];
+};
+
+type UpdateOnboardingStageTypeDurationsRequest = {
+  onboardingStageTemplateId: string;
+  typeDurations?: Partial<AdminOnboardingExamTypeDurations>;
 };
 
 type DeleteOnboardingStageExamRequest = {
@@ -130,6 +141,13 @@ const DEFAULT_TYPE_ORDER: AdminOnboardingExamQuestionCategory[] = [
   "TRUE_FALSE",
   "POLLING",
 ];
+
+const DEFAULT_TYPE_DURATIONS: AdminOnboardingExamTypeDurations = {
+  MCQ: 0,
+  ESSAY: 0,
+  TRUE_FALSE: 0,
+  POLLING: 0,
+};
 
 const TYPE_ORDER_WEIGHT = new Map(
   DEFAULT_TYPE_ORDER.map((category, index) => [category, (index + 1) * 10])
@@ -276,6 +294,7 @@ type QuestionSelectionMetadata = {
   mode: "ALL" | "SELECTED";
   selectedQuestionIds: number[];
   typeOrder: AdminOnboardingExamQuestionCategory[];
+  typeDurations: AdminOnboardingExamTypeDurations;
   rawNote: string | null;
 };
 
@@ -293,6 +312,37 @@ const normalizeTypeOrder = (
   return Array.from(new Set([...fromInput, ...DEFAULT_TYPE_ORDER]));
 };
 
+const normalizeTypeDurations = (
+  value: unknown
+): AdminOnboardingExamTypeDurations => {
+  const output = { ...DEFAULT_TYPE_DURATIONS };
+  if (!value || typeof value !== "object") {
+    return output;
+  }
+
+  for (const category of DEFAULT_TYPE_ORDER) {
+    const duration = Number(
+      (value as Partial<Record<AdminOnboardingExamQuestionCategory, unknown>>)[category]
+    );
+    if (Number.isInteger(duration) && duration >= 0) {
+      output[category] = Math.min(duration, 1440);
+    }
+  }
+
+  return output;
+};
+
+const compactTypeDurations = (value: AdminOnboardingExamTypeDurations) =>
+  DEFAULT_TYPE_ORDER.reduce<Partial<AdminOnboardingExamTypeDurations>>(
+    (output, category) => {
+      if (value[category] > 0) {
+        output[category] = value[category];
+      }
+      return output;
+    },
+    {}
+  );
+
 const parseSelectionMetadata = (
   note: string | null | undefined
 ): QuestionSelectionMetadata => {
@@ -302,6 +352,7 @@ const parseSelectionMetadata = (
       mode: "ALL",
       selectedQuestionIds: [],
       typeOrder: DEFAULT_TYPE_ORDER,
+      typeDurations: DEFAULT_TYPE_DURATIONS,
       rawNote: null,
     };
   }
@@ -311,6 +362,7 @@ const parseSelectionMetadata = (
       mode?: unknown;
       selectedQuestionIds?: unknown;
       typeOrder?: unknown;
+      typeDurations?: unknown;
     };
 
     const selectedQuestionIds = Array.isArray(parsed?.selectedQuestionIds)
@@ -327,6 +379,7 @@ const parseSelectionMetadata = (
       mode: parsed?.mode === "SELECTED" && selectedQuestionIds.length > 0 ? "SELECTED" : "ALL",
       selectedQuestionIds,
       typeOrder: normalizeTypeOrder(parsed?.typeOrder),
+      typeDurations: normalizeTypeDurations(parsed?.typeDurations),
       rawNote: null,
     };
   } catch {
@@ -334,6 +387,7 @@ const parseSelectionMetadata = (
       mode: "ALL",
       selectedQuestionIds: [],
       typeOrder: DEFAULT_TYPE_ORDER,
+      typeDurations: DEFAULT_TYPE_DURATIONS,
       rawNote: normalizedNote,
     };
   }
@@ -355,15 +409,24 @@ const filterSelectedQuestions = (
 const serializeSelectionNote = (
   sourceExam: OnboardingSourceExamResponse,
   selectedQuestionIds?: number[],
-  typeOrder?: AdminOnboardingExamQuestionCategory[]
+  typeOrder?: AdminOnboardingExamQuestionCategory[],
+  typeDurations?: Partial<AdminOnboardingExamTypeDurations>
 ) => {
   const normalizedTypeOrder = normalizeTypeOrder(typeOrder);
+  const normalizedTypeDurations = normalizeTypeDurations(typeDurations);
+  const compactedTypeDurations = compactTypeDurations(normalizedTypeDurations);
+  const baseMetadata = {
+    typeOrder: normalizedTypeOrder,
+    ...(Object.keys(compactedTypeDurations).length > 0
+      ? { typeDurations: compactedTypeDurations }
+      : {}),
+  };
   if (sourceExam.questions.length === 0) {
-    return JSON.stringify({ mode: "ALL", typeOrder: normalizedTypeOrder });
+    return JSON.stringify({ mode: "ALL", ...baseMetadata });
   }
 
   if (selectedQuestionIds === undefined) {
-    return JSON.stringify({ mode: "ALL", typeOrder: normalizedTypeOrder });
+    return JSON.stringify({ mode: "ALL", ...baseMetadata });
   }
 
   const allowedIds = new Set(sourceExam.questions.map((question) => question.questionId));
@@ -380,13 +443,13 @@ const serializeSelectionNote = (
   }
 
   if (normalizedSelectedIds.length === sourceExam.questions.length) {
-    return JSON.stringify({ mode: "ALL", typeOrder: normalizedTypeOrder });
+    return JSON.stringify({ mode: "ALL", ...baseMetadata });
   }
 
   const payload = JSON.stringify({
     mode: "SELECTED",
     selectedQuestionIds: normalizedSelectedIds,
-    typeOrder: normalizedTypeOrder,
+    ...baseMetadata,
   });
 
   if (payload.length > 1000) {
@@ -575,6 +638,60 @@ export class OnboardingExamService {
     });
   }
 
+  private static async updateStageExamMetadata(params: {
+    onboardingStageTemplateId: string;
+    requesterId: string;
+    sourceExamMap: Map<number, OnboardingSourceExamResponse>;
+    typeOrder: AdminOnboardingExamQuestionCategory[];
+    typeDurations: AdminOnboardingExamTypeDurations;
+    updatedAt: Date;
+  }) {
+    const stageExams = await prismaFlowly.onboardingStageExam.findMany({
+      where: {
+        onboardingStageTemplateId: params.onboardingStageTemplateId,
+        isActive: true,
+        isDeleted: false,
+      },
+      select: {
+        onboardingStageExamId: true,
+        examId: true,
+        note: true,
+      },
+    });
+
+    if (stageExams.length === 0) {
+      return;
+    }
+
+    await prismaFlowly.$transaction(
+      stageExams.map((stageExam) => {
+        const sourceExam = params.sourceExamMap.get(stageExam.examId);
+        if (!sourceExam) {
+          throw new ResponseError(404, `Master ujian ${stageExam.examId} tidak ditemukan`);
+        }
+
+        const selectionMetadata = parseSelectionMetadata(stageExam.note);
+        return prismaFlowly.onboardingStageExam.update({
+          where: {
+            onboardingStageExamId: stageExam.onboardingStageExamId,
+          },
+          data: {
+            note: serializeSelectionNote(
+              sourceExam,
+              selectionMetadata.mode === "SELECTED"
+                ? selectionMetadata.selectedQuestionIds
+                : undefined,
+              params.typeOrder,
+              params.typeDurations
+            ),
+            updatedAt: params.updatedAt,
+            updatedBy: params.requesterId,
+          },
+        });
+      })
+    );
+  }
+
   static async listAssignments(
     requesterId: string
   ): Promise<ListOnboardingExamAssignmentsResponse> {
@@ -697,6 +814,7 @@ export class OnboardingExamService {
             orderIndex: stageExam.orderIndex,
             passScore: stageExam.passScore ?? null,
             typeOrder: selectionMetadata.typeOrder,
+            typeDurations: selectionMetadata.typeDurations,
             assignmentNote:
               normalizeOptionalText(stageExam.note) ??
               sourceExam?.assignmentNote ??
@@ -782,7 +900,7 @@ export class OnboardingExamService {
         note: true,
       },
     });
-    const stageTypeOrderSource = await prismaFlowly.onboardingStageExam.findFirst({
+    const stageMetadataSource = await prismaFlowly.onboardingStageExam.findFirst({
       where: {
         onboardingStageTemplateId: request.onboardingStageTemplateId,
         isActive: true,
@@ -810,13 +928,20 @@ export class OnboardingExamService {
     const stagePassScore = stagePassScoreSource?.passScore ?? request.passScore ?? null;
 
     const now = new Date();
+    const existingMetadata = parseSelectionMetadata(
+      existing?.note ?? stageMetadataSource?.note
+    );
     const stageTypeOrder = normalizeTypeOrder(
-      request.typeOrder ?? parseSelectionMetadata(existing?.note ?? stageTypeOrderSource?.note).typeOrder
+      request.typeOrder ?? existingMetadata.typeOrder
+    );
+    const stageTypeDurations = normalizeTypeDurations(
+      request.typeDurations ?? existingMetadata.typeDurations
     );
     const selectionNote = serializeSelectionNote(
       sourceExam,
       request.selectedQuestionIds,
-      stageTypeOrder
+      stageTypeOrder,
+      stageTypeDurations
     );
 
     if (existing) {
@@ -852,6 +977,14 @@ export class OnboardingExamService {
           },
         });
       }
+      await this.updateStageExamMetadata({
+        onboardingStageTemplateId: request.onboardingStageTemplateId,
+        requesterId,
+        sourceExamMap,
+        typeOrder: stageTypeOrder,
+        typeDurations: stageTypeDurations,
+        updatedAt: now,
+      });
       await OnboardingEmployeeScheduleSyncService.syncStageByTemplateId(
         request.onboardingStageTemplateId
       );
@@ -898,6 +1031,14 @@ export class OnboardingExamService {
         },
       });
     }
+    await this.updateStageExamMetadata({
+      onboardingStageTemplateId: request.onboardingStageTemplateId,
+      requesterId,
+      sourceExamMap,
+      typeOrder: stageTypeOrder,
+      typeDurations: stageTypeDurations,
+      updatedAt: now,
+    });
     await OnboardingEmployeeScheduleSyncService.syncStageByTemplateId(
       request.onboardingStageTemplateId
     );
@@ -1018,7 +1159,8 @@ export class OnboardingExamService {
               selectionMetadata.mode === "SELECTED"
                 ? selectionMetadata.selectedQuestionIds
                 : undefined,
-              typeOrder
+              typeOrder,
+              selectionMetadata.typeDurations
             ),
             updatedAt: now,
             updatedBy: requesterId,
@@ -1035,6 +1177,78 @@ export class OnboardingExamService {
       onboardingStageTemplateId: request.onboardingStageTemplateId,
       typeOrder,
       message: "Urutan tipe soal tahap berhasil diperbarui",
+    };
+  }
+
+  static async updateStageTypeDurations(
+    requesterId: string,
+    reqBody: UpdateOnboardingStageTypeDurationsRequest
+  ) {
+    const request = Validation.validate(
+      OnboardingExamValidation.UPDATE_STAGE_TYPE_DURATIONS,
+      reqBody
+    ) as UpdateOnboardingStageTypeDurationsRequest;
+
+    await ensureAdminAccess(requesterId);
+
+    const stageExams = await prismaFlowly.onboardingStageExam.findMany({
+      where: {
+        onboardingStageTemplateId: request.onboardingStageTemplateId,
+        isActive: true,
+        isDeleted: false,
+      },
+      orderBy: [{ orderIndex: "asc" }, { createdAt: "asc" }],
+      select: {
+        onboardingStageExamId: true,
+        examId: true,
+        note: true,
+      },
+    });
+
+    if (stageExams.length === 0) {
+      throw new ResponseError(400, "Tambahkan soal tahap ini sebelum mengatur durasi tipe soal");
+    }
+
+    const sourceExamMap = await buildSourceExamMap();
+    const typeDurations = normalizeTypeDurations(request.typeDurations);
+    const now = new Date();
+
+    await prismaFlowly.$transaction(
+      stageExams.map((stageExam) => {
+        const sourceExam = sourceExamMap.get(stageExam.examId);
+        if (!sourceExam) {
+          throw new ResponseError(404, `Master ujian ${stageExam.examId} tidak ditemukan`);
+        }
+
+        const selectionMetadata = parseSelectionMetadata(stageExam.note);
+        return prismaFlowly.onboardingStageExam.update({
+          where: {
+            onboardingStageExamId: stageExam.onboardingStageExamId,
+          },
+          data: {
+            note: serializeSelectionNote(
+              sourceExam,
+              selectionMetadata.mode === "SELECTED"
+                ? selectionMetadata.selectedQuestionIds
+                : undefined,
+              selectionMetadata.typeOrder,
+              typeDurations
+            ),
+            updatedAt: now,
+            updatedBy: requesterId,
+          },
+        });
+      })
+    );
+
+    await OnboardingEmployeeScheduleSyncService.syncStageByTemplateId(
+      request.onboardingStageTemplateId
+    );
+
+    return {
+      onboardingStageTemplateId: request.onboardingStageTemplateId,
+      typeDurations,
+      message: "Durasi tipe soal tahap berhasil diperbarui",
     };
   }
 

@@ -8,6 +8,12 @@ const DEFAULT_TYPE_ORDER = [
     "TRUE_FALSE",
     "POLLING",
 ];
+const DEFAULT_TYPE_DURATIONS = {
+    MCQ: 0,
+    ESSAY: 0,
+    TRUE_FALSE: 0,
+    POLLING: 0,
+};
 const normalizeOptionalText = (value) => {
     const trimmed = value?.trim();
     return trimmed ? trimmed : null;
@@ -40,6 +46,19 @@ const normalizeTypeOrder = (value) => {
         : [];
     return Array.from(new Set([...fromInput, ...DEFAULT_TYPE_ORDER]));
 };
+const normalizeTypeDurations = (value) => {
+    const output = { ...DEFAULT_TYPE_DURATIONS };
+    if (!value || typeof value !== "object") {
+        return output;
+    }
+    for (const category of DEFAULT_TYPE_ORDER) {
+        const duration = Number(value[category]);
+        if (Number.isInteger(duration) && duration >= 0) {
+            output[category] = Math.min(duration, 1440);
+        }
+    }
+    return output;
+};
 const parseSelectionMetadata = (note) => {
     const normalizedNote = normalizeOptionalText(note);
     if (!normalizedNote) {
@@ -47,6 +66,7 @@ const parseSelectionMetadata = (note) => {
             mode: "ALL",
             selectedQuestionIds: [],
             typeOrder: DEFAULT_TYPE_ORDER,
+            typeDurations: DEFAULT_TYPE_DURATIONS,
         };
     }
     try {
@@ -60,6 +80,7 @@ const parseSelectionMetadata = (note) => {
             mode: parsed.mode === "SELECTED" && selectedQuestionIds.length > 0 ? "SELECTED" : "ALL",
             selectedQuestionIds,
             typeOrder: normalizeTypeOrder(parsed.typeOrder),
+            typeDurations: normalizeTypeDurations(parsed.typeDurations),
         };
     }
     catch {
@@ -67,6 +88,7 @@ const parseSelectionMetadata = (note) => {
             mode: "ALL",
             selectedQuestionIds: [],
             typeOrder: DEFAULT_TYPE_ORDER,
+            typeDurations: DEFAULT_TYPE_DURATIONS,
         };
     }
 };
@@ -227,10 +249,16 @@ export class OnboardingEmployeeScheduleSyncService {
         ])).sort((left, right) => left - right);
         return allTypes.map((tipeSoal) => {
             const stat = stats.get(tipeSoal);
+            const category = params.questionTypeCategories.get(tipeSoal);
+            const configuredDuration = category != null ? params.typeDurations[category] : 0;
             return {
                 tipeSoal,
                 jumlahSoal: stat?.count ?? 0,
-                durasiPerTipe: stat ? Math.ceil(stat.totalSecond / 60) : 0,
+                durasiPerTipe: stat
+                    ? configuredDuration > 0
+                        ? configuredDuration
+                        : Math.ceil(stat.totalSecond / 60)
+                    : 0,
             };
         });
     }
@@ -325,9 +353,12 @@ export class OnboardingEmployeeScheduleSyncService {
                 questionsByExam,
                 questionTypeCategories: activeQuestionTypes.categories,
             });
+            const stageMetadata = parseSelectionMetadata(stage.stageExams[0]?.note);
             const summaries = this.buildScheduleSummaries({
                 questions: scheduleQuestions,
                 activeQuestionTypes: activeQuestionTypes.ids,
+                questionTypeCategories: activeQuestionTypes.categories,
+                typeDurations: stageMetadata.typeDurations,
             });
             await prismaEmployee.$transaction(async (tx) => {
                 await tx.em_schedule3.deleteMany({

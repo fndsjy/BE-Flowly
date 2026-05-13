@@ -1,11 +1,8 @@
-import { execFile } from "child_process";
-import { createHash, randomUUID } from "crypto";
 import { createReadStream } from "fs";
 import fs from "fs/promises";
 import path from "path";
 import { Readable } from "stream";
 import type { ReadableStream as NodeReadableStream } from "stream/web";
-import { promisify } from "util";
 import type { NextFunction, Request, Response } from "express";
 import { logger } from "../application/logging.js";
 import { verifyToken } from "../utils/auth.js";
@@ -16,11 +13,6 @@ import { CustomerSsoService } from "../service/customer-sso-service.js";
 import { OnboardingStageService } from "../service/onboarding-stage-service.js";
 import { getAccessContext } from "../utils/access-scope.js";
 
-const execFileAsync = promisify(execFile);
-const parsePositiveInteger = (value: string | undefined, fallback: number) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
-};
 const ONBOARDING_MATERIAL_DOCUMENT_DIR = path.normalize(
   process.env.ONBOARDING_SOURCE_MATERIAL_DOCUMENT_DIR ??
     process.env.ONBOARDING_SOURCE_MATERIAL_DIR ??
@@ -34,39 +26,6 @@ const ONBOARDING_MATERIAL_IMAGE_DIR = path.normalize(
   process.env.ONBOARDING_SOURCE_MATERIAL_IMAGE_DIR ??
     "Z:\\jobqualify\\ci3\\uploads\\materi\\qrcode"
 );
-const ONBOARDING_PREVIEW_CACHE_DIR = path.resolve(
-  process.env.ONBOARDING_PREVIEW_CACHE_DIR ??
-    path.join(process.cwd(), ".cache", "onboarding-preview")
-);
-const ONBOARDING_PREVIEW_WORK_DIR = path.join(
-  ONBOARDING_PREVIEW_CACHE_DIR,
-  "work"
-);
-const OFFICE_TO_PDF_CONVERTER = path.resolve(
-  process.env.OFFICE_TO_PDF_CONVERTER ??
-    path.join(process.cwd(), "scripts", "convert-office-to-pdf.ps1")
-);
-const OFFICE_TO_PDF_TIMEOUT_MS = parsePositiveInteger(
-  process.env.ONBOARDING_OFFICE_TO_PDF_TIMEOUT_MS,
-  120_000
-);
-const OFFICE_SOURCE_MAX_BYTES = parsePositiveInteger(
-  process.env.ONBOARDING_PREVIEW_SOURCE_MAX_BYTES,
-  75 * 1024 * 1024
-);
-const POWERSHELL_BIN = process.env.POWERSHELL_BIN ?? "powershell.exe";
-const OFFICE_AUTOMATION_CLEANUP_SCRIPT = `
-$names = @('WINWORD.EXE', 'POWERPNT.EXE', 'EXCEL.EXE')
-Get-CimInstance Win32_Process |
-  Where-Object {
-    $names -contains $_.Name -and
-    ($_.CommandLine -match '(-Embedding|/Automation)')
-  } |
-  ForEach-Object {
-    Invoke-CimMethod -InputObject $_ -MethodName Terminate | Out-Null
-  }
-`;
-const FALLBACK_PREVIEW_URL = "https://heyzine.com/flip-book/249b55c9bf.html";
 const IMAGE_EXTENSIONS = new Set([
   ".png",
   ".jpg",
@@ -77,17 +36,6 @@ const IMAGE_EXTENSIONS = new Set([
   ".svg",
   ".avif",
   ".jfif",
-]);
-const OFFICE_EXTENSIONS = new Set([
-  ".doc",
-  ".docx",
-  ".ppt",
-  ".pptx",
-  ".xls",
-  ".xlsx",
-  ".odt",
-  ".odp",
-  ".ods",
 ]);
 
 const normalizeFileName = (value: string) => {
@@ -156,8 +104,50 @@ const resolveSourceDirectory = (fileName: string, fileType: number | null) => {
     : ONBOARDING_MATERIAL_DOCUMENT_DIR;
 };
 
-const isOfficeFile = (fileName: string) =>
-  OFFICE_EXTENSIONS.has(path.extname(fileName).toLowerCase());
+const toLogMessage = (err: unknown) =>
+  err instanceof Error ? err.message : String(err);
+
+const collectLocalFileDiagnostics = async (
+  sourceDirectory: string,
+  fullPath: string
+) => {
+  const diagnostics: Record<string, unknown> = {
+    sourceDirectory,
+    filePath: fullPath,
+    cwd: process.cwd(),
+    documentDir: ONBOARDING_MATERIAL_DOCUMENT_DIR,
+    videoDir: ONBOARDING_MATERIAL_VIDEO_DIR,
+    imageDir: ONBOARDING_MATERIAL_IMAGE_DIR,
+  };
+
+  try {
+    await fs.access(sourceDirectory);
+    diagnostics.sourceDirectoryAccessible = true;
+  } catch (err) {
+    diagnostics.sourceDirectoryAccessible = false;
+    diagnostics.sourceDirectoryError = toLogMessage(err);
+    return diagnostics;
+  }
+
+  try {
+    const targetName = path.basename(fullPath).toLowerCase();
+    const targetPrefix = targetName.slice(0, Math.min(targetName.length, 24));
+    const matches = (await fs.readdir(sourceDirectory))
+      .filter((entry) => {
+        const normalizedEntry = entry.toLowerCase();
+        return (
+          normalizedEntry === targetName ||
+          (targetPrefix.length > 0 && normalizedEntry.includes(targetPrefix))
+        );
+      })
+      .slice(0, 10);
+    diagnostics.matchingFileNames = matches;
+  } catch (err) {
+    diagnostics.directoryListError = toLogMessage(err);
+  }
+
+  return diagnostics;
+};
 
 const normalizeQueryText = (value: unknown) => {
   const text = typeof value === "string" ? value.trim() : "";
@@ -378,403 +368,6 @@ const streamLocalOnboardingFile = async (
   pipeFile(start, end);
 };
 
-const toPdfFileName = (fileName: string) =>
-  `${path.basename(fileName, path.extname(fileName))}.pdf`;
-
-const resolveLocalOnboardingFilePath = async (
-  fileName: string,
-  fileType: number | null
-) => {
-  const fullPath = path.join(resolveSourceDirectory(fileName, fileType), fileName);
-  try {
-    await fs.access(fullPath);
-    return fullPath;
-  } catch {
-    return null;
-  }
-};
-
-const sendLocalPdfPreview = async (
-  req: Request,
-  res: Response,
-  params: {
-    fileName: string;
-    filePath: string;
-  }
-) => {
-  await streamLocalOnboardingFile(req, res, {
-    fileName: params.fileName,
-    filePath: params.filePath,
-    contentType: "application/pdf",
-    disposition: "inline",
-  });
-};
-
-const ensureOfficePreviewConverter = async () => {
-  try {
-    await fs.access(OFFICE_TO_PDF_CONVERTER);
-  } catch {
-    throw new ResponseError(
-      501,
-      "Preview Office belum tersedia: converter PDF belum dikonfigurasi di server"
-    );
-  }
-};
-
-const cleanupOfficeAutomationProcesses = async () => {
-  try {
-    await execFileAsync(
-      POWERSHELL_BIN,
-      [
-        "-NoProfile",
-        "-NonInteractive",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        OFFICE_AUTOMATION_CLEANUP_SCRIPT,
-      ],
-      {
-        maxBuffer: 1024 * 1024,
-        timeout: 10_000,
-        windowsHide: true,
-      }
-    );
-  } catch (err) {
-    const error = err as Error;
-    logger.warn("Failed to cleanup Office automation processes", {
-      message: error.message,
-    });
-  }
-};
-
-const handleOfficePreviewConversionError = async (err: unknown) => {
-  if (err instanceof ResponseError) {
-    throw err;
-  }
-
-  const error = err as NodeJS.ErrnoException & {
-    stderr?: string | Buffer;
-    stdout?: string | Buffer;
-    killed?: boolean;
-    signal?: string | null;
-  };
-  const stderr = String(error.stderr ?? "");
-  const stdout = String(error.stdout ?? "");
-  const message = [error.message, stderr, stdout].filter(Boolean).join("\n");
-
-  logger.warn("Office preview PDF conversion failed", {
-    message: error.message,
-    stderr,
-    stdout,
-    killed: error.killed,
-    signal: error.signal,
-  });
-
-  if (error.killed || /timed out/i.test(error.message ?? "")) {
-    await cleanupOfficeAutomationProcesses();
-    throw new ResponseError(
-      504,
-      "Gagal membuat preview PDF materi Office: proses konversi terlalu lama"
-    );
-  }
-
-  if (
-    /class not registered|invalid class string|cannot create activex|retrieving the com class factory|new-object.*comobject|microsoft office/i.test(
-      message
-    )
-  ) {
-    throw new ResponseError(
-      501,
-      "Preview Office belum tersedia: Microsoft Office belum siap di server"
-    );
-  }
-
-  throw new ResponseError(500, "Gagal membuat preview PDF materi Office");
-};
-
-const convertOfficeToPdf = async (params: {
-  sourcePath: string;
-  outputPath: string;
-}) => {
-  await ensureOfficePreviewConverter();
-  await fs.mkdir(path.dirname(params.outputPath), { recursive: true });
-
-  try {
-    await execFileAsync(
-      POWERSHELL_BIN,
-      [
-        "-NoProfile",
-        "-NonInteractive",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        OFFICE_TO_PDF_CONVERTER,
-        "-InputPath",
-        params.sourcePath,
-        "-OutputPath",
-        params.outputPath,
-      ],
-      {
-        maxBuffer: 1024 * 1024,
-        timeout: OFFICE_TO_PDF_TIMEOUT_MS,
-        windowsHide: true,
-      }
-    );
-  } catch (err) {
-    await handleOfficePreviewConversionError(err);
-  }
-
-  try {
-    await fs.access(params.outputPath);
-  } catch {
-    throw new ResponseError(500, "Gagal membuat preview PDF materi Office");
-  }
-};
-
-const buildLocalOfficePreviewCacheKey = async (sourcePath: string) => {
-  const stat = await fs.stat(sourcePath);
-  return createHash("sha256")
-    .update(path.resolve(sourcePath).toLowerCase())
-    .update(String(stat.size))
-    .update(String(stat.mtimeMs))
-    .digest("hex");
-};
-
-const buildOfficePreviewCacheFile = (cacheKey: string, fileName: string) => ({
-  fileName: toPdfFileName(fileName),
-  filePath: path.join(
-    ONBOARDING_PREVIEW_CACHE_DIR,
-    cacheKey,
-    toPdfFileName(fileName)
-  ),
-});
-
-const ensureConvertedLocalOfficePreview = async (params: {
-  sourcePath: string;
-  fileName: string;
-}) => {
-  const cacheKey = await buildLocalOfficePreviewCacheKey(params.sourcePath);
-  const cacheFile = buildOfficePreviewCacheFile(cacheKey, params.fileName);
-
-  try {
-    await fs.access(cacheFile.filePath);
-    return cacheFile;
-  } catch {
-    // Create the preview below.
-  }
-
-  await convertOfficeToPdf({
-    sourcePath: params.sourcePath,
-    outputPath: cacheFile.filePath,
-  });
-  return cacheFile;
-};
-
-const downloadExternalOfficeSource = async (params: {
-  fileName: string;
-  fileUrl: string;
-}) => {
-  const response = await fetch(params.fileUrl);
-  if (!response.ok || !response.body) {
-    throw new ResponseError(404, "File onboarding tidak ditemukan");
-  }
-
-  const contentLength = Number(response.headers.get("content-length") ?? 0);
-  if (contentLength > OFFICE_SOURCE_MAX_BYTES) {
-    throw new ResponseError(
-      413,
-      "File Office terlalu besar untuk dibuat preview"
-    );
-  }
-
-  const workDir = path.join(ONBOARDING_PREVIEW_WORK_DIR, randomUUID());
-  const sourcePath = path.join(workDir, params.fileName);
-  await fs.mkdir(workDir, { recursive: true });
-
-  try {
-    const chunks: Buffer[] = [];
-    let totalBytes = 0;
-    const stream = Readable.fromWeb(
-      response.body as unknown as NodeReadableStream
-    );
-    for await (const chunk of stream) {
-      const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-      totalBytes += buffer.length;
-      if (totalBytes > OFFICE_SOURCE_MAX_BYTES) {
-        throw new ResponseError(
-          413,
-          "File Office terlalu besar untuk dibuat preview"
-        );
-      }
-      chunks.push(buffer);
-    }
-
-    await fs.writeFile(sourcePath, Buffer.concat(chunks));
-    return {
-      sourcePath,
-      cleanup: () => fs.rm(workDir, { recursive: true, force: true }),
-    };
-  } catch (err) {
-    await fs.rm(workDir, { recursive: true, force: true }).catch(() => undefined);
-    throw err;
-  }
-};
-
-const ensureConvertedExternalOfficePreview = async (params: {
-  fileName: string;
-  fileUrl: string;
-}) => {
-  const cacheKey = createHash("sha256")
-    .update(params.fileUrl)
-    .update(params.fileName)
-    .digest("hex");
-  const cacheFile = buildOfficePreviewCacheFile(cacheKey, params.fileName);
-
-  try {
-    await fs.access(cacheFile.filePath);
-    return cacheFile;
-  } catch {
-    // Download and convert the source below.
-  }
-
-  const source = await downloadExternalOfficeSource(params);
-  try {
-    await convertOfficeToPdf({
-      sourcePath: source.sourcePath,
-      outputPath: cacheFile.filePath,
-    });
-    return cacheFile;
-  } finally {
-    await source.cleanup().catch(() => undefined);
-  }
-};
-
-const resolveConvertedOfficePdfPreview = async (params: {
-  fileName: string;
-  fileType: number | null;
-  fileUrl?: string | null;
-}) => {
-  const localSourcePath = await resolveLocalOnboardingFilePath(
-    params.fileName,
-    params.fileType
-  );
-  if (localSourcePath) {
-    return ensureConvertedLocalOfficePreview({
-      sourcePath: localSourcePath,
-      fileName: params.fileName,
-    });
-  }
-
-  const fileUrl = normalizeQueryText(params.fileUrl);
-  if (fileUrl && isHttpUrl(fileUrl)) {
-    return ensureConvertedExternalOfficePreview({
-      fileName: params.fileName,
-      fileUrl,
-    });
-  }
-
-  return null;
-};
-
-const buildPdfPreviewUrl = (fileUrl: string | null) => {
-  if (!fileUrl || !isHttpUrl(fileUrl)) {
-    return null;
-  }
-
-  try {
-    const url = new URL(fileUrl);
-    if (!/\.[^/.]+$/.test(url.pathname)) {
-      return null;
-    }
-
-    url.pathname = url.pathname.replace(/\.[^/.]+$/, ".pdf");
-    return url.toString();
-  } catch {
-    return null;
-  }
-};
-
-const resolvePreparedOfficePdfPreview = async (params: {
-  fileName: string;
-  fileType: number | null;
-  fileUrl?: string | null;
-}) => {
-  const pdfFileName = toPdfFileName(params.fileName);
-  const localPdfPath = await resolveLocalOnboardingFilePath(
-    pdfFileName,
-    params.fileType
-  );
-  if (localPdfPath) {
-    return {
-      kind: "local" as const,
-      fileName: pdfFileName,
-      filePath: localPdfPath,
-    };
-  }
-
-  const pdfUrl = buildPdfPreviewUrl(params.fileUrl ?? null);
-  if (pdfUrl) {
-    return {
-      kind: "external" as const,
-      fileName: pdfFileName,
-      fileUrl: pdfUrl,
-    };
-  }
-
-  return null;
-};
-
-const sendOfficePdfPreview = async (
-  req: Request,
-  res: Response,
-  params: {
-    fileName: string;
-    fileType: number | null;
-    fileUrl?: string | null;
-  }
-) => {
-  const sourceFileName = normalizeFileName(params.fileName);
-  const preparedPdf = await resolvePreparedOfficePdfPreview({
-    fileName: sourceFileName,
-    fileType: params.fileType,
-    fileUrl: params.fileUrl ?? null,
-  });
-  if (preparedPdf?.kind === "local") {
-    await sendLocalPdfPreview(req, res, {
-      fileName: preparedPdf.fileName,
-      filePath: preparedPdf.filePath,
-    });
-    return;
-  }
-
-  if (preparedPdf?.kind === "external") {
-    try {
-      await streamExternalOnboardingFile(res, {
-        fileName: preparedPdf.fileName,
-        fileUrl: preparedPdf.fileUrl,
-        disposition: "inline",
-      });
-      return;
-    } catch (err) {
-      if (!(err instanceof ResponseError && err.status === 404)) {
-        throw err;
-      }
-    }
-  }
-
-  const convertedPdf = await resolveConvertedOfficePdfPreview({
-    fileName: sourceFileName,
-    fileType: params.fileType,
-    fileUrl: params.fileUrl ?? null,
-  });
-  if (convertedPdf) {
-    await sendLocalPdfPreview(req, res, convertedPdf);
-    return;
-  }
-
-  throw new ResponseError(404, "File onboarding tidak ditemukan");
-};
-
 const sendOnboardingFile = async (
   req: Request,
   res: Response,
@@ -787,15 +380,6 @@ const sendOnboardingFile = async (
 ) => {
   const fileName = normalizeFileName(params.fileName);
   const fileUrl = normalizeQueryText(params.fileUrl);
-  if (params.disposition === "inline" && isOfficeFile(fileName)) {
-    await sendOfficePdfPreview(req, res, {
-      fileName,
-      fileType: params.fileType,
-      fileUrl: params.fileUrl ?? null,
-    });
-    return;
-  }
-
   if (fileUrl && isHttpUrl(fileUrl)) {
     await streamExternalOnboardingFile(res, {
       fileName,
@@ -805,24 +389,26 @@ const sendOnboardingFile = async (
     return;
   }
 
-  const fullPath = path.join(
-    resolveSourceDirectory(fileName, params.fileType),
-    fileName
-  );
+  const sourceDirectory = resolveSourceDirectory(fileName, params.fileType);
+  const fullPath = path.join(sourceDirectory, fileName);
 
   try {
     await fs.access(fullPath);
   } catch {
-    res.redirect(302, FALLBACK_PREVIEW_URL);
-    return;
+    logger.warn("Onboarding source file not found", {
+      fileName,
+      fileType: params.fileType,
+      ...(await collectLocalFileDiagnostics(sourceDirectory, fullPath)),
+    });
+    throw new ResponseError(404, "File onboarding tidak ditemukan");
   }
 
-  res.setHeader("Content-Type", resolveMimeType(fileName));
-  res.setHeader(
-    "Content-Disposition",
-    `${params.disposition}; filename="${fileName}"`
-  );
-  res.sendFile(fullPath);
+  await streamLocalOnboardingFile(req, res, {
+    fileName,
+    filePath: fullPath,
+    contentType: resolveMimeType(fileName),
+    disposition: params.disposition,
+  });
 };
 
 export class OnboardingMaterialController {

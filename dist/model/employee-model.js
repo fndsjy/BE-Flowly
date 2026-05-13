@@ -51,6 +51,7 @@ export const toEmployeeResponse = (data) => {
         SbuSub: data.SbuSub ?? null,
         Nik: data.Nik ?? null,
         ResignDate: normalizeNullableDate(data.ResignDate),
+        status: data.status ?? null,
         statusLMS: toStatusLmsResponse(data.statusLMS),
         roleId: data.roleId ?? null,
         jobDesc: data.jobDesc ?? null,

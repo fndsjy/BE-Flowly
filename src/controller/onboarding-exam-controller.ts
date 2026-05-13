@@ -111,4 +111,23 @@ export class OnboardingExamController {
       next(err);
     }
   }
+
+  static async updateStageTypeDurations(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) {
+        throw new ResponseError(401, "Unauthorized");
+      }
+
+      const payload = verifyToken(token);
+      const response = await OnboardingExamService.updateStageTypeDurations(
+        payload.userId,
+        req.body
+      );
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
 }

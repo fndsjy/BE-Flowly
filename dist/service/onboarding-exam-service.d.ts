@@ -1,4 +1,5 @@
 type AdminOnboardingExamQuestionCategory = "MCQ" | "ESSAY" | "TRUE_FALSE" | "POLLING";
+type AdminOnboardingExamTypeDurations = Record<AdminOnboardingExamQuestionCategory, number>;
 type OnboardingExamQuestionResponse = {
     questionId: number;
     questionCode: string;
@@ -68,6 +69,7 @@ type OnboardingExamAssignmentResponse = {
     orderIndex: number;
     passScore: number | null;
     typeOrder: AdminOnboardingExamQuestionCategory[];
+    typeDurations: AdminOnboardingExamTypeDurations;
     assignmentNote: string | null;
 };
 type ListOnboardingExamAssignmentsResponse = {
@@ -80,6 +82,7 @@ type CreateOnboardingStageExamRequest = {
     passScore?: number | null;
     selectedQuestionIds?: number[];
     typeOrder?: AdminOnboardingExamQuestionCategory[];
+    typeDurations?: Partial<AdminOnboardingExamTypeDurations>;
 };
 type UpdateOnboardingStagePassScoreRequest = {
     onboardingStageTemplateId: string;
@@ -89,11 +92,16 @@ type UpdateOnboardingStageTypeOrderRequest = {
     onboardingStageTemplateId: string;
     typeOrder: AdminOnboardingExamQuestionCategory[];
 };
+type UpdateOnboardingStageTypeDurationsRequest = {
+    onboardingStageTemplateId: string;
+    typeDurations?: Partial<AdminOnboardingExamTypeDurations>;
+};
 type DeleteOnboardingStageExamRequest = {
     onboardingStageExamId: string;
 };
 export declare class OnboardingExamService {
     static listSourceExams(): Promise<OnboardingSourceExamResponse[]>;
+    private static updateStageExamMetadata;
     static listAssignments(requesterId: string): Promise<ListOnboardingExamAssignmentsResponse>;
     static createAssignment(requesterId: string, reqBody: CreateOnboardingStageExamRequest): Promise<{
         onboardingStageExamId: string;
@@ -108,6 +116,11 @@ export declare class OnboardingExamService {
     static updateStageTypeOrder(requesterId: string, reqBody: UpdateOnboardingStageTypeOrderRequest): Promise<{
         onboardingStageTemplateId: string;
         typeOrder: AdminOnboardingExamQuestionCategory[];
+        message: string;
+    }>;
+    static updateStageTypeDurations(requesterId: string, reqBody: UpdateOnboardingStageTypeDurationsRequest): Promise<{
+        onboardingStageTemplateId: string;
+        typeDurations: AdminOnboardingExamTypeDurations;
         message: string;
     }>;
     static deleteAssignment(requesterId: string, reqBody: DeleteOnboardingStageExamRequest): Promise<{
