@@ -10,6 +10,7 @@ const corsOptions = {
         "http://10.0.1.100",
         "http://10.0.1.16:5173",
         "http://localhost:5173",
+        "https://oms.domas.co.id"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],

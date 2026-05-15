@@ -270,6 +270,7 @@ export interface AdminOnboardingMonitoringParticipantResponse {
   firstReadAt: Date | null;
   lastReadAt: Date | null;
   canFreezeForTransferReview?: boolean;
+  transferReviewActionBlockedReason?: string | null;
   stages: AdminOnboardingMonitoringStageResponse[];
 }
 

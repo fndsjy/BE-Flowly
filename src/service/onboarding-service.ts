@@ -186,6 +186,12 @@ type OnboardingMonitoringOptions = {
   participantEmployeeIds?: number[];
 };
 
+type TransferReviewManageableAssignment = {
+  onboardingAssignmentId: string;
+  participantReferenceType: string;
+  participantReferenceId: string;
+};
+
 const normalizePortalKey = (value?: string | null) => {
   const trimmed = value?.trim();
   return trimmed && trimmed.length > 0
@@ -605,9 +611,7 @@ const ensurePicCanAccessParticipant = async (
   return employeeIds.has(participantEmployeeId);
 };
 
-const buildDirectSbuSubPicParticipantEmployeeIds = async (
-  requesterUserId: string
-) => {
+const buildDirectSbuSubPicIds = async (requesterUserId: string) => {
   const requesterEmployeeId = await resolveRequesterEmployeeId(requesterUserId);
   if (!requesterEmployeeId) {
     return new Set<number>();
@@ -622,7 +626,121 @@ const buildDirectSbuSubPicParticipantEmployeeIds = async (
     select: { id: true },
   });
 
-  if (directSbuSubs.length === 0) {
+  return new Set(directSbuSubs.map((sbuSub) => sbuSub.id));
+};
+
+const buildDirectSbuSubChartMemberEmployeeIds = async (
+  requesterUserId: string
+) => {
+  const sbuSubIds = Array.from(await buildDirectSbuSubPicIds(requesterUserId));
+  if (sbuSubIds.length === 0) {
+    return new Set<number>();
+  }
+
+  const chartMembers = await prismaFlowly.chartMember.findMany({
+    where: {
+      isDeleted: false,
+      userId: { not: null },
+      node: {
+        isDeleted: false,
+        sbuSubId: { in: sbuSubIds },
+      },
+    },
+    select: { userId: true },
+  });
+
+  return new Set(
+    chartMembers
+      .map((member) => member.userId)
+      .filter(
+        (value): value is number =>
+          value !== null &&
+          value !== undefined &&
+          Number.isInteger(value) &&
+          value > 0
+      )
+  );
+};
+
+const buildEmployeeChartSbuSubIds = async (employeeUserId: number) => {
+  if (!Number.isInteger(employeeUserId) || employeeUserId <= 0) {
+    return new Set<number>();
+  }
+
+  const chartMembers = await prismaFlowly.chartMember.findMany({
+    where: {
+      userId: employeeUserId,
+      isDeleted: false,
+      node: {
+        isDeleted: false,
+      },
+    },
+    select: {
+      node: {
+        select: {
+          sbuSubId: true,
+        },
+      },
+    },
+  });
+
+  return new Set(
+    chartMembers
+      .map((member) => member.node.sbuSubId)
+      .filter((value) => Number.isInteger(value) && value > 0)
+  );
+};
+
+const parseNotificationMetaSbuSubId = (value?: string | null) => {
+  const normalized = normalizeNote(value);
+  if (!normalized) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(normalized) as { sbuSubId?: unknown };
+    const sbuSubId = Number(parsed?.sbuSubId);
+    return Number.isInteger(sbuSubId) && sbuSubId > 0 ? sbuSubId : null;
+  } catch {
+    return null;
+  }
+};
+
+const buildAssignmentSourceSbuSubIds = async (onboardingAssignmentId: string) => {
+  const assignmentId = normalizeNote(onboardingAssignmentId);
+  if (!assignmentId) {
+    return new Set<number>();
+  }
+
+  const outboxes = await prismaFlowly.notificationOutbox.findMany({
+    where: {
+      eventKey: ONBOARDING_STARTED_EVENT_KEY,
+      recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
+      contextReferenceType: ONBOARDING_ASSIGNMENT_CONTEXT_TYPE,
+      contextReferenceId: assignmentId,
+      isDeleted: false,
+    },
+    select: { meta: true },
+  });
+
+  return new Set(
+    outboxes
+      .map((outbox) => parseNotificationMetaSbuSubId(outbox.meta))
+      .filter((value): value is number => value !== null)
+  );
+};
+
+const buildDirectSbuSubPicParticipantEmployeeIds = async (
+  requesterUserId: string
+) => {
+  const requesterEmployeeId = await resolveRequesterEmployeeId(requesterUserId);
+  if (!requesterEmployeeId) {
+    return new Set<number>();
+  }
+
+  const directSbuSubIds = await buildDirectSbuSubPicIds(requesterUserId);
+
+  if (directSbuSubIds.size === 0) {
     return new Set<number>();
   }
 
@@ -630,7 +748,7 @@ const buildDirectSbuSubPicParticipantEmployeeIds = async (
     employeeId: requesterEmployeeId,
     pilarIds: new Set<number>(),
     sbuIds: new Set<number>(),
-    sbuSubIds: new Set(directSbuSubs.map((sbuSub) => sbuSub.id)),
+    sbuSubIds: directSbuSubIds,
   });
 };
 
@@ -652,6 +770,69 @@ const ensureDirectSbuSubPicCanAccessParticipant = async (
     requesterUserId
   );
   return employeeIds.has(participantEmployeeId);
+};
+
+const buildSbuSubPicStartedAssignmentIds = async (requesterUserId: string) => {
+  const requesterEmployeeId = await resolveRequesterEmployeeId(requesterUserId);
+  if (!requesterEmployeeId) {
+    return new Set<string>();
+  }
+
+  const outboxes = await prismaFlowly.notificationOutbox.findMany({
+    where: {
+      eventKey: ONBOARDING_STARTED_EVENT_KEY,
+      recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
+      recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+      recipientReferenceId: String(requesterEmployeeId),
+      contextReferenceType: ONBOARDING_ASSIGNMENT_CONTEXT_TYPE,
+      contextReferenceId: { not: null },
+      isDeleted: false,
+    },
+    select: { contextReferenceId: true },
+  });
+
+  return new Set(
+    outboxes
+      .map((outbox) => normalizeNote(outbox.contextReferenceId))
+      .filter((value): value is string => Boolean(value))
+  );
+};
+
+const ensureSbuSubPicCanManageTransferReviewAssignment = async (
+  requesterUserId: string,
+  assignment: TransferReviewManageableAssignment
+) => {
+  const canAccessCurrentDirectParticipant =
+    await ensureDirectSbuSubPicCanAccessParticipant(
+      requesterUserId,
+      assignment.participantReferenceType,
+      assignment.participantReferenceId
+    );
+  if (canAccessCurrentDirectParticipant) {
+    return true;
+  }
+
+  const requesterDirectSbuSubIds = await buildDirectSbuSubPicIds(requesterUserId);
+  if (requesterDirectSbuSubIds.size === 0) {
+    return false;
+  }
+
+  const notifiedAssignmentIds =
+    await buildSbuSubPicStartedAssignmentIds(requesterUserId);
+  return notifiedAssignmentIds.has(assignment.onboardingAssignmentId);
+};
+
+const isEmployeeStillInRequesterDirectSbuSubChart = async (
+  requesterUserId: string,
+  employeeUserId: number
+) => {
+  if (!Number.isInteger(employeeUserId) || employeeUserId <= 0) {
+    return false;
+  }
+
+  const directChartMemberEmployeeIds =
+    await buildDirectSbuSubChartMemberEmployeeIds(requesterUserId);
+  return directChartMemberEmployeeIds.has(employeeUserId);
 };
 
 const getAdminPortalOrder = (portalKey: string) => {
@@ -3050,13 +3231,27 @@ export class OnboardingService {
     }
 
     const canDecideAsHrd = await hasHrdCrudAccess(requesterUserId);
-    const canDecideAsPic = canDecideAsHrd
+    const canManageTransferReviewAssignment = canDecideAsHrd
       ? true
-      : await ensurePicCanAccessParticipant(
+      : await ensureSbuSubPicCanManageTransferReviewAssignment(
+          requesterUserId,
+          assignment
+        );
+    const canAccessCurrentDirectSbuSubParticipant = canDecideAsHrd
+      ? true
+      : await ensureDirectSbuSubPicCanAccessParticipant(
           requesterUserId,
           assignment.participantReferenceType,
           assignment.participantReferenceId
         );
+    const canDecideAsPic = canDecideAsHrd
+      ? true
+      : canManageTransferReviewAssignment ||
+        (await ensurePicCanAccessParticipant(
+          requesterUserId,
+          assignment.participantReferenceType,
+          assignment.participantReferenceId
+        ));
 
     if (!canDecideAsPic) {
       throw new ResponseError(
@@ -3066,12 +3261,9 @@ export class OnboardingService {
     }
     const decisionActorLabel = canDecideAsHrd ? "HRD" : "PIC";
     const canDirectSbuSubDecision =
-      canDecideAsHrd ||
-      (await ensureDirectSbuSubPicCanAccessParticipant(
-        requesterUserId,
-        assignment.participantReferenceType,
-        assignment.participantReferenceId
-      ));
+      decisionType === DECISION_FREEZE_TRANSFER_REVIEW
+        ? canAccessCurrentDirectSbuSubParticipant
+        : canDecideAsHrd || canManageTransferReviewAssignment;
 
     if (
       !canDecideAsHrd &&
@@ -3101,6 +3293,13 @@ export class OnboardingService {
       );
     }
 
+    const participantEmployeeId = Number(assignment.participantReferenceId);
+    const hasValidParticipantEmployeeId =
+      normalizeUpper(assignment.participantReferenceType) ===
+        EMPLOYEE_PARTICIPANT_REFERENCE_TYPE &&
+      Number.isInteger(participantEmployeeId) &&
+      participantEmployeeId > 0;
+
     if (
       decisionType === DECISION_CANCEL_TRANSFER_REVIEW &&
       !canDirectSbuSubDecision
@@ -3126,6 +3325,55 @@ export class OnboardingService {
       throw new ResponseError(
         400,
         "Onboarding ini tidak sedang dibekukan"
+      );
+    }
+
+    if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW && canDecideAsHrd) {
+      const placementMap = hasValidParticipantEmployeeId
+        ? await buildEmployeeOnboardingPlacementMap([participantEmployeeId])
+        : new Map<number, OnboardingPlacementInfo>();
+      const placement = hasValidParticipantEmployeeId
+        ? getOnboardingPlacementInfo(placementMap, participantEmployeeId)
+        : null;
+
+      if (!placement?.hasOnboardingPlacement) {
+        throw new ResponseError(
+          400,
+          "Status beku belum bisa dibatalkan karena karyawan belum punya struktur organisasi atau role PIC pilar/SBU/SBU Sub"
+        );
+      }
+
+      const [sourceSbuSubIds, currentChartSbuSubIds] =
+        hasValidParticipantEmployeeId
+          ? await Promise.all([
+              buildAssignmentSourceSbuSubIds(assignment.onboardingAssignmentId),
+              buildEmployeeChartSbuSubIds(participantEmployeeId),
+            ])
+          : [new Set<number>(), new Set<number>()];
+      const stillInSourceSbuSub = Array.from(currentChartSbuSubIds).some((sbuSubId) =>
+        sourceSbuSubIds.has(sbuSubId)
+      );
+
+      if (sourceSbuSubIds.size > 0 && stillInSourceSbuSub) {
+        throw new ResponseError(
+          400,
+          "HRD belum bisa membatalkan beku karena karyawan masih berada di struktur SBU Sub asal"
+        );
+      }
+    }
+
+    if (
+      decisionType === DECISION_CANCEL_TRANSFER_REVIEW &&
+      !canDecideAsHrd &&
+      hasValidParticipantEmployeeId &&
+      !(await isEmployeeStillInRequesterDirectSbuSubChart(
+        requesterUserId,
+        participantEmployeeId
+      ))
+    ) {
+      throw new ResponseError(
+        400,
+        "PIC SBU Sub hanya bisa membatalkan beku jika karyawan masih berada atau sudah kembali ke struktur SBU Sub PIC tersebut"
       );
     }
 
@@ -4813,26 +5061,107 @@ export class OnboardingService {
     const participantEmployeeIds = Array.from(
       await buildPicParticipantEmployeeIds(scope)
     );
+    const sbuSubPicStartedAssignmentIds =
+      await buildSbuSubPicStartedAssignmentIds(requesterUserId);
+    const startedAssignments =
+      sbuSubPicStartedAssignmentIds.size > 0
+        ? await prismaFlowly.onboardingAssignment.findMany({
+            where: {
+              onboardingAssignmentId: {
+                in: Array.from(sbuSubPicStartedAssignmentIds),
+              },
+              portalKey: DEFAULT_PORTAL_KEY,
+              programType: PROGRAM_TYPE_ONBOARDING,
+              participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+              isDeleted: false,
+            },
+            select: {
+              onboardingAssignmentId: true,
+              participantReferenceId: true,
+            },
+          })
+        : [];
+    const startedAssignmentIds = new Set(
+      startedAssignments.map((assignment) => assignment.onboardingAssignmentId)
+    );
+    const scopedParticipantEmployeeIds = Array.from(
+      new Set([
+        ...participantEmployeeIds,
+        ...startedAssignments
+          .map((assignment) => Number(assignment.participantReferenceId))
+          .filter((value) => Number.isInteger(value) && value > 0),
+      ])
+    );
     const directSbuSubParticipantIds =
       await buildDirectSbuSubPicParticipantEmployeeIds(requesterUserId);
+    const directSbuSubChartMemberIds =
+      await buildDirectSbuSubChartMemberEmployeeIds(requesterUserId);
+    const placementMap = await buildEmployeeOnboardingPlacementMap(
+      scopedParticipantEmployeeIds
+    );
 
     const response = await OnboardingService.listAdminMonitoring(requesterUserId, {
       skipAdminAccess: true,
       portalKeys: [DEFAULT_PORTAL_KEY],
-      participantEmployeeIds,
+      participantEmployeeIds: scopedParticipantEmployeeIds,
     });
 
     for (const portal of response.portals) {
       for (const participant of portal.participants) {
         const participantEmployeeId = Number(participant.participantReferenceId);
         const participantStatus = normalizeUpper(participant.status);
+        const isCurrentDirectSbuSubParticipant =
+          Number.isInteger(participantEmployeeId) &&
+          directSbuSubParticipantIds.has(participantEmployeeId);
+        const isStartedAssignmentForPic = startedAssignmentIds.has(
+          participant.onboardingAssignmentId
+        );
+        const isStillInRequesterDirectChart =
+          Number.isInteger(participantEmployeeId) &&
+          directSbuSubChartMemberIds.has(participantEmployeeId);
+        const hasPlacement =
+          Number.isInteger(participantEmployeeId) &&
+          getOnboardingPlacementInfo(placementMap, participantEmployeeId)
+            .hasOnboardingPlacement;
         const canDirectSbuSubAct =
           participantStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW ||
           !isFinalAssignmentStatus(participant.status);
-        participant.canFreezeForTransferReview =
-          Number.isInteger(participantEmployeeId) &&
-          directSbuSubParticipantIds.has(participantEmployeeId) &&
+        const canManageTransferReview =
+          (isCurrentDirectSbuSubParticipant || isStartedAssignmentForPic) &&
           canDirectSbuSubAct;
+        const canFreeze =
+          isCurrentDirectSbuSubParticipant &&
+          participantStatus !== ASSIGNMENT_STATUS_TRANSFER_REVIEW &&
+          !isFinalAssignmentStatus(participant.status);
+        const canCancel =
+          canManageTransferReview &&
+          participantStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW &&
+          isStillInRequesterDirectChart;
+        participant.canFreezeForTransferReview =
+          canFreeze || canCancel;
+        participant.transferReviewActionBlockedReason = null;
+        if (
+          canManageTransferReview &&
+          participantStatus !== ASSIGNMENT_STATUS_TRANSFER_REVIEW &&
+          !isCurrentDirectSbuSubParticipant
+        ) {
+          participant.transferReviewActionBlockedReason =
+            "Bekukan onboarding hanya bisa dilakukan saat karyawan masih berada di struktur SBU Sub PIC ini.";
+        } else if (
+          canManageTransferReview &&
+          participantStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW &&
+          !isStillInRequesterDirectChart
+        ) {
+          participant.transferReviewActionBlockedReason =
+            "PIC SBU Sub hanya bisa membatalkan beku jika karyawan masih berada atau sudah kembali ke struktur SBU Sub PIC tersebut.";
+        } else if (
+          canManageTransferReview &&
+          participantStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW &&
+          !hasPlacement
+        ) {
+          participant.transferReviewActionBlockedReason =
+            "Batal beku baru bisa dilakukan setelah karyawan punya struktur organisasi atau role PIC pilar/SBU/SBU Sub.";
+        }
       }
     }
 
