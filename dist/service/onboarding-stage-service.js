@@ -187,10 +187,13 @@ const ensureCustomerLearningRuntime = async (params) => {
     }
     const now = new Date();
     const actorId = toAuditActor(participantReferenceId);
-    const durationCandidate = Number(params.portalTemplate.defaultDurationDay);
-    const durationDay = Number.isInteger(durationCandidate) && durationCandidate > 0
+    const durationCandidate = params.portalTemplate.defaultDurationDay == null
+        ? null
+        : Number(params.portalTemplate.defaultDurationDay);
+    const durationDay = durationCandidate && Number.isInteger(durationCandidate) && durationCandidate > 0
         ? durationCandidate
-        : 90;
+        : null;
+    const dueAt = durationDay ? addDays(now, durationDay) : null;
     const createAssignmentId = await generateOnboardingAssignmentId();
     const createStageProgressId = await generateOnboardingStageProgressId();
     const assignment = await prismaFlowly.$transaction(async (tx) => {
@@ -220,7 +223,7 @@ const ensureCustomerLearningRuntime = async (params) => {
                     participantReferenceId,
                     startedAt: now,
                     durationDay,
-                    dueAt: addDays(now, durationDay),
+                    dueAt,
                     status: "IN_PROGRESS",
                     currentStageOrder: params.stageTemplates[0]?.stageOrder ?? null,
                     assignedAt: now,

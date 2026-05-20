@@ -42,7 +42,7 @@ export const resolveCaseAccess = async (requesterId) => {
         const canRead = canReadModule(moduleAccessMap, "CASE") || canCrud;
         if (!canRead) {
             const employeeId = await resolveEmployeeId(requesterId, {
-                cardNumber: flowlyUser.badgeNumber,
+                cardNumber: null,
             });
             if (employeeId !== null) {
                 return {

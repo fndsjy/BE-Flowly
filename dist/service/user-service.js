@@ -406,7 +406,7 @@ const findFlowlyUserById = async (userId, trace) => {
     }
     return {
         ...user,
-        cardNumber: user.badgeNumber,
+        cardNumber: null,
     };
 };
 const resolveProfileContext = async (userId, trace) => {
@@ -514,7 +514,10 @@ export class UserService {
             where: { userId: requesterUserId },
             include: { role: true },
         });
-        if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
+        if (!requester ||
+            requester.isDeleted ||
+            !requester.isActive ||
+            requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only Admin can register new users");
         }
         const existing = await prismaFlowly.user.findUnique({
@@ -523,26 +526,11 @@ export class UserService {
         if (existing) {
             throw new ResponseError(400, "Username already taken");
         }
-        let roleToAssign;
-        if (registerRequest.roleId) {
-            roleToAssign = await prismaFlowly.role.findUnique({
-                where: { roleId: registerRequest.roleId, roleIsActive: true },
-            });
-            if (!roleToAssign) {
-                throw new ResponseError(400, "Selected role is invalid or inactive");
-            }
-        }
-        else {
-            roleToAssign = await prismaFlowly.role.findFirst({
-                where: { roleLevel: 4, roleIsActive: true },
-            });
-            if (!roleToAssign) {
-                throw new ResponseError(500, "Default role (level 4) not found");
-            }
-        }
-        const cardNumber = registerRequest.cardNumber.trim();
-        if (!cardNumber) {
-            throw new ResponseError(400, "Card number is required");
+        const roleToAssign = await prismaFlowly.role.findUnique({
+            where: { roleId: registerRequest.roleId, roleIsActive: true },
+        });
+        if (!roleToAssign) {
+            throw new ResponseError(400, "Selected role is invalid or inactive");
         }
         const userId = await generateUserId();
         const hashed = await bcrypt.hash(registerRequest.password, 10);
@@ -553,7 +541,6 @@ export class UserService {
                 name: registerRequest.name,
                 password: hashed,
                 roleId: roleToAssign.roleId,
-                badgeNumber: cardNumber,
                 createdBy: requesterUserId,
                 updatedBy: requesterUserId,
                 isActive: true,
@@ -594,12 +581,17 @@ export class UserService {
         const user = await prismaFlowly.user.findFirst({
             where: {
                 isDeleted: false,
-                isActive: true,
                 username: identity,
             },
             include: { role: true },
         });
         if (user) {
+            if (!user.isActive) {
+                const inactiveMessage = user.role.roleLevel === 1
+                    ? "Akun admin sudah nonaktif. Silakan minta admin lain untuk mengaktifkan kembali."
+                    : "Akun user OMS sudah nonaktif. Silakan hubungi admin.";
+                throw new ResponseError(403, inactiveMessage);
+            }
             const valid = await bcrypt.compare(loginRequest.password, user.password);
             if (!valid) {
                 throw new ResponseError(401, "Invalid username or password");
@@ -865,7 +857,6 @@ export class UserService {
         });
         const shouldSyncFlowlyUser = context.flowlyUser &&
             (validated.name !== undefined ||
-                validated.cardNumber !== undefined ||
                 validated.departmentId !== undefined);
         if (context.flowlyUser && shouldSyncFlowlyUser) {
             const flowlyUserUpdateData = {
@@ -873,9 +864,6 @@ export class UserService {
             };
             if (validated.name !== undefined) {
                 flowlyUserUpdateData.name = validated.name.trim();
-            }
-            if (validated.cardNumber !== undefined) {
-                flowlyUserUpdateData.badgeNumber = validated.cardNumber.trim();
             }
             if (validated.departmentId !== undefined) {
                 flowlyUserUpdateData.department = await findDepartmentName(validated.departmentId);
@@ -893,7 +881,10 @@ export class UserService {
             where: { userId: requesterUserId },
             include: { role: true },
         });
-        if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
+        if (!requester ||
+            requester.isDeleted ||
+            !requester.isActive ||
+            requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Access denied");
         }
         const users = await prismaFlowly.user.findMany({
@@ -963,8 +954,14 @@ export class UserService {
             where: { userId: requesterUserId },
             include: { role: true },
         });
-        if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
+        if (!requester ||
+            requester.isDeleted ||
+            !requester.isActive ||
+            requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can change roles");
+        }
+        if (changeReq.userId === requesterUserId) {
+            throw new ResponseError(403, "Role akun sendiri tidak bisa diubah. Minta admin lain untuk menggantinya.");
         }
         const targetUser = await prismaFlowly.user.findUnique({
             where: { userId: changeReq.userId },
@@ -991,12 +988,50 @@ export class UserService {
         });
         invalidateProfileCache(changeReq.userId);
     }
+    static async changeUserStatus(requesterUserId, request) {
+        const changeReq = Validation.validate(UserValidation.CHANGE_USER_STATUS, request);
+        const requester = await prismaFlowly.user.findUnique({
+            where: { userId: requesterUserId },
+            include: { role: true },
+        });
+        if (!requester ||
+            requester.isDeleted ||
+            !requester.isActive ||
+            requester.role.roleLevel !== 1) {
+            throw new ResponseError(403, "Only admin can change user status");
+        }
+        const targetUser = await prismaFlowly.user.findUnique({
+            where: { userId: changeReq.userId },
+            select: { userId: true, isActive: true, isDeleted: true },
+        });
+        if (!targetUser || targetUser.isDeleted) {
+            throw new ResponseError(404, "User not found");
+        }
+        if (targetUser.userId === requesterUserId && !changeReq.isActive) {
+            throw new ResponseError(403, "Akun sendiri tidak bisa dinonaktifkan.");
+        }
+        if (targetUser.isActive === changeReq.isActive) {
+            throw new ResponseError(400, `User sudah ${changeReq.isActive ? "active" : "inactive"}`);
+        }
+        await prismaFlowly.user.update({
+            where: { userId: changeReq.userId },
+            data: {
+                isActive: changeReq.isActive,
+                updatedBy: requesterUserId,
+                ...(changeReq.isActive ? {} : { token: null }),
+            },
+        });
+        invalidateProfileCache(changeReq.userId);
+    }
     static async listRoles(requesterUserId) {
         const requester = await prismaFlowly.user.findUnique({
             where: { userId: requesterUserId },
             include: { role: true },
         });
-        if (!requester || requester.isDeleted || requester.role.roleLevel !== 1) {
+        if (!requester ||
+            requester.isDeleted ||
+            !requester.isActive ||
+            requester.role.roleLevel !== 1) {
             throw new ResponseError(403, "Only admin can access roles");
         }
         const roles = await prismaFlowly.role.findMany({

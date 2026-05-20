@@ -61,9 +61,7 @@ export const getAccessContext = async (userId) => {
     const pilarCrud = new Set();
     const pilarPicIds = new Set();
     const sbuPicIds = new Set();
-    const employeeId = await resolveEmployeeId(userId, flowlyUser ? {
-        cardNumber: flowlyUser.badgeNumber,
-    } : null);
+    const employeeId = await resolveEmployeeId(userId, flowlyUser ? { cardNumber: null } : null);
     const isEmployeeUser = employeeId !== null;
     if (isEmployeeUser) {
         const chartMembers = await prismaFlowly.chartMember.findMany({
@@ -425,7 +423,7 @@ export const getModuleAccessMap = async (userId) => {
         isEmployeeUser = true;
     }
     if (shouldCheckEmployee) {
-        const employeeId = await resolveEmployeeId(userId, flowlyUser ? { cardNumber: flowlyUser.badgeNumber } : null);
+        const employeeId = await resolveEmployeeId(userId, flowlyUser ? { cardNumber: null } : null);
         if (employeeId !== null) {
             isEmployeeUser = true;
         }

@@ -23,6 +23,7 @@ const createFileDedupKey = (row) => [
     normalizeOptionalText(row.fileName) ?? "",
     normalizeOptionalText(row.fileUrl) ?? "",
     row.fileOrderIndex ?? "",
+    row.fileType ?? "",
 ].join("|");
 const ensureAdminAccess = async (requesterId) => {
     const accessContext = await getAccessContext(requesterId);
@@ -120,7 +121,7 @@ export class OnboardingMaterialService {
           NULLIF(LTRIM(RTRIM(gm.url)), ''),
           NULLIF(LTRIM(RTRIM(mf.url)), '')
         ) AS fileUrl,
-        COALESCE(gm.urutan, mf.urutan) AS fileOrderIndex,
+        COALESCE(mf.urutan, gm.urutan) AS fileOrderIndex,
         COALESCE(gm.file_type, mf.file_type) AS fileType,
         mt.materi_name AS fileTypeName
       FROM [dbo].[em_materi1] m
@@ -137,8 +138,9 @@ export class OnboardingMaterialService {
         AND (gm.id IS NULL OR COALESCE(gm.status, 'A') = 'A')
       ORDER BY
         m.judul_materi ASC,
-        CASE WHEN COALESCE(gm.urutan, mf.urutan) IS NULL THEN 1 ELSE 0 END ASC,
-        COALESCE(gm.urutan, mf.urutan) ASC,
+        CASE WHEN COALESCE(mf.urutan, gm.urutan) IS NULL THEN 1 ELSE 0 END ASC,
+        COALESCE(mf.urutan, gm.urutan) ASC,
+        COALESCE(gm.file_type, mf.file_type, 0) DESC,
         COALESCE(
           NULLIF(LTRIM(RTRIM(gm.title)), ''),
           NULLIF(LTRIM(RTRIM(mf.judul)), ''),
@@ -228,6 +230,11 @@ export class OnboardingMaterialService {
                 const rightOrder = right.orderIndex ?? Number.MAX_SAFE_INTEGER;
                 if (leftOrder !== rightOrder) {
                     return leftOrder - rightOrder;
+                }
+                const leftFileType = left.fileType ?? Number.MIN_SAFE_INTEGER;
+                const rightFileType = right.fileType ?? Number.MIN_SAFE_INTEGER;
+                if (leftFileType !== rightFileType) {
+                    return rightFileType - leftFileType;
                 }
                 const leftLabel = (left.title ?? left.fileName).toLowerCase();
                 const rightLabel = (right.title ?? right.fileName).toLowerCase();
@@ -416,16 +423,17 @@ export class OnboardingMaterialService {
             where: {
                 onboardingStageTemplateId: request.onboardingStageTemplateId,
                 materiId: request.materiId,
-                isDeleted: false,
             },
             select: {
                 onboardingStageMaterialId: true,
                 isActive: true,
+                isDeleted: true,
                 orderIndex: true,
             },
         });
         const selectionNote = serializeSelectionNote(sourceMaterial, request.selectedFileIds);
         const now = new Date();
+        const nextOrderIndex = (stageTemplate.stageMaterials[0]?.orderIndex ?? 0) + 10;
         if (existing) {
             const updated = await prismaFlowly.onboardingStageMaterial.update({
                 where: {
@@ -435,6 +443,10 @@ export class OnboardingMaterialService {
                     isRequired: request.isRequired ?? true,
                     note: selectionNote,
                     isActive: true,
+                    isDeleted: false,
+                    orderIndex: existing.isDeleted ? nextOrderIndex : existing.orderIndex,
+                    deletedAt: null,
+                    deletedBy: null,
                     updatedAt: now,
                     updatedBy: requesterId,
                 },
@@ -444,10 +456,11 @@ export class OnboardingMaterialService {
             });
             return {
                 onboardingStageMaterialId: updated.onboardingStageMaterialId,
-                message: "Pilihan file materi onboarding berhasil diperbarui",
+                message: existing.isDeleted
+                    ? "Materi onboarding berhasil ditambahkan kembali"
+                    : "Pilihan file materi onboarding berhasil diperbarui",
             };
         }
-        const nextOrderIndex = (stageTemplate.stageMaterials[0]?.orderIndex ?? 0) + 10;
         const makeAssignmentId = await generateOnboardingStageMaterialId();
         const created = await prismaFlowly.onboardingStageMaterial.create({
             data: {

@@ -3,6 +3,7 @@ import { ResponseError } from "../error/response-error.js";
 import type {
   ChangePasswordRequest,
   ChangeRoleRequest,
+  ChangeUserStatusRequest,
   CreateUserRequest,
   LoginRequest,
   UpdateProfileRequest,
@@ -19,10 +20,7 @@ export class UserController {
       }
 
       const payload = verifyToken(token);
-      const request: CreateUserRequest = {
-        ...req.body,
-        cardNumber: req.body?.cardNumber ?? req.body?.badgeNumber,
-      } as CreateUserRequest;
+      const request: CreateUserRequest = req.body as CreateUserRequest;
       const response = await UserService.register(request, payload.userId);
 
       res.status(201).json({ response });
@@ -159,6 +157,28 @@ export class UserController {
       await UserService.changeRole(payload.userId, request);
 
       res.status(200).json({ message: "Role updated successfully" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async changeUserStatus(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) {
+        throw new ResponseError(401, "Unauthorized");
+      }
+
+      const payload = verifyToken(token);
+      const request: ChangeUserStatusRequest =
+        req.body as ChangeUserStatusRequest;
+      await UserService.changeUserStatus(payload.userId, request);
+
+      res.status(200).json({ message: "User status updated successfully" });
     } catch (error) {
       next(error);
     }

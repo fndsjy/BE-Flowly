@@ -20,6 +20,9 @@ const SBU_SUB_PIC_RECIPIENT_ROLE = "SBU_SUB_PIC";
 const OMS_FIRST_LOGIN_EVENT_KEY = "OMS_FIRST_LOGIN";
 const ONBOARDING_STARTED_EVENT_KEY = "ONBOARDING_STARTED";
 const ONBOARDING_OVERDUE_FAILED_EVENT_KEY = "ONBOARDING_OVERDUE_FAILED";
+const ONBOARDING_FAIL_FINAL_EVENT_KEY = "ONBOARDING_FAIL_FINAL";
+const ONBOARDING_PASSED_EVENT_KEY = "ONBOARDING_PASSED";
+const ONBOARDING_EXTENDED_EVENT_KEY = "ONBOARDING_EXTENDED";
 const ONBOARDING_PIC_DECISION_EVENT_KEY = "ONBOARDING_PIC_DECISION";
 const ONBOARDING_TRANSFER_REVIEW_CANCELLED_EVENT_KEY = "ONBOARDING_TRANSFER_REVIEW_CANCELLED";
 const ONBOARDING_ASSIGNMENT_CONTEXT_TYPE = "ONBOARDING_ASSIGNMENT";
@@ -189,19 +192,7 @@ const resolveRequesterEmployeeId = async (requesterUserId) => {
             return employee.UserId;
         }
     }
-    const flowlyUser = await prismaFlowly.user.findUnique({
-        where: { userId: requesterUserId },
-        select: { badgeNumber: true },
-    });
-    const cardNumber = normalizeNote(flowlyUser?.badgeNumber);
-    if (!cardNumber) {
-        return null;
-    }
-    const employee = await prismaEmployee.em_employee.findFirst({
-        where: { CardNo: cardNumber },
-        select: { UserId: true },
-    });
-    return employee?.UserId ?? null;
+    return null;
 };
 const resolvePicOnboardingScope = async (requesterUserId) => {
     const employeeId = await resolveRequesterEmployeeId(requesterUserId);
@@ -500,6 +491,28 @@ const buildAssignmentSourceSbuSubIds = async (onboardingAssignmentId) => {
     return new Set(outboxes
         .map((outbox) => parseNotificationMetaSbuSubId(outbox.meta))
         .filter((value) => value !== null));
+};
+const buildTransferReviewStillInSourceSbuSubMap = async (assignments) => {
+    const transferReviewAssignments = assignments.filter((assignment) => normalizeUpper(assignment.status) === ASSIGNMENT_STATUS_TRANSFER_REVIEW);
+    if (transferReviewAssignments.length === 0) {
+        return new Map();
+    }
+    const entries = await Promise.all(transferReviewAssignments.map(async (assignment) => {
+        const participantEmployeeId = Number(assignment.participantReferenceId);
+        if (!Number.isInteger(participantEmployeeId) || participantEmployeeId <= 0) {
+            return [assignment.onboardingAssignmentId, null];
+        }
+        const [sourceSbuSubIds, currentChartSbuSubIds] = await Promise.all([
+            buildAssignmentSourceSbuSubIds(assignment.onboardingAssignmentId),
+            buildEmployeeChartSbuSubIds(participantEmployeeId),
+        ]);
+        if (sourceSbuSubIds.size === 0) {
+            return [assignment.onboardingAssignmentId, null];
+        }
+        const stillInSourceSbuSub = Array.from(currentChartSbuSubIds).some((sbuSubId) => sourceSbuSubIds.has(sbuSubId));
+        return [assignment.onboardingAssignmentId, stillInSourceSbuSub];
+    }));
+    return new Map(entries);
 };
 const buildDirectSbuSubPicParticipantEmployeeIds = async (requesterUserId) => {
     const requesterEmployeeId = await resolveRequesterEmployeeId(requesterUserId);
@@ -854,12 +867,14 @@ const buildOnboardingNotificationContext = (params) => {
             (params.allowStoredPasswordFallback === false
                 ? ""
                 : resolveTemporaryPassword(params.employee.Password)),
-        deadlineDays: params.durationDay,
-        dueDate: params.dueAt.toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-        }),
+        deadlineDays: params.durationDay ?? "",
+        dueDate: params.dueAt
+            ? params.dueAt.toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+            })
+            : "Tanpa batas waktu",
         startedDate: params.startedAt
             ? params.startedAt.toLocaleDateString("id-ID", {
                 day: "2-digit",
@@ -877,6 +892,16 @@ const formatIndonesianDate = (value) => value.toLocaleDateString("id-ID", {
     month: "long",
     year: "numeric",
 });
+const formatOptionalDueDate = (value) => value ? formatIndonesianDate(value) : "Tanpa batas waktu";
+const formatDurationMonths = (durationDay) => {
+    if (!durationDay || !Number.isFinite(durationDay) || durationDay <= 0) {
+        return "";
+    }
+    const monthValue = durationDay / 30;
+    return Number.isInteger(monthValue)
+        ? String(monthValue)
+        : monthValue.toFixed(1).replace(/\.0$/, "").replace(".", ",");
+};
 const formatIndonesianDateTime = (value) => value.toLocaleString("id-ID", {
     day: "2-digit",
     month: "long",
@@ -900,9 +925,9 @@ const buildSbuSubPicOnboardingNotificationContext = (params) => {
         cardNumber,
         portalName: params.portalName,
         portalKey: params.portalKey,
-        deadlineDays: params.durationDay,
+        deadlineDays: params.durationDay ?? "",
         startedDate: formatIndonesianDate(params.startedAt),
-        dueDate: formatIndonesianDate(params.dueAt),
+        dueDate: formatOptionalDueDate(params.dueAt),
         sbuSubName: params.recipient.sbuSubName,
         sbuName: params.recipient.sbuName ?? "",
         pilarName: params.recipient.pilarName ?? "",
@@ -912,6 +937,32 @@ const buildSbuSubPicOnboardingNotificationContext = (params) => {
         loginUrl: resolveOmsLoginUrl(),
         supportName: resolveSupportName(),
         supportPhone: resolveSupportPhone(),
+    };
+};
+const joinUniqueNotificationValues = (values) => {
+    const joined = Array.from(new Set(values
+        .map((value) => normalizeNote(value))
+        .filter((value) => Boolean(value)))).join(", ");
+    return joined || "-";
+};
+const buildEmployeeResumeOnboardingNotificationContext = (params) => {
+    const baseContext = buildOnboardingNotificationContext({
+        employee: params.employee,
+        portalKey: params.portalKey,
+        portalName: params.portalName,
+        durationDay: params.durationDay,
+        startedAt: params.startedAt,
+        dueAt: params.dueAt,
+        allowStoredPasswordFallback: false,
+    });
+    return {
+        ...baseContext,
+        sbuSubName: joinUniqueNotificationValues(params.recipients.map((recipient) => recipient.sbuSubName)),
+        sbuName: joinUniqueNotificationValues(params.recipients.map((recipient) => recipient.sbuName)),
+        pilarName: joinUniqueNotificationValues(params.recipients.map((recipient) => recipient.pilarName)),
+        positionName: joinUniqueNotificationValues(params.recipients.flatMap((recipient) => recipient.positionNames)),
+        jabatanName: joinUniqueNotificationValues(params.recipients.flatMap((recipient) => recipient.jabatanNames)),
+        hrdUrl: resolveHrdDecisionUrl(),
     };
 };
 const groupSbuSubPicRecipientsByEmployee = (recipients) => {
@@ -939,64 +990,6 @@ const getOnboardingDecisionLabel = (decisionType) => {
             return "Gagal otomatis karena melewati tenggat";
         default:
             return decisionType;
-    }
-};
-const getOnboardingPicDecisionHrdTemplate = (decisionType) => {
-    switch (normalizeUpper(decisionType)) {
-        case DECISION_PASS_OVERRIDE:
-            return [
-                "[Info Keputusan PIC SBU Sub]",
-                "PIC {decisionActorName} ({decisionActorBadge}) meluluskan onboarding {employeeName} ({cardNumber}) di {portalName}.",
-                "Status saat ini: {status}.",
-                "Catatan PIC: {decisionNote}.",
-                "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
-                "Detail: {decisionUrl}",
-            ].join("\n");
-        case DECISION_EXTEND:
-            return [
-                "[Info Keputusan PIC SBU Sub]",
-                "PIC {decisionActorName} ({decisionActorBadge}) meminta {employeeName} ({cardNumber}) mengulang onboarding {portalName} selama {nextDurationDay} hari.",
-                "Deadline baru: {dueDate}.",
-                "Catatan PIC: {decisionNote}.",
-                "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
-                "Detail: {decisionUrl}",
-            ].join("\n");
-        case DECISION_FREEZE_TRANSFER_REVIEW:
-            return [
-                "[Onboarding Dibekukan oleh PIC SBU Sub]",
-                "PIC {decisionActorName} ({decisionActorBadge}) membekukan onboarding {employeeName} ({cardNumber}) di {portalName}.",
-                "Status beku ini tidak menonaktifkan akun peserta. Peserta masih bisa login OMS.",
-                "Catatan/alasan PIC: {decisionNote}.",
-                "HRD wajib mengetahui untuk review lanjutan, tetapi keputusan beku dibuat oleh PIC SBU Sub.",
-                "Detail: {decisionUrl}",
-            ].join("\n");
-        case DECISION_CANCEL_TRANSFER_REVIEW:
-            return [
-                "[Beku Onboarding Dibatalkan]",
-                "PIC {decisionActorName} ({decisionActorBadge}) membatalkan status beku onboarding {employeeName} ({cardNumber}) di {portalName}.",
-                "Status saat ini: {status}. Peserta kembali melanjutkan onboarding.",
-                "Catatan PIC: {decisionNote}.",
-                "HRD menerima notifikasi ini untuk monitoring. Keputusan pembatalan dibuat oleh PIC SBU Sub.",
-                "Detail: {decisionUrl}",
-            ].join("\n");
-        case DECISION_FAIL_FINAL:
-            return [
-                "[Gagal Onboarding Final]",
-                "PIC {decisionActorName} ({decisionActorBadge}) menggagalkan onboarding {employeeName} ({cardNumber}) di {portalName}.",
-                "Akun employee dinonaktifkan dan peserta tidak bisa login OMS.",
-                "Alasan PIC: {decisionNote}.",
-                "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
-                "Detail: {decisionUrl}",
-            ].join("\n");
-        default:
-            return [
-                "[Info Keputusan PIC SBU Sub]",
-                "PIC {decisionActorName} ({decisionActorBadge}) mengambil keputusan onboarding untuk {employeeName} ({cardNumber}) di {portalName}: {decisionLabel}.",
-                "Status saat ini: {status}. Deadline: {dueDate}.",
-                "Catatan PIC: {decisionNote}.",
-                "HRD menerima notifikasi ini untuk monitoring. Keputusan dibuat oleh PIC SBU Sub.",
-                "Detail: {decisionUrl}",
-            ].join("\n");
     }
 };
 const parseConfiguredHrdNotificationUserIds = () => Array.from(new Set([
@@ -1061,7 +1054,6 @@ const resolveHrdNotificationRecipients = async () => {
             select: {
                 userId: true,
                 name: true,
-                badgeNumber: true,
             },
         })
         : await prismaFlowly.user.findMany({
@@ -1081,24 +1073,14 @@ const resolveHrdNotificationRecipients = async () => {
             select: {
                 userId: true,
                 name: true,
-                badgeNumber: true,
             },
         });
     const flowlyNumericUserIds = flowlyUsers
         .map((user) => Number(user.userId))
         .filter((value) => Number.isInteger(value) && value > 0);
-    const flowlyBadgeNumbers = flowlyUsers
-        .map((user) => normalizeNote(user.badgeNumber))
-        .filter((value) => Boolean(value));
     const employeeIds = Array.from(new Set([...configuredEmployeeIds, ...flowlyNumericUserIds]));
     const employeeWhere = [
         ...(employeeIds.length > 0 ? [{ UserId: { in: employeeIds } }] : []),
-        ...(flowlyBadgeNumbers.length > 0
-            ? [
-                { CardNo: { in: flowlyBadgeNumbers } },
-                { BadgeNum: { in: flowlyBadgeNumbers } },
-            ]
-            : []),
     ];
     const employees = employeeWhere.length > 0
         ? await prismaEmployee.em_employee.findMany({
@@ -1116,17 +1098,6 @@ const resolveHrdNotificationRecipients = async () => {
         })
         : [];
     const employeeByUserId = new Map(employees.map((employee) => [employee.UserId, employee]));
-    const employeeByCardNumber = new Map();
-    for (const employee of employees) {
-        const cardNumber = normalizeNote(employee.CardNo);
-        const badgeNumber = normalizeNote(employee.BadgeNum);
-        if (cardNumber) {
-            employeeByCardNumber.set(cardNumber, employee);
-        }
-        if (badgeNumber) {
-            employeeByCardNumber.set(badgeNumber, employee);
-        }
-    }
     const recipientMap = new Map();
     for (const employeeId of configuredEmployeeIds) {
         const employee = employeeByUserId.get(employeeId);
@@ -1141,12 +1112,9 @@ const resolveHrdNotificationRecipients = async () => {
     }
     for (const user of flowlyUsers) {
         const numericUserId = Number(user.userId);
-        const employee = (Number.isInteger(numericUserId) && numericUserId > 0
+        const employee = Number.isInteger(numericUserId) && numericUserId > 0
             ? employeeByUserId.get(numericUserId)
-            : null) ??
-            (normalizeNote(user.badgeNumber)
-                ? employeeByCardNumber.get(normalizeNote(user.badgeNumber))
-                : null);
+            : null;
         if (!employee) {
             continue;
         }
@@ -1168,7 +1136,7 @@ const enqueueOnboardingOverdueNotification = async (params) => {
             });
             return;
         }
-        const existing = await prismaFlowly.notificationOutbox.findMany({
+        const existingHrdOutboxes = await prismaFlowly.notificationOutbox.findMany({
             where: {
                 eventKey: ONBOARDING_OVERDUE_FAILED_EVENT_KEY,
                 recipientRole: HRD_RECIPIENT_ROLE,
@@ -1180,28 +1148,18 @@ const enqueueOnboardingOverdueNotification = async (params) => {
                 recipientReferenceId: true,
             },
         });
-        const existingRecipientIds = new Set(existing.map((item) => Number(item.recipientReferenceId)));
-        const nextRecipients = recipients.filter((recipient) => !existingRecipientIds.has(recipient.userId));
-        if (nextRecipients.length === 0) {
-            return;
-        }
+        const existingHrdRecipientIds = new Set(existingHrdOutboxes.map((item) => Number(item.recipientReferenceId)));
+        const nextRecipients = recipients.filter((recipient) => !existingHrdRecipientIds.has(recipient.userId));
         const templates = await resolveRuntimeNotificationTemplates({
             portalKey: params.assignment.portalKey,
             eventKey: ONBOARDING_OVERDUE_FAILED_EVENT_KEY,
             recipientRole: HRD_RECIPIENT_ROLE,
         });
-        const fallbackTemplate = {
-            notificationTemplateId: null,
-            channel: CHANNEL_WHATSAPP,
-            messageTemplate: "Onboarding {employeeName} ({cardNumber}) untuk {portalName} gagal otomatis karena melewati tenggat {dueDate}. HRD perlu memberi keputusan di {decisionUrl}.",
-        };
-        const notificationTemplates = templates.length > 0
-            ? templates.map((template) => ({
-                notificationTemplateId: template.notificationTemplateId,
-                channel: template.channel,
-                messageTemplate: template.messageTemplate,
-            }))
-            : [fallbackTemplate];
+        const notificationTemplates = templates.map((template) => ({
+            notificationTemplateId: template.notificationTemplateId,
+            channel: template.channel,
+            messageTemplate: template.messageTemplate,
+        }));
         const createNotificationOutboxId = await generateNotificationOutboxId();
         const employeeName = normalizeNote(params.employee?.Name) ??
             `Employee ${params.assignment.participantReferenceId}`;
@@ -1210,7 +1168,7 @@ const enqueueOnboardingOverdueNotification = async (params) => {
             params.assignment.participantReferenceId;
         const portalName = normalizeNote(params.assignment.portalTemplate?.portalName) ??
             normalizePortalKey(params.assignment.portalKey);
-        const dueDate = formatIndonesianDate(params.assignment.dueAt);
+        const dueDate = formatOptionalDueDate(params.assignment.dueAt);
         const decisionUrl = resolveHrdDecisionUrl();
         const outboxes = [];
         for (const recipient of nextRecipients) {
@@ -1275,6 +1233,117 @@ const enqueueOnboardingOverdueNotification = async (params) => {
                 });
             }
         }
+        const employeeUserId = Number(params.assignment.participantReferenceId);
+        const sbuSubPicRecipients = Number.isInteger(employeeUserId) && employeeUserId > 0
+            ? await resolveSbuSubPicOnboardingRecipients([employeeUserId])
+            : [];
+        if (sbuSubPicRecipients.length > 0) {
+            const existingPicOutboxes = await prismaFlowly.notificationOutbox.findMany({
+                where: {
+                    eventKey: ONBOARDING_OVERDUE_FAILED_EVENT_KEY,
+                    recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
+                    contextReferenceType: ONBOARDING_ASSIGNMENT_CONTEXT_TYPE,
+                    contextReferenceId: params.assignment.onboardingAssignmentId,
+                    isDeleted: false,
+                },
+                select: {
+                    recipientReferenceId: true,
+                },
+            });
+            const existingPicRecipientIds = new Set(existingPicOutboxes.map((item) => Number(item.recipientReferenceId)));
+            const nextPicRecipients = sbuSubPicRecipients.filter((recipient) => !existingPicRecipientIds.has(recipient.recipientUserId));
+            const picTemplates = await resolveRuntimeNotificationTemplates({
+                portalKey: params.assignment.portalKey,
+                eventKey: ONBOARDING_OVERDUE_FAILED_EVENT_KEY,
+                recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
+            });
+            const picNotificationTemplates = picTemplates.map((template) => ({
+                notificationTemplateId: template.notificationTemplateId,
+                channel: template.channel,
+                messageTemplate: template.messageTemplate,
+            }));
+            for (const recipient of nextPicRecipients) {
+                const context = {
+                    ...buildSbuSubPicOnboardingNotificationContext({
+                        employee: {
+                            UserId: employeeUserId,
+                            CardNo: params.employee?.CardNo ?? null,
+                            Name: params.employee?.Name ?? null,
+                            Phone: null,
+                            email: null,
+                            Password: null,
+                            ResignDate: null,
+                            isFirstLogin: null,
+                        },
+                        recipient,
+                        portalKey: params.assignment.portalKey,
+                        portalName,
+                        durationDay: null,
+                        startedAt: params.failedAt,
+                        dueAt: params.assignment.dueAt,
+                    }),
+                    failedAt: formatIndonesianDate(params.failedAt),
+                    decisionUrl,
+                };
+                for (const template of picNotificationTemplates) {
+                    const channel = normalizeUpper(template.channel);
+                    const phoneNumber = channel === CHANNEL_WHATSAPP ? recipient.phoneNumber ?? "" : "";
+                    const email = channel === CHANNEL_EMAIL ? recipient.email ?? "" : recipient.email;
+                    if (channel === CHANNEL_WHATSAPP && !phoneNumber) {
+                        logger.warn("Skipping SBU Sub PIC onboarding overdue notification without phone", {
+                            onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                            employeeUserId,
+                            recipientUserId: recipient.recipientUserId,
+                        });
+                        continue;
+                    }
+                    outboxes.push({
+                        notificationOutboxId: createNotificationOutboxId(),
+                        notificationTemplateId: template.notificationTemplateId,
+                        portalKey: params.assignment.portalKey,
+                        eventKey: ONBOARDING_OVERDUE_FAILED_EVENT_KEY,
+                        recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
+                        recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+                        recipientReferenceId: String(recipient.recipientUserId),
+                        contextReferenceType: ONBOARDING_ASSIGNMENT_CONTEXT_TYPE,
+                        contextReferenceId: params.assignment.onboardingAssignmentId,
+                        phoneNumber,
+                        message: trimMessage(renderTemplate(template.messageTemplate, context)),
+                        status: "PENDING",
+                        attempts: 0,
+                        lastError: null,
+                        provider: null,
+                        sentAt: null,
+                        meta: JSON.stringify({
+                            channel,
+                            email,
+                            employeeUserId,
+                            employeeName: context.employeeName,
+                            cardNumber: context.cardNumber,
+                            portalKey: params.assignment.portalKey,
+                            portalName,
+                            sbuSubId: recipient.sbuSubId,
+                            sbuSubName: context.sbuSubName,
+                            sbuName: context.sbuName,
+                            pilarName: context.pilarName,
+                            positionName: context.positionName,
+                            jabatanName: context.jabatanName,
+                            dueDate,
+                            failedAt: context.failedAt,
+                            decisionUrl,
+                        }),
+                        isActive: true,
+                        isDeleted: false,
+                        createdAt: params.failedAt,
+                        createdBy: "SYSTEM",
+                        updatedAt: params.failedAt,
+                        updatedBy: "SYSTEM",
+                        deletedAt: null,
+                        deletedBy: null,
+                    });
+                }
+            }
+        }
         if (outboxes.length === 0) {
             return;
         }
@@ -1316,13 +1385,21 @@ const enqueueOnboardingPicDecisionNotification = async (params) => {
         if (nextRecipients.length === 0) {
             return;
         }
+        const runtimeTemplates = await resolveRuntimeNotificationTemplates({
+            portalKey: params.assignment.portalKey,
+            eventKey: ONBOARDING_PIC_DECISION_EVENT_KEY,
+            recipientRole: HRD_RECIPIENT_ROLE,
+        });
         const notificationTemplates = [
-            {
-                notificationTemplateId: null,
-                channel: CHANNEL_WHATSAPP,
-                messageTemplate: getOnboardingPicDecisionHrdTemplate(params.decisionType),
-            },
+            ...runtimeTemplates.map((template) => ({
+                notificationTemplateId: template.notificationTemplateId,
+                channel: template.channel,
+                messageTemplate: template.messageTemplate,
+            })),
         ];
+        if (notificationTemplates.length === 0) {
+            return;
+        }
         const requesterEmployeeId = await resolveRequesterEmployeeId(params.decidedByUserId);
         const [decisionActorEmployee, decisionActorUser] = await Promise.all([
             requesterEmployeeId
@@ -1341,7 +1418,6 @@ const enqueueOnboardingPicDecisionNotification = async (params) => {
                 select: {
                     userId: true,
                     name: true,
-                    badgeNumber: true,
                 },
             }),
         ]);
@@ -1358,7 +1434,6 @@ const enqueueOnboardingPicDecisionNotification = async (params) => {
             `PIC ${params.decidedByUserId}`;
         const decisionActorBadge = normalizeNote(decisionActorEmployee?.CardNo) ??
             normalizeNote(decisionActorEmployee?.BadgeNum) ??
-            normalizeNote(decisionActorUser?.badgeNumber) ??
             params.decidedByUserId;
         const decisionLabel = getOnboardingDecisionLabel(params.decisionType);
         const decisionUrl = resolveHrdDecisionUrl();
@@ -1376,7 +1451,7 @@ const enqueueOnboardingPicDecisionNotification = async (params) => {
                     decisionLabel,
                     decisionType: params.decisionType,
                     status: params.nextStatus,
-                    dueDate: formatIndonesianDate(params.nextDueAt),
+                    dueDate: formatOptionalDueDate(params.nextDueAt),
                     nextDurationDay: params.nextDurationDay ?? "",
                     decisionNote,
                     decisionAt: formatIndonesianDateTime(params.decidedAt),
@@ -1459,7 +1534,7 @@ const enqueueOnboardingPicDecisionNotification = async (params) => {
         });
     }
 };
-const enqueueOnboardingTransferReviewCancelledPicNotification = async (params) => {
+const enqueueOnboardingTransferReviewCancelledNotifications = async (params) => {
     try {
         if (normalizeUpper(params.assignment.participantReferenceType) !==
             EMPLOYEE_PARTICIPANT_REFERENCE_TYPE) {
@@ -1489,42 +1564,33 @@ const enqueueOnboardingTransferReviewCancelledPicNotification = async (params) =
             employee.UserId,
         ]);
         const employeeRecipients = groupSbuSubPicRecipientsByEmployee(recipients).get(employee.UserId) ?? [];
-        if (employeeRecipients.length === 0) {
-            return;
-        }
         const portalName = normalizeNote(params.assignment.portalTemplate?.portalName) ??
             normalizePortalKey(params.assignment.portalKey);
-        const runtimeTemplates = await resolveRuntimeNotificationTemplates({
+        const picRuntimeTemplates = await resolveRuntimeNotificationTemplates({
             portalKey: params.assignment.portalKey,
             eventKey: ONBOARDING_TRANSFER_REVIEW_CANCELLED_EVENT_KEY,
             recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
         });
-        const fallbackTemplate = {
-            notificationTemplateId: null,
-            channel: CHANNEL_WHATSAPP,
-            messageTemplate: [
-                "[Onboarding Dilanjutkan]",
-                "Halo {recipientName},",
-                "{employeeName} ({cardNumber}) sudah dilanjutkan onboarding {portalName} setelah review HRD/PIC.",
-                "SBU Sub: {sbuSubName}",
-                "SBU: {sbuName}",
-                "Pilar: {pilarName}",
-                "Posisi: {positionName}",
-                "Deadline: {dueDate}",
-                "Catatan: {decisionNote}",
-                "Pantau progres onboarding melalui {hrdUrl}.",
-            ].join("\n"),
-        };
-        const notificationTemplates = runtimeTemplates.length > 0
-            ? runtimeTemplates.map((template) => ({
-                notificationTemplateId: template.notificationTemplateId,
-                channel: template.channel,
-                messageTemplate: template.messageTemplate,
-            }))
-            : [fallbackTemplate];
+        const employeeRuntimeTemplates = await resolveRuntimeNotificationTemplates({
+            portalKey: params.assignment.portalKey,
+            eventKey: ONBOARDING_TRANSFER_REVIEW_CANCELLED_EVENT_KEY,
+            recipientRole: PARTICIPANT_RECIPIENT_ROLE,
+        });
+        const picNotificationTemplates = picRuntimeTemplates.map((template) => ({
+            notificationTemplateId: template.notificationTemplateId,
+            channel: template.channel,
+            messageTemplate: template.messageTemplate,
+        }));
+        const employeeNotificationTemplates = employeeRuntimeTemplates.map((template) => ({
+            notificationTemplateId: template.notificationTemplateId,
+            channel: template.channel,
+            messageTemplate: template.messageTemplate,
+        }));
         const createNotificationOutboxId = await generateNotificationOutboxId();
-        const remainingDurationDay = Math.max(1, Math.ceil((params.nextDueAt.getTime() - params.decidedAt.getTime()) /
-            (24 * 60 * 60 * 1000)));
+        const remainingDurationDay = params.nextDueAt
+            ? Math.max(1, Math.ceil((params.nextDueAt.getTime() - params.decidedAt.getTime()) /
+                (24 * 60 * 60 * 1000)))
+            : null;
         const decisionNote = params.note ?? "-";
         const outboxes = [];
         for (const recipient of employeeRecipients) {
@@ -1541,7 +1607,7 @@ const enqueueOnboardingTransferReviewCancelledPicNotification = async (params) =
                 decisionNote,
                 decisionAt: formatIndonesianDateTime(params.decidedAt),
             };
-            for (const template of notificationTemplates) {
+            for (const template of picNotificationTemplates) {
                 const channel = normalizeUpper(template.channel);
                 const phoneNumber = channel === CHANNEL_WHATSAPP ? recipient.phoneNumber ?? "" : "";
                 const email = channel === CHANNEL_EMAIL ? recipient.email ?? "" : recipient.email;
@@ -1603,6 +1669,81 @@ const enqueueOnboardingTransferReviewCancelledPicNotification = async (params) =
                 });
             }
         }
+        if (employeeNotificationTemplates.length > 0) {
+            const context = {
+                ...buildEmployeeResumeOnboardingNotificationContext({
+                    employee,
+                    recipients: employeeRecipients,
+                    portalKey: params.assignment.portalKey,
+                    portalName,
+                    durationDay: remainingDurationDay,
+                    startedAt: params.assignment.startedAt,
+                    dueAt: params.nextDueAt,
+                }),
+                decisionNote,
+                decisionAt: formatIndonesianDateTime(params.decidedAt),
+            };
+            const phoneNumber = normalizePhone(employee.Phone);
+            const email = normalizeEmail(employee.email);
+            for (const template of employeeNotificationTemplates) {
+                const channel = normalizeUpper(template.channel);
+                if (channel === CHANNEL_WHATSAPP && !phoneNumber) {
+                    logger.warn("Skipping employee onboarding resume notification without phone", {
+                        onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                        onboardingDecisionId: params.onboardingDecisionId,
+                        employeeUserId: employee.UserId,
+                    });
+                    continue;
+                }
+                outboxes.push({
+                    notificationOutboxId: createNotificationOutboxId(),
+                    notificationTemplateId: template.notificationTemplateId,
+                    portalKey: params.assignment.portalKey,
+                    eventKey: ONBOARDING_TRANSFER_REVIEW_CANCELLED_EVENT_KEY,
+                    recipientRole: PARTICIPANT_RECIPIENT_ROLE,
+                    recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+                    recipientReferenceId: String(employee.UserId),
+                    contextReferenceType: ONBOARDING_DECISION_CONTEXT_TYPE,
+                    contextReferenceId: params.onboardingDecisionId,
+                    phoneNumber: channel === CHANNEL_WHATSAPP ? phoneNumber ?? "" : "",
+                    message: trimMessage(renderTemplate(template.messageTemplate, context)),
+                    status: "PENDING",
+                    attempts: 0,
+                    lastError: null,
+                    provider: null,
+                    sentAt: null,
+                    meta: JSON.stringify({
+                        channel,
+                        email,
+                        phoneNumber,
+                        onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                        onboardingDecisionId: params.onboardingDecisionId,
+                        employeeUserId: employee.UserId,
+                        employeeName: context.employeeName,
+                        cardNumber: context.cardNumber,
+                        portalKey: params.assignment.portalKey,
+                        portalName,
+                        sbuSubName: context.sbuSubName,
+                        sbuName: context.sbuName,
+                        pilarName: context.pilarName,
+                        positionName: context.positionName,
+                        jabatanName: context.jabatanName,
+                        dueDate: context.dueDate,
+                        decisionNote,
+                        decisionAt: context.decisionAt,
+                        loginUrl: context.loginUrl,
+                    }),
+                    isActive: true,
+                    isDeleted: false,
+                    createdAt: params.decidedAt,
+                    createdBy: params.decidedByUserId.slice(0, 20),
+                    updatedAt: params.decidedAt,
+                    updatedBy: params.decidedByUserId.slice(0, 20),
+                    deletedAt: null,
+                    deletedBy: null,
+                });
+            }
+        }
         if (outboxes.length > 0) {
             await prismaFlowly.notificationOutbox.createMany({
                 data: outboxes,
@@ -1610,7 +1751,7 @@ const enqueueOnboardingTransferReviewCancelledPicNotification = async (params) =
         }
     }
     catch (error) {
-        logger.warn("Failed to enqueue onboarding resume notification for SBU Sub PIC", {
+        logger.warn("Failed to enqueue onboarding resume notification", {
             onboardingAssignmentId: params.assignment.onboardingAssignmentId,
             onboardingDecisionId: params.onboardingDecisionId,
             error: error instanceof Error ? error.message : String(error),
@@ -1644,6 +1785,285 @@ const deactivateEmployeeAccountForFailedOnboarding = async (params) => {
         logger.warn("Failed onboarding employee account was not found to deactivate", {
             onboardingAssignmentId: params.assignment.onboardingAssignmentId,
             employeeUserId,
+        });
+    }
+};
+const enqueueOnboardingFailFinalParticipantNotification = async (params) => {
+    try {
+        if (normalizeUpper(params.assignment.participantReferenceType) !==
+            EMPLOYEE_PARTICIPANT_REFERENCE_TYPE) {
+            return;
+        }
+        const employeeUserId = Number(params.assignment.participantReferenceId);
+        if (!Number.isInteger(employeeUserId) || employeeUserId <= 0) {
+            return;
+        }
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: { UserId: employeeUserId },
+            select: {
+                UserId: true,
+                CardNo: true,
+                BadgeNum: true,
+                Name: true,
+                Phone: true,
+                email: true,
+            },
+        });
+        if (!employee) {
+            return;
+        }
+        const runtimeTemplates = await resolveRuntimeNotificationTemplates({
+            portalKey: params.assignment.portalKey,
+            eventKey: ONBOARDING_FAIL_FINAL_EVENT_KEY,
+            recipientRole: PARTICIPANT_RECIPIENT_ROLE,
+        });
+        const notificationTemplates = runtimeTemplates.map((template) => ({
+            notificationTemplateId: template.notificationTemplateId,
+            channel: template.channel,
+            messageTemplate: template.messageTemplate,
+        }));
+        if (notificationTemplates.length === 0) {
+            return;
+        }
+        const portalName = normalizeNote(params.assignment.portalTemplate?.portalName) ??
+            normalizePortalKey(params.assignment.portalKey);
+        const cardNumber = normalizeNote(employee.CardNo) ??
+            normalizeNote(employee.BadgeNum) ??
+            String(employee.UserId);
+        const recipientName = normalizeNote(employee.Name) ?? cardNumber;
+        const phoneNumber = normalizePhone(employee.Phone);
+        const email = normalizeEmail(employee.email);
+        const decisionNote = params.note ?? "-";
+        const context = {
+            recipientName,
+            employeeName: recipientName,
+            cardNumber,
+            portalName,
+            portalKey: params.assignment.portalKey,
+            dueDate: formatOptionalDueDate(params.assignment.dueAt),
+            decisionNote,
+            decisionAt: formatIndonesianDateTime(params.decidedAt),
+            supportName: resolveSupportName(),
+            supportPhone: resolveSupportPhone(),
+        };
+        const createNotificationOutboxId = await generateNotificationOutboxId();
+        const outboxes = [];
+        for (const template of notificationTemplates) {
+            const channel = normalizeUpper(template.channel);
+            if (channel === CHANNEL_WHATSAPP && !phoneNumber) {
+                logger.warn("Skipping employee fail final onboarding notification without phone", {
+                    onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                    onboardingDecisionId: params.onboardingDecisionId,
+                    employeeUserId: employee.UserId,
+                });
+                continue;
+            }
+            outboxes.push({
+                notificationOutboxId: createNotificationOutboxId(),
+                notificationTemplateId: template.notificationTemplateId,
+                portalKey: params.assignment.portalKey,
+                eventKey: ONBOARDING_FAIL_FINAL_EVENT_KEY,
+                recipientRole: PARTICIPANT_RECIPIENT_ROLE,
+                recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+                recipientReferenceId: String(employee.UserId),
+                contextReferenceType: ONBOARDING_DECISION_CONTEXT_TYPE,
+                contextReferenceId: params.onboardingDecisionId,
+                phoneNumber: channel === CHANNEL_WHATSAPP ? phoneNumber ?? "" : "",
+                message: trimMessage(renderTemplate(template.messageTemplate, context)),
+                status: "PENDING",
+                attempts: 0,
+                lastError: null,
+                provider: null,
+                sentAt: null,
+                meta: JSON.stringify({
+                    channel,
+                    email,
+                    phoneNumber,
+                    onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                    onboardingDecisionId: params.onboardingDecisionId,
+                    employeeUserId: employee.UserId,
+                    employeeName: context.employeeName,
+                    cardNumber,
+                    portalKey: params.assignment.portalKey,
+                    portalName,
+                    dueDate: context.dueDate,
+                    decisionNote,
+                    decisionAt: context.decisionAt,
+                }),
+                isActive: true,
+                isDeleted: false,
+                createdAt: params.decidedAt,
+                createdBy: params.decidedByUserId.slice(0, 20),
+                updatedAt: params.decidedAt,
+                updatedBy: params.decidedByUserId.slice(0, 20),
+                deletedAt: null,
+                deletedBy: null,
+            });
+        }
+        if (outboxes.length > 0) {
+            await prismaFlowly.notificationOutbox.createMany({
+                data: outboxes,
+            });
+        }
+    }
+    catch (error) {
+        logger.warn("Failed to enqueue onboarding fail final notification", {
+            onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+            onboardingDecisionId: params.onboardingDecisionId,
+            error: error instanceof Error ? error.message : String(error),
+        });
+    }
+};
+const enqueueOnboardingParticipantDecisionNotification = async (params) => {
+    try {
+        if (normalizeUpper(params.assignment.participantReferenceType) !==
+            EMPLOYEE_PARTICIPANT_REFERENCE_TYPE) {
+            return;
+        }
+        const normalizedDecisionType = normalizeUpper(params.decisionType);
+        if (normalizedDecisionType !== DECISION_PASS_OVERRIDE &&
+            normalizedDecisionType !== DECISION_EXTEND) {
+            return;
+        }
+        const employeeUserId = Number(params.assignment.participantReferenceId);
+        if (!Number.isInteger(employeeUserId) || employeeUserId <= 0) {
+            return;
+        }
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: { UserId: employeeUserId },
+            select: {
+                UserId: true,
+                CardNo: true,
+                BadgeNum: true,
+                Name: true,
+                Phone: true,
+                email: true,
+            },
+        });
+        if (!employee) {
+            return;
+        }
+        const runtimeTemplates = await resolveRuntimeNotificationTemplates({
+            portalKey: params.assignment.portalKey,
+            eventKey: params.eventKey,
+            recipientRole: PARTICIPANT_RECIPIENT_ROLE,
+        });
+        const notificationTemplates = [
+            ...runtimeTemplates.map((template) => ({
+                notificationTemplateId: template.notificationTemplateId,
+                channel: template.channel,
+                messageTemplate: template.messageTemplate,
+            })),
+        ];
+        if (notificationTemplates.length === 0) {
+            return;
+        }
+        const portalName = normalizeNote(params.assignment.portalTemplate?.portalName) ??
+            normalizePortalKey(params.assignment.portalKey);
+        const cardNumber = normalizeNote(employee.CardNo) ??
+            normalizeNote(employee.BadgeNum) ??
+            String(employee.UserId);
+        const recipientName = normalizeNote(employee.Name) ?? cardNumber;
+        const phoneNumber = normalizePhone(employee.Phone);
+        const email = normalizeEmail(employee.email);
+        const decisionNote = params.note ?? "-";
+        const dueDate = formatOptionalDueDate(params.nextDueAt ?? params.assignment.dueAt);
+        const previousDueDate = formatOptionalDueDate(params.assignment.dueAt);
+        const extensionDays = params.nextDurationDay ?? "";
+        const extensionMonths = formatDurationMonths(params.nextDurationDay);
+        const context = {
+            recipientName,
+            employeeName: recipientName,
+            cardNumber,
+            portalName,
+            portalKey: params.assignment.portalKey,
+            status: params.nextStatus,
+            decisionLabel: getOnboardingDecisionLabel(params.decisionType),
+            dueDate,
+            previousDueDate,
+            extensionDays,
+            extensionMonths,
+            nextDurationDay: params.nextDurationDay ?? "",
+            decisionNote,
+            decisionAt: formatIndonesianDateTime(params.decidedAt),
+            loginUrl: resolveOmsLoginUrl(),
+            supportName: resolveSupportName(),
+            supportPhone: resolveSupportPhone(),
+        };
+        const createNotificationOutboxId = await generateNotificationOutboxId();
+        const outboxes = [];
+        for (const template of notificationTemplates) {
+            const channel = normalizeUpper(template.channel);
+            if (channel === CHANNEL_WHATSAPP && !phoneNumber) {
+                logger.warn("Skipping employee onboarding decision notification without phone", {
+                    onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                    onboardingDecisionId: params.onboardingDecisionId,
+                    employeeUserId: employee.UserId,
+                    eventKey: params.eventKey,
+                });
+                continue;
+            }
+            outboxes.push({
+                notificationOutboxId: createNotificationOutboxId(),
+                notificationTemplateId: template.notificationTemplateId,
+                portalKey: params.assignment.portalKey,
+                eventKey: params.eventKey,
+                recipientRole: PARTICIPANT_RECIPIENT_ROLE,
+                recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+                recipientReferenceId: String(employee.UserId),
+                contextReferenceType: ONBOARDING_DECISION_CONTEXT_TYPE,
+                contextReferenceId: params.onboardingDecisionId,
+                phoneNumber: channel === CHANNEL_WHATSAPP ? phoneNumber ?? "" : "",
+                message: trimMessage(renderTemplate(template.messageTemplate, context)),
+                status: "PENDING",
+                attempts: 0,
+                lastError: null,
+                provider: null,
+                sentAt: null,
+                meta: JSON.stringify({
+                    channel,
+                    email,
+                    phoneNumber,
+                    onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                    onboardingDecisionId: params.onboardingDecisionId,
+                    employeeUserId: employee.UserId,
+                    employeeName: context.employeeName,
+                    cardNumber,
+                    portalKey: params.assignment.portalKey,
+                    portalName,
+                    status: params.nextStatus,
+                    decisionType: params.decisionType,
+                    decisionLabel: context.decisionLabel,
+                    dueDate,
+                    previousDueDate,
+                    extensionDays,
+                    extensionMonths,
+                    decisionNote,
+                    decisionAt: context.decisionAt,
+                    loginUrl: context.loginUrl,
+                }),
+                isActive: true,
+                isDeleted: false,
+                createdAt: params.decidedAt,
+                createdBy: params.decidedByUserId.slice(0, 20),
+                updatedAt: params.decidedAt,
+                updatedBy: params.decidedByUserId.slice(0, 20),
+                deletedAt: null,
+                deletedBy: null,
+            });
+        }
+        if (outboxes.length > 0) {
+            await prismaFlowly.notificationOutbox.createMany({
+                data: outboxes,
+            });
+        }
+    }
+    catch (error) {
+        logger.warn("Failed to enqueue onboarding participant decision notification", {
+            onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+            onboardingDecisionId: params.onboardingDecisionId,
+            eventKey: params.eventKey,
+            error: error instanceof Error ? error.message : String(error),
         });
     }
 };
@@ -2057,7 +2477,7 @@ const getOnboardingPlacementInfo = (placementMap, userId) => placementMap.get(us
     sources: [],
     details: [],
 };
-const toSummaryResponse = (employeeNameMap, placementMap, assignment) => {
+const toSummaryResponse = (employeeNameMap, placementMap, transferReviewStillInSourceSbuSubMap, assignment) => {
     const userId = Number(assignment.participantReferenceId);
     if (!Number.isFinite(userId) || userId <= 0) {
         return null;
@@ -2088,6 +2508,9 @@ const toSummaryResponse = (employeeNameMap, placementMap, assignment) => {
         onboardingBlockReason: placement.hasOnboardingPlacement
             ? null
             : ONBOARDING_PLACEMENT_REQUIRED_REASON,
+        transferReviewStillInSourceSbuSub: normalizedStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW
+            ? transferReviewStillInSourceSbuSubMap.get(assignment.onboardingAssignmentId) ?? null
+            : null,
     };
 };
 const toNotStartedEmployeeSummaryResponse = (portalKey, employee, placementMap) => {
@@ -2111,6 +2534,7 @@ const toNotStartedEmployeeSummaryResponse = (portalKey, employee, placementMap) 
         onboardingBlockReason: placement.hasOnboardingPlacement
             ? null
             : ONBOARDING_PLACEMENT_REQUIRED_REASON,
+        transferReviewStillInSourceSbuSub: null,
     };
 };
 const hasOnboardingPlacement = (placementMap, userId) => getOnboardingPlacementInfo(placementMap, userId).hasOnboardingPlacement;
@@ -2129,6 +2553,7 @@ export class OnboardingService {
                 isDeleted: false,
                 isActive: true,
                 dueAt: {
+                    not: null,
                     lt: now,
                 },
                 status: {
@@ -2189,6 +2614,9 @@ export class OnboardingService {
         const createDecisionId = await generateOnboardingDecisionId();
         let expired = 0;
         for (const assignment of assignments) {
+            if (!assignment.dueAt) {
+                continue;
+            }
             const activeStages = assignment.stageProgresses;
             if (activeStages.length > 0 &&
                 activeStages.every((stage) => {
@@ -2360,11 +2788,25 @@ export class OnboardingService {
         if (decisionType === DECISION_FAIL_FINAL && !canDecideAsHrd) {
             throw new ResponseError(403, "Hanya HRD yang bisa menetapkan gagal onboarding final");
         }
+        if (decisionType === DECISION_FAIL_FINAL &&
+            canDecideAsHrd &&
+            hasValidParticipantEmployeeId) {
+            const placementMap = await buildEmployeeOnboardingPlacementMap([
+                participantEmployeeId,
+            ]);
+            const placement = getOnboardingPlacementInfo(placementMap, participantEmployeeId);
+            if (placement.hasOnboardingPlacement) {
+                throw new ResponseError(400, "Karyawan masih terdaftar di struktur organisasi atau role PIC pilar/SBU/SBU Sub. Hapus dulu dari struktur organisasi mana pun sebelum menetapkan gagal onboarding final");
+            }
+        }
         if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW &&
             normalizedAssignmentStatus !== ASSIGNMENT_STATUS_TRANSFER_REVIEW) {
             throw new ResponseError(400, "Onboarding ini tidak sedang dibekukan");
         }
         if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW && canDecideAsHrd) {
+            if (validated.confirmCurrentPlacement !== true) {
+                throw new ResponseError(400, "Konfirmasi struktur organisasi wajib sebelum HRD membatalkan status beku onboarding");
+            }
             const placementMap = hasValidParticipantEmployeeId
                 ? await buildEmployeeOnboardingPlacementMap([participantEmployeeId])
                 : new Map();
@@ -2373,16 +2815,6 @@ export class OnboardingService {
                 : null;
             if (!placement?.hasOnboardingPlacement) {
                 throw new ResponseError(400, "Status beku belum bisa dibatalkan karena karyawan belum punya struktur organisasi atau role PIC pilar/SBU/SBU Sub");
-            }
-            const [sourceSbuSubIds, currentChartSbuSubIds] = hasValidParticipantEmployeeId
-                ? await Promise.all([
-                    buildAssignmentSourceSbuSubIds(assignment.onboardingAssignmentId),
-                    buildEmployeeChartSbuSubIds(participantEmployeeId),
-                ])
-                : [new Set(), new Set()];
-            const stillInSourceSbuSub = Array.from(currentChartSbuSubIds).some((sbuSubId) => sourceSbuSubIds.has(sbuSubId));
-            if (sourceSbuSubIds.size > 0 && stillInSourceSbuSub) {
-                throw new ResponseError(400, "HRD belum bisa membatalkan beku karena karyawan masih berada di struktur SBU Sub asal");
             }
         }
         if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW &&
@@ -2400,7 +2832,7 @@ export class OnboardingService {
             null;
         const currentStageOrder = firstIncompleteStage?.stageOrder ?? assignment.currentStageOrder;
         let nextStatus = assignment.status;
-        let nextDueAt = assignment.dueAt;
+        let nextDueAt = assignment.dueAt ?? null;
         let nextCurrentStageOrder = assignment.currentStageOrder;
         const nextDurationDay = decisionType === DECISION_EXTEND
             ? Number(validated.nextDurationDay ?? DEFAULT_EXTENSION_DURATION_DAYS)
@@ -2450,7 +2882,8 @@ export class OnboardingService {
                 const extensionDays = nextDurationDay && Number.isInteger(nextDurationDay) && nextDurationDay > 0
                     ? nextDurationDay
                     : DEFAULT_EXTENSION_DURATION_DAYS;
-                nextDueAt = addDays(now, extensionDays);
+                const extensionBaseDate = assignment.dueAt ?? now;
+                nextDueAt = addDays(extensionBaseDate, extensionDays);
                 const totalDurationDay = Math.max(1, Math.ceil((nextDueAt.getTime() - assignment.startedAt.getTime()) /
                     (24 * 60 * 60 * 1000)));
                 nextStatus = "IN_PROGRESS";
@@ -2583,11 +3016,11 @@ export class OnboardingService {
             else if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW) {
                 nextStatus = "IN_PROGRESS";
                 nextCurrentStageOrder = currentStageOrder;
-                if (assignment.failedAt) {
+                if (assignment.failedAt && nextDueAt) {
                     const frozenDurationMs = Math.max(0, now.getTime() - assignment.failedAt.getTime());
                     nextDueAt = new Date(nextDueAt.getTime() + frozenDurationMs);
                 }
-                if (nextDueAt.getTime() <= now.getTime()) {
+                if (!nextDueAt || nextDueAt.getTime() <= now.getTime()) {
                     nextDueAt = addDays(now, DEFAULT_EXTENSION_DURATION_DAYS);
                 }
                 const totalDurationDay = Math.max(1, Math.ceil((nextDueAt.getTime() - assignment.startedAt.getTime()) /
@@ -2666,9 +3099,33 @@ export class OnboardingService {
                 assignment,
                 updatedAt: now,
             });
+            await enqueueOnboardingFailFinalParticipantNotification({
+                assignment,
+                onboardingDecisionId,
+                note,
+                decidedAt: now,
+                decidedByUserId: requesterUserId,
+            });
+        }
+        if (canDecideAsHrd &&
+            (decisionType === DECISION_PASS_OVERRIDE || decisionType === DECISION_EXTEND)) {
+            await enqueueOnboardingParticipantDecisionNotification({
+                assignment,
+                onboardingDecisionId,
+                decisionType,
+                eventKey: decisionType === DECISION_PASS_OVERRIDE
+                    ? ONBOARDING_PASSED_EVENT_KEY
+                    : ONBOARDING_EXTENDED_EVENT_KEY,
+                nextStatus,
+                nextDueAt,
+                nextDurationDay,
+                note,
+                decidedAt: now,
+                decidedByUserId: requesterUserId,
+            });
         }
         if (decisionType === DECISION_CANCEL_TRANSFER_REVIEW) {
-            await enqueueOnboardingTransferReviewCancelledPicNotification({
+            await enqueueOnboardingTransferReviewCancelledNotifications({
                 assignment,
                 onboardingDecisionId,
                 nextDueAt,
@@ -2784,6 +3241,7 @@ export class OnboardingService {
                             stageTemplate: {
                                 select: {
                                     onboardingStageTemplateId: true,
+                                    stageName: true,
                                     stageDescription: true,
                                     stageMaterials: {
                                         where: {
@@ -3111,7 +3569,9 @@ export class OnboardingService {
                     onboardingStageTemplateId: stageProgress.onboardingStageTemplateId,
                     stageOrder: stageProgress.stageOrder,
                     stageCode: stageProgress.stageCode,
-                    stageName: stageProgress.stageName,
+                    stageName: normalizeNote(stageProgress.stageTemplate.stageName) ??
+                        normalizeNote(stageProgress.stageName) ??
+                        `Tahap ${stageProgress.stageOrder}`,
                     stageDescription: normalizeNote(stageProgress.stageTemplate.stageDescription) ??
                         normalizeNote(stageProgress.note),
                     status: stageProgress.status,
@@ -4105,10 +4565,11 @@ export class OnboardingService {
             ...assignmentEmployeeIds,
         ]));
         const placementMap = await buildEmployeeOnboardingPlacementMap(employeeIds);
+        const transferReviewStillInSourceSbuSubMap = await buildTransferReviewStillInSourceSbuSubMap(Array.from(latestByEmployee.values()));
         const employeeNameMap = new Map(employees.map((employee) => [employee.UserId, employee.Name ?? null]));
         const summariesByEmployee = new Map();
         for (const assignment of latestByEmployee.values()) {
-            const summary = toSummaryResponse(employeeNameMap, placementMap, assignment);
+            const summary = toSummaryResponse(employeeNameMap, placementMap, transferReviewStillInSourceSbuSubMap, assignment);
             if (summary) {
                 summariesByEmployee.set(summary.userId, summary);
             }
@@ -4164,7 +4625,7 @@ export class OnboardingService {
         }
         const durationDay = validated.durationDay && validated.durationDay > 0
             ? validated.durationDay
-            : portalTemplate.defaultDurationDay;
+            : portalTemplate.defaultDurationDay ?? null;
         const employees = await prismaEmployee.em_employee.findMany({
             where: {
                 UserId: { in: validated.userIds },
@@ -4277,21 +4738,11 @@ export class OnboardingService {
             eventKey: ONBOARDING_STARTED_EVENT_KEY,
             recipientRole: PARTICIPANT_RECIPIENT_ROLE,
         });
-        const returningParticipantFallbackTemplate = {
-            notificationTemplateId: null,
-            channel: CHANNEL_WHATSAPP,
-            messageTemplate: "Halo {recipientName},\n\nOnboarding Anda untuk {portalName} sudah dimulai pada {startedDate}.\nDeadline: {dueDate}\n\nSilakan login menggunakan password OMS Anda yang sudah ada melalui {loginUrl}.",
-        };
-        const returningParticipantNotificationTemplates = [
-            ...returningParticipantRuntimeTemplates.map((template) => ({
-                notificationTemplateId: template.notificationTemplateId,
-                channel: template.channel,
-                messageTemplate: template.messageTemplate,
-            })),
-            ...(returningParticipantRuntimeTemplates.some((template) => template.channel === CHANNEL_WHATSAPP)
-                ? []
-                : [returningParticipantFallbackTemplate]),
-        ];
+        const returningParticipantNotificationTemplates = returningParticipantRuntimeTemplates.map((template) => ({
+            notificationTemplateId: template.notificationTemplateId,
+            channel: template.channel,
+            messageTemplate: template.messageTemplate,
+        }));
         const sbuSubPicRecipients = await resolveSbuSubPicOnboardingRecipients(startableEmployees.map((employee) => employee.UserId));
         const sbuSubPicRecipientsByEmployee = groupSbuSubPicRecipientsByEmployee(sbuSubPicRecipients);
         const sbuSubPicRuntimeTemplates = await resolveRuntimeNotificationTemplates({
@@ -4299,20 +4750,12 @@ export class OnboardingService {
             eventKey: ONBOARDING_STARTED_EVENT_KEY,
             recipientRole: SBU_SUB_PIC_RECIPIENT_ROLE,
         });
-        const sbuSubPicFallbackTemplate = {
-            notificationTemplateId: null,
-            channel: CHANNEL_WHATSAPP,
-            messageTemplate: "Halo {recipientName},\n\n{employeeName} ({cardNumber}) mulai onboarding {portalName} pada {startedDate}.\nSBU Sub: {sbuSubName}\nSBU: {sbuName}\nPilar: {pilarName}\nPosisi: {positionName}\nDeadline: {dueDate}\n\nPantau progres onboarding melalui {hrdUrl}.",
-        };
         const sbuSubPicNotificationTemplates = [
             ...sbuSubPicRuntimeTemplates.map((template) => ({
                 notificationTemplateId: template.notificationTemplateId,
                 channel: template.channel,
                 messageTemplate: template.messageTemplate,
             })),
-            ...(sbuSubPicRuntimeTemplates.some((template) => template.channel === CHANNEL_WHATSAPP)
-                ? []
-                : [sbuSubPicFallbackTemplate]),
         ];
         const createNotificationOutboxId = firstLoginParticipantRuntimeTemplates.length > 0 ||
             (startableEmployees.some((employee) => !isEmployeeFirstLogin(employee.isFirstLogin)) &&
@@ -4331,7 +4774,7 @@ export class OnboardingService {
         const started = [];
         for (const employee of startableEmployees) {
             const onboardingAssignmentId = createAssignmentId();
-            const dueAt = addDays(startedAt, durationDay);
+            const dueAt = durationDay ? addDays(startedAt, durationDay) : null;
             const isFirstLoginEmployee = isEmployeeFirstLogin(employee.isFirstLogin);
             const temporaryPassword = isFirstLoginEmployee
                 ? buildEmployeeFirstLoginPassword(employee.CardNo, employee.UserId)
@@ -4596,7 +5039,7 @@ export class OnboardingService {
                 portalKey: item.portalKey,
                 status: item.status,
                 startedAt: item.startedAt.toISOString(),
-                dueAt: item.dueAt.toISOString(),
+                dueAt: item.dueAt?.toISOString() ?? null,
                 currentStageOrder: item.currentStageOrder,
             },
             meta: {

@@ -1,4 +1,4 @@
-import { type ChangePasswordRequest, type ChangeRoleRequest, type CreateUserRequest, type LoginRequest, type LoginResponse, type UpdateProfileRequest, type UserListResponse, type UserProfileResponse, type UserResponse } from "../model/user-model.js";
+import { type ChangeUserStatusRequest, type ChangePasswordRequest, type ChangeRoleRequest, type CreateUserRequest, type LoginRequest, type LoginResponse, type UpdateProfileRequest, type UserListResponse, type UserProfileResponse, type UserResponse } from "../model/user-model.js";
 export declare class UserService {
     static register(request: CreateUserRequest, requesterUserId: string): Promise<UserResponse>;
     static login(request: LoginRequest): Promise<LoginResponse>;
@@ -8,6 +8,7 @@ export declare class UserService {
     static listUsers(requesterUserId: string): Promise<UserListResponse[]>;
     static changePassword(userId: string, request: ChangePasswordRequest): Promise<void>;
     static changeRole(requesterUserId: string, request: ChangeRoleRequest): Promise<void>;
+    static changeUserStatus(requesterUserId: string, request: ChangeUserStatusRequest): Promise<void>;
     static listRoles(requesterUserId: string): Promise<{
         roleId: string;
         roleName: string;

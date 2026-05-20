@@ -12,8 +12,7 @@ export class UserValidation {
         username: z.string().min(3).max(30),
         name: z.string().min(1).max(100),
         password: z.string().min(6).max(100),
-        cardNumber: z.string().min(1, "Card number is required"),
-        roleId: z.string().optional(),
+        roleId: z.string().min(1).max(20),
     });
     static LOGIN = z.object({
         identity: z.string().trim().min(1).optional(),
@@ -82,6 +81,10 @@ export class UserValidation {
     static CHANGE_ROLE = z.object({
         userId: z.string().min(1).max(20),
         newRoleId: z.string().min(1).max(20),
+    });
+    static CHANGE_USER_STATUS = z.object({
+        userId: z.string().min(1).max(20),
+        isActive: z.boolean(),
     });
 }
 //# sourceMappingURL=user-validation.js.map

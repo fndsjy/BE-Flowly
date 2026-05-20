@@ -47,7 +47,7 @@ type OnboardingStagePortalResponse = {
   onboardingPortalTemplateId: string;
   portalKey: string;
   portalName: string;
-  defaultDurationDay: number;
+  defaultDurationDay: number | null;
   isActive: boolean;
   totalStageCount: number;
   stages: OnboardingStageTemplateResponse[];
@@ -507,7 +507,7 @@ const ensureCustomerLearningRuntime = async (params: {
   portalTemplate: {
     onboardingPortalTemplateId: string;
     portalKey: string;
-    defaultDurationDay: number;
+    defaultDurationDay: number | null;
   };
   stageTemplates: CustomerLearningRuntimeStageTemplate[];
 }): Promise<CustomerLearningRuntime | null> => {
@@ -518,11 +518,15 @@ const ensureCustomerLearningRuntime = async (params: {
 
   const now = new Date();
   const actorId = toAuditActor(participantReferenceId);
-  const durationCandidate = Number(params.portalTemplate.defaultDurationDay);
+  const durationCandidate =
+    params.portalTemplate.defaultDurationDay == null
+      ? null
+      : Number(params.portalTemplate.defaultDurationDay);
   const durationDay =
-    Number.isInteger(durationCandidate) && durationCandidate > 0
+    durationCandidate && Number.isInteger(durationCandidate) && durationCandidate > 0
       ? durationCandidate
-      : 90;
+      : null;
+  const dueAt = durationDay ? addDays(now, durationDay) : null;
   const createAssignmentId = await generateOnboardingAssignmentId();
   const createStageProgressId = await generateOnboardingStageProgressId();
 
@@ -555,7 +559,7 @@ const ensureCustomerLearningRuntime = async (params: {
           participantReferenceId,
           startedAt: now,
           durationDay,
-          dueAt: addDays(now, durationDay),
+          dueAt,
           status: "IN_PROGRESS",
           currentStageOrder: params.stageTemplates[0]?.stageOrder ?? null,
           assignedAt: now,
@@ -733,7 +737,7 @@ const toPortalResponse = (portal: {
   onboardingPortalTemplateId: string;
   portalKey: string;
   portalName: string;
-  defaultDurationDay: number;
+  defaultDurationDay: number | null;
   isActive: boolean;
   stageTemplates: Array<Parameters<typeof toStageResponse>[0]>;
 }): OnboardingStagePortalResponse => {

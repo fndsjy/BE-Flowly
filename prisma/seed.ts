@@ -11,9 +11,8 @@ import {
   generatePortalMenuMapId,
   generateOnboardingPortalTemplateId,
   generateOnboardingStageTemplateId,
-  generateNotificationTemplateId,
-  generateNotificationTemplatePortalId,
 } from "../src/utils/id-generator.js";
+import { seedNotificationTemplates } from "./notification-template-defaults.js";
 
 // 🔹 Daftar Role
 const roles = [
@@ -44,21 +43,18 @@ const users = [
   {
     username: "fendip",
     name: "Fendy",
-    badgeNumber: "2001-0362",
     password: "123456",
     roleName: "Admin", // ❗ roleName sebagai penanda, bukan roleId langsung (opsi bersih & scalable)
   },
   {
     username: "wingdip",
     name: "Surilawaty",
-    badgeNumber: "30113",
     password: "admin123",
     roleName: "Admin",
   },
   {
     username: "lisdip",
     name: "Lisa",
-    badgeNumber: "20289",
     password: "admin123",
     roleName: "Admin",
   },
@@ -223,13 +219,13 @@ const fishboneCategories = [
 ];
 
 const onboardingPortalDefaults = [
-  { portalKey: "EMPLOYEE", portalName: "Employee" },
-  { portalKey: "SUPPLIER", portalName: "Supplier" },
-  { portalKey: "CUSTOMER", portalName: "Customer" },
-  { portalKey: "AFFILIATE", portalName: "Affiliate" },
-  { portalKey: "INFLUENCER", portalName: "Influencer" },
-  { portalKey: "COMMUNITY", portalName: "Community" },
-  { portalKey: "ADMINISTRATOR", portalName: "Administrator" },
+  { portalKey: "EMPLOYEE", portalName: "Employee", defaultDurationDay: 91 },
+  { portalKey: "SUPPLIER", portalName: "Supplier", defaultDurationDay: 91 },
+  { portalKey: "CUSTOMER", portalName: "Customer", defaultDurationDay: null },
+  { portalKey: "AFFILIATE", portalName: "Affiliate", defaultDurationDay: 91 },
+  { portalKey: "INFLUENCER", portalName: "Influencer", defaultDurationDay: 91 },
+  { portalKey: "COMMUNITY", portalName: "Community", defaultDurationDay: 91 },
+  { portalKey: "ADMINISTRATOR", portalName: "Administrator", defaultDurationDay: 91 },
 ];
 
 const defaultOnboardingStages = [
@@ -283,28 +279,6 @@ const customerLearningStages = [
   },
 ];
 
-const notificationTemplateDefaults = [
-  {
-    templateName: "WA Peserta - Onboarding dimulai",
-    channel: "WHATSAPP",
-    eventKey: "ONBOARDING_STARTED",
-    recipientRole: "PARTICIPANT",
-    portalKeys: ["EMPLOYEE"],
-    messageTemplate:
-      "Halo {recipientName},\n\nOnboarding Anda untuk {portalName} sudah dimulai pada {startedDate}.\nDeadline: {dueDate}\n\nSilakan login menggunakan password OMS Anda yang sudah ada melalui {loginUrl}.",
-  },
-  {
-    templateName: "WA PIC SBU Sub - Onboarding dimulai",
-    channel: "WHATSAPP",
-    eventKey: "ONBOARDING_STARTED",
-    recipientRole: "SBU_SUB_PIC",
-    portalKeys: ["EMPLOYEE"],
-    messageTemplate:
-      "Halo {recipientName},\n\n{employeeName} ({cardNumber}) mulai onboarding {portalName} pada {startedDate}.\nSBU Sub: {sbuSubName}\nSBU: {sbuName}\nPilar: {pilarName}\nPosisi: {positionName}\nDeadline: {dueDate}\n\nPantau progres onboarding melalui {hrdUrl}.",
-  },
-];
-
-
 async function main() {
   console.log("Starting seed...");
 
@@ -345,7 +319,6 @@ async function main() {
           userId,
           username: user.username,
           name: user.name,
-          badgeNumber: user.badgeNumber,
           password: hashedPassword,
           isActive: true,
           isDeleted: false,
@@ -523,7 +496,7 @@ async function main() {
           where: { onboardingPortalTemplateId: existingPortalTemplate.onboardingPortalTemplateId },
           data: {
             portalName: portal.portalName,
-            defaultDurationDay: 91,
+            defaultDurationDay: portal.defaultDurationDay,
             isActive: true,
             isDeleted: false,
             deletedAt: null,
@@ -539,7 +512,7 @@ async function main() {
             onboardingPortalTemplateId: await generateOnboardingPortalTemplateId(),
             portalKey: portal.portalKey,
             portalName: portal.portalName,
-            defaultDurationDay: 91,
+            defaultDurationDay: portal.defaultDurationDay,
             isActive: true,
             isDeleted: false,
           },
@@ -563,7 +536,7 @@ async function main() {
     ];
 
     for (const stage of stagesForPortal) {
-      const existingStage = await prisma.onboardingStageTemplate.findUnique({
+      const existingStageByCode = await prisma.onboardingStageTemplate.findUnique({
         where: {
           onboardingPortalTemplateId_programType_stageCode: {
             onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
@@ -573,6 +546,17 @@ async function main() {
         },
         select: { onboardingStageTemplateId: true },
       });
+      const existingStageByOrder = await prisma.onboardingStageTemplate.findUnique({
+        where: {
+          onboardingPortalTemplateId_programType_stageOrder: {
+            onboardingPortalTemplateId: portalTemplate.onboardingPortalTemplateId,
+            programType: stage.programType,
+            stageOrder: stage.stageOrder,
+          },
+        },
+        select: { onboardingStageTemplateId: true },
+      });
+      const existingStage = existingStageByCode ?? existingStageByOrder;
 
       if (existingStage?.onboardingStageTemplateId) {
         await prisma.onboardingStageTemplate.update({
@@ -607,113 +591,10 @@ async function main() {
       }
     }
 
-    const makeNotificationTemplateId = await generateNotificationTemplateId();
-    const makeNotificationTemplatePortalId =
-      await generateNotificationTemplatePortalId();
-    for (const template of notificationTemplateDefaults) {
-      const portalKeys = Array.from(
-        new Set(template.portalKeys.map((portalKey) => portalKey.toUpperCase()))
-      ).sort();
-      const existingTemplate = await prisma.notificationTemplate.findFirst({
-        where: {
-          isDeleted: false,
-          channel: template.channel,
-          eventKey: template.eventKey,
-          recipientRole: template.recipientRole,
-          portalMappings: {
-            some: {
-              portalKey: { in: portalKeys },
-              isDeleted: false,
-            },
-          },
-        },
-        include: {
-          portalMappings: {
-            where: { isDeleted: false },
-          },
-        },
-      });
-
-      const now = new Date();
-      const notificationTemplateId = existingTemplate?.notificationTemplateId;
-      const savedTemplate = notificationTemplateId
-        ? await prisma.notificationTemplate.update({
-            where: { notificationTemplateId },
-            data: {
-              templateName: template.templateName,
-              isActive: true,
-              isDeleted: false,
-              deletedAt: null,
-              deletedBy: null,
-              updatedAt: now,
-              updatedBy: "SEED",
-            },
-            include: {
-              portalMappings: {
-                where: { isDeleted: false },
-              },
-            },
-          })
-        : await prisma.notificationTemplate.create({
-            data: {
-              notificationTemplateId: makeNotificationTemplateId(),
-              templateName: template.templateName,
-              channel: template.channel,
-              eventKey: template.eventKey,
-              recipientRole: template.recipientRole,
-              messageTemplate: template.messageTemplate,
-              isActive: true,
-              isDeleted: false,
-              createdAt: now,
-              createdBy: "SEED",
-              updatedAt: now,
-              updatedBy: "SEED",
-            },
-            include: {
-              portalMappings: {
-                where: { isDeleted: false },
-              },
-            },
-          });
-
-      for (const portalKey of portalKeys) {
-        const existingMapping = savedTemplate.portalMappings.find(
-          (mapping) => mapping.portalKey === portalKey
-        );
-
-        if (existingMapping) {
-          await prisma.notificationTemplatePortal.update({
-            where: {
-              notificationTemplatePortalId:
-                existingMapping.notificationTemplatePortalId,
-            },
-            data: {
-              isActive: true,
-              isDeleted: false,
-              deletedAt: null,
-              deletedBy: null,
-              updatedAt: now,
-              updatedBy: "SEED",
-            },
-          });
-          continue;
-        }
-
-        await prisma.notificationTemplatePortal.create({
-          data: {
-            notificationTemplatePortalId: makeNotificationTemplatePortalId(),
-            notificationTemplateId: savedTemplate.notificationTemplateId,
-            portalKey,
-            isActive: true,
-            isDeleted: false,
-            createdAt: now,
-            createdBy: "SEED",
-            updatedAt: now,
-            updatedBy: "SEED",
-          },
-        });
-      }
-    }
+    const notificationTemplateSeedResult = await seedNotificationTemplates(prisma);
+    console.log(
+      `Notification templates add-only: ${notificationTemplateSeedResult.createdTemplates} templates created, ${notificationTemplateSeedResult.createdPortalMappings} portal mappings created, ${notificationTemplateSeedResult.existingTemplates} existing templates left untouched.`
+    );
 
     if (process.env.SEED_ONBOARDING_EMPLOYEE_SCHEDULES === "true") {
       const syncedSchedules = await OnboardingEmployeeScheduleSyncService.syncAll();

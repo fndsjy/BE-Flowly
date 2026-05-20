@@ -51,7 +51,6 @@ model User {
   /// bcrypt/scrypt hashed
   password     String    @db.NVarChar(100)
   name         String    @db.NVarChar(100)
-  badgeNumber  String    @db.NVarChar(20)
   department   String?   @db.NVarChar(50)
   isActive     Boolean   @default(true)
   lastLogin    DateTime?
@@ -81,7 +80,6 @@ model User {
   updatedUsers User[]    @relation("UserUpdatedBy")
 
   @@index([username])
-  @@index([badgeNumber])
   @@index([roleId])
   @@index([createdBy])
   @@index([updatedBy])
@@ -855,7 +853,7 @@ model OnboardingPortalTemplate {
   onboardingPortalTemplateId String                    @id @db.NVarChar(100)
   portalKey                  String                    @db.NVarChar(50)
   portalName                 String                    @db.NVarChar(100)
-  defaultDurationDay         Int                       @default(90)
+  defaultDurationDay         Int?
   isActive                   Boolean                   @default(true)
   isDeleted                  Boolean                   @default(false)
   createdAt                  DateTime                  @default(now())
@@ -964,8 +962,8 @@ model OnboardingAssignment {
   participantReferenceType     String                       @db.NVarChar(50)
   participantReferenceId       String                       @db.NVarChar(100)
   startedAt                    DateTime
-  durationDay                  Int                          @default(90)
-  dueAt                        DateTime
+  durationDay                  Int?
+  dueAt                        DateTime?
   status                       String                       @db.NVarChar(30)
   currentStageOrder            Int?
   assignedAt                   DateTime                     @default(now())

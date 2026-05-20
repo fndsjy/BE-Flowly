@@ -61,7 +61,7 @@ export const resolveCaseAccess = async (requesterId: string): Promise<CaseAccess
 
     if (!canRead) {
       const employeeId = await resolveEmployeeId(requesterId, {
-        cardNumber: flowlyUser.badgeNumber,
+        cardNumber: null,
       });
       if (employeeId !== null) {
         return {

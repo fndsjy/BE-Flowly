@@ -11,8 +11,7 @@ export type CreateUserRequest = {
   username: string;
   name: string;
   password: string;
-  cardNumber: string;
-  roleId?: string;
+  roleId: string;
 };
 
 export type LoginRequest = {
@@ -67,6 +66,11 @@ export type ChangeRoleRequest = {
   newRoleId: string;
 };
 
+export type ChangeUserStatusRequest = {
+  userId: string;
+  isActive: boolean;
+};
+
 export type UserProfileResponse = {
   userId: string;
   username: string;
@@ -109,10 +113,10 @@ export type UserListResponse = {
   userId: string;
   username: string;
   name: string;
-  cardNumber: string;
   department: string | null;
   isActive: boolean;
   isDeleted: boolean;
+  roleId: string;
   roleName: string;
   createdAt: Date;
 };
@@ -155,7 +159,7 @@ export function toUserProfileResponse(user: User & { role: { roleName: string; r
     userId: user.userId,
     username: user.username,
     name: user.name,
-    cardNumber: user.badgeNumber,
+    cardNumber: null,
     department: user.department,
     departmentId: null,
     employeeUserId: null,
@@ -195,10 +199,10 @@ export function toUserListResponse(user: User & { role: { roleName: string } }):
     userId: user.userId,
     username: user.username,
     name: user.name,
-    cardNumber: user.badgeNumber,
     department: user.department,
     isActive: user.isActive,
     isDeleted: user.isDeleted,
+    roleId: user.roleId,
     roleName: user.role.roleName,
     createdAt: user.createdAt,
   };
