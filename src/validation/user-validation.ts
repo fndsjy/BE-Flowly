@@ -16,8 +16,7 @@ export class UserValidation {
     username: z.string().min(3).max(30),
     name: z.string().min(1).max(100),
     password: z.string().min(6).max(100),
-    cardNumber: z.string().min(1, "Card number is required"),
-    roleId: z.string().optional(),
+    roleId: z.string().min(1).max(20),
   });
 
   static readonly LOGIN: ZodType = z.object({
@@ -92,5 +91,10 @@ export class UserValidation {
   static readonly CHANGE_ROLE: ZodType = z.object({
     userId: z.string().min(1).max(20),
     newRoleId: z.string().min(1).max(20),
+  });
+
+  static readonly CHANGE_USER_STATUS: ZodType = z.object({
+    userId: z.string().min(1).max(20),
+    isActive: z.boolean(),
   });
 }

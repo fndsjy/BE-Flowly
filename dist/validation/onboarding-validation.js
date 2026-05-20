@@ -58,6 +58,7 @@ export class OnboardingValidation {
         }),
         nextDurationDay: z.number().int().positive().max(3650).optional().nullable(),
         note: optionalText(2000).optional(),
+        confirmCurrentPlacement: z.boolean().optional().nullable(),
     })
         .superRefine((value, ctx) => {
         if (value.decisionType === "FAIL_FINAL" && !value.note) {

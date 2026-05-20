@@ -62,19 +62,7 @@ const resolveRequesterEmployeeId = async (params: {
     if (employee?.UserId) return employee.UserId;
   }
 
-  const user = await prismaFlowly.user.findUnique({
-    where: { userId: requesterId, isDeleted: false },
-    select: { badgeNumber: true },
-  });
-  const cardNumber = user?.badgeNumber?.trim();
-  if (!cardNumber) return null;
-
-  const employee = await prismaEmployee.em_employee.findFirst({
-    where: { CardNo: cardNumber },
-    select: { UserId: true },
-  });
-
-  return employee?.UserId ?? null;
+  return null;
 };
 
 const resolveRequesterNotificationRecipients = async (params: {

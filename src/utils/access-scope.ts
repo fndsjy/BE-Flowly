@@ -93,9 +93,10 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
   const pilarPicIds = new Set<number>();
   const sbuPicIds = new Set<number>();
 
-  const employeeId = await resolveEmployeeId(userId, flowlyUser ? {
-    cardNumber: flowlyUser.badgeNumber,
-  } : null);
+  const employeeId = await resolveEmployeeId(
+    userId,
+    flowlyUser ? { cardNumber: null } : null
+  );
   const isEmployeeUser = employeeId !== null;
   if (isEmployeeUser) {
     const chartMembers = await prismaFlowly.chartMember.findMany({
@@ -528,7 +529,7 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
   if (shouldCheckEmployee) {
     const employeeId = await resolveEmployeeId(
       userId,
-      flowlyUser ? { cardNumber: flowlyUser.badgeNumber } : null
+      flowlyUser ? { cardNumber: null } : null
     );
     if (employeeId !== null) {
       isEmployeeUser = true;

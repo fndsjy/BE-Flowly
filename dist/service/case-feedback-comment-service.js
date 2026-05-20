@@ -120,18 +120,7 @@ const resolveCommenterEmployeeId = async (requesterId, access) => {
         if (employee?.UserId)
             return employee.UserId;
     }
-    const flowlyUser = await prismaFlowly.user.findUnique({
-        where: { userId: requesterId, isDeleted: false },
-        select: { badgeNumber: true },
-    });
-    const cardNumber = flowlyUser?.badgeNumber?.trim();
-    if (!cardNumber)
-        return null;
-    const employee = await prismaEmployee.em_employee.findFirst({
-        where: { CardNo: cardNumber },
-        select: { UserId: true },
-    });
-    return employee?.UserId ?? null;
+    return null;
 };
 export class CaseFeedbackCommentService {
     static async create(requesterId, reqBody) {

@@ -5,5 +5,6 @@ export declare class UserValidation {
     static readonly CHANGE_PASSWORD: ZodType;
     static readonly UPDATE_PROFILE: ZodType;
     static readonly CHANGE_ROLE: ZodType;
+    static readonly CHANGE_USER_STATUS: ZodType;
 }
 //# sourceMappingURL=user-validation.d.ts.map

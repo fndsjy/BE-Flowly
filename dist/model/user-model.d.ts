@@ -8,8 +8,7 @@ export type CreateUserRequest = {
     username: string;
     name: string;
     password: string;
-    cardNumber: string;
-    roleId?: string;
+    roleId: string;
 };
 export type LoginRequest = {
     identity?: string;
@@ -58,6 +57,10 @@ export type ChangeRoleRequest = {
     userId: string;
     newRoleId: string;
 };
+export type ChangeUserStatusRequest = {
+    userId: string;
+    isActive: boolean;
+};
 export type UserProfileResponse = {
     userId: string;
     username: string;
@@ -99,10 +102,10 @@ export type UserListResponse = {
     userId: string;
     username: string;
     name: string;
-    cardNumber: string;
     department: string | null;
     isActive: boolean;
     isDeleted: boolean;
+    roleId: string;
     roleName: string;
     createdAt: Date;
 };

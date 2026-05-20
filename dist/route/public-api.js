@@ -48,6 +48,7 @@ v1.patch("/profile", UserController.updateProfile);
 v1.get("/users", UserController.listUsers);
 v1.patch("/password", UserController.changePassword);
 v1.patch("/role", UserController.changeRole);
+v1.patch("/users/status", UserController.changeUserStatus);
 v1.get("/roles", UserController.listRoles);
 v1.post("/logout", UserController.logout);
 v1.post("/customer-sso/login", CustomerSsoController.login);
@@ -110,6 +111,7 @@ v1.get("/onboarding-material/assignments", OnboardingMaterialController.listAssi
 v1.get("/onboarding-material/source-materials", OnboardingMaterialController.listSourceMaterials);
 v1.post("/onboarding-material/assignments", OnboardingMaterialController.createAssignment);
 v1.delete("/onboarding-material/assignments", OnboardingMaterialController.deleteAssignment);
+v1.post("/onboarding-material/file-open", OnboardingMaterialController.recordMaterialOpen);
 v1.get("/onboarding-material/file/:fileName", OnboardingMaterialController.download);
 v1.get("/onboarding-stage/customer-learning", OnboardingStageController.listCustomerLearning);
 v1.get("/onboarding-stage/customer-learning/file", OnboardingMaterialController.downloadCustomerLearningFile);

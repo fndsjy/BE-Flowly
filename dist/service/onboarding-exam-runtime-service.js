@@ -25,6 +25,7 @@ const EXAM_NOTIFICATION_CONTEXT_TYPE = "ONBOARDING_EXAM_SESSION";
 const EXAM_STARTED_EVENT_KEY = "ONBOARDING_EXAM_STARTED";
 const EXAM_FINISHED_EVENT_KEY = "ONBOARDING_EXAM_FINISHED";
 const EXAM_MONITOR_RECIPIENT_ROLE = "EXAM_MONITOR";
+const CHANNEL_WHATSAPP = "WHATSAPP";
 const LOCKED_ASSIGNMENT_STATUSES = new Set([
     "TRANSFER_REVIEW",
     "FAILED",
@@ -73,6 +74,15 @@ const normalizePhone = (value) => {
     return digits.length > 0 ? digits : null;
 };
 const normalizeUpper = (value) => value?.trim().toUpperCase() ?? "";
+const normalizePortalKey = (value) => normalizeUpper(value) || "EMPLOYEE";
+const renderNotificationTemplate = (template, context) => template.replace(/\{badgeNumber\}/g, String(context.cardNumber ?? "")).replace(/\{(\w+)\}/g, (_, key) => {
+    const value = context[key];
+    if (value === undefined || value === null) {
+        return "";
+    }
+    return String(value);
+});
+const trimNotificationMessage = (value) => value.trim().slice(0, 1000);
 const parseFocusWarningCount = (note) => {
     const match = note?.match(/Exam focus warnings:\s*(\d+)/i);
     const count = Number(match?.[1] ?? 0);
@@ -92,18 +102,67 @@ const formatDateTimeForNotification = (value) => value.toLocaleString("id-ID", {
     hour: "2-digit",
     minute: "2-digit",
 });
-const buildExamMonitorMessage = (params) => {
-    const actionText = params.event === "STARTED"
-        ? "sedang mengikuti ujian onboarding"
-        : "sudah selesai mengerjakan ujian onboarding";
-    return [
-        `Notifikasi Ujian Onboarding`,
-        `${params.employeeName} (${params.badgeNumber}) ${actionText}.`,
-        `Portal: ${params.portalName}`,
-        `Tahap: ${params.stageName}`,
-        `Sesi: ${params.examsId}`,
-        `Waktu: ${formatDateTimeForNotification(params.occurredAt)}`,
-    ].join("\n");
+const getExamMonitorActionText = (event) => event === "STARTED"
+    ? "sedang mengikuti ujian onboarding"
+    : "sudah selesai mengerjakan ujian onboarding";
+const resolveRuntimeWhatsappNotificationTemplates = async (params) => {
+    const portalKey = normalizePortalKey(params.portalKey);
+    const eventKey = normalizeUpper(params.eventKey);
+    const recipientRole = normalizeUpper(params.recipientRole);
+    const items = await prismaFlowly.notificationTemplate.findMany({
+        where: {
+            isDeleted: false,
+            isActive: true,
+            channel: CHANNEL_WHATSAPP,
+            eventKey,
+            recipientRole,
+            OR: [
+                {
+                    portalMappings: {
+                        some: {
+                            portalKey,
+                            isDeleted: false,
+                            isActive: true,
+                        },
+                    },
+                },
+                {
+                    portalMappings: {
+                        none: {
+                            isDeleted: false,
+                        },
+                    },
+                },
+            ],
+        },
+        include: {
+            portalMappings: {
+                where: {
+                    isDeleted: false,
+                    isActive: true,
+                },
+                select: {
+                    portalKey: true,
+                },
+            },
+        },
+        orderBy: {
+            updatedAt: "desc",
+        },
+    });
+    let selectedTemplate = null;
+    let selectedIsPortalSpecific = false;
+    for (const item of items) {
+        const isPortalSpecific = item.portalMappings.some((mapping) => normalizeUpper(mapping.portalKey) === portalKey);
+        if (!selectedTemplate || (isPortalSpecific && !selectedIsPortalSpecific)) {
+            selectedTemplate = {
+                notificationTemplateId: item.notificationTemplateId,
+                messageTemplate: item.messageTemplate,
+            };
+            selectedIsPortalSpecific = isPortalSpecific;
+        }
+    }
+    return selectedTemplate ? [selectedTemplate] : [];
 };
 const parseSelectedFileIds = (note) => {
     const normalizedNote = normalizeOptionalText(note);
@@ -697,6 +756,7 @@ const enqueueExamMonitorNotification = async (params) => {
             },
             select: {
                 UserId: true,
+                Name: true,
                 Phone: true,
             },
         });
@@ -737,54 +797,82 @@ const enqueueExamMonitorNotification = async (params) => {
             params.employee.CardNo?.trim() ||
             String(params.employee.UserId);
         const employeeName = params.employee.Name?.trim() || `Employee ${params.employee.UserId}`;
-        const message = buildExamMonitorMessage({
-            event: params.event,
+        const stageName = normalizeOptionalText(params.stageProgress.stageTemplate.stageName) ??
+            normalizeOptionalText(params.stageProgress.stageName) ??
+            `Tahap ${params.stageProgress.stageOrder}`;
+        const context = {
             employeeName,
+            participantName: employeeName,
+            cardNumber: badgeNumber,
             badgeNumber,
-            stageName: params.stageProgress.stageName,
             portalName,
+            portalKey: params.stageProgress.assignment.portalKey,
+            stageName,
             examsId: params.examsId,
-            occurredAt: params.occurredAt,
+            occurredAt: formatDateTimeForNotification(params.occurredAt),
+            eventLabel: params.event === "STARTED" ? "Ujian onboarding dimulai" : "Ujian onboarding selesai",
+            examAction: getExamMonitorActionText(params.event),
+        };
+        const runtimeTemplates = await resolveRuntimeWhatsappNotificationTemplates({
+            portalKey: params.stageProgress.assignment.portalKey,
+            eventKey,
+            recipientRole: EXAM_MONITOR_RECIPIENT_ROLE,
         });
-        await prismaFlowly.notificationOutbox.createMany({
-            data: notifiableRecipients.map((recipient) => ({
-                notificationOutboxId: createNotificationOutboxId(),
-                notificationTemplateId: null,
-                portalKey: params.stageProgress.assignment.portalKey,
+        const notificationTemplates = runtimeTemplates;
+        if (notificationTemplates.length === 0) {
+            logger.warn("No onboarding exam monitor notification template available", {
                 eventKey,
-                recipientRole: EXAM_MONITOR_RECIPIENT_ROLE,
-                recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
-                recipientReferenceId: String(recipient.UserId),
-                contextReferenceType: EXAM_NOTIFICATION_CONTEXT_TYPE,
-                contextReferenceId: params.examsId,
-                phoneNumber: recipient.phoneNumber ?? "",
-                message,
-                status: "PENDING",
-                attempts: 0,
-                lastError: null,
-                provider: null,
-                sentAt: null,
-                meta: JSON.stringify({
-                    channel: "WHATSAPP",
-                    event: params.event,
-                    examsId: params.examsId,
-                    participantUserId: params.employee.UserId,
-                    participantName: employeeName,
-                    participantBadge: badgeNumber,
-                    stageProgressId: params.stageProgress.onboardingStageProgressId,
-                    stageName: params.stageProgress.stageName,
+                examsId: params.examsId,
+                portalKey: params.stageProgress.assignment.portalKey,
+            });
+            return;
+        }
+        await prismaFlowly.notificationOutbox.createMany({
+            data: notifiableRecipients.flatMap((recipient) => {
+                const recipientName = normalizeOptionalText(recipient.Name) ?? `Monitor ${recipient.UserId}`;
+                const templateContext = {
+                    ...context,
+                    recipientName,
+                };
+                return notificationTemplates.map((template) => ({
+                    notificationOutboxId: createNotificationOutboxId(),
+                    notificationTemplateId: template.notificationTemplateId,
                     portalKey: params.stageProgress.assignment.portalKey,
-                    portalName,
-                }),
-                isActive: true,
-                isDeleted: false,
-                createdAt: params.occurredAt,
-                createdBy: "SYSTEM",
-                updatedAt: params.occurredAt,
-                updatedBy: "SYSTEM",
-                deletedAt: null,
-                deletedBy: null,
-            })),
+                    eventKey,
+                    recipientRole: EXAM_MONITOR_RECIPIENT_ROLE,
+                    recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+                    recipientReferenceId: String(recipient.UserId),
+                    contextReferenceType: EXAM_NOTIFICATION_CONTEXT_TYPE,
+                    contextReferenceId: params.examsId,
+                    phoneNumber: recipient.phoneNumber ?? "",
+                    message: trimNotificationMessage(renderNotificationTemplate(template.messageTemplate, templateContext)),
+                    status: "PENDING",
+                    attempts: 0,
+                    lastError: null,
+                    provider: null,
+                    sentAt: null,
+                    meta: JSON.stringify({
+                        channel: CHANNEL_WHATSAPP,
+                        event: params.event,
+                        examsId: params.examsId,
+                        participantUserId: params.employee.UserId,
+                        participantName: employeeName,
+                        participantBadge: badgeNumber,
+                        stageProgressId: params.stageProgress.onboardingStageProgressId,
+                        stageName,
+                        portalKey: params.stageProgress.assignment.portalKey,
+                        portalName,
+                    }),
+                    isActive: true,
+                    isDeleted: false,
+                    createdAt: params.occurredAt,
+                    createdBy: "SYSTEM",
+                    updatedAt: params.occurredAt,
+                    updatedBy: "SYSTEM",
+                    deletedAt: null,
+                    deletedBy: null,
+                }));
+            }),
         });
     }
     catch (error) {

@@ -486,6 +486,29 @@ export class OnboardingMaterialController {
     }
   }
 
+  static async recordMaterialOpen(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) {
+        throw new ResponseError(401, "Unauthorized");
+      }
+
+      const payload = verifyToken(token);
+      const response = await OnboardingService.startMaterialRead(
+        payload.userId,
+        req.body
+      );
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async downloadCustomerLearningFile(
     req: Request,
     res: Response,

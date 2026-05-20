@@ -9,6 +9,7 @@ const SKIPPED_PATHS = [
     /^\/logout$/i,
     /^\/customer-sso\//i,
     /^\/onboarding\/exam\/(start|answer|warning|submit)$/i,
+    /^\/onboarding-material\/file-open$/i,
     /^\/onboarding-stage\/customer-learning\/file-open$/i,
 ];
 const REDACTED_KEYS = new Set([

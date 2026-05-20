@@ -573,10 +573,10 @@ export class AccessRoleService {
     }
 
     if (!isAdmin && !isEmployeeUser) {
-      const employeeId = await resolveEmployeeIdForFocus(
-        requesterId,
-        requester ? { cardNumber: requester.badgeNumber } : null
-      );
+        const employeeId = await resolveEmployeeIdForFocus(
+          requesterId,
+          requester ? { cardNumber: null } : null
+        );
       if (employeeId) {
         isEmployeeUser = true;
       }
@@ -619,17 +619,17 @@ export class AccessRoleService {
           sbuSubRead: Array.from(accessContext.sbuSub.read),
           sbuSubCrud: Array.from(accessContext.sbuSub.crud)
         };
-    const focusPilarIds = await resolveFocusPilarIds(
-      requesterId,
-      requester ? { cardNumber: requester.badgeNumber } : null
-    );
-    const hasOnboardingPicDecisionAccess =
-      !isAdmin && isEmployeeUser
-        ? await hasActiveOnboardingDecisionPicAssignment(
-            requesterId,
-            requester ? { cardNumber: requester.badgeNumber } : null
-          )
-        : false;
+      const focusPilarIds = await resolveFocusPilarIds(
+        requesterId,
+        requester ? { cardNumber: null } : null
+      );
+      const hasOnboardingPicDecisionAccess =
+        !isAdmin && isEmployeeUser
+          ? await hasActiveOnboardingDecisionPicAssignment(
+              requesterId,
+              requester ? { cardNumber: null } : null
+            )
+          : false;
 
     if (!isAdmin && isEmployeeUser) {
       const menuAccess: AccessRoleSummaryResponse["menuAccess"] = [];

@@ -12,7 +12,7 @@ export interface EmployeeOnboardingStartItem {
     portalKey: string;
     status: string;
     startedAt: Date;
-    dueAt: Date;
+    dueAt: Date | null;
     currentStageOrder: number | null;
 }
 export interface EmployeeOnboardingSkipItem {
@@ -53,6 +53,7 @@ export interface EmployeeOnboardingSummaryResponse {
     onboardingPlacementSources: string[];
     onboardingPlacementDetails: EmployeeOnboardingPlacementDetailResponse[];
     onboardingBlockReason: string | null;
+    transferReviewStillInSourceSbuSub: boolean | null;
 }
 export interface ListEmployeeOnboardingSummaryRequest {
     portalKey?: string;
@@ -63,12 +64,13 @@ export interface DecideOnboardingRequest {
     decisionType: OnboardingDecisionType;
     nextDurationDay?: number | null;
     note?: string | null;
+    confirmCurrentPlacement?: boolean | null;
 }
 export interface DecideOnboardingResponse {
     onboardingAssignmentId: string;
     decisionType: OnboardingDecisionType;
     status: string;
-    dueAt: Date;
+    dueAt: Date | null;
     currentStageOrder: number | null;
     note: string | null;
 }
@@ -157,8 +159,8 @@ export interface OnboardingWorkspacePortalResponse {
     portalName: string;
     status: string;
     startedAt: Date;
-    durationDay: number;
-    dueAt: Date;
+    durationDay: number | null;
+    dueAt: Date | null;
     currentStageOrder: number | null;
     note: string | null;
     stages: OnboardingWorkspaceStageResponse[];
@@ -236,7 +238,7 @@ export interface AdminOnboardingMonitoringParticipantResponse {
     email: string | null;
     status: string;
     startedAt: Date;
-    dueAt: Date;
+    dueAt: Date | null;
     currentStageOrder: number | null;
     currentStageName: string | null;
     totalMaterialCount: number;

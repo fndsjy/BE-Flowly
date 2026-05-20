@@ -6342,7 +6342,6 @@ export namespace Prisma {
     username: string | null
     password: string | null
     name: string | null
-    badgeNumber: string | null
     department: string | null
     isActive: boolean | null
     lastLogin: Date | null
@@ -6362,7 +6361,6 @@ export namespace Prisma {
     username: string | null
     password: string | null
     name: string | null
-    badgeNumber: string | null
     department: string | null
     isActive: boolean | null
     lastLogin: Date | null
@@ -6382,7 +6380,6 @@ export namespace Prisma {
     username: number
     password: number
     name: number
-    badgeNumber: number
     department: number
     isActive: number
     lastLogin: number
@@ -6404,7 +6401,6 @@ export namespace Prisma {
     username?: true
     password?: true
     name?: true
-    badgeNumber?: true
     department?: true
     isActive?: true
     lastLogin?: true
@@ -6424,7 +6420,6 @@ export namespace Prisma {
     username?: true
     password?: true
     name?: true
-    badgeNumber?: true
     department?: true
     isActive?: true
     lastLogin?: true
@@ -6444,7 +6439,6 @@ export namespace Prisma {
     username?: true
     password?: true
     name?: true
-    badgeNumber?: true
     department?: true
     isActive?: true
     lastLogin?: true
@@ -6537,7 +6531,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department: string | null
     isActive: boolean
     lastLogin: Date | null
@@ -6574,7 +6567,6 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     name?: boolean
-    badgeNumber?: boolean
     department?: boolean
     isActive?: boolean
     lastLogin?: boolean
@@ -6607,7 +6599,6 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     name?: boolean
-    badgeNumber?: boolean
     department?: boolean
     isActive?: boolean
     lastLogin?: boolean
@@ -6622,7 +6613,7 @@ export namespace Prisma {
     token?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "username" | "password" | "name" | "badgeNumber" | "department" | "isActive" | "lastLogin" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "roleId" | "token", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "username" | "password" | "name" | "department" | "isActive" | "lastLogin" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "isDeleted" | "deletedAt" | "deletedBy" | "roleId" | "token", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdRoles?: boolean | User$createdRolesArgs<ExtArgs>
     deletedRoles?: boolean | User$deletedRolesArgs<ExtArgs>
@@ -6662,7 +6653,6 @@ export namespace Prisma {
        */
       password: string
       name: string
-      badgeNumber: string
       department: string | null
       isActive: boolean
       lastLogin: Date | null
@@ -7073,7 +7063,6 @@ export namespace Prisma {
     readonly username: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
-    readonly badgeNumber: FieldRef<"User", 'String'>
     readonly department: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly lastLogin: FieldRef<"User", 'DateTime'>
@@ -40527,7 +40516,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay: number
+    defaultDurationDay: number | null
     isActive: boolean
     isDeleted: boolean
     createdAt: Date
@@ -40612,7 +40601,7 @@ export namespace Prisma {
       onboardingPortalTemplateId: string
       portalKey: string
       portalName: string
-      defaultDurationDay: number
+      defaultDurationDay: number | null
       isActive: boolean
       isDeleted: boolean
       createdAt: Date
@@ -45082,8 +45071,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date
-    durationDay: number
-    dueAt: Date
+    durationDay: number | null
+    dueAt: Date | null
     status: string
     currentStageOrder: number | null
     assignedAt: Date
@@ -45227,8 +45216,8 @@ export namespace Prisma {
       participantReferenceType: string
       participantReferenceId: string
       startedAt: Date
-      durationDay: number
-      dueAt: Date
+      durationDay: number | null
+      dueAt: Date | null
       status: string
       currentStageOrder: number | null
       assignedAt: Date
@@ -51823,7 +51812,6 @@ export namespace Prisma {
     username: 'username',
     password: 'password',
     name: 'name',
-    badgeNumber: 'badgeNumber',
     department: 'department',
     isActive: 'isActive',
     lastLogin: 'lastLogin',
@@ -52876,7 +52864,6 @@ export namespace Prisma {
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
-    badgeNumber?: StringFilter<"User"> | string
     department?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -52906,7 +52893,6 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     name?: SortOrder
-    badgeNumber?: SortOrder
     department?: SortOrderInput | SortOrder
     isActive?: SortOrder
     lastLogin?: SortOrderInput | SortOrder
@@ -52939,7 +52925,6 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
-    badgeNumber?: StringFilter<"User"> | string
     department?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -52969,7 +52954,6 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     name?: SortOrder
-    badgeNumber?: SortOrder
     department?: SortOrderInput | SortOrder
     isActive?: SortOrder
     lastLogin?: SortOrderInput | SortOrder
@@ -52995,7 +52979,6 @@ export namespace Prisma {
     username?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
-    badgeNumber?: StringWithAggregatesFilter<"User"> | string
     department?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     lastLogin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -56304,7 +56287,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFilter<"OnboardingPortalTemplate"> | string
     portalKey?: StringFilter<"OnboardingPortalTemplate"> | string
     portalName?: StringFilter<"OnboardingPortalTemplate"> | string
-    defaultDurationDay?: IntFilter<"OnboardingPortalTemplate"> | number
+    defaultDurationDay?: IntNullableFilter<"OnboardingPortalTemplate"> | number | null
     isActive?: BoolFilter<"OnboardingPortalTemplate"> | boolean
     isDeleted?: BoolFilter<"OnboardingPortalTemplate"> | boolean
     createdAt?: DateTimeFilter<"OnboardingPortalTemplate"> | Date | string
@@ -56321,7 +56304,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
     portalName?: SortOrder
-    defaultDurationDay?: SortOrder
+    defaultDurationDay?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -56341,7 +56324,7 @@ export namespace Prisma {
     OR?: OnboardingPortalTemplateWhereInput[]
     NOT?: OnboardingPortalTemplateWhereInput | OnboardingPortalTemplateWhereInput[]
     portalName?: StringFilter<"OnboardingPortalTemplate"> | string
-    defaultDurationDay?: IntFilter<"OnboardingPortalTemplate"> | number
+    defaultDurationDay?: IntNullableFilter<"OnboardingPortalTemplate"> | number | null
     isActive?: BoolFilter<"OnboardingPortalTemplate"> | boolean
     isDeleted?: BoolFilter<"OnboardingPortalTemplate"> | boolean
     createdAt?: DateTimeFilter<"OnboardingPortalTemplate"> | Date | string
@@ -56358,7 +56341,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: SortOrder
     portalKey?: SortOrder
     portalName?: SortOrder
-    defaultDurationDay?: SortOrder
+    defaultDurationDay?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -56381,7 +56364,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringWithAggregatesFilter<"OnboardingPortalTemplate"> | string
     portalKey?: StringWithAggregatesFilter<"OnboardingPortalTemplate"> | string
     portalName?: StringWithAggregatesFilter<"OnboardingPortalTemplate"> | string
-    defaultDurationDay?: IntWithAggregatesFilter<"OnboardingPortalTemplate"> | number
+    defaultDurationDay?: IntNullableWithAggregatesFilter<"OnboardingPortalTemplate"> | number | null
     isActive?: BoolWithAggregatesFilter<"OnboardingPortalTemplate"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"OnboardingPortalTemplate"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"OnboardingPortalTemplate"> | Date | string
@@ -56733,8 +56716,8 @@ export namespace Prisma {
     participantReferenceType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
-    durationDay?: IntFilter<"OnboardingAssignment"> | number
-    dueAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
+    durationDay?: IntNullableFilter<"OnboardingAssignment"> | number | null
+    dueAt?: DateTimeNullableFilter<"OnboardingAssignment"> | Date | string | null
     status?: StringFilter<"OnboardingAssignment"> | string
     currentStageOrder?: IntNullableFilter<"OnboardingAssignment"> | number | null
     assignedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
@@ -56770,8 +56753,8 @@ export namespace Prisma {
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
-    durationDay?: SortOrder
-    dueAt?: SortOrder
+    durationDay?: SortOrderInput | SortOrder
+    dueAt?: SortOrderInput | SortOrder
     status?: SortOrder
     currentStageOrder?: SortOrderInput | SortOrder
     assignedAt?: SortOrder
@@ -56810,8 +56793,8 @@ export namespace Prisma {
     participantReferenceType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
-    durationDay?: IntFilter<"OnboardingAssignment"> | number
-    dueAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
+    durationDay?: IntNullableFilter<"OnboardingAssignment"> | number | null
+    dueAt?: DateTimeNullableFilter<"OnboardingAssignment"> | Date | string | null
     status?: StringFilter<"OnboardingAssignment"> | string
     currentStageOrder?: IntNullableFilter<"OnboardingAssignment"> | number | null
     assignedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
@@ -56847,8 +56830,8 @@ export namespace Prisma {
     participantReferenceType?: SortOrder
     participantReferenceId?: SortOrder
     startedAt?: SortOrder
-    durationDay?: SortOrder
-    dueAt?: SortOrder
+    durationDay?: SortOrderInput | SortOrder
+    dueAt?: SortOrderInput | SortOrder
     status?: SortOrder
     currentStageOrder?: SortOrderInput | SortOrder
     assignedAt?: SortOrder
@@ -56885,8 +56868,8 @@ export namespace Prisma {
     participantReferenceType?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeWithAggregatesFilter<"OnboardingAssignment"> | Date | string
-    durationDay?: IntWithAggregatesFilter<"OnboardingAssignment"> | number
-    dueAt?: DateTimeWithAggregatesFilter<"OnboardingAssignment"> | Date | string
+    durationDay?: IntNullableWithAggregatesFilter<"OnboardingAssignment"> | number | null
+    dueAt?: DateTimeNullableWithAggregatesFilter<"OnboardingAssignment"> | Date | string | null
     status?: StringWithAggregatesFilter<"OnboardingAssignment"> | string
     currentStageOrder?: IntNullableWithAggregatesFilter<"OnboardingAssignment"> | number | null
     assignedAt?: DateTimeWithAggregatesFilter<"OnboardingAssignment"> | Date | string
@@ -57664,7 +57647,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -57690,7 +57672,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -57716,7 +57697,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -57742,7 +57722,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -57768,7 +57747,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -57788,7 +57766,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -57804,7 +57781,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -61701,7 +61677,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -61718,7 +61694,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -61735,7 +61711,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61752,7 +61728,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61769,7 +61745,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -61784,7 +61760,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61799,7 +61775,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62198,8 +62174,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -62234,8 +62210,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -62268,8 +62244,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62304,8 +62280,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62339,8 +62315,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -62368,8 +62344,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62397,8 +62373,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63415,7 +63391,6 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     name?: SortOrder
-    badgeNumber?: SortOrder
     department?: SortOrder
     isActive?: SortOrder
     lastLogin?: SortOrder
@@ -63435,7 +63410,6 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     name?: SortOrder
-    badgeNumber?: SortOrder
     department?: SortOrder
     isActive?: SortOrder
     lastLogin?: SortOrder
@@ -63455,7 +63429,6 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     name?: SortOrder
-    badgeNumber?: SortOrder
     department?: SortOrder
     isActive?: SortOrder
     lastLogin?: SortOrder
@@ -69591,7 +69564,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69616,7 +69588,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69646,7 +69617,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69671,7 +69641,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69701,7 +69670,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69726,7 +69694,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69756,7 +69723,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69781,7 +69747,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -69826,7 +69791,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69851,7 +69815,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69887,7 +69850,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69912,7 +69874,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69948,7 +69909,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69973,7 +69933,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70017,7 +69976,6 @@ export namespace Prisma {
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
-    badgeNumber?: StringFilter<"User"> | string
     department?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -70154,7 +70112,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70179,7 +70136,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70209,7 +70165,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70234,7 +70189,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70268,7 +70222,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70293,7 +70246,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70323,7 +70275,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70348,7 +70299,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70417,7 +70367,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70442,7 +70391,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70472,7 +70420,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70497,7 +70444,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -70608,7 +70554,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70633,7 +70578,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70685,7 +70629,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70710,7 +70653,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70803,7 +70745,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70828,7 +70769,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -75970,8 +75910,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -76004,8 +75944,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -76104,8 +76044,8 @@ export namespace Prisma {
     participantReferenceType?: StringFilter<"OnboardingAssignment"> | string
     participantReferenceId?: StringFilter<"OnboardingAssignment"> | string
     startedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
-    durationDay?: IntFilter<"OnboardingAssignment"> | number
-    dueAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
+    durationDay?: IntNullableFilter<"OnboardingAssignment"> | number | null
+    dueAt?: DateTimeNullableFilter<"OnboardingAssignment"> | Date | string | null
     status?: StringFilter<"OnboardingAssignment"> | string
     currentStageOrder?: IntNullableFilter<"OnboardingAssignment"> | number | null
     assignedAt?: DateTimeFilter<"OnboardingAssignment"> | Date | string
@@ -76130,7 +76070,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76146,7 +76086,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76323,7 +76263,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76339,7 +76279,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76870,7 +76810,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76886,7 +76826,7 @@ export namespace Prisma {
     onboardingPortalTemplateId: string
     portalKey: string
     portalName: string
-    defaultDurationDay?: number
+    defaultDurationDay?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76910,8 +76850,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -76945,8 +76885,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -76983,8 +76923,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -77018,8 +76958,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -77288,7 +77228,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77304,7 +77244,7 @@ export namespace Prisma {
     onboardingPortalTemplateId?: StringFieldUpdateOperationsInput | string
     portalKey?: StringFieldUpdateOperationsInput | string
     portalName?: StringFieldUpdateOperationsInput | string
-    defaultDurationDay?: IntFieldUpdateOperationsInput | number
+    defaultDurationDay?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77334,8 +77274,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77369,8 +77309,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77503,8 +77443,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -77538,8 +77478,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -77750,8 +77690,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77785,8 +77725,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77901,8 +77841,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -77936,8 +77876,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -78079,8 +78019,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78114,8 +78054,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78253,8 +78193,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -78288,8 +78228,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -78431,8 +78371,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78466,8 +78406,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78605,8 +78545,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -78640,8 +78580,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -78689,8 +78629,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78724,8 +78664,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78755,7 +78695,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -78774,7 +78713,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78799,7 +78737,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78824,7 +78761,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78885,7 +78821,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -78904,7 +78839,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -78923,7 +78857,6 @@ export namespace Prisma {
     username: string
     password: string
     name: string
-    badgeNumber: string
     department?: string | null
     isActive?: boolean
     lastLogin?: Date | string | null
@@ -79074,7 +79007,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79099,7 +79031,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79124,7 +79055,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79143,7 +79073,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79168,7 +79097,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79193,7 +79121,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79212,7 +79139,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79237,7 +79163,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79262,7 +79187,6 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    badgeNumber?: StringFieldUpdateOperationsInput | string
     department?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -81162,8 +81086,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -81248,8 +81172,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81282,8 +81206,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81316,8 +81240,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81774,8 +81698,8 @@ export namespace Prisma {
     participantReferenceType: string
     participantReferenceId: string
     startedAt: Date | string
-    durationDay?: number
-    dueAt: Date | string
+    durationDay?: number | null
+    dueAt?: Date | string | null
     status: string
     currentStageOrder?: number | null
     assignedAt?: Date | string
@@ -81892,8 +81816,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81927,8 +81851,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81961,8 +81885,8 @@ export namespace Prisma {
     participantReferenceType?: StringFieldUpdateOperationsInput | string
     participantReferenceId?: StringFieldUpdateOperationsInput | string
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationDay?: IntFieldUpdateOperationsInput | number
-    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationDay?: NullableIntFieldUpdateOperationsInput | number | null
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     currentStageOrder?: NullableIntFieldUpdateOperationsInput | number | null
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
