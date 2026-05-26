@@ -7,7 +7,7 @@ async function main() {
   const result = await seedNotificationTemplates(prismaFlowly);
 
   console.log(
-    `Notification template seed completed: ${result.createdTemplates} templates created, ${result.createdPortalMappings} portal mappings created, ${result.existingTemplates} existing templates left untouched.`
+    `Notification template seed completed: ${result.createdTemplates} templates created, ${result.createdPortalMappings} portal mappings created, ${result.existingTemplates} existing templates found, ${result.updatedTemplates} legacy seed templates updated.`
   );
 }
 

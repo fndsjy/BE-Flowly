@@ -721,6 +721,7 @@ exports.Prisma.OnboardingStageTemplateScalarFieldEnum = {
   stageCode: 'stageCode',
   stageName: 'stageName',
   stageDescription: 'stageDescription',
+  scheduleId: 'scheduleId',
   isActive: 'isActive',
   isDeleted: 'isDeleted',
   createdAt: 'createdAt',

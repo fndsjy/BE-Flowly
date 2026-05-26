@@ -3,6 +3,7 @@ import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateNotificationOutboxId, generateOnboardingExamAttemptId, } from "../utils/id-generator.js";
+import { ensureEmployeeAdminAccess } from "../utils/admin-access.js";
 import { OnboardingEmployeeScheduleSyncService } from "./onboarding-employee-schedule-sync-service.js";
 import { OnboardingService } from "./onboarding-service.js";
 import { OnboardingMaterialService } from "./onboarding-material-service.js";
@@ -10,6 +11,8 @@ const EMPLOYEE_PARTICIPANT_REFERENCE_TYPE = "EMPLOYEE";
 const STARTABLE_STAGE_STATUSES = new Set(["WAITING_EXAM", "REMEDIAL"]);
 const FINISHED_FLAG = "Y";
 const DEFAULT_EXAM_DURATION_SECONDS = 30 * 60;
+const DEFAULT_TEST_AUTOFILL_SCORE = 95;
+const TEST_AUTOFILL_EMPLOYEE_IDS_ENV = "ONBOARDING_EXAM_TEST_AUTOFILL_EMPLOYEE_IDS";
 const parseExamMonitorEmployeeIds = () => {
     const configuredIds = process.env.ONBOARDING_EXAM_MONITOR_USER_IDS ??
         process.env.ONBOARDING_EXAM_MONITOR_USER_ID ??
@@ -21,6 +24,27 @@ const parseExamMonitorEmployeeIds = () => {
     return Array.from(new Set(ids));
 };
 const EXAM_MONITOR_EMPLOYEE_IDS = parseExamMonitorEmployeeIds();
+const parseTestAutofillEmployeeIds = () => {
+    const configuredIds = process.env[TEST_AUTOFILL_EMPLOYEE_IDS_ENV] ?? "";
+    const ids = configuredIds
+        .split(",")
+        .map((value) => Number(value.trim()))
+        .filter((value) => Number.isInteger(value) && value > 0);
+    return new Set(ids);
+};
+const normalizeTestAutofillScore = (value) => {
+    if (value == null || value === "") {
+        return DEFAULT_TEST_AUTOFILL_SCORE;
+    }
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) {
+        throw new ResponseError(400, "Nilai dummy harus berupa angka");
+    }
+    if (parsed < 0 || parsed > 100) {
+        throw new ResponseError(400, "Nilai dummy harus berada di antara 0 sampai 100");
+    }
+    return parsed;
+};
 const EXAM_NOTIFICATION_CONTEXT_TYPE = "ONBOARDING_EXAM_SESSION";
 const EXAM_STARTED_EVENT_KEY = "ONBOARDING_EXAM_STARTED";
 const EXAM_FINISHED_EVENT_KEY = "ONBOARDING_EXAM_FINISHED";
@@ -84,14 +108,17 @@ const renderNotificationTemplate = (template, context) => template.replace(/\{ba
 });
 const trimNotificationMessage = (value) => value.trim().slice(0, 1000);
 const parseFocusWarningCount = (note) => {
-    const match = note?.match(/Exam focus warnings:\s*(\d+)/i);
-    const count = Number(match?.[1] ?? 0);
+    const matches = Array.from(note?.matchAll(/Exam focus warnings:\s*(\d+)/gi) ?? []);
+    const latestMatch = matches.at(-1);
+    const count = Number(latestMatch?.[1] ?? 0);
     return Number.isInteger(count) && count > 0 ? count : 0;
 };
 const buildFocusWarningNote = (params) => {
     const baseNote = params.existingNote
-        ?.replace(/\s*\|\s*Exam focus warnings:.*$/i, "")
-        .trim() ?? "";
+        ?.split("|")
+        .map((part) => part.trim())
+        .filter((part) => part && !/^Exam focus warnings:/i.test(part))
+        .join(" | ") ?? "";
     const warningNote = `Exam focus warnings: ${params.count}; lastAt: ${params.occurredAt.toISOString()}; reason: ${params.reason}`;
     return (baseNote ? `${baseNote} | ${warningNote}` : warningNote).slice(0, 1000);
 };
@@ -510,6 +537,7 @@ const buildStartResponse = async (params) => {
         })),
     };
 };
+const activeRuntimeExamStarts = new Map();
 const createExamsId = async (timestamp, badgeNumber) => {
     let candidateTimestamp = timestamp;
     for (let attempt = 0; attempt < 30; attempt += 1) {
@@ -567,11 +595,17 @@ const createOrUpdateAttempt = async (params) => {
         },
     });
     if (existing) {
-        return existing.onboardingExamAttemptId;
+        return {
+            onboardingExamAttemptId: existing.onboardingExamAttemptId,
+            created: false,
+        };
     }
     const primaryStageExam = params.stageProgress.stageTemplate.stageExams[0];
     if (!primaryStageExam) {
-        return null;
+        return {
+            onboardingExamAttemptId: null,
+            created: false,
+        };
     }
     for (let retry = 0; retry < 3; retry += 1) {
         const makeAttemptId = await generateOnboardingExamAttemptId();
@@ -600,7 +634,10 @@ const createOrUpdateAttempt = async (params) => {
                     onboardingExamAttemptId: true,
                 },
             });
-            return created.onboardingExamAttemptId;
+            return {
+                onboardingExamAttemptId: created.onboardingExamAttemptId,
+                created: true,
+            };
         }
         catch (error) {
             if (!isUniqueConstraintError(error)) {
@@ -616,7 +653,10 @@ const createOrUpdateAttempt = async (params) => {
                 },
             });
             if (concurrent) {
-                return concurrent.onboardingExamAttemptId;
+                return {
+                    onboardingExamAttemptId: concurrent.onboardingExamAttemptId,
+                    created: false,
+                };
             }
         }
     }
@@ -959,6 +999,192 @@ const buildObjectiveScore = (params) => {
     const isCorrect = answerCandidates.some((candidate) => correctCandidates.includes(candidate));
     return isCorrect ? Number(params.question.score ?? 0) : 0;
 };
+const getAdminStageProgressForTestAutofill = async (onboardingStageProgressId) => {
+    const stageProgress = await prismaFlowly.onboardingStageProgress.findFirst({
+        where: {
+            onboardingStageProgressId,
+            isActive: true,
+            isDeleted: false,
+            assignment: {
+                isActive: true,
+                isDeleted: false,
+            },
+        },
+        include: {
+            assignment: {
+                select: {
+                    onboardingAssignmentId: true,
+                    participantReferenceType: true,
+                    participantReferenceId: true,
+                    portalKey: true,
+                    status: true,
+                },
+            },
+            stageTemplate: {
+                include: {
+                    stageExams: {
+                        where: {
+                            isActive: true,
+                            isDeleted: false,
+                        },
+                        orderBy: [{ orderIndex: "asc" }, { createdAt: "asc" }],
+                        select: {
+                            onboardingStageExamId: true,
+                            examId: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+    if (!stageProgress) {
+        throw new ResponseError(404, "Tahap onboarding tidak ditemukan");
+    }
+    return stageProgress;
+};
+const getLatestTestAutofillSession = async (onboardingStageProgressId, employeeId) => {
+    const attempt = await prismaFlowly.onboardingExamAttempt.findFirst({
+        where: {
+            onboardingStageProgressId,
+            employeeExamSessionId: {
+                not: null,
+            },
+            isActive: true,
+            isDeleted: false,
+        },
+        orderBy: [{ attemptNo: "desc" }, { createdAt: "desc" }],
+        select: {
+            onboardingExamAttemptId: true,
+            onboardingAssignmentId: true,
+            onboardingStageProgressId: true,
+            employeeExamSessionId: true,
+        },
+    });
+    const examsId = normalizeOptionalText(attempt?.employeeExamSessionId);
+    if (!attempt || !examsId) {
+        return null;
+    }
+    const session = await prismaEmployee.em_session_exams.findFirst({
+        where: {
+            exams_id: examsId,
+            empl_id: employeeId,
+        },
+    });
+    if (!session || session.is_correct === 1) {
+        return null;
+    }
+    return {
+        attempt,
+        session,
+    };
+};
+const buildTestAutofillAnswer = (params) => {
+    if (params.item.tipe === "es") {
+        return "testing";
+    }
+    const question = params.question;
+    if (!question) {
+        return null;
+    }
+    if (params.item.tipe === "tf") {
+        const correctCandidates = [
+            question.correct_answer2,
+            question.correct_answer,
+        ].flatMap(expandBooleanAnswerCandidates);
+        if (correctCandidates.some((candidate) => ["true", "benar", "yes", "ya", "1"].includes(candidate))) {
+            return "True";
+        }
+        if (correctCandidates.some((candidate) => ["false", "salah", "no", "tidak", "0"].includes(candidate))) {
+            return "False";
+        }
+        return "True";
+    }
+    const correctCandidates = [
+        question.correct_answer2,
+        question.correct_answer,
+    ]
+        .map(normalizeAnswerValue)
+        .filter((value) => Boolean(value));
+    const correctCandidateSet = new Set(correctCandidates);
+    const matchedOption = question.em_questions2.find((option) => {
+        const choice = normalizeAnswerValue(option.option_choices);
+        const text = normalizeAnswerValue(option.option_text);
+        return ((choice ? correctCandidateSet.has(choice) : false) ||
+            (text ? correctCandidateSet.has(text) : false));
+    });
+    return (matchedOption?.option_choices ??
+        normalizeOptionalText(question.correct_answer2) ??
+        normalizeOptionalText(question.correct_answer) ??
+        question.em_questions2[0]?.option_choices ??
+        null);
+};
+const buildTestAutofillRows = async (params) => {
+    const soalUrut = parseSoalUrut(params.session.soal_urut);
+    if (soalUrut.length === 0) {
+        throw new ResponseError(400, "Sesi ujian tidak memiliki soal");
+    }
+    const questions = await prismaEmployee.em_questions1.findMany({
+        where: {
+            id: {
+                in: soalUrut.map((item) => item.id),
+            },
+        },
+        select: {
+            id: true,
+            correct_answer: true,
+            correct_answer2: true,
+            score: true,
+            em_questions2: {
+                select: {
+                    option_choices: true,
+                    option_text: true,
+                },
+            },
+        },
+    });
+    const questionMap = new Map(questions.map((question) => [question.id, question]));
+    const answerRows = soalUrut.map((item) => {
+        const question = questionMap.get(item.id) ?? null;
+        const isEssay = item.tipe === "es";
+        const answer = buildTestAutofillAnswer({ item, question });
+        const answer2 = question
+            ? buildAnswer2Value({
+                answer,
+                isBoolean: item.tipe === "tf",
+                isEssay,
+                question,
+            })
+            : null;
+        const score = isEssay && question
+            ? Number(question.score ?? 0)
+            : !isEssay && question
+                ? buildObjectiveScore({
+                    answer,
+                    answer2,
+                    isBoolean: item.tipe === "tf",
+                    question,
+                })
+                : null;
+        return {
+            empl_id: params.employeeId,
+            soal_id: item.id,
+            session_exams_id: params.examsId,
+            jawaban: answer,
+            jawaban2: answer2,
+            waktu_jawab: params.submittedAt,
+            Score: score,
+            is_correction: score != null ? 1 : 0,
+            is_train_jawaban: false,
+        };
+    });
+    return {
+        answerRows,
+        answeredQuestionCount: answerRows.filter((row) => row.jawaban).length,
+        correctQuestionCount: answerRows.filter((row) => Number(row.Score ?? 0) > 0)
+            .length,
+        totalQuestionCount: soalUrut.length,
+    };
+};
 export class OnboardingExamRuntimeService {
     static async start(requesterUserId, request) {
         const onboardingStageProgressId = normalizeOptionalText(request.onboardingStageProgressId);
@@ -969,6 +1195,23 @@ export class OnboardingExamRuntimeService {
         if (!Number.isInteger(employeeId) || employeeId <= 0) {
             throw new ResponseError(403, "Akun ini tidak terhubung ke employee");
         }
+        const startLockKey = `${employeeId}:${onboardingStageProgressId}`;
+        const activeStart = activeRuntimeExamStarts.get(startLockKey);
+        if (activeStart) {
+            return activeStart;
+        }
+        const startPromise = this.startUnlocked(requesterUserId, onboardingStageProgressId, employeeId);
+        activeRuntimeExamStarts.set(startLockKey, startPromise);
+        try {
+            return await startPromise;
+        }
+        finally {
+            if (activeRuntimeExamStarts.get(startLockKey) === startPromise) {
+                activeRuntimeExamStarts.delete(startLockKey);
+            }
+        }
+    }
+    static async startUnlocked(requesterUserId, onboardingStageProgressId, employeeId) {
         await OnboardingService.expireOverdueAssignments({
             participantReferenceIds: [requesterUserId],
         });
@@ -1023,20 +1266,22 @@ export class OnboardingExamRuntimeService {
         await ensureScheduleParticipant(syncResult.scheduleId, employeeId);
         const existingSession = await getExistingActiveSession(syncResult.scheduleId, employeeId);
         if (existingSession) {
-            await createOrUpdateAttempt({
+            const attemptResult = await createOrUpdateAttempt({
                 requesterUserId,
                 stageProgress,
                 examsId: existingSession.exams_id ?? "",
                 startedAt: existingSession.start_time ?? new Date(),
                 totalQuestionCount: parseSoalUrut(existingSession.soal_urut).length,
             });
-            await enqueueExamMonitorNotification({
-                event: "STARTED",
-                examsId: existingSession.exams_id ?? "",
-                employee,
-                stageProgress,
-                occurredAt: existingSession.start_time ?? new Date(),
-            });
+            if (attemptResult.created) {
+                await enqueueExamMonitorNotification({
+                    event: "STARTED",
+                    examsId: existingSession.exams_id ?? "",
+                    employee,
+                    stageProgress,
+                    occurredAt: existingSession.start_time ?? new Date(),
+                });
+            }
             return buildStartResponse({
                 stageProgressId: onboardingStageProgressId,
                 session: existingSession,
@@ -1190,20 +1435,22 @@ export class OnboardingExamRuntimeService {
                 }
                 const concurrentSession = await getExistingActiveSession(syncResult.scheduleId, employeeId);
                 if (concurrentSession) {
-                    await createOrUpdateAttempt({
+                    const attemptResult = await createOrUpdateAttempt({
                         requesterUserId,
                         stageProgress,
                         examsId: concurrentSession.exams_id ?? "",
                         startedAt: concurrentSession.start_time ?? new Date(),
                         totalQuestionCount: parseSoalUrut(concurrentSession.soal_urut).length,
                     });
-                    await enqueueExamMonitorNotification({
-                        event: "STARTED",
-                        examsId: concurrentSession.exams_id ?? "",
-                        employee,
-                        stageProgress,
-                        occurredAt: concurrentSession.start_time ?? new Date(),
-                    });
+                    if (attemptResult.created) {
+                        await enqueueExamMonitorNotification({
+                            event: "STARTED",
+                            examsId: concurrentSession.exams_id ?? "",
+                            employee,
+                            stageProgress,
+                            occurredAt: concurrentSession.start_time ?? new Date(),
+                        });
+                    }
                     return buildStartResponse({
                         stageProgressId: onboardingStageProgressId,
                         session: concurrentSession,
@@ -1214,20 +1461,22 @@ export class OnboardingExamRuntimeService {
         if (!createdSession || !examsId) {
             throw new ResponseError(409, "Gagal membuat sesi ujian unik");
         }
-        await createOrUpdateAttempt({
+        const attemptResult = await createOrUpdateAttempt({
             requesterUserId,
             stageProgress,
             examsId,
             startedAt: startTime,
             totalQuestionCount: soalUrut.length,
         });
-        await enqueueExamMonitorNotification({
-            event: "STARTED",
-            examsId,
-            employee,
-            stageProgress,
-            occurredAt: startTime,
-        });
+        if (attemptResult.created) {
+            await enqueueExamMonitorNotification({
+                event: "STARTED",
+                examsId,
+                employee,
+                stageProgress,
+                occurredAt: startTime,
+            });
+        }
         return buildStartResponse({
             stageProgressId: onboardingStageProgressId,
             session: createdSession,
@@ -1410,6 +1659,128 @@ export class OnboardingExamRuntimeService {
             examsId,
             warningCount,
             recordedAt: occurredAt,
+        };
+    }
+    static async testAutofill(requesterUserId, request) {
+        await ensureEmployeeAdminAccess(requesterUserId, "Hanya admin yang dapat menjalankan autofill testing onboarding");
+        const onboardingStageProgressId = normalizeOptionalText(request.onboardingStageProgressId);
+        if (!onboardingStageProgressId) {
+            throw new ResponseError(400, "Tahap onboarding wajib diisi");
+        }
+        const allowedEmployeeIds = parseTestAutofillEmployeeIds();
+        if (allowedEmployeeIds.size === 0) {
+            throw new ResponseError(403, `Autofill testing belum dikonfigurasi di ${TEST_AUTOFILL_EMPLOYEE_IDS_ENV}`);
+        }
+        const stageProgress = await getAdminStageProgressForTestAutofill(onboardingStageProgressId);
+        const participantType = normalizeUpper(stageProgress.assignment.participantReferenceType);
+        if (participantType !== EMPLOYEE_PARTICIPANT_REFERENCE_TYPE) {
+            throw new ResponseError(400, "Autofill testing hanya untuk peserta employee");
+        }
+        const employeeId = Number(stageProgress.assignment.participantReferenceId);
+        if (!Number.isInteger(employeeId) || employeeId <= 0) {
+            throw new ResponseError(400, "Peserta employee tidak valid");
+        }
+        if (!allowedEmployeeIds.has(employeeId)) {
+            throw new ResponseError(403, "Employee ini tidak termasuk whitelist autofill testing onboarding");
+        }
+        const assignmentStatus = normalizeUpper(stageProgress.assignment.status);
+        const stageStatus = normalizeUpper(stageProgress.status);
+        if (LOCKED_ASSIGNMENT_STATUSES.has(assignmentStatus) ||
+            LOCKED_ASSIGNMENT_STATUSES.has(stageStatus)) {
+            throw new ResponseError(403, "Onboarding sudah terkunci karena gagal atau sudah selesai");
+        }
+        const finalScore = normalizeTestAutofillScore(request.score);
+        let target = await getLatestTestAutofillSession(onboardingStageProgressId, employeeId);
+        if (!target) {
+            await this.start(String(employeeId), { onboardingStageProgressId });
+            target = await getLatestTestAutofillSession(onboardingStageProgressId, employeeId);
+        }
+        if (!target) {
+            throw new ResponseError(409, "Sesi ujian testing tidak dapat disiapkan");
+        }
+        const examsId = normalizeOptionalText(target.session.exams_id);
+        if (!examsId) {
+            throw new ResponseError(409, "Sesi ujian testing tidak valid");
+        }
+        const submittedAt = new Date();
+        const { answerRows, answeredQuestionCount, correctQuestionCount, totalQuestionCount, } = await buildTestAutofillRows({
+            employeeId,
+            examsId,
+            session: target.session,
+            submittedAt,
+        });
+        await prismaEmployee.$transaction(async (tx) => {
+            await tx.em_jawaban_peserta.deleteMany({
+                where: {
+                    empl_id: employeeId,
+                    session_exams_id: examsId,
+                },
+            });
+            await tx.em_jawaban_peserta.createMany({
+                data: answerRows,
+            });
+            await tx.em_session_exams.update({
+                where: {
+                    Id: target.session.Id,
+                },
+                data: {
+                    end_time: submittedAt,
+                    is_selesai: FINISHED_FLAG,
+                    is_correct: 0,
+                    is_notes: "Autofill testing oleh admin. Skor dummy menunggu release admin.",
+                    is_score_akhir: finalScore,
+                },
+            });
+        });
+        await prismaFlowly.$transaction([
+            prismaFlowly.onboardingExamAttempt.update({
+                where: {
+                    onboardingExamAttemptId: target.attempt.onboardingExamAttemptId,
+                },
+                data: {
+                    submittedAt,
+                    endedAt: submittedAt,
+                    answeredQuestionCount,
+                    correctQuestionCount,
+                    totalQuestionCount,
+                    score: finalScore,
+                    status: "WAITING_ADMIN",
+                    note: "Autofill testing oleh admin. Skor dummy menunggu release admin.",
+                    updatedAt: submittedAt,
+                    updatedBy: requesterUserId,
+                },
+            }),
+            prismaFlowly.onboardingStageProgress.update({
+                where: {
+                    onboardingStageProgressId: target.attempt.onboardingStageProgressId,
+                },
+                data: {
+                    status: "WAITING_ADMIN",
+                    completedAt: submittedAt,
+                    updatedAt: submittedAt,
+                    updatedBy: requesterUserId,
+                },
+            }),
+            prismaFlowly.onboardingAssignment.update({
+                where: {
+                    onboardingAssignmentId: target.attempt.onboardingAssignmentId,
+                },
+                data: {
+                    status: "WAITING_ADMIN",
+                    updatedAt: submittedAt,
+                    updatedBy: requesterUserId,
+                },
+            }),
+        ]);
+        return {
+            onboardingStageProgressId,
+            examsId,
+            employeeId,
+            status: "WAITING_ADMIN",
+            score: finalScore,
+            answeredQuestionCount,
+            totalQuestionCount,
+            message: "Jawaban testing berhasil dibuat dan menunggu release admin",
         };
     }
     static async submit(requesterUserId, request) {

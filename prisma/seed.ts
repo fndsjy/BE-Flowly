@@ -103,10 +103,16 @@ const masAccessItems = [
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_MATERIALS", displayName: "Materi onboarding", route: "/portal-administrator/onboarding-materials", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_ONBOARDING_EXAMS", displayName: "Ujian onboarding", route: "/portal-administrator/onboarding-exams", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_NOTIF_TEMPLATE", displayName: "Template Notif", route: "/portal-administrator/notification-template", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMINISTRATOR_PORTAL_ACCESS", displayName: "Akses Portal Admin", route: "/portal-administrator/portal-access", parentKey: null },
   { resourceType: "MENU", resourceKey: "ADMINISTRATOR_AUDIT_LOG", displayName: "Audit Log", route: "/portal-administrator/audit-log", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMIN_USERS", displayName: "Users", route: "/portal-administrator/users", parentKey: null },
+  { resourceType: "MENU", resourceKey: "ADMIN_JABATAN", displayName: "Jabatan", route: "/portal-administrator/jabatan", parentKey: null },
   { resourceType: "MODULE", resourceKey: "PILAR", displayName: "Pilar", route: "/pilar", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU", displayName: "SBU", route: "/pilar/sbu", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "SBU_SUB", displayName: "SBU Sub", route: "/pilar/sbu/sbu_sub", parentKey: "ORGANISASI" },
+  { resourceType: "MODULE", resourceKey: "PILAR_CREATE", displayName: "Tambah Pilar", route: null, parentKey: "ORGANISASI" },
+  { resourceType: "MODULE", resourceKey: "SBU_CREATE", displayName: "Tambah SBU", route: null, parentKey: "ORGANISASI" },
+  { resourceType: "MODULE", resourceKey: "SBU_SUB_CREATE", displayName: "Tambah SBU Sub", route: null, parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "CHART", displayName: "Chart", route: "/pilar/sbu/sbu_sub/organisasi", parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "CHART_MEMBER", displayName: "Chart Member", route: null, parentKey: "ORGANISASI" },
   { resourceType: "MODULE", resourceKey: "CASE", displayName: "Case", route: "/a3/case", parentKey: "A3" },
@@ -116,9 +122,9 @@ const masAccessItems = [
   { resourceType: "MODULE", resourceKey: "ONBOARDING_DECISION", displayName: "Keputusan Onboarding", route: "/onboarding/decision", parentKey: "ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "ADMIN_USERS", displayName: "Users", route: "/administrator/users", parentKey: "ADMIN" },
   { resourceType: "MODULE", resourceKey: "ADMIN_JABATAN", displayName: "Jabatan", route: "/administrator/jabatan", parentKey: "ADMIN" },
-  { resourceType: "MODULE", resourceKey: "ADMIN_ACCESS_ROLE", displayName: "Hak Akses", route: "/administrator/access-role", parentKey: "ADMIN" },
+  { resourceType: "MODULE", resourceKey: "ADMIN_ACCESS_ROLE", displayName: "Hak Akses Organisasi", route: "/administrator/access-role", parentKey: "ADMIN" },
   { resourceType: "MODULE", resourceKey: "ADMIN_AUDIT_LOG", displayName: "Audit Log", route: "/administrator/audit-log", parentKey: "ADMIN" },
-  { resourceType: "MODULE", resourceKey: "ADMIN_NOTIFICATION_TEMPLATE", displayName: "Template Notifikasi", route: "/administrator/notification-template", parentKey: "ADMIN" },
+  { resourceType: "MODULE", resourceKey: "ADMIN_NOTIFICATION_TEMPLATE", displayName: "Template Notif A3", route: "/administrator/notification-template", parentKey: "ADMIN" },
   { resourceType: "MODULE", resourceKey: "SUPPLIER_ONBOARDING_CHECKLIST", displayName: "Onboarding Checklist", route: "/supplier/onboarding/checklist", parentKey: "SUPPLIER_ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "SUPPLIER_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/supplier/onboarding/assessments", parentKey: "SUPPLIER_ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "SUPPLIER_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/supplier/onboarding/certificates", parentKey: "SUPPLIER_ONBOARDING" },
@@ -143,6 +149,19 @@ const masAccessItems = [
   { resourceType: "MODULE", resourceKey: "ADMINISTRATOR_ONBOARDING_ASSESSMENTS", displayName: "Assessments", route: "/portal-administrator/onboarding/assessments", parentKey: "ADMINISTRATOR_ONBOARDING" },
   { resourceType: "MODULE", resourceKey: "ADMINISTRATOR_ONBOARDING_CERTIFICATES", displayName: "Certificates", route: "/portal-administrator/onboarding/certificates", parentKey: "ADMINISTRATOR_ONBOARDING" },
 ];
+
+const disabledMasAccessKeys = new Set([
+  "MODULE:ADMIN_AUDIT_LOG",
+  "MODULE:ADMIN_USERS",
+  "MODULE:ADMIN_JABATAN",
+  "MENU:CUSTOMER_DASHBOARD",
+  "MENU:CUSTOMER_ONBOARDING",
+  "MENU:CUSTOMER_ADMIN",
+  "MODULE:CUSTOMER_ONBOARDING_CHECKLIST",
+  "MODULE:CUSTOMER_ONBOARDING_ASSESSMENTS",
+  "MODULE:CUSTOMER_ONBOARDING_CERTIFICATES",
+  "MODULE:CUSTOMER_ADMIN_CUSTOMERS",
+]);
 
 const portalMenuMappings = [
   { portalKey: "EMPLOYEE", menuKey: "EMPLOYEE_DASHBOARD", orderIndex: 10 },
@@ -179,8 +198,11 @@ const portalMenuMappings = [
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_STAGES", orderIndex: 20 },
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_MATERIALS", orderIndex: 30 },
   { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_ONBOARDING_EXAMS", orderIndex: 40 },
-  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_NOTIF_TEMPLATE", orderIndex: 50 },
-  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_AUDIT_LOG", orderIndex: 60 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMIN_USERS", orderIndex: 50 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMIN_JABATAN", orderIndex: 60 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_NOTIF_TEMPLATE", orderIndex: 70 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_PORTAL_ACCESS", orderIndex: 80 },
+  { portalKey: "ADMINISTRATOR", menuKey: "ADMINISTRATOR_AUDIT_LOG", orderIndex: 90 },
 ];
 
 type accessRoleseed = {
@@ -333,6 +355,8 @@ async function main() {
 
   const makemasAccessId = await generatemasAccessId();
   for (const item of masAccessItems) {
+    const accessKey = `${item.resourceType}:${item.resourceKey}`;
+    const isDisabled = disabledMasAccessKeys.has(accessKey);
     await prisma.masterAccessRole.upsert({
       where: {
         resourceType_resourceKey: {
@@ -344,8 +368,10 @@ async function main() {
         displayName: item.displayName,
         route: item.route,
         parentKey: item.parentKey,
-        isActive: true,
-        isDeleted: false,
+        isActive: !isDisabled,
+        isDeleted: isDisabled,
+        deletedAt: isDisabled ? new Date() : null,
+        deletedBy: isDisabled ? "seed" : null,
       },
       create: {
         masAccessId: makemasAccessId(),
@@ -354,8 +380,10 @@ async function main() {
         displayName: item.displayName,
         route: item.route,
         parentKey: item.parentKey,
-        isActive: true,
-        isDeleted: false,
+        isActive: !isDisabled,
+        isDeleted: isDisabled,
+        deletedAt: isDisabled ? new Date() : null,
+        deletedBy: isDisabled ? "seed" : null,
       },
     });
   }
@@ -378,6 +406,10 @@ async function main() {
 
   const makePortalMenuMapId = await generatePortalMenuMapId();
   for (const mapping of portalMenuMappings) {
+    if (disabledMasAccessKeys.has(`MENU:${mapping.menuKey}`)) {
+      continue;
+    }
+
     const portalMasAccessId = resourceMap.get(`PORTAL:${mapping.portalKey}`);
     const menuMasAccessId = resourceMap.get(`MENU:${mapping.menuKey}`);
 
@@ -410,6 +442,36 @@ async function main() {
         isDeleted: false,
       },
     });
+  }
+
+  const disabledMenuKeys = Array.from(disabledMasAccessKeys)
+    .filter((key) => key.startsWith("MENU:"))
+    .map((key) => key.slice("MENU:".length));
+
+  if (disabledMenuKeys.length > 0) {
+    const disabledMenuRows = await prisma.masterAccessRole.findMany({
+      where: {
+        resourceType: "MENU",
+        resourceKey: { in: disabledMenuKeys },
+      },
+      select: { masAccessId: true },
+    });
+    const disabledMenuIds = disabledMenuRows.map((item) => item.masAccessId);
+
+    if (disabledMenuIds.length > 0) {
+      await prisma.portalMenuMap.updateMany({
+        where: {
+          menuMasAccessId: { in: disabledMenuIds },
+          isDeleted: false,
+        },
+        data: {
+          isActive: false,
+          isDeleted: true,
+          deletedAt: new Date(),
+          deletedBy: "seed",
+        },
+      });
+    }
   }
 
   for (const role of accessRoles) {

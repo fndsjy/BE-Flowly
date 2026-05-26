@@ -161,8 +161,14 @@ const resolveCustomerLearningAccess = async (req) => {
                 return {
                     bypassProgramFilter: true,
                     custId: null,
+                    canDownloadOriginal: true,
                 };
             }
+            return {
+                bypassProgramFilter: true,
+                custId: null,
+                canDownloadOriginal: false,
+            };
         }
         catch {
             // Fall through to customer session support.
@@ -174,6 +180,7 @@ const resolveCustomerLearningAccess = async (req) => {
             return {
                 bypassProgramFilter: false,
                 custId: CustomerSsoService.getProfile(customerToken).custid,
+                canDownloadOriginal: false,
             };
         }
         catch {
@@ -190,7 +197,7 @@ const resolveContentDisposition = (req) => normalizeQueryText(req.query.disposit
     : "inline";
 const resolveCustomerLearningContentDisposition = (req, access) => {
     const disposition = resolveContentDisposition(req);
-    if (!access.bypassProgramFilter && disposition === "attachment") {
+    if (!access.canDownloadOriginal && disposition === "attachment") {
         throw new ResponseError(403, "Download materi customer tidak diizinkan");
     }
     return disposition;
@@ -451,21 +458,26 @@ export class OnboardingMaterialController {
             if (!requesterUserId && hasCustomerSession) {
                 throw new ResponseError(403, "Gunakan link materi customer yang valid");
             }
+            const authenticatedUserId = requesterUserId;
+            if (!authenticatedUserId) {
+                throw new ResponseError(401, "Unauthorized");
+            }
             const fileTypeValue = Number(req.query.fileType);
             const fileType = Number.isInteger(fileTypeValue) ? fileTypeValue : null;
             const disposition = resolveContentDisposition(req);
-            if (disposition === "attachment" && requesterUserId) {
-                const accessContext = await getAccessContext(requesterUserId);
-                if (!accessContext.isAdmin) {
-                    throw new ResponseError(403, "Download file asli hanya untuk admin");
-                }
-            }
             const trackingRequest = parseMaterialReadTrackingRequest(req, fileName);
+            const accessContext = await getAccessContext(authenticatedUserId);
+            if (!trackingRequest && !accessContext.isAdmin) {
+                throw new ResponseError(403, "Gunakan link materi onboarding yang valid");
+            }
+            if (disposition === "attachment" && !accessContext.isAdmin) {
+                throw new ResponseError(403, "Download file asli hanya untuk admin");
+            }
             let resolvedFileName = fileName;
             let resolvedFileType = fileType;
             let resolvedFileUrl = null;
-            if (trackingRequest && requesterUserId) {
-                const materialRead = await OnboardingService.startMaterialRead(requesterUserId, trackingRequest);
+            if (trackingRequest) {
+                const materialRead = await OnboardingService.startMaterialRead(authenticatedUserId, trackingRequest);
                 resolvedFileName = materialRead.fileName ?? fileName;
                 resolvedFileType = materialRead.fileType ?? fileType;
                 resolvedFileUrl = materialRead.fileUrl;

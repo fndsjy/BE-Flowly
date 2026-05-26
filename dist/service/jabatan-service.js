@@ -3,18 +3,13 @@ import { Validation } from "../validation/validation.js";
 import { JabatanValidation } from "../validation/jabatan-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateJabatanId } from "../utils/id-generator.js";
+import { ensureEmployeeAdminAccess } from "../utils/admin-access.js";
 import { toJabatanResponse, toJabatanListResponse } from "../model/jabatan-model.js";
 export class JabatanService {
     /* ---------- CREATE ---------- */
     static async create(requesterId, reqBody) {
         const req = Validation.validate(JabatanValidation.CREATE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can create jabatan");
-        }
+        await ensureEmployeeAdminAccess(requesterId, "Only admin can create jabatan");
         const jabatanId = await generateJabatanId();
         const lastLevel = await prismaFlowly.jabatan.findFirst({
             where: { isDeleted: false },
@@ -42,13 +37,7 @@ export class JabatanService {
     /* ---------- UPDATE ---------- */
     static async update(requesterId, reqBody) {
         const req = Validation.validate(JabatanValidation.UPDATE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can update jabatan");
-        }
+        await ensureEmployeeAdminAccess(requesterId, "Only admin can update jabatan");
         const existing = await prismaFlowly.jabatan.findUnique({
             where: { jabatanId: req.jabatanId }
         });
@@ -154,13 +143,7 @@ export class JabatanService {
     /* ---------- DELETE ---------- */
     static async softDelete(requesterId, reqBody) {
         const req = Validation.validate(JabatanValidation.DELETE, reqBody);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterId },
-            include: { role: true }
-        });
-        if (!requester || requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can delete jabatan");
-        }
+        await ensureEmployeeAdminAccess(requesterId, "Only admin can delete jabatan");
         const existing = await prismaFlowly.jabatan.findUnique({
             where: { jabatanId: req.jabatanId }
         });

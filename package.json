@@ -10,6 +10,7 @@
     "start": "nodemon dist/main.js",
     "dev": "nodemon src/main.js",
     "seed": "prisma db seed",
+    "seed:admin-portal-access": "node --loader ts-node/esm prisma/seed-admin-portal-access.ts",
     "seed:onboarding-schedules": "node --loader ts-node/esm prisma/seed-onboarding-schedules.ts",
     "seed:notification-templates": "node --loader ts-node/esm prisma/seed-notification-templates.ts"
   },

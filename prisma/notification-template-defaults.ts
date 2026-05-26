@@ -102,7 +102,25 @@ export const notificationTemplateDefaults: NotificationTemplateDefault[] = [
     recipientRole: "PARTICIPANT",
     portalKeys: ["EMPLOYEE"],
     messageTemplate:
-      "Halo {recipientName},\n\nSelamat, onboarding Anda untuk {portalName} telah diluluskan oleh HRD pada {decisionAt}.\nCatatan HRD: {decisionNote}\n\nSilakan lanjutkan aktivitas Learning melalui {loginUrl}.",
+      "Halo {recipientName},\n\nSelamat, onboarding Anda untuk {portalName} sudah lulus pada {decisionAt}.\nCatatan: {decisionNote}\n\nSilakan lanjutkan aktivitas Learning melalui {loginUrl}.",
+  },
+  {
+    templateName: "WA HRD - Onboarding lulus",
+    channel: "WHATSAPP",
+    eventKey: "ONBOARDING_PASSED",
+    recipientRole: "HRD",
+    portalKeys: ["EMPLOYEE"],
+    messageTemplate:
+      "Notifikasi onboarding lulus\n\n{employeeName} ({cardNumber}) sudah lulus onboarding {portalName} pada {decisionAt}.\nNilai akhir: {score}\nCatatan: {decisionNote}\n\nDetail: {decisionUrl}",
+  },
+  {
+    templateName: "WA PIC SBU Sub - Onboarding lulus",
+    channel: "WHATSAPP",
+    eventKey: "ONBOARDING_PASSED",
+    recipientRole: "SBU_SUB_PIC",
+    portalKeys: ["EMPLOYEE"],
+    messageTemplate:
+      "Halo {recipientName},\n\n{employeeName} ({cardNumber}) sudah lulus onboarding {portalName} pada {decisionAt}.\nNilai akhir: {score}\n\nStruktur:\nSBU Sub: {sbuSubName}\nSBU: {sbuName}\nPilar: {pilarName}\nPosisi: {positionName}\nJabatan: {jabatanName}\n\nPantau detail melalui {hrdUrl}.",
   },
   {
     templateName: "WA Peserta - Tenggat onboarding diperpanjang",
@@ -143,6 +161,7 @@ export async function seedNotificationTemplates(client: PrismaClient) {
     createdTemplates: 0,
     createdPortalMappings: 0,
     existingTemplates: 0,
+    updatedTemplates: 0,
   };
 
   for (const template of notificationTemplateDefaults) {
@@ -181,7 +200,7 @@ export async function seedNotificationTemplates(client: PrismaClient) {
       null;
 
     const now = new Date();
-    const savedTemplate =
+    let savedTemplate =
       existingTemplate ??
       (await client.notificationTemplate.create({
         data: {
@@ -207,6 +226,34 @@ export async function seedNotificationTemplates(client: PrismaClient) {
 
     if (existingTemplate) {
       result.existingTemplates += 1;
+      const createdBy = normalizeUpper(existingTemplate.createdBy ?? "");
+      const updatedBy = normalizeUpper(existingTemplate.updatedBy ?? "");
+      const isSeedOwned =
+        createdBy === "SEED" && (updatedBy.length === 0 || updatedBy === "SEED");
+      const isLegacyOnboardingPassedParticipant =
+        eventKey === "ONBOARDING_PASSED" &&
+        recipientRole === "PARTICIPANT" &&
+        existingTemplate.messageTemplate.includes("telah diluluskan oleh HRD");
+
+      if (isSeedOwned && isLegacyOnboardingPassedParticipant) {
+        savedTemplate = await client.notificationTemplate.update({
+          where: {
+            notificationTemplateId: existingTemplate.notificationTemplateId,
+          },
+          data: {
+            templateName: template.templateName,
+            messageTemplate: template.messageTemplate,
+            updatedAt: now,
+            updatedBy: "SEED",
+          },
+          include: {
+            portalMappings: {
+              where: { isDeleted: false },
+            },
+          },
+        });
+        result.updatedTemplates += 1;
+      }
     } else {
       result.createdTemplates += 1;
     }

@@ -265,16 +265,27 @@ export class OnboardingEmployeeScheduleSyncService {
     static async ensureStageSchedule(params) {
         const now = new Date();
         const scheName = getScheduleName(params.portalKey, params.stageCode);
-        const existing = await prismaEmployee.em_schedule1.findFirst({
-            where: {
-                scheName,
-                is_batch: ONBOARDING_BATCH_CODE,
-            },
-            select: {
-                Id: true,
-            },
-            orderBy: [{ Id: "asc" }],
-        });
+        const existingById = params.scheduleId != null && Number.isInteger(params.scheduleId)
+            ? await prismaEmployee.em_schedule1.findUnique({
+                where: {
+                    Id: params.scheduleId,
+                },
+                select: {
+                    Id: true,
+                },
+            })
+            : null;
+        const existing = existingById ??
+            (await prismaEmployee.em_schedule1.findFirst({
+                where: {
+                    scheName,
+                    is_batch: ONBOARDING_BATCH_CODE,
+                },
+                select: {
+                    Id: true,
+                },
+                orderBy: [{ Id: "asc" }],
+            }));
         const data = {
             scheDeskripsi: getScheduleDescription(params),
             isMateri: null,
@@ -340,6 +351,7 @@ export class OnboardingEmployeeScheduleSyncService {
             const portalKey = stage.portalTemplate.portalKey;
             const portalName = stage.portalTemplate.portalName;
             const scheduleId = await this.ensureStageSchedule({
+                scheduleId: stage.scheduleId,
                 portalKey,
                 portalName,
                 stageCode: stage.stageCode,
@@ -347,6 +359,16 @@ export class OnboardingEmployeeScheduleSyncService {
                 primaryExamId,
                 hasQuestions: stage.stageExams.some((stageExam) => (questionsByExam.get(stageExam.examId) ?? []).length > 0),
             });
+            if (stage.scheduleId !== scheduleId) {
+                await prismaFlowly.onboardingStageTemplate.update({
+                    where: {
+                        onboardingStageTemplateId: stage.onboardingStageTemplateId,
+                    },
+                    data: {
+                        scheduleId,
+                    },
+                });
+            }
             const scheduleQuestions = this.buildScheduleQuestions({
                 scheduleId,
                 stageExams: stage.stageExams,

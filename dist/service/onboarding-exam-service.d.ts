@@ -100,7 +100,7 @@ type DeleteOnboardingStageExamRequest = {
     onboardingStageExamId: string;
 };
 export declare class OnboardingExamService {
-    static listSourceExams(): Promise<OnboardingSourceExamResponse[]>;
+    static listSourceExams(requesterId: string): Promise<OnboardingSourceExamResponse[]>;
     private static updateStageExamMetadata;
     static listAssignments(requesterId: string): Promise<ListOnboardingExamAssignmentsResponse>;
     static createAssignment(requesterId: string, reqBody: CreateOnboardingStageExamRequest): Promise<{

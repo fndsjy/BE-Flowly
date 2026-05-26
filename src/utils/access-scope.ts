@@ -255,15 +255,6 @@ export const getAccessContext = async (userId: string): Promise<AccessContext> =
 
   }
 
-  if (isEmployeeUser) {
-    return {
-      isAdmin: false,
-      pilar: buildScope(pilarRead, pilarCrud),
-      sbu: buildScope(sbuRead, sbuCrud),
-      sbuSub: buildScope(sbuSubRead, sbuSubCrud)
-    };
-  }
-
   const accessRoleFilters = [
     { subjectType: "USER", subjectId: userId }
   ];
@@ -540,6 +531,7 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
     return new Map();
   }
 
+  const employeeModuleAccessMap: ModuleAccessMap = new Map();
   if (isEmployeeUser) {
     const accessContext = await getAccessContext(userId);
     const hasPilarRead = accessContext.pilar.read.size > 0 || accessContext.pilar.crud.size > 0;
@@ -547,13 +539,12 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
     const hasSbuSubRead = accessContext.sbuSub.read.size > 0 || accessContext.sbuSub.crud.size > 0;
     const canReadChart = hasPilarRead || hasSbuRead || hasSbuSubRead;
 
-    const accessMap: ModuleAccessMap = new Map();
     const applyEmployeeRead = (resourceKey: string) => {
       const normalizedKey = normalizeUpper(resourceKey);
       if (!normalizedKey) {
         return;
       }
-      accessMap.set(normalizedKey, "READ");
+      employeeModuleAccessMap.set(normalizedKey, "READ");
     };
 
     if (hasPilarRead) {
@@ -569,8 +560,6 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
       applyEmployeeRead("CHART");
       applyEmployeeRead("CHART_MEMBER");
     }
-
-    return accessMap;
   }
 
   const subjectFilters = [{ subjectType: "USER", subjectId: userId }];
@@ -581,11 +570,12 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
   const accessRoles = await prismaFlowly.accessRole.findMany({
     where: {
       isDeleted: false,
-      resourceType: "MODULE",
+      resourceType: { in: ["MENU", "MODULE"] },
       OR: subjectFilters
     },
     select: {
       subjectType: true,
+      resourceType: true,
       resourceKey: true,
       masAccessId: true,
       accessLevel: true,
@@ -608,7 +598,7 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
     masterAccessRoles.map((role) => [role.masAccessId, role])
   );
 
-  const accessMap: ModuleAccessMap = new Map();
+  const accessMap: ModuleAccessMap = new Map(employeeModuleAccessMap);
   const deniedKeys = new Set<string>();
 
   const applyAccess = (resourceKey: string, accessLevel: string, override: boolean) => {
@@ -633,15 +623,19 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
     }
   };
 
-  const resolveResourceKey = (access: typeof accessRoles[number]) => {
+  const resolveResource = (access: typeof accessRoles[number]) => {
     const master = !access.resourceKey && access.masAccessId
       ? masterAccessMap.get(access.masAccessId)
       : undefined;
+    const resourceType = normalizeUpper(access.resourceType ?? master?.resourceType ?? "");
     const resourceKey = access.resourceKey ?? master?.resourceKey ?? null;
-    if (!resourceKey) {
+    if (!resourceType || !resourceKey) {
       return null;
     }
-    return normalizeUpper(resourceKey);
+    return {
+      resourceType,
+      resourceKey: normalizeUpper(resourceKey)
+    };
   };
 
   const roleAccess = accessRoles.filter(
@@ -656,27 +650,40 @@ export const getModuleAccessMap = async (userId: string): Promise<ModuleAccessMa
       continue;
     }
 
-    const resourceKey = resolveResourceKey(access);
-    if (!resourceKey) {
+    const resolved = resolveResource(access);
+    if (!resolved) {
       continue;
     }
 
-    applyAccess(resourceKey, access.accessLevel, false);
+    if (resolved.resourceType === "MODULE") {
+      applyAccess(resolved.resourceKey, access.accessLevel, false);
+    } else if (resolved.resourceType === "MENU" && resolved.resourceKey === "A3") {
+      applyAccess("CASE", "CRUD", false);
+    }
   }
 
   for (const access of userAccess) {
-    const resourceKey = resolveResourceKey(access);
-    if (!resourceKey) {
+    const resolved = resolveResource(access);
+    if (!resolved) {
       continue;
     }
 
     if (!access.isActive) {
-      accessMap.delete(resourceKey);
-      deniedKeys.add(resourceKey);
+      if (resolved.resourceType === "MODULE") {
+        accessMap.delete(resolved.resourceKey);
+        deniedKeys.add(resolved.resourceKey);
+      } else if (resolved.resourceType === "MENU" && resolved.resourceKey === "A3") {
+        accessMap.delete("CASE");
+        deniedKeys.add("CASE");
+      }
       continue;
     }
 
-    applyAccess(resourceKey, access.accessLevel, true);
+    if (resolved.resourceType === "MODULE") {
+      applyAccess(resolved.resourceKey, access.accessLevel, true);
+    } else if (resolved.resourceType === "MENU" && resolved.resourceKey === "A3") {
+      applyAccess("CASE", "CRUD", true);
+    }
   }
 
   return accessMap;

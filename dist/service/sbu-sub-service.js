@@ -4,6 +4,7 @@ import { Validation } from "../validation/validation.js";
 import { SbuSubValidation } from "../validation/sbu-sub-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { getAccessContext, getModuleAccessMap, canReadModule, canCrudModule } from "../utils/access-scope.js";
+import { hasEmployeeAdminAccess } from "../utils/admin-access.js";
 import { buildChanges, pickSnapshot, resolveActorType, writeAuditLog } from "../utils/audit-log.js";
 import { toSbuSubResponse, toSbuSubListResponse } from "../model/sbu-sub-model.js";
 const SBU_SUB_AUDIT_FIELDS = [
@@ -74,8 +75,9 @@ export class SbuSubService {
         const req = Validation.validate(SbuSubValidation.CREATE, reqBody);
         const accessContext = await getAccessContext(requesterId);
         const moduleAccessMap = await getModuleAccessMap(requesterId);
-        if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU_SUB")) {
-            throw new ResponseError(403, "Module SBU_SUB access required");
+        const canCreateSbuSub = canReadModule(moduleAccessMap, "SBU_SUB_CREATE");
+        if (!accessContext.isAdmin && !canCreateSbuSub) {
+            throw new ResponseError(403, "Tambah SBU Sub access required");
         }
         // Cek Pilar
         // const pilar = await prismaEmployee.em_pilar.findUnique({
@@ -171,13 +173,14 @@ export class SbuSubService {
         });
         if (!exists)
             throw new ResponseError(404, "SBU SUB not found");
-        if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU_SUB")) {
-            throw new ResponseError(403, "Module SBU_SUB access required");
-        }
         if (!accessContext.isAdmin) {
+            const hasModuleCrud = canCrudModule(moduleAccessMap, "SBU_SUB");
             const explicitAccess = await resolveExplicitSbuSubAccess(requesterId, exists.id);
             if (explicitAccess === "READ" || explicitAccess === "NONE") {
                 throw new ResponseError(403, "SBU SUB is read-only");
+            }
+            if (!hasModuleCrud && explicitAccess !== "CRUD") {
+                throw new ResponseError(403, "SBU SUB CRUD access required");
             }
         }
         // ❗ Tidak boleh update SBU parent
@@ -292,13 +295,14 @@ export class SbuSubService {
         });
         if (!exists)
             throw new ResponseError(404, "SBU SUB not found");
-        if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU_SUB")) {
-            throw new ResponseError(403, "Module SBU_SUB access required");
-        }
         if (!accessContext.isAdmin) {
+            const hasModuleCrud = canCrudModule(moduleAccessMap, "SBU_SUB");
             const explicitAccess = await resolveExplicitSbuSubAccess(requesterId, exists.id);
             if (explicitAccess === "READ" || explicitAccess === "NONE") {
                 throw new ResponseError(403, "SBU SUB is read-only");
+            }
+            if (!hasModuleCrud && explicitAccess !== "CRUD") {
+                throw new ResponseError(403, "SBU SUB CRUD access required");
             }
         }
         await prismaEmployee.em_sbu_sub.update({
@@ -325,17 +329,18 @@ export class SbuSubService {
     static async list(requesterId) {
         const accessContext = await getAccessContext(requesterId);
         const moduleAccessMap = await getModuleAccessMap(requesterId);
-        if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "SBU_SUB")) {
+        const canAccessAll = accessContext.isAdmin || await hasEmployeeAdminAccess(requesterId);
+        if (!canAccessAll && !canReadModule(moduleAccessMap, "SBU_SUB")) {
             throw new ResponseError(403, "Module SBU_SUB access required");
         }
-        if (!accessContext.isAdmin && accessContext.sbuSub.read.size === 0) {
+        if (!canAccessAll && accessContext.sbuSub.read.size === 0) {
             return [];
         }
         const list = await prismaEmployee.em_sbu_sub.findMany({
             where: {
                 OR: [{ isDeleted: false }, { isDeleted: null }],
                 status: "A",
-                ...(accessContext.isAdmin
+                ...(canAccessAll
                     ? {}
                     : { id: { in: Array.from(accessContext.sbuSub.read) } })
             },

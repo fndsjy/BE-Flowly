@@ -3,7 +3,7 @@ import { Validation } from "../validation/validation.js";
 import { CaseNotificationTemplateValidation } from "../validation/case-notification-template-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateCaseNotificationTemplateId } from "../utils/id-generator.js";
-import { getAccessContext } from "../utils/access-scope.js";
+import { ensureEmployeeAdminAccess } from "../utils/admin-access.js";
 import { toCaseNotificationTemplateResponse, toCaseNotificationTemplateListResponse, } from "../model/case-notification-template-model.js";
 const normalizeRole = (value) => value.trim().toUpperCase();
 const normalizeChannel = (value) => value.trim().toUpperCase();
@@ -20,10 +20,7 @@ const normalizeCaseType = (value) => {
     return trimmed.length > 0 ? trimmed.toUpperCase() : null;
 };
 const ensureAdminAccess = async (requesterId) => {
-    const accessContext = await getAccessContext(requesterId);
-    if (!accessContext.isAdmin) {
-        throw new ResponseError(403, "Admin access required");
-    }
+    await ensureEmployeeAdminAccess(requesterId, "Admin access required");
 };
 export class CaseNotificationTemplateService {
     static async create(requesterId, reqBody) {

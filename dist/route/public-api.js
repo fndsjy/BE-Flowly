@@ -84,6 +84,7 @@ v1.post("/onboarding/exam/start", OnboardingController.startExam);
 v1.post("/onboarding/exam/answer", OnboardingController.saveExamAnswer);
 v1.post("/onboarding/exam/warning", OnboardingController.recordExamWarning);
 v1.post("/onboarding/exam/submit", OnboardingController.submitExam);
+v1.post("/onboarding/exam/test-autofill", OnboardingController.testAutofillExam);
 v1.post("/pilar", PilarController.create);
 v1.put("/pilar", PilarController.update);
 v1.delete("/pilar", PilarController.softDelete);

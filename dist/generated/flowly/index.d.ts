@@ -41415,10 +41415,12 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateAvgAggregateOutputType = {
     stageOrder: number | null
+    scheduleId: number | null
   }
 
   export type OnboardingStageTemplateSumAggregateOutputType = {
     stageOrder: number | null
+    scheduleId: number | null
   }
 
   export type OnboardingStageTemplateMinAggregateOutputType = {
@@ -41429,6 +41431,7 @@ export namespace Prisma {
     stageCode: string | null
     stageName: string | null
     stageDescription: string | null
+    scheduleId: number | null
     isActive: boolean | null
     isDeleted: boolean | null
     createdAt: Date | null
@@ -41447,6 +41450,7 @@ export namespace Prisma {
     stageCode: string | null
     stageName: string | null
     stageDescription: string | null
+    scheduleId: number | null
     isActive: boolean | null
     isDeleted: boolean | null
     createdAt: Date | null
@@ -41465,6 +41469,7 @@ export namespace Prisma {
     stageCode: number
     stageName: number
     stageDescription: number
+    scheduleId: number
     isActive: number
     isDeleted: number
     createdAt: number
@@ -41479,10 +41484,12 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateAvgAggregateInputType = {
     stageOrder?: true
+    scheduleId?: true
   }
 
   export type OnboardingStageTemplateSumAggregateInputType = {
     stageOrder?: true
+    scheduleId?: true
   }
 
   export type OnboardingStageTemplateMinAggregateInputType = {
@@ -41493,6 +41500,7 @@ export namespace Prisma {
     stageCode?: true
     stageName?: true
     stageDescription?: true
+    scheduleId?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -41511,6 +41519,7 @@ export namespace Prisma {
     stageCode?: true
     stageName?: true
     stageDescription?: true
+    scheduleId?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -41529,6 +41538,7 @@ export namespace Prisma {
     stageCode?: true
     stageName?: true
     stageDescription?: true
+    scheduleId?: true
     isActive?: true
     isDeleted?: true
     createdAt?: true
@@ -41634,6 +41644,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription: string | null
+    scheduleId: number | null
     isActive: boolean
     isDeleted: boolean
     createdAt: Date
@@ -41671,6 +41682,7 @@ export namespace Prisma {
     stageCode?: boolean
     stageName?: boolean
     stageDescription?: boolean
+    scheduleId?: boolean
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: boolean
@@ -41696,6 +41708,7 @@ export namespace Prisma {
     stageCode?: boolean
     stageName?: boolean
     stageDescription?: boolean
+    scheduleId?: boolean
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: boolean
@@ -41706,7 +41719,7 @@ export namespace Prisma {
     deletedBy?: boolean
   }
 
-  export type OnboardingStageTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"onboardingStageTemplateId" | "onboardingPortalTemplateId" | "programType" | "stageOrder" | "stageCode" | "stageName" | "stageDescription" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["onboardingStageTemplate"]>
+  export type OnboardingStageTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"onboardingStageTemplateId" | "onboardingPortalTemplateId" | "programType" | "stageOrder" | "stageCode" | "stageName" | "stageDescription" | "scheduleId" | "isActive" | "isDeleted" | "createdAt" | "createdBy" | "updatedAt" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["onboardingStageTemplate"]>
   export type OnboardingStageTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portalTemplate?: boolean | OnboardingPortalTemplateDefaultArgs<ExtArgs>
     stageMaterials?: boolean | OnboardingStageTemplate$stageMaterialsArgs<ExtArgs>
@@ -41734,6 +41747,7 @@ export namespace Prisma {
       stageCode: string
       stageName: string
       stageDescription: string | null
+      scheduleId: number | null
       isActive: boolean
       isDeleted: boolean
       createdAt: Date
@@ -42122,6 +42136,7 @@ export namespace Prisma {
     readonly stageCode: FieldRef<"OnboardingStageTemplate", 'String'>
     readonly stageName: FieldRef<"OnboardingStageTemplate", 'String'>
     readonly stageDescription: FieldRef<"OnboardingStageTemplate", 'String'>
+    readonly scheduleId: FieldRef<"OnboardingStageTemplate", 'Int'>
     readonly isActive: FieldRef<"OnboardingStageTemplate", 'Boolean'>
     readonly isDeleted: FieldRef<"OnboardingStageTemplate", 'Boolean'>
     readonly createdAt: FieldRef<"OnboardingStageTemplate", 'DateTime'>
@@ -52487,6 +52502,7 @@ export namespace Prisma {
     stageCode: 'stageCode',
     stageName: 'stageName',
     stageDescription: 'stageDescription',
+    scheduleId: 'scheduleId',
     isActive: 'isActive',
     isDeleted: 'isDeleted',
     createdAt: 'createdAt',
@@ -56386,6 +56402,7 @@ export namespace Prisma {
     stageCode?: StringFilter<"OnboardingStageTemplate"> | string
     stageName?: StringFilter<"OnboardingStageTemplate"> | string
     stageDescription?: StringNullableFilter<"OnboardingStageTemplate"> | string | null
+    scheduleId?: IntNullableFilter<"OnboardingStageTemplate"> | number | null
     isActive?: BoolFilter<"OnboardingStageTemplate"> | boolean
     isDeleted?: BoolFilter<"OnboardingStageTemplate"> | boolean
     createdAt?: DateTimeFilter<"OnboardingStageTemplate"> | Date | string
@@ -56408,6 +56425,7 @@ export namespace Prisma {
     stageCode?: SortOrder
     stageName?: SortOrder
     stageDescription?: SortOrderInput | SortOrder
+    scheduleId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -56435,6 +56453,7 @@ export namespace Prisma {
     stageCode?: StringFilter<"OnboardingStageTemplate"> | string
     stageName?: StringFilter<"OnboardingStageTemplate"> | string
     stageDescription?: StringNullableFilter<"OnboardingStageTemplate"> | string | null
+    scheduleId?: IntNullableFilter<"OnboardingStageTemplate"> | number | null
     isActive?: BoolFilter<"OnboardingStageTemplate"> | boolean
     isDeleted?: BoolFilter<"OnboardingStageTemplate"> | boolean
     createdAt?: DateTimeFilter<"OnboardingStageTemplate"> | Date | string
@@ -56457,6 +56476,7 @@ export namespace Prisma {
     stageCode?: SortOrder
     stageName?: SortOrder
     stageDescription?: SortOrderInput | SortOrder
+    scheduleId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -56483,6 +56503,7 @@ export namespace Prisma {
     stageCode?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
     stageName?: StringWithAggregatesFilter<"OnboardingStageTemplate"> | string
     stageDescription?: StringNullableWithAggregatesFilter<"OnboardingStageTemplate"> | string | null
+    scheduleId?: IntNullableWithAggregatesFilter<"OnboardingStageTemplate"> | number | null
     isActive?: BoolWithAggregatesFilter<"OnboardingStageTemplate"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"OnboardingStageTemplate"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"OnboardingStageTemplate"> | Date | string
@@ -61793,6 +61814,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -61815,6 +61837,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -61835,6 +61858,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61857,6 +61881,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61878,6 +61903,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -61895,6 +61921,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61913,6 +61940,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65757,6 +65785,7 @@ export namespace Prisma {
     stageCode?: SortOrder
     stageName?: SortOrder
     stageDescription?: SortOrder
+    scheduleId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -65769,6 +65798,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateAvgOrderByAggregateInput = {
     stageOrder?: SortOrder
+    scheduleId?: SortOrder
   }
 
   export type OnboardingStageTemplateMaxOrderByAggregateInput = {
@@ -65779,6 +65809,7 @@ export namespace Prisma {
     stageCode?: SortOrder
     stageName?: SortOrder
     stageDescription?: SortOrder
+    scheduleId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -65797,6 +65828,7 @@ export namespace Prisma {
     stageCode?: SortOrder
     stageName?: SortOrder
     stageDescription?: SortOrder
+    scheduleId?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
@@ -65809,6 +65841,7 @@ export namespace Prisma {
 
   export type OnboardingStageTemplateSumOrderByAggregateInput = {
     stageOrder?: SortOrder
+    scheduleId?: SortOrder
   }
 
   export type OnboardingStageTemplateScalarRelationFilter = {
@@ -75861,6 +75894,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -75881,6 +75915,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76007,6 +76042,7 @@ export namespace Prisma {
     stageCode?: StringFilter<"OnboardingStageTemplate"> | string
     stageName?: StringFilter<"OnboardingStageTemplate"> | string
     stageDescription?: StringNullableFilter<"OnboardingStageTemplate"> | string | null
+    scheduleId?: IntNullableFilter<"OnboardingStageTemplate"> | number | null
     isActive?: BoolFilter<"OnboardingStageTemplate"> | boolean
     isDeleted?: BoolFilter<"OnboardingStageTemplate"> | boolean
     createdAt?: DateTimeFilter<"OnboardingStageTemplate"> | Date | string
@@ -76413,6 +76449,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76434,6 +76471,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76526,6 +76564,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76547,6 +76586,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76610,6 +76650,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76631,6 +76672,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -76727,6 +76769,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76748,6 +76791,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77516,6 +77560,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -77537,6 +77582,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -77769,6 +77815,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77790,6 +77837,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81069,6 +81117,7 @@ export namespace Prisma {
     stageCode: string
     stageName: string
     stageDescription?: string | null
+    scheduleId?: number | null
     isActive?: boolean
     isDeleted?: boolean
     createdAt?: Date | string
@@ -81115,6 +81164,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81135,6 +81185,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81155,6 +81206,7 @@ export namespace Prisma {
     stageCode?: StringFieldUpdateOperationsInput | string
     stageName?: StringFieldUpdateOperationsInput | string
     stageDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
