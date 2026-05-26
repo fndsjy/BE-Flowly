@@ -880,6 +880,7 @@ model OnboardingStageTemplate {
   stageCode                  String                    @db.NVarChar(50)
   stageName                  String                    @db.NVarChar(100)
   stageDescription           String?                   @db.NVarChar(1000)
+  scheduleId                 Int?
   isActive                   Boolean                   @default(true)
   isDeleted                  Boolean                   @default(false)
   createdAt                  DateTime                  @default(now())
@@ -897,6 +898,7 @@ model OnboardingStageTemplate {
   @@unique([onboardingPortalTemplateId, programType, stageCode])
   @@index([onboardingPortalTemplateId, isDeleted, isActive])
   @@index([onboardingPortalTemplateId, programType, isDeleted, isActive])
+  @@index([scheduleId])
   @@map("onboarding_stage_template")
 }
 

@@ -9,6 +9,10 @@ type SubmitRuntimeExamRequest = {
         answer?: string | null;
     }>;
 };
+type TestAutofillRuntimeExamRequest = {
+    onboardingStageProgressId?: string;
+    score?: number | string | null;
+};
 type SaveRuntimeExamAnswerRequest = {
     examsId?: string;
     questionId?: number;
@@ -53,6 +57,7 @@ export declare class OnboardingExamRuntimeService {
             answer: string | null;
         }[];
     }>;
+    private static startUnlocked;
     static saveAnswer(requesterUserId: string, request: SaveRuntimeExamAnswerRequest): Promise<{
         examsId: string;
         questionId: number;
@@ -67,6 +72,16 @@ export declare class OnboardingExamRuntimeService {
         examsId: string;
         warningCount: number;
         recordedAt: Date;
+    }>;
+    static testAutofill(requesterUserId: string, request: TestAutofillRuntimeExamRequest): Promise<{
+        onboardingStageProgressId: string;
+        examsId: string;
+        employeeId: number;
+        status: string;
+        score: number;
+        answeredQuestionCount: number;
+        totalQuestionCount: number;
+        message: string;
     }>;
     static submit(requesterUserId: string, request: SubmitRuntimeExamRequest): Promise<{
         examsId: string;

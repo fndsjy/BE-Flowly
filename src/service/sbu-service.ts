@@ -8,6 +8,7 @@ import {
   canReadModule,
   canCrudModule
 } from "../utils/access-scope.js";
+import { hasEmployeeAdminAccess } from "../utils/admin-access.js";
 import {
   buildChanges,
   pickSnapshot,
@@ -108,8 +109,9 @@ export class SbuService {
 
     const accessContext = await getAccessContext(requesterId);
     const moduleAccessMap = await getModuleAccessMap(requesterId);
-    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
-      throw new ResponseError(403, "Module SBU access required");
+    const canCreateSbu = canReadModule(moduleAccessMap, "SBU_CREATE");
+    if (!accessContext.isAdmin && !canCreateSbu) {
+      throw new ResponseError(403, "Tambah SBU access required");
     }
 
     if (req.pic !== undefined && req.pic !== null) {
@@ -201,13 +203,14 @@ export class SbuService {
     });
 
     if (!exists) throw new ResponseError(404, "SBU not found");
-    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
-      throw new ResponseError(403, "Module SBU access required");
-    }
     if (!accessContext.isAdmin) {
+      const hasModuleCrud = canCrudModule(moduleAccessMap, "SBU");
       const explicitAccess = await resolveExplicitSbuAccess(requesterId, exists.id);
       if (explicitAccess === "READ" || explicitAccess === "NONE") {
         throw new ResponseError(403, "SBU is read-only");
+      }
+      if (!hasModuleCrud && explicitAccess !== "CRUD") {
+        throw new ResponseError(403, "SBU CRUD access required");
       }
     }
 
@@ -310,13 +313,14 @@ export class SbuService {
     });
 
     if (!exists) throw new ResponseError(404, "SBU not found");
-    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "SBU")) {
-      throw new ResponseError(403, "Module SBU access required");
-    }
     if (!accessContext.isAdmin) {
+      const hasModuleCrud = canCrudModule(moduleAccessMap, "SBU");
       const explicitAccess = await resolveExplicitSbuAccess(requesterId, exists.id);
       if (explicitAccess === "READ" || explicitAccess === "NONE") {
         throw new ResponseError(403, "SBU is read-only");
+      }
+      if (!hasModuleCrud && explicitAccess !== "CRUD") {
+        throw new ResponseError(403, "SBU CRUD access required");
       }
     }
 
@@ -347,10 +351,11 @@ export class SbuService {
   static async list(requesterId: string) {
     const accessContext = await getAccessContext(requesterId);
     const moduleAccessMap = await getModuleAccessMap(requesterId);
-    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "SBU")) {
+    const canAccessAll = accessContext.isAdmin || await hasEmployeeAdminAccess(requesterId);
+    if (!canAccessAll && !canReadModule(moduleAccessMap, "SBU")) {
       throw new ResponseError(403, "Module SBU access required");
     }
-    if (!accessContext.isAdmin && accessContext.sbu.read.size === 0) {
+    if (!canAccessAll && accessContext.sbu.read.size === 0) {
       return [];
     }
 
@@ -358,7 +363,7 @@ export class SbuService {
       where: {
         OR: [{ isDeleted: false }, { isDeleted: null }],
         status: "A",
-        ...(accessContext.isAdmin
+        ...(canAccessAll
           ? {}
           : { id: { in: Array.from(accessContext.sbu.read) } })
       },

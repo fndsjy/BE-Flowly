@@ -48,6 +48,7 @@ export interface EmployeeOnboardingSummaryResponse {
   portalKey: string;
   status: string | null;
   startedAt: Date | null;
+  completedAt: Date | null;
   dueAt: Date | null;
   failedAt: Date | null;
   currentStageOrder: number | null;
@@ -146,6 +147,10 @@ export interface OnboardingWorkspaceCertificateResponse {
   issuedAt: Date | null;
   generatedBy: string | null;
   scheduleId: number | null;
+  scheduleName: string | null;
+  stageCode: string | null;
+  stageName: string | null;
+  stageOrder: number | null;
 }
 
 export interface OnboardingWorkspaceStageResponse {
@@ -263,6 +268,7 @@ export interface AdminOnboardingMonitoringParticipantResponse {
   email: string | null;
   status: string;
   startedAt: Date;
+  completedAt: Date | null;
   dueAt: Date | null;
   currentStageOrder: number | null;
   currentStageName: string | null;

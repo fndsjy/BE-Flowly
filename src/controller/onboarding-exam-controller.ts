@@ -27,8 +27,8 @@ export class OnboardingExamController {
         throw new ResponseError(401, "Unauthorized");
       }
 
-      verifyToken(token);
-      const response = await OnboardingExamService.listSourceExams();
+      const payload = verifyToken(token);
+      const response = await OnboardingExamService.listSourceExams(payload.userId);
 
       res.status(200).json({ response });
     } catch (err) {

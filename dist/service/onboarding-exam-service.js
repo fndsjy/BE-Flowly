@@ -368,7 +368,8 @@ const buildSourceExamMap = async () => {
     return sourceExamMap;
 };
 export class OnboardingExamService {
-    static async listSourceExams() {
+    static async listSourceExams(requesterId) {
+        await ensureAdminAccess(requesterId);
         const sourceExamMap = await buildSourceExamMap();
         return Array.from(sourceExamMap.values()).sort((left, right) => {
             if (left.examName !== right.examName) {

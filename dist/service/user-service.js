@@ -5,6 +5,7 @@ import { invalidateProfileCache, withProfileCache, } from "../application/profil
 import { ResponseError } from "../error/response-error.js";
 import { toLoginResponse, toUserListResponse, toUserResponse, } from "../model/user-model.js";
 import { generateToken, getTokenExpiresIn } from "../utils/auth.js";
+import { ensureEmployeeAdminAccess } from "../utils/admin-access.js";
 import { generateUserId } from "../utils/id-generator.js";
 import { UserValidation } from "../validation/user-validation.js";
 import { Validation } from "../validation/validation.js";
@@ -510,16 +511,7 @@ const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 export class UserService {
     static async register(request, requesterUserId) {
         const registerRequest = Validation.validate(UserValidation.REGISTER, request);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterUserId },
-            include: { role: true },
-        });
-        if (!requester ||
-            requester.isDeleted ||
-            !requester.isActive ||
-            requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only Admin can register new users");
-        }
+        await ensureEmployeeAdminAccess(requesterUserId, "Only Admin can register new users");
         const existing = await prismaFlowly.user.findUnique({
             where: { username: registerRequest.username },
         });
@@ -877,16 +869,7 @@ export class UserService {
         return this.getProfile(requesterUserId);
     }
     static async listUsers(requesterUserId) {
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterUserId },
-            include: { role: true },
-        });
-        if (!requester ||
-            requester.isDeleted ||
-            !requester.isActive ||
-            requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Access denied");
-        }
+        await ensureEmployeeAdminAccess(requesterUserId, "Access denied");
         const users = await prismaFlowly.user.findMany({
             where: { isDeleted: false },
             include: { role: { select: { roleName: true } } },
@@ -950,16 +933,7 @@ export class UserService {
     }
     static async changeRole(requesterUserId, request) {
         const changeReq = Validation.validate(UserValidation.CHANGE_ROLE, request);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterUserId },
-            include: { role: true },
-        });
-        if (!requester ||
-            requester.isDeleted ||
-            !requester.isActive ||
-            requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can change roles");
-        }
+        await ensureEmployeeAdminAccess(requesterUserId, "Only admin can change roles");
         if (changeReq.userId === requesterUserId) {
             throw new ResponseError(403, "Role akun sendiri tidak bisa diubah. Minta admin lain untuk menggantinya.");
         }
@@ -990,16 +964,7 @@ export class UserService {
     }
     static async changeUserStatus(requesterUserId, request) {
         const changeReq = Validation.validate(UserValidation.CHANGE_USER_STATUS, request);
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterUserId },
-            include: { role: true },
-        });
-        if (!requester ||
-            requester.isDeleted ||
-            !requester.isActive ||
-            requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can change user status");
-        }
+        await ensureEmployeeAdminAccess(requesterUserId, "Only admin can change user status");
         const targetUser = await prismaFlowly.user.findUnique({
             where: { userId: changeReq.userId },
             select: { userId: true, isActive: true, isDeleted: true },
@@ -1024,16 +989,7 @@ export class UserService {
         invalidateProfileCache(changeReq.userId);
     }
     static async listRoles(requesterUserId) {
-        const requester = await prismaFlowly.user.findUnique({
-            where: { userId: requesterUserId },
-            include: { role: true },
-        });
-        if (!requester ||
-            requester.isDeleted ||
-            !requester.isActive ||
-            requester.role.roleLevel !== 1) {
-            throw new ResponseError(403, "Only admin can access roles");
-        }
+        await ensureEmployeeAdminAccess(requesterUserId, "Only admin can access roles");
         const roles = await prismaFlowly.role.findMany({
             where: { roleIsActive: true },
             orderBy: { roleLevel: "asc" },

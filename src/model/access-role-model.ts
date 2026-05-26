@@ -75,7 +75,10 @@ export type OrgAccessSummary = {
 export type AccessRoleSummaryResponse = {
   isAdmin: boolean;
   menuAccess: AccessRoleSummaryItem[];
+  menuAccessConfiguredKeys: string[];
   moduleAccess: AccessRoleSummaryItem[];
+  portalAccess: AccessRoleSummaryItem[];
+  portalAccessConfigured: boolean;
   focusPilarIds?: number[];
   orgScope: {
     pilarRead: boolean;

@@ -29,7 +29,6 @@ const ONBOARDING_ASSIGNMENT_CONTEXT_TYPE = "ONBOARDING_ASSIGNMENT";
 const ONBOARDING_DECISION_CONTEXT_TYPE = "ONBOARDING_DECISION";
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const CHANNEL_EMAIL = "EMAIL";
-const ONBOARDING_EMPLOYEE_BATCH_CODE = "ONB";
 const AUTO_FAILED_DECISION_TYPE = "AUTO_FAILED";
 const DECISION_PASS_OVERRIDE = "PASS_OVERRIDE";
 const DECISION_EXTEND = "EXTEND";
@@ -37,6 +36,7 @@ const DECISION_FAIL_FINAL = "FAIL_FINAL";
 const DECISION_FREEZE_TRANSFER_REVIEW = "FREEZE_TRANSFER_REVIEW";
 const DECISION_CANCEL_TRANSFER_REVIEW = "CANCEL_TRANSFER_REVIEW";
 const ASSIGNMENT_STATUS_TRANSFER_REVIEW = "TRANSFER_REVIEW";
+const EXAM_FINISHED_FLAG = "Y";
 const DEFAULT_EXTENSION_DURATION_DAYS = 90;
 const DEFAULT_CERTIFICATE_ASSET_BASE_URL = "https://lms.domas.co.id/assets/img/sertifikat/peserta";
 const FINAL_ASSIGNMENT_STATUSES = new Set([
@@ -84,7 +84,6 @@ const normalizeExamScore = (value) => {
     }
     return null;
 };
-const getOnboardingScheduleName = (portalKey, stageCode) => `ONBOARDING|${normalizePortalKey(portalKey)}|${stageCode}`.slice(0, 255);
 const resolveCertificateAssetBaseUrl = () => (normalizeNote(process.env.LMS_CERTIFICATE_ASSET_BASE_URL) ??
     DEFAULT_CERTIFICATE_ASSET_BASE_URL).replace(/\/+$/, "");
 const encodeCertificatePath = (fileName) => fileName
@@ -1788,6 +1787,48 @@ const deactivateEmployeeAccountForFailedOnboarding = async (params) => {
         });
     }
 };
+const activateEmployeeLmsAccessForPassedOnboarding = async (params) => {
+    if (normalizeUpper(params.assignment.participantReferenceType) !==
+        EMPLOYEE_PARTICIPANT_REFERENCE_TYPE) {
+        return;
+    }
+    const employeeUserId = Number(params.assignment.participantReferenceId);
+    if (!Number.isInteger(employeeUserId) || employeeUserId <= 0) {
+        logger.warn("Skipping passed onboarding LMS activation with invalid id", {
+            onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+            participantReferenceId: params.assignment.participantReferenceId,
+        });
+        return;
+    }
+    const updateResult = await prismaEmployee.em_employee.updateMany({
+        where: {
+            UserId: employeeUserId,
+            statusLMS: {
+                not: true,
+            },
+        },
+        data: {
+            statusLMS: true,
+            Lastupdate: params.updatedAt,
+        },
+    });
+    if (updateResult.count === 0) {
+        const employee = await prismaEmployee.em_employee.findUnique({
+            where: {
+                UserId: employeeUserId,
+            },
+            select: {
+                UserId: true,
+            },
+        });
+        if (!employee) {
+            logger.warn("Passed onboarding employee was not found for LMS activation", {
+                onboardingAssignmentId: params.assignment.onboardingAssignmentId,
+                employeeUserId,
+            });
+        }
+    }
+};
 const enqueueOnboardingFailFinalParticipantNotification = async (params) => {
     try {
         if (normalizeUpper(params.assignment.participantReferenceType) !==
@@ -2494,6 +2535,7 @@ const toSummaryResponse = (employeeNameMap, placementMap, transferReviewStillInS
         portalKey: assignment.portalKey,
         status: assignment.status,
         startedAt: assignment.startedAt,
+        completedAt: assignment.completedAt,
         dueAt: assignment.dueAt,
         failedAt: assignment.failedAt,
         currentStageOrder: assignment.currentStageOrder,
@@ -2522,6 +2564,7 @@ const toNotStartedEmployeeSummaryResponse = (portalKey, employee, placementMap) 
         portalKey,
         status: null,
         startedAt: null,
+        completedAt: null,
         dueAt: null,
         failedAt: null,
         currentStageOrder: null,
@@ -3107,6 +3150,12 @@ export class OnboardingService {
                 decidedByUserId: requesterUserId,
             });
         }
+        if (decisionType === DECISION_PASS_OVERRIDE) {
+            await activateEmployeeLmsAccessForPassedOnboarding({
+                assignment,
+                updatedAt: now,
+            });
+        }
         if (canDecideAsHrd &&
             (decisionType === DECISION_PASS_OVERRIDE || decisionType === DECISION_EXTEND)) {
             await enqueueOnboardingParticipantDecisionNotification({
@@ -3240,6 +3289,7 @@ export class OnboardingService {
                             },
                             stageTemplate: {
                                 select: {
+                                    scheduleId: true,
                                     onboardingStageTemplateId: true,
                                     stageName: true,
                                     stageDescription: true,
@@ -3287,23 +3337,38 @@ export class OnboardingService {
             }
         }
         const employeeId = Number(participantReferenceId);
-        const scheduleNameToPortalKey = new Map();
-        const scheduleNameToStageTemplateId = new Map();
+        const scheduleIdToPortalKey = new Map();
+        const scheduleIdToStageTemplateId = new Map();
+        const scheduleIdToStageInfo = new Map();
         for (const assignment of assignments) {
             const portalKey = normalizePortalKey(assignment.portalTemplate?.portalKey ?? assignment.portalKey);
             for (const stageProgress of assignment.stageProgresses) {
-                const scheduleName = getOnboardingScheduleName(portalKey, stageProgress.stageCode);
-                scheduleNameToPortalKey.set(scheduleName, portalKey);
-                scheduleNameToStageTemplateId.set(scheduleName, stageProgress.onboardingStageTemplateId);
+                const scheduleIdValue = stageProgress.stageTemplate.scheduleId;
+                if (scheduleIdValue == null || !Number.isInteger(scheduleIdValue)) {
+                    continue;
+                }
+                const scheduleId = scheduleIdValue;
+                scheduleIdToPortalKey.set(scheduleId, portalKey);
+                scheduleIdToStageTemplateId.set(scheduleId, stageProgress.onboardingStageTemplateId);
+                scheduleIdToStageInfo.set(scheduleId, {
+                    portalKey,
+                    stageTemplateId: stageProgress.onboardingStageTemplateId,
+                    stageCode: stageProgress.stageCode,
+                    stageName: normalizeNote(stageProgress.stageTemplate.stageName) ??
+                        normalizeNote(stageProgress.stageName) ??
+                        `Tahap ${stageProgress.stageOrder}`,
+                    stageOrder: stageProgress.stageOrder,
+                    scheduleName: null,
+                });
             }
         }
-        const onboardingSchedules = scheduleNameToPortalKey.size > 0
+        const onboardingScheduleIds = Array.from(scheduleIdToPortalKey.keys());
+        const onboardingSchedules = onboardingScheduleIds.length > 0
             ? await prismaEmployee.em_schedule1.findMany({
                 where: {
-                    scheName: {
-                        in: Array.from(scheduleNameToPortalKey.keys()),
+                    Id: {
+                        in: onboardingScheduleIds,
                     },
-                    is_batch: ONBOARDING_EMPLOYEE_BATCH_CODE,
                 },
                 select: {
                     Id: true,
@@ -3311,23 +3376,20 @@ export class OnboardingService {
                 },
             })
             : [];
-        const scheduleIdToPortalKey = new Map();
-        const scheduleIdToStageTemplateId = new Map();
+        const scheduleIdToScheduleName = new Map();
         for (const schedule of onboardingSchedules) {
-            const portalKey = schedule.scheName
-                ? scheduleNameToPortalKey.get(schedule.scheName)
-                : null;
-            if (portalKey) {
-                scheduleIdToPortalKey.set(schedule.Id, portalKey);
+            const scheduleName = normalizeNote(schedule.scheName);
+            if (scheduleName) {
+                scheduleIdToScheduleName.set(schedule.Id, scheduleName);
             }
-            const stageTemplateId = schedule.scheName
-                ? scheduleNameToStageTemplateId.get(schedule.scheName)
-                : null;
-            if (stageTemplateId) {
-                scheduleIdToStageTemplateId.set(schedule.Id, stageTemplateId);
+            const stageInfo = scheduleIdToStageInfo.get(schedule.Id);
+            if (stageInfo) {
+                scheduleIdToStageInfo.set(schedule.Id, {
+                    ...stageInfo,
+                    scheduleName,
+                });
             }
         }
-        const onboardingScheduleIds = Array.from(scheduleIdToPortalKey.keys());
         const scheduleTypeDurations = onboardingScheduleIds.length > 0
             ? await prismaEmployee.em_schedule4.findMany({
                 where: {
@@ -3397,6 +3459,29 @@ export class OnboardingService {
                 },
             })
             : [];
+        const certificateScheduleIds = Array.from(new Set(certificateRows
+            .map((certificate) => certificate.schedule_id)
+            .filter((scheduleId) => Number.isInteger(scheduleId))));
+        const missingCertificateScheduleIds = certificateScheduleIds.filter((scheduleId) => !scheduleIdToScheduleName.has(scheduleId));
+        const certificateSchedules = missingCertificateScheduleIds.length > 0
+            ? await prismaEmployee.em_schedule1.findMany({
+                where: {
+                    Id: {
+                        in: missingCertificateScheduleIds,
+                    },
+                },
+                select: {
+                    Id: true,
+                    scheName: true,
+                },
+            })
+            : [];
+        for (const schedule of certificateSchedules) {
+            const scheduleName = normalizeNote(schedule.scheName);
+            if (scheduleName) {
+                scheduleIdToScheduleName.set(schedule.Id, scheduleName);
+            }
+        }
         const certificateTemplateIds = Array.from(new Set(certificateRows.map((certificate) => certificate.cert_templ_id)));
         const certificateTemplates = certificateTemplateIds.length > 0
             ? await prismaEmployee.em_certificate_templates.findMany({
@@ -3421,10 +3506,14 @@ export class OnboardingService {
                 continue;
             }
             const template = certificateTemplateMap.get(certificate.cert_templ_id);
-            const portalKey = certificate.schedule_id != null
-                ? scheduleIdToPortalKey.get(certificate.schedule_id) ??
-                    fallbackCertificatePortalKey
-                : fallbackCertificatePortalKey;
+            const scheduleInfo = certificate.schedule_id != null
+                ? scheduleIdToStageInfo.get(certificate.schedule_id)
+                : null;
+            const portalKey = scheduleInfo?.portalKey ??
+                (certificate.schedule_id != null
+                    ? scheduleIdToPortalKey.get(certificate.schedule_id)
+                    : null) ??
+                fallbackCertificatePortalKey;
             const certificateName = normalizeNote(template?.certificate_name) ??
                 normalizeNote(template?.name) ??
                 "Sertifikat Onboarding";
@@ -3441,6 +3530,13 @@ export class OnboardingService {
                 issuedAt: certificate.created_date,
                 generatedBy: normalizeNote(certificate.generated_by),
                 scheduleId: certificate.schedule_id,
+                scheduleName: scheduleInfo?.scheduleName ??
+                    (certificate.schedule_id != null
+                        ? scheduleIdToScheduleName.get(certificate.schedule_id) ?? null
+                        : null),
+                stageCode: scheduleInfo?.stageCode ?? null,
+                stageName: scheduleInfo?.stageName ?? null,
+                stageOrder: scheduleInfo?.stageOrder ?? null,
             });
             certificatesByPortal.set(portalKey, existing);
         }
@@ -3771,6 +3867,7 @@ export class OnboardingService {
                     participantReferenceType: true,
                     participantReferenceId: true,
                     startedAt: true,
+                    completedAt: true,
                     dueAt: true,
                     status: true,
                     currentStageOrder: true,
@@ -4147,6 +4244,7 @@ export class OnboardingService {
                     email: employee?.email ?? null,
                     status: assignment.status,
                     startedAt: assignment.startedAt,
+                    completedAt: assignment.completedAt,
                     dueAt: assignment.dueAt,
                     currentStageOrder: currentStage?.stageOrder ?? assignment.currentStageOrder,
                     currentStageName: currentStage?.stageName ?? null,
@@ -4321,13 +4419,56 @@ export class OnboardingService {
                 stageProgress.assignment.participantReferenceId !== participantReferenceId) {
                 throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
             }
-            if (normalizeUpper(stageProgress.status) === "LOCKED") {
+            const assignmentStatus = normalizeUpper(stageProgress.assignment.status);
+            const stageStatus = normalizeUpper(stageProgress.status);
+            if (stageStatus === "LOCKED") {
                 throw new ResponseError(403, "Tahap onboarding ini belum aktif untuk dibaca");
             }
-            if (isFinalAssignmentStatus(stageProgress.assignment.status) ||
-                normalizeUpper(stageProgress.status) === "FAILED" ||
-                normalizeUpper(stageProgress.status) === "FAIL_FINAL") {
+            if (assignmentStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW ||
+                isFinalAssignmentStatus(stageProgress.assignment.status) ||
+                stageStatus === ASSIGNMENT_STATUS_TRANSFER_REVIEW ||
+                stageStatus === "FAILED" ||
+                stageStatus === "FAIL_FINAL") {
                 throw new ResponseError(403, "Onboarding sudah terkunci karena dibekukan, gagal, atau sudah selesai");
+            }
+            const activeExamAttempt = await tx.onboardingExamAttempt.findFirst({
+                where: {
+                    onboardingAssignmentId: stageProgress.onboardingAssignmentId,
+                    status: "IN_PROGRESS",
+                    employeeExamSessionId: {
+                        not: null,
+                    },
+                    isDeleted: false,
+                    isActive: true,
+                },
+                orderBy: [{ startedAt: "desc" }, { createdAt: "desc" }],
+                select: {
+                    employeeExamSessionId: true,
+                },
+            });
+            const activeExamSessionId = normalizeNote(activeExamAttempt?.employeeExamSessionId);
+            if (activeExamSessionId) {
+                const employeeId = Number(participantReferenceId);
+                const activeExamSession = Number.isInteger(employeeId)
+                    ? await prismaEmployee.em_session_exams.findFirst({
+                        where: {
+                            exams_id: activeExamSessionId,
+                            empl_id: employeeId,
+                            OR: [
+                                { is_selesai: null },
+                                { is_selesai: { not: EXAM_FINISHED_FLAG } },
+                            ],
+                        },
+                        select: {
+                            is_token_expr: true,
+                        },
+                    })
+                    : null;
+                if (activeExamSession &&
+                    (!activeExamSession.is_token_expr ||
+                        activeExamSession.is_token_expr.getTime() > transactionTime.getTime())) {
+                    throw new ResponseError(403, "Materi dikunci selama ujian sedang berlangsung");
+                }
             }
             const stageMaterial = await tx.onboardingStageMaterial.findFirst({
                 where: {
@@ -4362,8 +4503,7 @@ export class OnboardingService {
                 }
             }
             const finalStageStatus = !stageProgress.startedAt &&
-                (normalizeUpper(stageProgress.status) === "PENDING" ||
-                    normalizeUpper(stageProgress.status) === "NOT_STARTED")
+                (stageStatus === "PENDING" || stageStatus === "NOT_STARTED")
                 ? "READING"
                 : stageProgress.status;
             if (!stageProgress.startedAt || finalStageStatus !== stageProgress.status) {
@@ -4538,6 +4678,7 @@ export class OnboardingService {
                 portalKey: true,
                 status: true,
                 startedAt: true,
+                completedAt: true,
                 dueAt: true,
                 failedAt: true,
                 currentStageOrder: true,

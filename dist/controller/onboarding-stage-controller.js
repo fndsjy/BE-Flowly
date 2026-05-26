@@ -13,8 +13,14 @@ const ensureCustomerLearningAccess = async (req) => {
                 return {
                     bypassProgramFilter: true,
                     custId: null,
+                    canDownloadOriginal: true,
                 };
             }
+            return {
+                bypassProgramFilter: true,
+                custId: null,
+                canDownloadOriginal: false,
+            };
         }
         catch {
             // Fall through to customer session support.
@@ -26,6 +32,7 @@ const ensureCustomerLearningAccess = async (req) => {
             return {
                 bypassProgramFilter: false,
                 custId: CustomerSsoService.getProfile(customerToken).custid,
+                canDownloadOriginal: false,
             };
         }
         catch {

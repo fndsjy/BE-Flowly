@@ -10,5 +10,6 @@ export declare class OnboardingController {
     static saveExamAnswer(req: Request, res: Response, next: NextFunction): Promise<void>;
     static recordExamWarning(req: Request, res: Response, next: NextFunction): Promise<void>;
     static submitExam(req: Request, res: Response, next: NextFunction): Promise<void>;
+    static testAutofillExam(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 //# sourceMappingURL=onboarding-controller.d.ts.map

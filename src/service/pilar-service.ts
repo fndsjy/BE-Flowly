@@ -7,9 +7,9 @@ import {
   getAccessContext,
   getModuleAccessMap,
   canReadModule,
-  canCrudModule,
   canCrud
 } from "../utils/access-scope.js";
+import { hasEmployeeAdminAccess } from "../utils/admin-access.js";
 import {
   buildChanges,
   pickSnapshot,
@@ -50,8 +50,9 @@ export class PilarService {
 
     const accessContext = await getAccessContext(requesterId);
     const moduleAccessMap = await getModuleAccessMap(requesterId);
-    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "PILAR")) {
-      throw new ResponseError(403, "Module PILAR access required");
+    const canCreatePilar = canReadModule(moduleAccessMap, "PILAR_CREATE");
+    if (!accessContext.isAdmin && !canCreatePilar) {
+      throw new ResponseError(403, "Tambah Pilar access required");
     }
 
     if (request.pic) {
@@ -122,10 +123,6 @@ export class PilarService {
     const request = Validation.validate(PilarValidation.UPDATE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
-    const moduleAccessMap = await getModuleAccessMap(requesterId);
-    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "PILAR")) {
-      throw new ResponseError(403, "Module PILAR access required");
-    }
     if (!accessContext.isAdmin && !canCrud(accessContext.pilar, request.id)) {
       throw new ResponseError(403, "Pilar CRUD access required");
     }
@@ -213,10 +210,6 @@ export class PilarService {
     const request = Validation.validate(PilarValidation.DELETE, reqBody);
 
     const accessContext = await getAccessContext(requesterId);
-    const moduleAccessMap = await getModuleAccessMap(requesterId);
-    if (!accessContext.isAdmin && !canCrudModule(moduleAccessMap, "PILAR")) {
-      throw new ResponseError(403, "Module PILAR access required");
-    }
     if (!accessContext.isAdmin && !canCrud(accessContext.pilar, request.id)) {
       throw new ResponseError(403, "Pilar CRUD access required");
     }
@@ -271,10 +264,11 @@ export class PilarService {
   static async list(requesterId: string) {
     const accessContext = await getAccessContext(requesterId);
     const moduleAccessMap = await getModuleAccessMap(requesterId);
-    if (!accessContext.isAdmin && !canReadModule(moduleAccessMap, "PILAR")) {
+    const canAccessAll = accessContext.isAdmin || await hasEmployeeAdminAccess(requesterId);
+    if (!canAccessAll && !canReadModule(moduleAccessMap, "PILAR")) {
       throw new ResponseError(403, "Module PILAR access required");
     }
-    if (!accessContext.isAdmin && accessContext.pilar.read.size === 0) {
+    if (!canAccessAll && accessContext.pilar.read.size === 0) {
       return [];
     }
 
@@ -284,7 +278,7 @@ export class PilarService {
         { isDeleted: null }
       ],
       status: "A",
-      ...(accessContext.isAdmin
+      ...(canAccessAll
         ? {}
         : { id: { in: Array.from(accessContext.pilar.read) } })
       },

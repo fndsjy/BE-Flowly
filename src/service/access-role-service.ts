@@ -4,6 +4,7 @@ import { AccessRoleValidation } from "../validation/access-role-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { generateAcessRoleId } from "../utils/id-generator.js";
 import { getAccessContext } from "../utils/access-scope.js";
+import { ensureEmployeeAdminAccess } from "../utils/admin-access.js";
 
 import {
   type CreateAccessRoleRequest,
@@ -310,15 +311,7 @@ const hasActiveOnboardingDecisionPicAssignment = async (
 export class AccessRoleService {
   static async create(requesterId: string, reqBody: CreateAccessRoleRequest) {
     const req = Validation.validate(AccessRoleValidation.CREATE, reqBody);
-
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can create access role");
-    }
+    await ensureEmployeeAdminAccess(requesterId, "Only admin can create access role");
 
     const subjectType = normalizeRequiredUpper(req.subjectType);
     const subjectId = req.subjectId.trim();
@@ -382,15 +375,7 @@ export class AccessRoleService {
 
   static async update(requesterId: string, reqBody: UpdateAccessRoleRequest) {
     const req = Validation.validate(AccessRoleValidation.UPDATE, reqBody);
-
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can update access role");
-    }
+    await ensureEmployeeAdminAccess(requesterId, "Only admin can update access role");
 
     const existing = await prismaFlowly.accessRole.findUnique({
       where: { accessId: req.accessId }
@@ -468,15 +453,7 @@ export class AccessRoleService {
 
   static async softDelete(requesterId: string, reqBody: DeleteAccessRoleRequest) {
     const req = Validation.validate(AccessRoleValidation.DELETE, reqBody);
-
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can delete access role");
-    }
+    await ensureEmployeeAdminAccess(requesterId, "Only admin can delete access role");
 
     const existing = await prismaFlowly.accessRole.findUnique({
       where: { accessId: req.accessId }
@@ -507,14 +484,7 @@ export class AccessRoleService {
     masAccessId?: string;
     isActive?: boolean;
   }) {
-    const requester = await prismaFlowly.user.findUnique({
-      where: { userId: requesterId },
-      include: { role: true }
-    });
-
-    if (!requester || requester.role.roleLevel !== 1) {
-      throw new ResponseError(403, "Only admin can access access roles");
-    }
+    await ensureEmployeeAdminAccess(requesterId, "Only admin can access access roles");
 
     const subjectType = filters.subjectType
       ? normalizeRequiredUpper(filters.subjectType)
@@ -631,50 +601,6 @@ export class AccessRoleService {
             )
           : false;
 
-    if (!isAdmin && isEmployeeUser) {
-      const menuAccess: AccessRoleSummaryResponse["menuAccess"] = [];
-      const moduleAccess: AccessRoleSummaryResponse["moduleAccess"] = [];
-
-      const applyEmployeeRead = (resourceType: string, resourceKey: string) => {
-        moduleAccess.push({ resourceType, resourceKey, accessLevel: "READ" });
-      };
-
-      const applyEmployeeMenuRead = (resourceKey: string) => {
-        menuAccess.push({ resourceType: "MENU", resourceKey, accessLevel: "READ" });
-      };
-
-      if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
-        applyEmployeeMenuRead("ORGANISASI");
-      }
-      applyEmployeeMenuRead("A3");
-      if (orgScope.pilarRead || orgScope.pilarCrud) {
-        applyEmployeeRead("MODULE", "PILAR");
-      }
-      if (orgScope.sbuRead || orgScope.sbuCrud) {
-        applyEmployeeRead("MODULE", "SBU");
-      }
-      if (orgScope.sbuSubRead || orgScope.sbuSubCrud) {
-        applyEmployeeRead("MODULE", "SBU_SUB");
-      }
-      if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
-        applyEmployeeRead("MODULE", "CHART");
-        applyEmployeeRead("MODULE", "CHART_MEMBER");
-      }
-      applyEmployeeRead("MODULE", "CASE");
-      if (hasOnboardingPicDecisionAccess) {
-        applyEmployeeRead("MODULE", ONBOARDING_DECISION_MODULE_KEY);
-      }
-
-      return {
-        isAdmin,
-        menuAccess,
-        moduleAccess,
-        focusPilarIds,
-        orgScope,
-        orgAccess
-      };
-    }
-
     const subjectFilters = [
       { subjectType: "USER", subjectId: requesterId }
     ];
@@ -686,7 +612,7 @@ export class AccessRoleService {
     const accessRoles = await prismaFlowly.accessRole.findMany({
       where: {
         isDeleted: false,
-        resourceType: { in: ["MENU", "MODULE"] },
+        resourceType: { in: ["MENU", "MODULE", "PORTAL"] },
         OR: subjectFilters
       },
       select: {
@@ -794,6 +720,10 @@ export class AccessRoleService {
       applyAccess(resolved.resourceType, resolved.resourceKey, access.accessLevel, true);
     }
 
+    if (accessMap.has("MENU:A3")) {
+      applyAccess("MODULE", "CASE", "CRUD", false);
+    }
+
     if (!isAdmin && isEmployeeUser) {
       const applyEmployeeRead = (resourceType: string, resourceKey: string) => {
         const key = `${resourceType}:${resourceKey}`;
@@ -806,6 +736,7 @@ export class AccessRoleService {
       if (orgScope.pilarRead || orgScope.pilarCrud || orgScope.sbuRead || orgScope.sbuCrud || orgScope.sbuSubRead || orgScope.sbuSubCrud) {
         applyEmployeeRead("MENU", "ORGANISASI");
       }
+      applyEmployeeRead("MENU", "A3");
       if (orgScope.pilarRead || orgScope.pilarCrud) {
         applyEmployeeRead("MODULE", "PILAR");
       }
@@ -819,26 +750,52 @@ export class AccessRoleService {
         applyEmployeeRead("MODULE", "CHART");
         applyEmployeeRead("MODULE", "CHART_MEMBER");
       }
+      applyEmployeeRead("MODULE", "CASE");
       if (hasOnboardingPicDecisionAccess) {
         applyEmployeeRead("MODULE", ONBOARDING_DECISION_MODULE_KEY);
       }
     }
 
+    const portalAccessConfigured = accessRoles.some((access) => {
+      const resourceType = normalizeRequiredUpper(access.resourceType);
+      if (resourceType !== "PORTAL") {
+        return false;
+      }
+      return Boolean(resolveResourceKey(access));
+    });
+
+    const menuAccessConfiguredKeys = Array.from(
+      new Set(
+        accessRoles
+          .map((access) => {
+            const resolved = resolveResourceKey(access);
+            return resolved?.resourceType === "MENU" ? resolved.resourceKey : null;
+          })
+          .filter((resourceKey): resourceKey is string => Boolean(resourceKey))
+      )
+    );
+
     const menuAccess = [];
     const moduleAccess = [];
+    const portalAccess = [];
 
     for (const entry of accessMap.values()) {
       if (entry.resourceType === "MENU") {
         menuAccess.push(entry);
       } else if (entry.resourceType === "MODULE") {
         moduleAccess.push(entry);
+      } else if (entry.resourceType === "PORTAL") {
+        portalAccess.push(entry);
       }
     }
 
     return {
       isAdmin,
       menuAccess,
+      menuAccessConfiguredKeys,
       moduleAccess,
+      portalAccess,
+      portalAccessConfigured,
       focusPilarIds,
       orgScope,
       orgAccess
