@@ -322,7 +322,7 @@ model em_employee {
   ResignDate      DateTime? @employee.DateTime
   status          String?   @employee.VarChar(1)
   roleId          Int?
-  jobDesc         String?   @employee.NVarChar(500)
+  jobDesc         String?   @employee.NVarChar(Max)
   city            String?   @employee.VarChar(200)
   state           String    @employee.VarChar(100)
   email           String?   @employee.VarChar(80)
@@ -736,7 +736,7 @@ model em_pilar {
   deletedBy   String?   @employee.NVarChar(20)
   description String?   @employee.NVarChar(255)
   pic         Int?
-  jobDesc     String?   @employee.NVarChar(500)
+  jobDesc     String?   @employee.NVarChar(Max)
   jabatan     String?   @employee.NVarChar(50)
 }
 
@@ -817,7 +817,7 @@ model em_sbu {
   deletedBy   String?   @employee.NVarChar(20)
   description String?   @employee.NVarChar(255)
   pic         Int?
-  jobDesc     String?   @employee.NVarChar(500)
+  jobDesc     String?   @employee.NVarChar(Max)
   jabatan     String?   @employee.NVarChar(50)
 
   @@id([id, sbu_code], map: "PK_em_sbu")
@@ -842,7 +842,7 @@ model em_sbu_sub {
   deletedBy    String?   @employee.NVarChar(20)
   description  String?   @employee.NVarChar(255)
   pic          Int?
-  jobDesc      String?   @employee.NVarChar(500)
+  jobDesc      String?   @employee.NVarChar(Max)
   jabatan      String?   @employee.NVarChar(50)
 
   @@index([sbu_id], map: "em_sbu_sub_sbu_id_IDX")

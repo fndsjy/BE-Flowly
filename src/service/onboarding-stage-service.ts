@@ -128,12 +128,17 @@ type CustomerProgramAccess = {
 };
 
 type CustomerLearningStagesRequest = {
+  portalKey?: string | null;
   custId?: string | null;
+  participantReferenceId?: string | null;
+  participantReferenceType?: string | null;
   bypassProgramFilter?: boolean;
   programType?: string | null;
 };
 
 type CustomerLearningFileOpenRequest = {
+  portalKey?: string | null;
+  participantReferenceType?: string | null;
   programType?: string | null;
   onboardingAssignmentId?: string | null;
   onboardingStageProgressId?: string | null;
@@ -181,9 +186,9 @@ const ONBOARDING_ADMIN_PORTAL_KEYS = [
 ] as const;
 
 const CUSTOMER_PORTAL_KEY = "CUSTOMER";
-const CUSTOMER_PARTICIPANT_REFERENCE_TYPE = "CUSTOMER";
 const PROGRAM_TYPE_ONBOARDING = "ONBOARDING";
 const PROGRAM_TYPE_LEARNING = "LEARNING";
+const PORTAL_LEARNING_KEYS = new Set<string>(["CUSTOMER", "SUPPLIER"]);
 
 type OnboardingProgramType =
   | typeof PROGRAM_TYPE_ONBOARDING
@@ -211,6 +216,36 @@ const normalizeProgramType = (
   normalizeUpper(value) === PROGRAM_TYPE_LEARNING
     ? PROGRAM_TYPE_LEARNING
     : fallback;
+
+const normalizePortalLearningKey = (
+  value: string | null | undefined,
+  fallback = CUSTOMER_PORTAL_KEY
+) => {
+  const normalized = normalizeUpper(value) || fallback;
+  if (!PORTAL_LEARNING_KEYS.has(normalized)) {
+    throw new ResponseError(400, "Portal learning tidak valid");
+  }
+  return normalized;
+};
+
+const resolveLearningParticipant = (
+  request: CustomerLearningStagesRequest
+) => {
+  const portalKey = normalizePortalLearningKey(request.portalKey);
+  const participantReferenceId =
+    normalizeOptionalText(request.participantReferenceId) ??
+    (portalKey === CUSTOMER_PORTAL_KEY
+      ? normalizeOptionalText(request.custId)
+      : null);
+  const participantReferenceType =
+    normalizeOptionalText(request.participantReferenceType) ?? portalKey;
+
+  return {
+    portalKey,
+    participantReferenceId,
+    participantReferenceType,
+  };
+};
 
 const toAuditActor = (value: string | null | undefined) =>
   (normalizeOptionalText(value) ?? "CUSTOMER_PORTAL").slice(0, 20);
@@ -502,7 +537,8 @@ const toCustomerLearningRuntime = (assignment: {
 };
 
 const ensureCustomerLearningRuntime = async (params: {
-  custId: string | null | undefined;
+  participantReferenceId: string | null | undefined;
+  participantReferenceType: string;
   programType: OnboardingProgramType;
   portalTemplate: {
     onboardingPortalTemplateId: string;
@@ -511,10 +547,13 @@ const ensureCustomerLearningRuntime = async (params: {
   };
   stageTemplates: CustomerLearningRuntimeStageTemplate[];
 }): Promise<CustomerLearningRuntime | null> => {
-  const participantReferenceId = normalizeOptionalText(params.custId);
+  const participantReferenceId = normalizeOptionalText(params.participantReferenceId);
   if (!participantReferenceId || params.stageTemplates.length === 0) {
     return null;
   }
+  const portalKey = normalizePortalLearningKey(params.portalTemplate.portalKey);
+  const participantReferenceType =
+    normalizeOptionalText(params.participantReferenceType) ?? portalKey;
 
   const now = new Date();
   const actorId = toAuditActor(participantReferenceId);
@@ -534,9 +573,9 @@ const ensureCustomerLearningRuntime = async (params: {
     let assignmentHeader = await tx.onboardingAssignment.findFirst({
       where: {
         onboardingPortalTemplateId: params.portalTemplate.onboardingPortalTemplateId,
-        portalKey: CUSTOMER_PORTAL_KEY,
+        portalKey,
         programType: params.programType,
-        participantReferenceType: CUSTOMER_PARTICIPANT_REFERENCE_TYPE,
+        participantReferenceType,
         participantReferenceId,
         isDeleted: false,
         isActive: true,
@@ -553,9 +592,9 @@ const ensureCustomerLearningRuntime = async (params: {
           onboardingAssignmentId: createAssignmentId(),
           onboardingPortalTemplateId:
             params.portalTemplate.onboardingPortalTemplateId,
-          portalKey: CUSTOMER_PORTAL_KEY,
+          portalKey,
           programType: params.programType,
-          participantReferenceType: CUSTOMER_PARTICIPANT_REFERENCE_TYPE,
+          participantReferenceType,
           participantReferenceId,
           startedAt: now,
           durationDay,
@@ -566,8 +605,8 @@ const ensureCustomerLearningRuntime = async (params: {
           assignedBy: actorId,
           note:
             params.programType === PROGRAM_TYPE_LEARNING
-              ? "Auto-created by customer LMS portal"
-              : "Auto-created by customer onboarding portal",
+              ? `Auto-created by ${portalKey.toLowerCase()} LMS portal`
+              : `Auto-created by ${portalKey.toLowerCase()} onboarding portal`,
           completedAt: null,
           completedBy: null,
           failedAt: null,
@@ -882,7 +921,12 @@ export class OnboardingStageService {
       request.programType,
       PROGRAM_TYPE_ONBOARDING
     );
-    const customerProgramAccessPromise = request.bypassProgramFilter
+    const {
+      portalKey,
+      participantReferenceId,
+      participantReferenceType,
+    } = resolveLearningParticipant(request);
+    const customerProgramAccessPromise = request.bypassProgramFilter || portalKey !== CUSTOMER_PORTAL_KEY
       ? Promise.resolve<CustomerProgramAccess>({
           pretail: null,
           indomata: null,
@@ -890,11 +934,11 @@ export class OnboardingStageService {
           canAccessPos: true,
           canAccessIndomata: true,
         })
-      : getCustomerProgramAccess(request.custId);
+      : getCustomerProgramAccess(participantReferenceId);
     const [portalTemplate, sourceMaterials, customerProgramAccess] = await Promise.all([
       prismaFlowly.onboardingPortalTemplate.findFirst({
         where: {
-          portalKey: CUSTOMER_PORTAL_KEY,
+          portalKey,
           isActive: true,
           isDeleted: false,
         },
@@ -949,7 +993,8 @@ export class OnboardingStageService {
     const runtime = request.bypassProgramFilter
       ? null
       : await ensureCustomerLearningRuntime({
-          custId: request.custId,
+          participantReferenceId,
+          participantReferenceType,
           programType,
           portalTemplate,
           stageTemplates: accessibleStageTemplates,
@@ -1068,6 +1113,11 @@ export class OnboardingStageService {
       request.programType,
       PROGRAM_TYPE_ONBOARDING
     );
+    const {
+      portalKey,
+      participantReferenceId,
+      participantReferenceType,
+    } = resolveLearningParticipant(request);
     const onboardingStageMaterialId = normalizeOptionalText(
       request.onboardingStageMaterialId
     );
@@ -1086,7 +1136,7 @@ export class OnboardingStageService {
             isDeleted: false,
             isActive: true,
             portalTemplate: {
-              portalKey: CUSTOMER_PORTAL_KEY,
+              portalKey,
               isDeleted: false,
               isActive: true,
             },
@@ -1115,7 +1165,6 @@ export class OnboardingStageService {
       };
     }
 
-    const participantReferenceId = normalizeOptionalText(request.custId);
     if (!participantReferenceId) {
       throw new ResponseError(401, "Unauthorized");
     }
@@ -1154,25 +1203,27 @@ export class OnboardingStageService {
     }
 
     if (
-      normalizeUpper(stageProgress.assignment.portalKey) !== CUSTOMER_PORTAL_KEY ||
+      normalizeUpper(stageProgress.assignment.portalKey) !== portalKey ||
       normalizeUpper(stageProgress.assignment.participantReferenceType) !==
-        CUSTOMER_PARTICIPANT_REFERENCE_TYPE ||
+        participantReferenceType ||
       stageProgress.assignment.participantReferenceId !== participantReferenceId ||
       normalizeProgramType(stageProgress.assignment.programType) !== programType
     ) {
       throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
     }
 
-    const customerProgramAccess = await getCustomerProgramAccess(
-      participantReferenceId
-    );
-    if (
-      !canAccessCustomerLearningStage(
-        stageProgress.stageOrder,
-        customerProgramAccess
-      )
-    ) {
-      throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
+    if (portalKey === CUSTOMER_PORTAL_KEY) {
+      const customerProgramAccess = await getCustomerProgramAccess(
+        participantReferenceId
+      );
+      if (
+        !canAccessCustomerLearningStage(
+          stageProgress.stageOrder,
+          customerProgramAccess
+        )
+      ) {
+        throw new ResponseError(403, "Anda tidak memiliki akses ke materi ini");
+      }
     }
 
     if (normalizeUpper(stageProgress.status) === "LOCKED") {
@@ -1192,7 +1243,7 @@ export class OnboardingStageService {
           isDeleted: false,
           isActive: true,
           portalTemplate: {
-            portalKey: CUSTOMER_PORTAL_KEY,
+            portalKey,
             isDeleted: false,
             isActive: true,
           },
@@ -1227,10 +1278,13 @@ export class OnboardingStageService {
   }
 
   static async recordCustomerLearningFileOpen(
-    custId: string,
+    participantId: string,
     request: CustomerLearningFileOpenRequest
   ): Promise<CustomerLearningFileOpenResponse> {
-    const participantReferenceId = normalizeOptionalText(custId);
+    const portalKey = normalizePortalLearningKey(request.portalKey);
+    const participantReferenceType =
+      normalizeOptionalText(request.participantReferenceType) ?? portalKey;
+    const participantReferenceId = normalizeOptionalText(participantId);
     if (!participantReferenceId) {
       throw new ResponseError(401, "Unauthorized");
     }
@@ -1261,6 +1315,9 @@ export class OnboardingStageService {
     await OnboardingStageService.authorizeCustomerLearningFileAccess({
       ...request,
       custId: participantReferenceId,
+      participantReferenceId,
+      participantReferenceType,
+      portalKey,
       bypassProgramFilter: false,
       sourceFileId,
     });
@@ -1298,9 +1355,9 @@ export class OnboardingStageService {
 
       if (
         normalizeUpper(stageProgress.assignment.portalKey) !==
-          CUSTOMER_PORTAL_KEY ||
+          portalKey ||
         normalizeUpper(stageProgress.assignment.participantReferenceType) !==
-          CUSTOMER_PARTICIPANT_REFERENCE_TYPE ||
+          participantReferenceType ||
         stageProgress.assignment.participantReferenceId !== participantReferenceId ||
         normalizeProgramType(stageProgress.assignment.programType) !== programType
       ) {
@@ -1324,7 +1381,7 @@ export class OnboardingStageService {
             isDeleted: false,
             isActive: true,
             portalTemplate: {
-              portalKey: CUSTOMER_PORTAL_KEY,
+              portalKey,
               isDeleted: false,
               isActive: true,
             },
