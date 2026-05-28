@@ -10,6 +10,7 @@ const nullableDate = z.preprocess((value) => {
 }, z.union([z.null(), z.coerce.date()]));
 const requiredText = (max) => z.string().trim().min(1).max(max);
 const optionalTrimmedText = (max) => z.string().trim().max(max).optional().nullable();
+const optionalLongText = z.string().trim().optional().nullable();
 const optionalShiftFlag = z.union([z.literal(0), z.literal(1)]).optional().nullable();
 const isFutureDate = (value) => {
     const today = new Date();
@@ -39,7 +40,7 @@ export class EmployeeValidation {
         ResignDate: nullableDate.optional(),
         statusLMS: z.string().min(1).max(1).optional(),
         roleId: z.number().int().positive().optional().nullable(),
-        jobDesc: optionalTrimmedText(500),
+        jobDesc: optionalLongText,
         city: requiredText(200),
         state: requiredText(100),
         email: z.string().trim().email().max(80),
@@ -93,7 +94,7 @@ export class EmployeeValidation {
         ResignDate: nullableDate.optional(),
         statusLMS: z.string().min(1).max(1).optional(),
         roleId: z.number().int().positive().optional().nullable(),
-        jobDesc: optionalTrimmedText(500),
+        jobDesc: optionalLongText,
         city: requiredText(200),
         state: requiredText(100),
         email: z.string().trim().email().max(80),
@@ -129,7 +130,7 @@ export class EmployeeValidation {
     });
     static UPDATE_JOB_DESC = z.object({
         userId: z.number().int().positive(),
-        jobDesc: z.string().max(500).nullable(),
+        jobDesc: z.string().trim().nullable(),
     });
 }
 //# sourceMappingURL=employee-validation.js.map

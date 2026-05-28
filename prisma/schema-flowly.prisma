@@ -106,7 +106,7 @@ model Chart {
   isDeleted  Boolean       @default(false)
   deletedAt  DateTime?
   deletedBy  String?       @db.NVarChar(20)
-  jobDesc    String?       @db.NVarChar(500)
+  jobDesc    String?       @db.NVarChar(Max)
   parent     Chart?        @relation("ParentChild", fields: [parentId], references: [chartId], onDelete: NoAction, onUpdate: NoAction)
   children   Chart[]       @relation("ParentChild")
   members    ChartMember[]

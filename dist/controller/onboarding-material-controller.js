@@ -129,6 +129,13 @@ const normalizeQueryText = (value) => {
     const text = typeof value === "string" ? value.trim() : "";
     return text.length > 0 ? text : null;
 };
+const resolvePortalKey = (req, fallback = "CUSTOMER") => {
+    const portalKey = normalizeQueryText(req.query.portalKey)?.toUpperCase() ?? fallback;
+    if (portalKey !== "CUSTOMER" && portalKey !== "SUPPLIER") {
+        throw new ResponseError(400, "Portal learning tidak valid");
+    }
+    return portalKey;
+};
 const parseMaterialReadTrackingRequest = (req, fileName) => {
     const onboardingAssignmentId = normalizeQueryText(req.query.onboardingAssignmentId);
     const onboardingStageProgressId = normalizeQueryText(req.query.onboardingStageProgressId);
@@ -152,6 +159,7 @@ const parseMaterialReadTrackingRequest = (req, fileName) => {
     };
 };
 const resolveCustomerLearningAccess = async (req) => {
+    const portalKey = resolvePortalKey(req);
     const token = req.cookies.access_token;
     if (token) {
         try {
@@ -159,14 +167,30 @@ const resolveCustomerLearningAccess = async (req) => {
             const accessContext = await getAccessContext(payload.userId);
             if (accessContext.isAdmin) {
                 return {
+                    portalKey,
                     bypassProgramFilter: true,
                     custId: null,
+                    participantReferenceId: null,
+                    participantReferenceType: portalKey,
                     canDownloadOriginal: true,
                 };
             }
+            if (portalKey === "SUPPLIER") {
+                return {
+                    portalKey,
+                    bypassProgramFilter: false,
+                    custId: null,
+                    participantReferenceId: payload.userId,
+                    participantReferenceType: "SUPPLIER",
+                    canDownloadOriginal: false,
+                };
+            }
             return {
+                portalKey,
                 bypassProgramFilter: true,
                 custId: null,
+                participantReferenceId: null,
+                participantReferenceType: portalKey,
                 canDownloadOriginal: false,
             };
         }
@@ -175,11 +199,15 @@ const resolveCustomerLearningAccess = async (req) => {
         }
     }
     const customerToken = req.cookies?.customer_access_token;
-    if (customerToken) {
+    if (portalKey === "CUSTOMER" && customerToken) {
         try {
+            const profile = CustomerSsoService.getProfile(customerToken);
             return {
+                portalKey,
                 bypassProgramFilter: false,
-                custId: CustomerSsoService.getProfile(customerToken).custid,
+                custId: profile.custid,
+                participantReferenceId: profile.custid,
+                participantReferenceType: "CUSTOMER",
                 canDownloadOriginal: false,
             };
         }
@@ -406,8 +434,10 @@ export class OnboardingMaterialController {
                 fileTitle: normalizeQueryText(req.query.fileTitle),
             };
             const authorized = await OnboardingStageService.authorizeCustomerLearningFileAccess(request);
-            if (!access.bypassProgramFilter && access.custId) {
-                await OnboardingStageService.recordCustomerLearningFileOpen(access.custId, {
+            if (!access.bypassProgramFilter && access.participantReferenceId) {
+                await OnboardingStageService.recordCustomerLearningFileOpen(access.participantReferenceId, {
+                    portalKey: access.portalKey,
+                    participantReferenceType: access.participantReferenceType,
                     programType: request.programType,
                     onboardingAssignmentId: request.onboardingAssignmentId,
                     onboardingStageProgressId: request.onboardingStageProgressId,

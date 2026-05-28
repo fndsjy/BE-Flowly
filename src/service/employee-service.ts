@@ -15,6 +15,12 @@ import {
   resolveActorType,
   writeAuditLog,
 } from "../utils/audit-log.js";
+import {
+  canCrud,
+  canCrudModule,
+  getAccessContext,
+  getModuleAccessMap,
+} from "../utils/access-scope.js";
 import { ensureHrdCrudAccess } from "../utils/hrd-access.js";
 import { Validation } from "../validation/validation.js";
 import { EmployeeValidation } from "../validation/employee-validation.js";
@@ -81,6 +87,59 @@ const normalizeOptionalText = (value?: string | null) => {
   if (value === null) return null;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+};
+
+const ensureEmployeeJobDescAccess = async (
+  requesterUserId: string,
+  employeeUserId: number
+) => {
+  try {
+    await ensureHrdCrudAccess(requesterUserId);
+    return;
+  } catch (err) {
+    if (!(err instanceof ResponseError)) {
+      throw err;
+    }
+  }
+
+  const accessContext = await getAccessContext(requesterUserId);
+  if (accessContext.isAdmin) {
+    return;
+  }
+
+  const moduleAccessMap = await getModuleAccessMap(requesterUserId);
+  if (!canCrudModule(moduleAccessMap, "CHART_MEMBER")) {
+    throw new ResponseError(403, "Module CHART_MEMBER CRUD access required");
+  }
+
+  const chartMemberships = await prismaFlowly.chartMember.findMany({
+    where: {
+      userId: employeeUserId,
+      isDeleted: false,
+      node: {
+        isDeleted: false,
+      },
+    },
+    select: {
+      node: {
+        select: {
+          pilarId: true,
+          sbuId: true,
+          sbuSubId: true,
+        },
+      },
+    },
+  });
+
+  const hasOrgCrud = chartMemberships.some(({ node }) =>
+    canCrud(accessContext.pilar, node.pilarId) ||
+    canCrud(accessContext.sbu, node.sbuId) ||
+    canCrud(accessContext.sbuSub, node.sbuSubId)
+  );
+
+  if (!hasOrgCrud) {
+    throw new ResponseError(403, "SBU SUB CRUD access required");
+  }
 };
 
 const normalizeEmailText = (value?: string | null) => {
@@ -654,8 +713,6 @@ export class EmployeeService {
     requesterUserId: string,
     request: UpdateEmployeeJobDescRequest
   ) {
-    await ensureHrdCrudAccess(requesterUserId);
-
     const updateReq = Validation.validate(
       EmployeeValidation.UPDATE_JOB_DESC,
       request
@@ -669,6 +726,8 @@ export class EmployeeService {
     if (!employee) {
       throw new ResponseError(404, "Employee not found");
     }
+
+    await ensureEmployeeJobDescAccess(requesterUserId, updateReq.userId);
 
     const updated = await prismaEmployee.em_employee.update({
       where: { UserId: updateReq.userId },

@@ -8,7 +8,7 @@ export class SbuSubValidation {
     sbuId: z.number().min(1),
     sbuPilar: z.number().nullable().optional(),
     description: z.string().optional().nullable(),
-    jobDesc: z.string().max(500).nullable().optional(),
+    jobDesc: z.string().trim().nullable().optional(),
     jabatan: z.string().max(50).optional().nullable(),
     pic: z.number().nullable().optional().nullable(),
   });
@@ -20,7 +20,7 @@ export class SbuSubValidation {
     sbuId: z.number().optional(),
     sbuPilar: z.number().nullable().optional(),
     description: z.string().optional().nullable(),
-    jobDesc: z.string().max(500).nullable().optional(),
+    jobDesc: z.string().trim().nullable().optional(),
     jabatan: z.string().max(50).optional().nullable(),
     pic: z.number().nullable().optional().nullable(),
     status: z.string().optional(),

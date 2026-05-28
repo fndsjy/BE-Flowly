@@ -8,7 +8,7 @@ export class ChartValidation {
         position: z.string().min(1, "Position is required"),
         capacity: z.number().int().min(1, "Capacity must be at least 1"),
         orderIndex: z.number().optional(),
-        jobDesc: z.string().max(500).nullable().optional(),
+        jobDesc: z.string().trim().nullable().optional(),
         jabatan: z.string().max(50).nullable().optional(),
     });
     static UPDATE = z.object({
@@ -16,7 +16,7 @@ export class ChartValidation {
         position: z.string().optional(),
         capacity: z.number().int().min(1).optional(),
         orderIndex: z.number().optional(),
-        jobDesc: z.string().max(500).nullable().optional(),
+        jobDesc: z.string().trim().nullable().optional(),
         jabatan: z.string().max(50).nullable().optional(),
     });
     static DELETE = z.object({

@@ -115,8 +115,11 @@ v1.delete("/onboarding-material/assignments", OnboardingMaterialController.delet
 v1.post("/onboarding-material/file-open", OnboardingMaterialController.recordMaterialOpen);
 v1.get("/onboarding-material/file/:fileName", OnboardingMaterialController.download);
 v1.get("/onboarding-stage/customer-learning", OnboardingStageController.listCustomerLearning);
+v1.get("/onboarding-stage/portal-learning", OnboardingStageController.listPortalLearning);
 v1.get("/onboarding-stage/customer-learning/file", OnboardingMaterialController.downloadCustomerLearningFile);
+v1.get("/onboarding-stage/portal-learning/file", OnboardingMaterialController.downloadCustomerLearningFile);
 v1.post("/onboarding-stage/customer-learning/file-open", OnboardingStageController.recordCustomerLearningFileOpen);
+v1.post("/onboarding-stage/portal-learning/file-open", OnboardingStageController.recordPortalLearningFileOpen);
 v1.get("/onboarding-stage", OnboardingStageController.list);
 v1.post("/onboarding-stage", OnboardingStageController.create);
 v1.put("/onboarding-stage", OnboardingStageController.update);

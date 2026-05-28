@@ -92,11 +92,16 @@ type CustomerLearningStagesResponse = {
     stages: CustomerLearningStageResponse[];
 };
 type CustomerLearningStagesRequest = {
+    portalKey?: string | null;
     custId?: string | null;
+    participantReferenceId?: string | null;
+    participantReferenceType?: string | null;
     bypassProgramFilter?: boolean;
     programType?: string | null;
 };
 type CustomerLearningFileOpenRequest = {
+    portalKey?: string | null;
+    participantReferenceType?: string | null;
     programType?: string | null;
     onboardingAssignmentId?: string | null;
     onboardingStageProgressId?: string | null;
@@ -130,7 +135,7 @@ export declare class OnboardingStageService {
     static list(requesterId: string): Promise<ListOnboardingStagesResponse>;
     static listCustomerLearningStages(request?: CustomerLearningStagesRequest): Promise<CustomerLearningStagesResponse>;
     static authorizeCustomerLearningFileAccess(request: CustomerLearningFileAccessRequest): Promise<CustomerLearningFileAccessResponse>;
-    static recordCustomerLearningFileOpen(custId: string, request: CustomerLearningFileOpenRequest): Promise<CustomerLearningFileOpenResponse>;
+    static recordCustomerLearningFileOpen(participantId: string, request: CustomerLearningFileOpenRequest): Promise<CustomerLearningFileOpenResponse>;
     static create(requesterId: string, request: CreateOnboardingStageRequest): Promise<{
         onboardingStageTemplateId: string;
         message: string;
