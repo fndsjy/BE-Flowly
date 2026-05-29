@@ -1,6 +1,7 @@
 import { ResponseError } from "../error/response-error.js";
 import { OnboardingStageService } from "../service/onboarding-stage-service.js";
 import { CustomerSsoService } from "../service/customer-sso-service.js";
+import { SupplierSsoService } from "../service/supplier-sso-service.js";
 import { getAccessContext } from "../utils/access-scope.js";
 import { verifyToken } from "../utils/auth.js";
 const normalizeQueryText = (value) => typeof value === "string" && value.trim() ? value.trim() : null;
@@ -61,6 +62,23 @@ const ensurePortalLearningAccess = async (req, fallbackPortalKey = "CUSTOMER") =
                 custId: profile.custid,
                 participantReferenceId: profile.custid,
                 participantReferenceType: "CUSTOMER",
+                canDownloadOriginal: false,
+            };
+        }
+        catch {
+            // Fall through to normal OMS session support.
+        }
+    }
+    const supplierToken = req.cookies?.supplier_access_token;
+    if (portalKey === "SUPPLIER" && supplierToken) {
+        try {
+            const profile = SupplierSsoService.getProfile(supplierToken);
+            return {
+                portalKey,
+                bypassProgramFilter: false,
+                custId: null,
+                participantReferenceId: profile.supplierId,
+                participantReferenceType: "SUPPLIER",
                 canDownloadOriginal: false,
             };
         }

@@ -181,7 +181,10 @@ export class JabatanService {
     static async list() {
         const list = await prismaFlowly.jabatan.findMany({
             where: { isDeleted: false },
-            orderBy: { createdAt: "desc" }
+            orderBy: [
+                { jabatanLevel: "asc" },
+                { jabatanName: "asc" }
+            ]
         });
         return list.map(toJabatanListResponse);
     }

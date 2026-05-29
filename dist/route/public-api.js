@@ -36,6 +36,7 @@ import { OnboardingExamController } from "../controller/onboarding-exam-controll
 import { OnboardingMaterialController } from "../controller/onboarding-material-controller.js";
 import { OnboardingStageController } from "../controller/onboarding-stage-controller.js";
 import { CustomerSsoController } from "../controller/customer-sso-controller.js";
+import { SupplierSsoController } from "../controller/supplier-sso-controller.js";
 import { auditMutationMiddleware } from "../middleware/audit-middleware.js";
 export const publicRouter = express.Router();
 publicRouter.get("/", ApplicationController.handleGetRoot);
@@ -54,6 +55,9 @@ v1.post("/logout", UserController.logout);
 v1.post("/customer-sso/login", CustomerSsoController.login);
 v1.get("/customer-sso/profile", CustomerSsoController.getProfile);
 v1.post("/customer-sso/logout", CustomerSsoController.logout);
+v1.post("/supplier-sso/login", SupplierSsoController.login);
+v1.get("/supplier-sso/profile", SupplierSsoController.getProfile);
+v1.post("/supplier-sso/logout", SupplierSsoController.logout);
 v1.post("/master-access-role", MasterAccessRoleController.create);
 v1.put("/master-access-role", MasterAccessRoleController.update);
 v1.delete("/master-access-role", MasterAccessRoleController.softDelete);
