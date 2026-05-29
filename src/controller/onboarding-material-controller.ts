@@ -10,6 +10,7 @@ import { ResponseError } from "../error/response-error.js";
 import { OnboardingMaterialService } from "../service/onboarding-material-service.js";
 import { OnboardingService } from "../service/onboarding-service.js";
 import { CustomerSsoService } from "../service/customer-sso-service.js";
+import { SupplierSsoService } from "../service/supplier-sso-service.js";
 import { OnboardingStageService } from "../service/onboarding-stage-service.js";
 import { getAccessContext } from "../utils/access-scope.js";
 
@@ -247,6 +248,23 @@ const resolveCustomerLearningAccess = async (req: Request) => {
         custId: profile.custid,
         participantReferenceId: profile.custid,
         participantReferenceType: "CUSTOMER",
+        canDownloadOriginal: false,
+      };
+    } catch {
+      // Fall through to unauthorized handling.
+    }
+  }
+
+  const supplierToken = req.cookies?.supplier_access_token;
+  if (portalKey === "SUPPLIER" && supplierToken) {
+    try {
+      const profile = SupplierSsoService.getProfile(supplierToken);
+      return {
+        portalKey,
+        bypassProgramFilter: false,
+        custId: null,
+        participantReferenceId: profile.supplierId,
+        participantReferenceType: "SUPPLIER",
         canDownloadOriginal: false,
       };
     } catch {
@@ -633,12 +651,23 @@ export class OnboardingMaterialController {
         }
       }
 
-      if (!requesterUserId && !hasCustomerSession) {
+      const supplierToken = req.cookies?.supplier_access_token;
+      let hasSupplierSession = false;
+      if (!requesterUserId && !hasCustomerSession && supplierToken) {
+        try {
+          SupplierSsoService.getProfile(supplierToken);
+          hasSupplierSession = true;
+        } catch {
+          hasSupplierSession = false;
+        }
+      }
+
+      if (!requesterUserId && !hasCustomerSession && !hasSupplierSession) {
         throw new ResponseError(401, "Unauthorized");
       }
 
-      if (!requesterUserId && hasCustomerSession) {
-        throw new ResponseError(403, "Gunakan link materi customer yang valid");
+      if (!requesterUserId && (hasCustomerSession || hasSupplierSession)) {
+        throw new ResponseError(403, "Gunakan link materi portal yang valid");
       }
 
       const authenticatedUserId = requesterUserId;

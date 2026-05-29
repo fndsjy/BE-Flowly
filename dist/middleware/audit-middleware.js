@@ -1,6 +1,7 @@
 import { logger } from "../application/logging.js";
 import { prismaFlowly } from "../application/database.js";
 import { CustomerSsoService } from "../service/customer-sso-service.js";
+import { SupplierSsoService } from "../service/supplier-sso-service.js";
 import { resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
 import { verifyToken } from "../utils/auth.js";
 const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
@@ -8,6 +9,7 @@ const SKIPPED_PATHS = [
     /^\/login$/i,
     /^\/logout$/i,
     /^\/customer-sso\//i,
+    /^\/supplier-sso\//i,
     /^\/onboarding\/exam\/(start|answer|warning|submit)$/i,
     /^\/onboarding-material\/file-open$/i,
     /^\/onboarding-stage\/customer-learning\/file-open$/i,
@@ -15,6 +17,7 @@ const SKIPPED_PATHS = [
 const REDACTED_KEYS = new Set([
     "access_token",
     "customer_access_token",
+    "supplier_access_token",
     "oldPassword",
     "newPassword",
     "password",
@@ -242,6 +245,19 @@ const resolveActor = (req) => {
             return {
                 actorId: profile.custid,
                 actorType: "CUSTOMER",
+            };
+        }
+        catch {
+            return null;
+        }
+    }
+    const supplierToken = req.cookies?.supplier_access_token;
+    if (supplierToken) {
+        try {
+            const profile = SupplierSsoService.getProfile(supplierToken);
+            return {
+                actorId: profile.supplierId,
+                actorType: "SUPPLIER",
             };
         }
         catch {
