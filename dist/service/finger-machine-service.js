@@ -1,53 +1,23 @@
-import { Connection, Request, } from "tedious";
+import { prismaEmployee } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { ResponseError } from "../error/response-error.js";
 import { ensureHrdCrudAccess } from "../utils/hrd-access.js";
 const DEFAULT_CACHE_TTL_MS = 5 * 60 * 1000;
-const DEFAULT_CONNECT_TIMEOUT_MS = 15 * 1000;
-const DEFAULT_REQUEST_TIMEOUT_MS = 15 * 1000;
-const MACHINE_QUERY = `
-  SELECT TOP (1000)
-    [ID],
-    [MachineAlias],
-    [IP],
-    [Enabled]
-  FROM [ATT2000].[dbo].[Machines]
-  WHERE [IP] IS NOT NULL
-    AND LTRIM(RTRIM([IP])) <> ''
-  ORDER BY [MachineAlias] ASC, [IP] ASC, [ID] ASC
-`;
 let fingerMachineCache = null;
 const normalizeOptionalText = (value) => {
-    if (typeof value !== "string") {
-        return null;
-    }
-    const trimmed = value.trim();
-    return trimmed.length > 0 ? trimmed : null;
+    const trimmed = value?.trim();
+    return trimmed && trimmed.length > 0 ? trimmed : null;
 };
-const normalizeRequiredText = (value) => {
-    if (typeof value === "string") {
-        return value.trim();
-    }
-    if (value === null || value === undefined) {
-        return "";
-    }
-    return String(value).trim();
-};
-const normalizeBoolean = (value, defaultValue = false) => {
+const normalizeRequiredText = (value) => value.trim();
+const normalizeBoolean = (value) => {
     if (typeof value === "boolean") {
         return value;
     }
     if (typeof value === "number") {
         return value === 1;
     }
-    if (typeof value !== "string") {
-        return defaultValue;
-    }
-    const normalized = value.trim().toLowerCase();
-    if (!normalized) {
-        return defaultValue;
-    }
-    return ["1", "true", "yes", "y"].includes(normalized);
+    const normalized = value?.trim().toLowerCase();
+    return normalized === "1" || normalized === "true" || normalized === "yes";
 };
 const parsePositiveInteger = (value, fallback) => {
     const parsed = Number(value);
@@ -56,115 +26,9 @@ const parsePositiveInteger = (value, fallback) => {
     }
     return Math.trunc(parsed);
 };
-const parseTimeoutMs = (value, fallback) => {
-    const parsed = Number(value);
-    if (!Number.isFinite(parsed) || parsed <= 0) {
-        return fallback;
-    }
-    // Prisma-style SQL Server URLs commonly use seconds such as `connectTimeout=30`.
-    if (parsed <= 300) {
-        return Math.trunc(parsed * 1000);
-    }
-    return Math.trunc(parsed);
-};
-const parseSqlServerConnectionString = (connectionString) => {
-    const trimmed = connectionString.trim();
-    const withoutProtocol = trimmed.startsWith("sqlserver://")
-        ? trimmed.slice("sqlserver://".length)
-        : trimmed;
-    const segments = withoutProtocol
-        .split(";")
-        .map((segment) => segment.trim())
-        .filter((segment) => segment.length > 0);
-    const [serverSegment, ...optionSegments] = segments;
-    if (!serverSegment) {
-        throw new ResponseError(500, "Finger machine database server is not configured");
-    }
-    const separatorIndex = serverSegment.lastIndexOf(":");
-    const hasPort = separatorIndex > -1 && separatorIndex < serverSegment.length - 1;
-    const server = hasPort
-        ? serverSegment.slice(0, separatorIndex).trim()
-        : serverSegment.trim();
-    const port = hasPort
-        ? parsePositiveInteger(serverSegment.slice(separatorIndex + 1).trim(), 1433)
-        : 1433;
-    const optionMap = new Map();
-    for (const segment of optionSegments) {
-        const equalsIndex = segment.indexOf("=");
-        if (equalsIndex === -1) {
-            continue;
-        }
-        const key = segment.slice(0, equalsIndex).trim().toLowerCase();
-        const value = segment.slice(equalsIndex + 1).trim();
-        if (key) {
-            optionMap.set(key, value);
-        }
-    }
-    const database = optionMap.get("database")?.trim();
-    const userName = optionMap.get("user")?.trim() ??
-        optionMap.get("uid")?.trim() ??
-        optionMap.get("username")?.trim();
-    const password = optionMap.get("password")?.trim() ?? optionMap.get("pwd")?.trim();
-    if (!server || !database || !userName || !password) {
-        throw new ResponseError(500, "Finger machine database credentials are incomplete");
-    }
-    return {
-        server,
-        authentication: {
-            type: "default",
-            options: {
-                userName,
-                password,
-            },
-        },
-        options: {
-            appName: "flowly-finger-machine-reader",
-            database,
-            port,
-            encrypt: normalizeBoolean(optionMap.get("encrypt"), true),
-            trustServerCertificate: normalizeBoolean(optionMap.get("trustservercertificate"), true),
-            connectTimeout: parseTimeoutMs(optionMap.get("connecttimeout"), DEFAULT_CONNECT_TIMEOUT_MS),
-            requestTimeout: parseTimeoutMs(optionMap.get("requesttimeout"), DEFAULT_REQUEST_TIMEOUT_MS),
-        },
-    };
-};
-const getFingerMachineConnectionConfig = () => {
-    const connectionString = process.env.FINGER_MACHINE_DATABASE_URL?.trim();
-    if (!connectionString) {
-        throw new ResponseError(500, "Finger machine database is not configured");
-    }
-    return parseSqlServerConnectionString(connectionString);
-};
-const rowToRecord = (columns) => {
-    return columns.reduce((record, column) => {
-        const columnName = column.metadata?.colName;
-        if (!columnName) {
-            return record;
-        }
-        record[columnName] = column.value;
-        return record;
-    }, {});
-};
-const buildFingerMachineLabel = (machineAlias, ip, enabled) => {
-    const baseLabel = machineAlias ? `${machineAlias} (${ip})` : ip;
-    return enabled ? baseLabel : `${baseLabel} - nonaktif`;
-};
-const toFingerMachineResponse = (record) => {
-    const ip = normalizeRequiredText(record.IP);
-    if (!ip) {
-        return null;
-    }
-    const rawId = Number(record.ID);
-    const id = Number.isFinite(rawId) ? Math.trunc(rawId) : 0;
-    const machineAlias = normalizeOptionalText(record.MachineAlias);
-    const enabled = normalizeBoolean(record.Enabled, false);
-    return {
-        id,
-        ip,
-        machineAlias,
-        enabled,
-        label: buildFingerMachineLabel(machineAlias, ip, enabled),
-    };
+const buildFingerMachineLabel = (deviceName, ip, active) => {
+    const baseLabel = deviceName ? `${deviceName} (${ip})` : ip;
+    return active ? baseLabel : `${baseLabel} - nonaktif`;
 };
 const shouldReplaceMachine = (current, candidate) => {
     const currentScore = (current.enabled ? 2 : 0) + (current.machineAlias ? 1 : 0);
@@ -195,49 +59,37 @@ const dedupeFingerMachines = (machines) => {
         return left.ip.localeCompare(right.ip, "en");
     });
 };
-const executeFingerMachineQuery = (config) => {
-    return new Promise((resolve, reject) => {
-        const connection = new Connection(config);
-        const rows = [];
-        let settled = false;
-        const finish = (error) => {
-            if (settled) {
-                return;
-            }
-            settled = true;
-            try {
-                connection.close();
-            }
-            catch {
-                // Tedious may already have closed the socket when connect/query fails.
-            }
-            if (error) {
-                reject(error instanceof Error ? error : new Error(String(error)));
-                return;
-            }
-            resolve(dedupeFingerMachines(rows));
+const listFingerDevices = async () => {
+    const devices = await prismaEmployee.$queryRaw `
+    SELECT TOP (1000)
+      [id],
+      [device_name],
+      [ip_address],
+      [active]
+    FROM [dbo].[att_devices]
+    WHERE [deleted_at] IS NULL
+      AND [ip_address] IS NOT NULL
+      AND LTRIM(RTRIM([ip_address])) <> ''
+    ORDER BY [active] DESC, [device_name] ASC, [ip_address] ASC, [id] ASC
+  `;
+    return dedupeFingerMachines(devices
+        .map((device) => {
+        const ip = normalizeRequiredText(device.ip_address ?? "");
+        if (!ip) {
+            return null;
+        }
+        const machineAlias = normalizeOptionalText(device.device_name);
+        const active = normalizeBoolean(device.active);
+        const id = Number(device.id);
+        return {
+            id: Number.isFinite(id) ? Math.trunc(id) : 0,
+            ip,
+            machineAlias,
+            enabled: active,
+            label: buildFingerMachineLabel(machineAlias, ip, active),
         };
-        connection.on("connect", (error) => {
-            if (error) {
-                finish(error);
-                return;
-            }
-            const request = new Request(MACHINE_QUERY, (requestError) => {
-                finish(requestError);
-            });
-            request.on("row", (columns) => {
-                const machine = toFingerMachineResponse(rowToRecord(columns));
-                if (machine) {
-                    rows.push(machine);
-                }
-            });
-            connection.execSql(request);
-        });
-        connection.on("error", (error) => {
-            finish(error);
-        });
-        connection.connect();
-    });
+    })
+        .filter((device) => Boolean(device)));
 };
 export class FingerMachineService {
     static async list(requesterUserId) {
@@ -247,8 +99,7 @@ export class FingerMachineService {
             return fingerMachineCache.data;
         }
         try {
-            const config = getFingerMachineConnectionConfig();
-            const data = await executeFingerMachineQuery(config);
+            const data = await listFingerDevices();
             const ttlMs = parsePositiveInteger(process.env.FINGER_MACHINE_CACHE_TTL_MS, DEFAULT_CACHE_TTL_MS);
             fingerMachineCache = {
                 expiresAt: now + ttlMs,
@@ -258,7 +109,7 @@ export class FingerMachineService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            logger.error("[FINGER MACHINE] Failed to load machine list", { message });
+            logger.error("[FINGER MACHINE] Failed to load device list", { message });
             if (error instanceof ResponseError) {
                 throw error;
             }

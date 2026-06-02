@@ -1005,7 +1005,7 @@ model em_user_answers1 {
   topic_id         Int
   status           String?            @employee.NVarChar(1)
   startdate        DateTime?          @employee.DateTime
-  em_user_answers2 em_user_answers2[] @ignore
+  em_user_answers2 em_user_answers2[]
 
   @@index([apcid], map: "em_user_answers1_apcid_IDX")
   @@index([topic_id], map: "em_user_answers1_topic_id_IDX")
@@ -1208,4 +1208,253 @@ model sysdiagrams {
   definition   Bytes?
 
   @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model att_attendance_logs {
+  id               BigInt        @id(map: "PK__att_atte__3213E83FCA6734D6") @default(autoincrement())
+  employee_id      Int
+  device_id        Int?
+  scan_time        DateTime      @employee.DateTime
+  verify_type      String        @employee.VarChar(50)
+  attendance_type  String        @employee.VarChar(50)
+  status           String        @employee.VarChar(50)
+  late_minutes     Int
+  overtime_minutes Int
+  source           String        @employee.VarChar(50)
+  correction_note  String?       @employee.NVarChar(255)
+  created_at       DateTime      @employee.DateTime
+  updated_at       DateTime      @employee.DateTime
+  deleted_at       DateTime?     @employee.DateTime
+  created_by       Int?
+  updated_by       Int?
+  att_devices      att_devices?  @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_att_attendance_logs_device")
+  att_employees    att_employees @relation(fields: [employee_id], references: [id], onUpdate: NoAction, map: "FK_att_attendance_logs_employee")
+
+  @@index([employee_id, device_id, scan_time], map: "IX_att_attendance_logs_dedup")
+  @@index([employee_id], map: "IX_att_attendance_logs_employee_id")
+  @@index([scan_time], map: "IX_att_attendance_logs_scan_time")
+}
+
+model att_departments {
+  id              Int             @id(map: "PK__att_depa__3213E83FC63CDBDB") @default(autoincrement())
+  department_name String          @unique(map: "UQ_att_departments_name") @employee.NVarChar(100)
+  created_at      DateTime        @employee.DateTime
+  updated_at      DateTime        @employee.DateTime
+  deleted_at      DateTime?       @employee.DateTime
+  created_by      Int?
+  updated_by      Int?
+  att_employees   att_employees[]
+}
+
+model att_devices {
+  id                  Int                   @id(map: "PK__att_devi__3213E83F7D163F47") @default(autoincrement())
+  device_name         String                @employee.NVarChar(150)
+  ip_address          String                @employee.VarChar(60)
+  port                Int
+  serial_number       String?               @employee.NVarChar(120)
+  firmware            String?               @employee.NVarChar(120)
+  location            String?               @employee.NVarChar(150)
+  timezone            String                @employee.NVarChar(80)
+  status              String                @employee.VarChar(20)
+  active              Boolean
+  last_seen_at        DateTime?             @employee.DateTime
+  created_at          DateTime              @employee.DateTime
+  updated_at          DateTime              @employee.DateTime
+  deleted_at          DateTime?             @employee.DateTime
+  created_by          Int?
+  updated_by          Int?
+  att_attendance_logs att_attendance_logs[]
+
+  @@index([active], map: "IX_att_devices_active")
+  @@index([status], map: "IX_att_devices_status")
+}
+
+model att_employee_shift_assignments {
+  id             Int       @id(map: "PK__att_empl__3213E83F0930B8B6") @default(autoincrement())
+  employee_id    Int
+  shift_id       Int
+  effective_from DateTime? @employee.Date
+  effective_to   DateTime? @employee.Date
+  day_of_week    Int?
+  priority       Int?
+  created_at     DateTime? @employee.DateTime
+  updated_at     DateTime? @employee.DateTime
+  deleted_at     DateTime? @employee.DateTime
+  created_by     Int?
+  updated_by     Int?
+}
+
+model att_employees {
+  id                  Int                   @id(map: "PK__att_empl__3213E83FE6758505") @default(autoincrement())
+  employee_id         String                @unique(map: "UQ_att_employees_employee_id") @employee.NVarChar(50)
+  barcode             String?               @employee.NVarChar(80)
+  name                String                @employee.NVarChar(150)
+  gender              String                @employee.VarChar(20)
+  phone               String?               @employee.NVarChar(50)
+  email               String?               @employee.NVarChar(150)
+  department_id       Int?
+  position_id         Int?
+  shift_id            Int?
+  active              Boolean
+  device_user_id      String?               @employee.NVarChar(80)
+  biometric_status    String                @employee.VarChar(50)
+  created_at          DateTime              @employee.DateTime
+  updated_at          DateTime              @employee.DateTime
+  deleted_at          DateTime?             @employee.DateTime
+  created_by          Int?
+  updated_by          Int?
+  att_attendance_logs att_attendance_logs[]
+  att_departments     att_departments?      @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_att_employees_department")
+  att_positions       att_positions?        @relation(fields: [position_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_att_employees_position")
+  att_shifts          att_shifts?           @relation(fields: [shift_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_att_employees_shift")
+  att_leave_requests  att_leave_requests[]
+
+  @@index([device_user_id], map: "IX_att_employees_device_user_id")
+}
+
+model att_fingerprint_templates {
+  id             BigInt   @id(map: "PK__att_fing__3213E83F3939FCC7") @default(autoincrement())
+  device_user_id String   @employee.VarChar(50)
+  finger_index   Int      @employee.TinyInt
+  template_data  Bytes
+  device_id      Int?
+  created_at     DateTime @employee.DateTime
+
+  @@unique([device_user_id, finger_index], map: "UQ_att_fp_device_user_finger")
+}
+
+model att_leave_requests {
+  id              BigInt          @id(map: "PK__att_leav__3213E83F980EA0CE") @default(autoincrement())
+  employee_id     Int
+  leave_type_id   Int
+  start_date      DateTime        @employee.DateTime
+  end_date        DateTime        @employee.DateTime
+  reason          String          @employee.NVarChar(500)
+  approval_status String          @employee.VarChar(30)
+  approved_by     Int?
+  approved_at     DateTime?       @employee.DateTime
+  created_at      DateTime        @employee.DateTime
+  updated_at      DateTime        @employee.DateTime
+  deleted_at      DateTime?       @employee.DateTime
+  created_by      Int?
+  updated_by      Int?
+  att_users       att_users?      @relation(fields: [approved_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_att_leave_requests_approver")
+  att_employees   att_employees   @relation(fields: [employee_id], references: [id], onUpdate: NoAction, map: "FK_att_leave_requests_employee")
+  att_leave_types att_leave_types @relation(fields: [leave_type_id], references: [id], onUpdate: NoAction, map: "FK_att_leave_requests_leave_type")
+}
+
+model att_leave_types {
+  id                 Int                  @id(map: "PK__att_leav__3213E83F55BA2BE4") @default(autoincrement())
+  name               String               @employee.VarChar(50)
+  description        String?              @employee.NVarChar(255)
+  created_at         DateTime             @employee.DateTime
+  updated_at         DateTime             @employee.DateTime
+  deleted_at         DateTime?            @employee.DateTime
+  att_leave_requests att_leave_requests[]
+}
+
+model att_positions {
+  id            Int             @id(map: "PK__att_posi__3213E83F6BABA9B9") @default(autoincrement())
+  position_name String          @unique(map: "UQ_att_positions_name") @employee.NVarChar(100)
+  created_at    DateTime        @employee.DateTime
+  updated_at    DateTime        @employee.DateTime
+  deleted_at    DateTime?       @employee.DateTime
+  created_by    Int?
+  updated_by    Int?
+  att_employees att_employees[]
+}
+
+model att_roles {
+  id          Int         @id(map: "PK__att_role__3213E83F8C47A899") @default(autoincrement())
+  role_name   String      @unique(map: "UQ_att_roles_name") @employee.VarChar(50)
+  permissions String?     @employee.NVarChar(Max)
+  created_at  DateTime    @employee.DateTime
+  updated_at  DateTime    @employee.DateTime
+  deleted_at  DateTime?   @employee.DateTime
+  created_by  Int?
+  updated_by  Int?
+  att_users   att_users[]
+}
+
+model att_shifts {
+  id                     Int             @id(map: "PK__att_shif__3213E83FD3D7F306") @default(autoincrement())
+  shift_name             String          @unique(map: "UQ__att_shif__0775CBB1F2A0AE86") @employee.VarChar(100)
+  start_time             DateTime        @employee.Time
+  end_time               DateTime        @employee.Time
+  begin_in               DateTime?       @employee.Time
+  end_in                 DateTime?       @employee.Time
+  begin_out              DateTime?       @employee.Time
+  end_out                DateTime?       @employee.Time
+  tolerance_late_minutes Int
+  is_overnight           Boolean
+  workdays               String?         @employee.VarChar(100)
+  active                 Boolean
+  created_at             DateTime        @employee.DateTime
+  updated_at             DateTime        @employee.DateTime
+  deleted_at             DateTime?       @employee.DateTime
+  created_by             Int?
+  updated_by             Int?
+  att_employees          att_employees[]
+}
+
+model att_users {
+  id                 Int                  @id(map: "PK__att_user__3213E83F8F7F9D26") @default(autoincrement())
+  role_id            Int
+  name               String               @employee.NVarChar(150)
+  email              String               @unique(map: "UQ_att_users_email") @employee.NVarChar(150)
+  password_hash      String               @employee.NVarChar(255)
+  active             Boolean
+  created_at         DateTime             @employee.DateTime
+  updated_at         DateTime             @employee.DateTime
+  deleted_at         DateTime?            @employee.DateTime
+  created_by         Int?
+  updated_by         Int?
+  att_leave_requests att_leave_requests[]
+  att_roles          att_roles            @relation(fields: [role_id], references: [id], onUpdate: NoAction, map: "FK_att_users_role")
+}
+
+model em_todo_files {
+  id            Int       @id(map: "PK__em_todo___3213E83FD8AD235C") @default(autoincrement())
+  todo_id       Int
+  original_name String    @employee.NVarChar(255)
+  stored_name   String    @employee.NVarChar(255)
+  file_path     String    @employee.NVarChar(500)
+  mime_type     String?   @employee.NVarChar(100)
+  file_size     Int?
+  created_at    DateTime? @employee.DateTime
+  em_todos      em_todos  @relation(fields: [todo_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_TodoFiles_Todos")
+}
+
+model em_todo_penilaian {
+  id         Int       @id(map: "PK__em_todo___3213E83F977F1E9C") @default(autoincrement())
+  todo_id    Int
+  kriteria   String    @employee.NVarChar(100)
+  nilai      Float
+  created_at DateTime? @employee.DateTime
+  em_todos   em_todos  @relation(fields: [todo_id], references: [id], onUpdate: NoAction, map: "FK__em_todo_p__todo___00D4FFD6")
+}
+
+model em_todos {
+  id                Int                 @id(map: "PK__em_todos__3213E83FCE3884A9") @default(autoincrement())
+  judul             String              @employee.NVarChar(255)
+  detail            String?             @employee.NVarChar(Max)
+  tanggal_mulai     DateTime?           @employee.DateTime
+  tanggal_selesai   DateTime?           @employee.DateTime
+  jenis             String              @employee.NVarChar(50)
+  module            String?             @employee.NVarChar(255)
+  prioritas         String              @employee.NVarChar(20)
+  status            String              @employee.NVarChar(20)
+  penyelesaian      String?             @employee.NVarChar(Max)
+  is_active         Boolean?
+  created_by        String?             @employee.VarChar(10)
+  created_at        DateTime?           @employee.DateTime
+  updated_at        DateTime?           @employee.DateTime
+  badge_num         String?             @employee.VarChar(25)
+  nilai             Float?
+  alasan_batal      String?             @employee.NVarChar(Max)
+  uuid_todo         String?             @employee.VarChar(255)
+  catatan_review    String?             @employee.NVarChar(Max)
+  alasan_revisi     String?             @employee.NVarChar(Max)
+  em_todo_files     em_todo_files[]
+  em_todo_penilaian em_todo_penilaian[]
 }
