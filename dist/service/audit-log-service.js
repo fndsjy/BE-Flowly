@@ -3,6 +3,7 @@ import { Validation } from "../validation/validation.js";
 import { AuditLogValidation } from "../validation/audit-log-validation.js";
 import { ResponseError } from "../error/response-error.js";
 import { getAccessContext, getModuleAccessMap, canReadModule } from "../utils/access-scope.js";
+import { DOMAIN_AUDITED_ROUTE_ENTITIES } from "../utils/domain-audit-scope.js";
 const parseJson = (value) => {
     if (!value)
         return null;
@@ -25,6 +26,10 @@ export class AuditLogService {
         const pageSize = request.pageSize ?? 50;
         const skip = (page - 1) * pageSize;
         const whereClause = {};
+        whereClause.NOT = {
+            module: "PORTAL_ACTION",
+            entity: { in: [...DOMAIN_AUDITED_ROUTE_ENTITIES] },
+        };
         if (request.module)
             whereClause.module = request.module;
         if (request.entity)
