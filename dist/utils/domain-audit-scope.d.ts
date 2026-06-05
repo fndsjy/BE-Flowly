@@ -1,0 +1,4 @@
+export declare const DOMAIN_AUDITED_ROUTE_ENTITIES: readonly ["CASE", "CASE_ATTACHMENT", "CASE_DEPARTMENT", "CASE_FISHBONE", "CASE_FISHBONE_CAUSE", "CASE_FISHBONE_ITEM", "CASE_PDCA", "CHART", "CHART_MEMBER", "EMPLOYEE", "EMPLOYEE_JOB_DESC", "FISHBONE", "FISHBONE_CATEGORY", "FISHBONE_CAUSE", "FISHBONE_ITEM", "MASTER_IK", "ONBOARDING_START_EMPLOYEES", "PILAR", "PROCEDURE_IK", "PROCEDURE_SOP", "PROCEDURE_SOP_IK", "SBU", "SBU_SUB"];
+export declare const normalizeAuditRouteEntity: (path: string) => string;
+export declare const isDomainAuditedRoute: (path: string) => boolean;
+//# sourceMappingURL=domain-audit-scope.d.ts.map

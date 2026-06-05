@@ -7,6 +7,7 @@ import {
   getModuleAccessMap,
   canReadModule
 } from "../utils/access-scope.js";
+import { DOMAIN_AUDITED_ROUTE_ENTITIES } from "../utils/domain-audit-scope.js";
 import type {
   AuditLogListResponse,
   ListAuditLogRequest,
@@ -37,6 +38,10 @@ export class AuditLogService {
     const skip = (page - 1) * pageSize;
 
     const whereClause: any = {};
+    whereClause.NOT = {
+      module: "PORTAL_ACTION",
+      entity: { in: [...DOMAIN_AUDITED_ROUTE_ENTITIES] },
+    };
     if (request.module) whereClause.module = request.module;
     if (request.entity) whereClause.entity = request.entity;
     if (request.entityId) whereClause.entityId = request.entityId;

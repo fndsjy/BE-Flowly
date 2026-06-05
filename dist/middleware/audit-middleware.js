@@ -3,6 +3,7 @@ import { prismaFlowly } from "../application/database.js";
 import { CustomerSsoService } from "../service/customer-sso-service.js";
 import { SupplierSsoService } from "../service/supplier-sso-service.js";
 import { resolveActorType, writeAuditLog, } from "../utils/audit-log.js";
+import { isDomainAuditedRoute } from "../utils/domain-audit-scope.js";
 import { verifyToken } from "../utils/auth.js";
 const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const SKIPPED_PATHS = [
@@ -444,6 +445,7 @@ const captureBeforeSnapshot = async (req) => {
     return null;
 };
 const shouldAuditRequest = (req) => MUTATION_METHODS.has(req.method.toUpperCase()) &&
+    !isDomainAuditedRoute(req.path) &&
     !SKIPPED_PATHS.some((pattern) => pattern.test(req.path));
 const writePortalMutationAudit = async (req, responseBody, statusCode, beforeSnapshot) => {
     if (statusCode < 200 || statusCode >= 400)

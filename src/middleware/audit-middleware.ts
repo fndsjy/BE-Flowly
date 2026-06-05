@@ -9,6 +9,7 @@ import {
   type AuditAction,
   type AuditChange,
 } from "../utils/audit-log.js";
+import { isDomainAuditedRoute } from "../utils/domain-audit-scope.js";
 import { verifyToken } from "../utils/auth.js";
 
 type PortalContext = {
@@ -503,6 +504,7 @@ const captureBeforeSnapshot = async (req: Request): Promise<BeforeSnapshot | nul
 
 const shouldAuditRequest = (req: Request) =>
   MUTATION_METHODS.has(req.method.toUpperCase()) &&
+  !isDomainAuditedRoute(req.path) &&
   !SKIPPED_PATHS.some((pattern) => pattern.test(req.path));
 
 const writePortalMutationAudit = async (
