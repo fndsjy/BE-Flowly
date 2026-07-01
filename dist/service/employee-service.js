@@ -6,6 +6,7 @@ import { canCrud, canCrudModule, getAccessContext, getModuleAccessMap, } from ".
 import { ensureHrdCrudAccess } from "../utils/hrd-access.js";
 import { Validation } from "../validation/validation.js";
 import { EmployeeValidation } from "../validation/employee-validation.js";
+import { OnboardingService } from "./onboarding-service.js";
 const employeeSelect = {
     UserId: true,
     BadgeNum: true,
@@ -57,6 +58,12 @@ const EMPLOYEE_AUDIT_FIELDS = [
     "state",
     "email",
     "ResignDate",
+];
+const CHART_MEMBER_RESIGN_AUDIT_FIELDS = [
+    "memberChartId",
+    "chartId",
+    "userId",
+    "jabatan",
 ];
 const getEmployeeSnapshot = (record) => pickSnapshot(record, EMPLOYEE_AUDIT_FIELDS);
 const normalizeOptionalText = (value) => {
@@ -158,6 +165,10 @@ const toLegacyActorId = (value) => {
     const normalized = value.replace(/[^a-zA-Z0-9]/g, "").trim();
     return normalized ? normalized.slice(0, 5) : null;
 };
+const isResignedEmployeeRecord = (employee) => {
+    const status = employee.status?.trim().toUpperCase();
+    return Boolean(employee.ResignDate) || status === "I";
+};
 const getDepartmentMap = async () => {
     const departments = await prismaEmployee.em_dept.findMany({
         select: {
@@ -178,6 +189,65 @@ const withDepartmentName = async (employee) => {
         ...employee,
         DeptName: deptName,
     });
+};
+const clearResignedEmployeeChartMemberships = async (employeeUserId, requesterUserId) => {
+    const memberships = await prismaFlowly.chartMember.findMany({
+        where: {
+            userId: employeeUserId,
+            isDeleted: false,
+        },
+        select: {
+            memberChartId: true,
+            chartId: true,
+            userId: true,
+            jabatan: true,
+        },
+    });
+    if (memberships.length === 0) {
+        return 0;
+    }
+    const now = new Date();
+    await prismaFlowly.chartMember.updateMany({
+        where: {
+            memberChartId: {
+                in: memberships.map((membership) => membership.memberChartId),
+            },
+            userId: employeeUserId,
+            isDeleted: false,
+        },
+        data: {
+            userId: null,
+            updatedAt: now,
+            updatedBy: requesterUserId,
+        },
+    });
+    await Promise.all(memberships.map((membership) => writeAuditLog({
+        module: "CHART_MEMBER",
+        entity: "CHART_MEMBER",
+        entityId: membership.memberChartId,
+        action: "UPDATE",
+        actorId: requesterUserId,
+        actorType: resolveActorType(requesterUserId),
+        changes: buildChanges(membership, { ...membership, userId: null }, CHART_MEMBER_RESIGN_AUDIT_FIELDS),
+        meta: {
+            chartId: membership.chartId,
+            reason: "EMPLOYEE_RESIGNED",
+            employeeUserId,
+        },
+        at: now,
+    })));
+    return memberships.length;
+};
+const enforceResignedEmployeeSideEffects = async (employee, requesterUserId) => {
+    if (!isResignedEmployeeRecord(employee)) {
+        return;
+    }
+    await OnboardingService.failIncompleteEmployeeOnboardingForResignation({
+        employeeUserId: employee.UserId,
+        actorId: requesterUserId,
+        resignDate: employee.ResignDate ?? null,
+    });
+    await clearResignedEmployeeChartMemberships(employee.UserId, requesterUserId);
 };
 const ensureDepartmentExists = async (deptId) => {
     if (deptId === undefined || deptId === null) {
@@ -239,6 +309,7 @@ const buildEmployeeCreateData = (request, requesterUserId) => {
     const now = new Date();
     const badgeNum = request.BadgeNum.trim();
     const cardNo = request.CardNo.trim();
+    const resignDate = request.ResignDate ?? null;
     return {
         BadgeNum: badgeNum,
         Name: normalizeOptionalText(request.Name) ?? null,
@@ -263,8 +334,8 @@ const buildEmployeeCreateData = (request, requesterUserId) => {
         ImgName: "domas.png",
         SbuSub: request.SbuSub ?? null,
         Nik: normalizeOptionalText(request.Nik) ?? null,
-        ResignDate: request.ResignDate ?? null,
-        status: "-",
+        ResignDate: resignDate,
+        status: resignDate ? "I" : "A",
         statusLMS: normalizeStatusLmsInput(request.statusLMS),
         roleId: request.roleId ?? null,
         jobDesc: normalizeOptionalText(request.jobDesc) ?? null,
@@ -279,6 +350,7 @@ const buildEmployeeCreateData = (request, requesterUserId) => {
 const buildEmployeeUpdateData = (request) => {
     const badgeNum = request.BadgeNum.trim();
     const cardNo = request.CardNo.trim();
+    const resignDate = request.ResignDate ?? null;
     const data = {
         Lastupdate: new Date(),
         BadgeNum: badgeNum,
@@ -298,7 +370,8 @@ const buildEmployeeUpdateData = (request) => {
         isMemDate: request.isMem ? request.isMemDate ?? null : null,
         SbuSub: request.SbuSub ?? null,
         Nik: normalizeOptionalText(request.Nik) ?? null,
-        ResignDate: request.ResignDate ?? null,
+        ResignDate: resignDate,
+        status: resignDate ? "I" : "A",
         statusLMS: normalizeStatusLmsInput(request.statusLMS),
         roleId: request.roleId ?? null,
         jobDesc: normalizeOptionalText(request.jobDesc) ?? null,
@@ -459,6 +532,7 @@ export class EmployeeService {
             actorType: resolveActorType(requesterUserId),
             snapshot: getEmployeeSnapshot(response),
         });
+        await enforceResignedEmployeeSideEffects(created, requesterUserId);
         return response;
     }
     static async update(requesterUserId, request) {
@@ -501,6 +575,7 @@ export class EmployeeService {
                 changes,
             });
         }
+        await enforceResignedEmployeeSideEffects(updated, requesterUserId);
         return response;
     }
     static async remove(requesterUserId, request) {

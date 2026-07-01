@@ -11,6 +11,7 @@ export type MasterIkResponse = {
     dibuatOlehName?: string | null;
     diketahuiOlehName?: string | null;
     disetujuiOlehName?: string | null;
+    createdByName?: string | null;
     sops: MasterIkSopInfo[];
     isActive: boolean;
     isDeleted: boolean;
@@ -24,6 +25,20 @@ export type MasterIkSopInfo = {
     sbuSubName: string | null;
 };
 export type MasterIkListResponse = MasterIkResponse;
+export type MasterIkListFilters = {
+    sopId?: string;
+    search?: string;
+    status?: "all" | "active" | "inactive";
+    page?: number;
+    pageSize?: number;
+};
+export type MasterIkPaginatedListResponse = {
+    data: MasterIkListResponse[];
+    page: number;
+    pageSize: number;
+    total: number;
+    activeTotal: number;
+};
 export type CreateMasterIkRequest = {
     ikName: string;
     ikNumber: string;
@@ -57,6 +72,7 @@ type MasterIkRecord = MasterIK & {
     dibuatOlehName?: string | null;
     diketahuiOlehName?: string | null;
     disetujuiOlehName?: string | null;
+    createdByName?: string | null;
 };
 export declare function toMasterIkResponse(ik: MasterIkRecord): MasterIkResponse;
 export declare const toMasterIkListResponse: typeof toMasterIkResponse;

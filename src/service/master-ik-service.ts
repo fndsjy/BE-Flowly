@@ -12,6 +12,8 @@ import {
   type CreateMasterIkRequest,
   type UpdateMasterIkRequest,
   type DeleteMasterIkRequest,
+  type MasterIkListFilters,
+  type MasterIkPaginatedListResponse,
   type MasterIkSopInfo,
   toMasterIkResponse,
   toMasterIkListResponse,
@@ -658,11 +660,14 @@ export class MasterIkService {
 
   static async list(
     requesterId: string,
-    filters?: {
-      sopId?: string;
-    }
+    filters?: MasterIkListFilters
   ) {
     const access = await getProcedureAccess(requesterId);
+    const page = Math.max(1, Math.trunc(filters?.page ?? 1));
+    const pageSize = Math.max(1, Math.min(50, Math.trunc(filters?.pageSize ?? 10)));
+    const shouldPaginate = filters?.page !== undefined || filters?.pageSize !== undefined;
+    const search = filters?.search?.trim();
+    const status = filters?.status ?? "all";
 
     if (filters?.sopId) {
       const sop = await prismaFlowly.procedureSop.findUnique({
@@ -670,11 +675,13 @@ export class MasterIkService {
         select: { isDeleted: true, isActive: true },
       });
       if (!sop || sop.isDeleted || !sop.isActive) {
-        return [];
+        return shouldPaginate
+          ? { data: [], page, pageSize, total: 0, activeTotal: 0 }
+          : [];
       }
     }
 
-    const whereClause: Record<string, unknown> = {
+    const baseWhere: Prisma.MasterIKWhereInput = {
       isDeleted: false,
       ...(access.canCrud ? {} : { isActive: true }),
     };
@@ -685,34 +692,79 @@ export class MasterIkService {
         isDeleted: false,
         ...(access.canCrud ? {} : { isActive: true }),
       };
-      Object.assign(whereClause, {
+      Object.assign(baseWhere, {
         sops: {
           some: linkWhere,
         },
       });
     }
 
-    const list = await prismaFlowly.masterIK.findMany({
+    if (search) {
+      Object.assign(baseWhere, {
+        OR: [
+          { ikName: { contains: search } },
+          { ikNumber: { contains: search } },
+        ],
+      } satisfies Pick<Prisma.MasterIKWhereInput, "OR">);
+    }
+
+    const whereClause: Prisma.MasterIKWhereInput = {
+      ...baseWhere,
+      ...(status === "active"
+        ? { isActive: true }
+        : status === "inactive" && access.canCrud
+          ? { isActive: false }
+          : {}),
+    };
+
+    const [total, activeTotal, list] = await prismaFlowly.$transaction([
+      prismaFlowly.masterIK.count({ where: whereClause }),
+      prismaFlowly.masterIK.count({
+        where: {
+          ...baseWhere,
+          isActive: true,
+        },
+      }),
+      prismaFlowly.masterIK.findMany({
       where: whereClause,
-      orderBy: { effectiveDate: "desc" },
-    });
+        orderBy: [
+          { updatedAt: "desc" },
+          { createdAt: "desc" },
+          { ikId: "desc" },
+        ],
+        ...(shouldPaginate ? { skip: (page - 1) * pageSize, take: pageSize } : {}),
+      }),
+    ]);
 
     const employeeIds = new Set<number>();
+    const createdByIds = new Set<string>();
     for (const item of list) {
       if (typeof item.dibuatOleh === "number") employeeIds.add(item.dibuatOleh);
       if (typeof item.diketahuiOleh === "number") employeeIds.add(item.diketahuiOleh);
       if (typeof item.disetujuiOleh === "number") employeeIds.add(item.disetujuiOleh);
+      if (item.createdBy?.trim()) createdByIds.add(item.createdBy.trim());
     }
 
-    const employees = employeeIds.size === 0
-      ? []
-      : await prismaEmployee.em_employee.findMany({
-        where: { UserId: { in: Array.from(employeeIds) } },
-        select: { UserId: true, Name: true },
-      });
+    const [employees, creators] = await Promise.all([
+      employeeIds.size === 0
+        ? []
+        : prismaEmployee.em_employee.findMany({
+          where: { UserId: { in: Array.from(employeeIds) } },
+          select: { UserId: true, Name: true },
+        }),
+      createdByIds.size === 0
+        ? []
+        : prismaFlowly.user.findMany({
+          where: { userId: { in: Array.from(createdByIds) } },
+          select: { userId: true, name: true },
+        }),
+    ]);
 
     const employeeMap = new Map<number, string | null>(
       employees.map((employee) => [employee.UserId, employee.Name ?? null])
+    );
+    const creatorMap = new Map<string, string | null>(
+      creators.map((creator) => [creator.userId, creator.name ?? null])
     );
 
     const sopMap = await buildIkSopInfoMap(
@@ -720,7 +772,7 @@ export class MasterIkService {
       access.canCrud
     );
 
-    return list.map((item) =>
+    const data = list.map((item) =>
       toMasterIkListResponse({
         ...item,
         dibuatOlehName:
@@ -735,8 +787,23 @@ export class MasterIkService {
           typeof item.disetujuiOleh === "number"
             ? employeeMap.get(item.disetujuiOleh) ?? null
             : null,
+        createdByName: item.createdBy?.trim()
+          ? creatorMap.get(item.createdBy.trim()) ?? null
+          : null,
         sops: sopMap.get(item.ikId) ?? [],
       })
     );
+
+    if (!shouldPaginate) {
+      return data;
+    }
+
+    return {
+      data,
+      page,
+      pageSize,
+      total,
+      activeTotal,
+    } satisfies MasterIkPaginatedListResponse;
   }
 }

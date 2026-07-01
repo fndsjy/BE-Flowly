@@ -65,6 +65,55 @@ export type UpdateNotificationTemplateRequest = {
 export type DeleteNotificationTemplateRequest = {
     notificationTemplateId: string;
 };
+export type ListManualNotificationRecipientsRequest = {
+    portalKey?: string;
+    search?: string;
+    limit?: number;
+};
+export type ManualNotificationRecipient = {
+    userId: number;
+    employeeName: string | null;
+    cardNumber: string | null;
+    badgeNumber: string | null;
+    phoneNumber: string | null;
+    email: string | null;
+    isFirstLogin: boolean;
+    latestAssignmentId: string | null;
+    latestAssignmentStatus: string | null;
+    latestStartedAt: Date | null;
+    latestDueAt: Date | null;
+};
+export type ManualNotificationDefaults = {
+    portalKey: string;
+    portalName: string;
+    loginUrl: string;
+    hrdUrl: string;
+    supportName: string;
+    supportPhone: string;
+};
+export type ListManualNotificationRecipientsResponse = ManualNotificationDefaults & {
+    recipients: ManualNotificationRecipient[];
+};
+export type ManualSendNotificationRequest = {
+    notificationTemplateId: string;
+    portalKey: string;
+    userIds: number[];
+    messageTemplate?: string;
+};
+export type ManualSendNotificationRecipientResult = {
+    userId: number;
+    employeeName: string | null;
+    phoneNumber: string | null;
+    email: string | null;
+    notificationOutboxId: string | null;
+    status: "QUEUED" | "SKIPPED";
+    error: string | null;
+};
+export type ManualSendNotificationResponse = {
+    queued: number;
+    skipped: number;
+    recipients: ManualSendNotificationRecipientResult[];
+};
 export type TestNotificationRecipientResult = {
     userId: number;
     employeeName: string | null;

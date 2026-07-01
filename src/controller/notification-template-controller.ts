@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import type {
   CreateNotificationTemplateRequest,
   DeleteNotificationTemplateRequest,
+  ManualSendNotificationRequest,
   UpdateNotificationTemplateRequest,
 } from "../model/notification-template-model.js";
 import { verifyToken } from "../utils/auth.js";
@@ -79,6 +80,44 @@ export class NotificationTemplateController {
       );
 
       res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async listManualRecipients(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await NotificationTemplateService.listManualRecipients(
+        payload.userId,
+        req.query
+      );
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async sendManual(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await NotificationTemplateService.sendManual(
+        payload.userId,
+        req.body as ManualSendNotificationRequest
+      );
+
+      res.status(201).json({ response });
     } catch (err) {
       next(err);
     }

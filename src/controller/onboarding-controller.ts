@@ -45,6 +45,26 @@ export class OnboardingController {
     }
   }
 
+  static async listEmployeePortalMonitoring(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await OnboardingService.listEmployeePortalMonitoring(
+        payload.userId
+      );
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async listMyWorkspace(
     req: Request,
     res: Response,
@@ -126,6 +146,27 @@ export class OnboardingController {
     }
   }
 
+  static async cancelEmployeeOnboarding(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await OnboardingService.cancelEmployeeOnboarding(
+        payload.userId,
+        req.body
+      );
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async startExam(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.cookies.access_token;
@@ -133,6 +174,27 @@ export class OnboardingController {
 
       const payload = verifyToken(token);
       const response = await OnboardingExamRuntimeService.start(
+        payload.userId,
+        req.body
+      );
+
+      res.status(201).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async requestExamStartApproval(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await OnboardingExamRuntimeService.requestStartApproval(
         payload.userId,
         req.body
       );
@@ -205,6 +267,27 @@ export class OnboardingController {
 
       const payload = verifyToken(token);
       const response = await OnboardingExamRuntimeService.testAutofill(
+        payload.userId,
+        req.body
+      );
+
+      res.status(200).json({ response });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async resetExamAttempt(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+
+      const payload = verifyToken(token);
+      const response = await OnboardingExamRuntimeService.resetAttempt(
         payload.userId,
         req.body
       );

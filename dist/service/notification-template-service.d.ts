@@ -1,8 +1,10 @@
-import { type CreateNotificationTemplateRequest, type DeleteNotificationTemplateRequest, type TestWhatsappNotificationResponse, type UpdateNotificationTemplateRequest } from "../model/notification-template-model.js";
+import { type CreateNotificationTemplateRequest, type DeleteNotificationTemplateRequest, type ListManualNotificationRecipientsRequest, type ListManualNotificationRecipientsResponse, type ManualSendNotificationRequest, type ManualSendNotificationResponse, type TestWhatsappNotificationResponse, type UpdateNotificationTemplateRequest } from "../model/notification-template-model.js";
 export declare class NotificationTemplateService {
     static create(requesterId: string, reqBody: CreateNotificationTemplateRequest): Promise<import("../model/notification-template-model.js").NotificationTemplateResponse>;
     static update(requesterId: string, reqBody: UpdateNotificationTemplateRequest): Promise<import("../model/notification-template-model.js").NotificationTemplateResponse>;
     static softDelete(requesterId: string, reqBody: DeleteNotificationTemplateRequest): Promise<import("../model/notification-template-model.js").NotificationTemplateResponse>;
+    static listManualRecipients(requesterId: string, filters: ListManualNotificationRecipientsRequest): Promise<ListManualNotificationRecipientsResponse>;
+    static sendManual(requesterId: string, reqBody: ManualSendNotificationRequest): Promise<ManualSendNotificationResponse>;
     static sendWhatsappTest(requesterId: string): Promise<TestWhatsappNotificationResponse>;
     static list(requesterId: string, filters?: {
         channel?: string;

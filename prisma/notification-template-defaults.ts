@@ -132,6 +132,15 @@ export const notificationTemplateDefaults: NotificationTemplateDefault[] = [
       "Halo {recipientName},\n\nHRD memperpanjang tenggat onboarding Anda untuk {portalName} selama {extensionDays} hari.\nDeadline sebelumnya: {previousDueDate}\nDeadline baru: {dueDate}\nCatatan HRD: {decisionNote}\n\nSilakan lanjutkan onboarding melalui {loginUrl}.",
   },
   {
+    templateName: "WA Monitor - Password mulai ujian onboarding",
+    channel: "WHATSAPP",
+    eventKey: "ONBOARDING_EXAM_START_PASSWORD",
+    recipientRole: "EXAM_MONITOR",
+    portalKeys: ["EMPLOYEE"],
+    messageTemplate:
+      "{eventLabel}\n\n{employeeName} ({badgeNumber}) meminta mulai ujian/remedial onboarding.\nPortal: {portalName}\nTahap: {stageName}\nPassword: {approvalPassword}\nBerlaku sampai: {expiresAt}",
+  },
+  {
     templateName: "WA Monitor - Ujian onboarding dimulai",
     channel: "WHATSAPP",
     eventKey: "ONBOARDING_EXAM_STARTED",

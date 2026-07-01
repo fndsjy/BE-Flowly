@@ -1478,18 +1478,21 @@ export class OnboardingExamResultSyncService {
     const stageProgressIds = uniqueTexts(
       attempts.map((attempt) => attempt.onboardingStageProgressId)
     );
-    const allAttemptNumbers =
+    const allAttemptsForStageProgress =
       stageProgressIds.length > 0
         ? await prismaFlowly.onboardingExamAttempt.findMany({
             where: {
               onboardingStageProgressId: {
                 in: stageProgressIds,
               },
+              isActive: true,
               isDeleted: false,
             },
             select: {
+              onboardingExamAttemptId: true,
               onboardingStageProgressId: true,
               attemptNo: true,
+              status: true,
             },
           })
         : [];
@@ -1522,7 +1525,16 @@ export class OnboardingExamResultSyncService {
         .map((session) => [session.exams_id ?? "", session] as const)
     );
     const latestAttemptNoByStageProgress = new Map<string, number>();
-    for (const attempt of allAttemptNumbers) {
+    const attemptsByStageProgress = new Map<
+      string,
+      typeof allAttemptsForStageProgress
+    >();
+    for (const attempt of allAttemptsForStageProgress) {
+      const stageAttempts =
+        attemptsByStageProgress.get(attempt.onboardingStageProgressId) ?? [];
+      stageAttempts.push(attempt);
+      attemptsByStageProgress.set(attempt.onboardingStageProgressId, stageAttempts);
+
       const latestAttemptNo =
         latestAttemptNoByStageProgress.get(attempt.onboardingStageProgressId) ?? 0;
       if (attempt.attemptNo > latestAttemptNo) {
@@ -1565,8 +1577,15 @@ export class OnboardingExamResultSyncService {
       );
       const isPassed = score >= passScore;
       const nextStatus = isPassed ? "PASSED" : "REMEDIAL";
-      const shouldIncrementRemedial =
-        !isPassed && normalizeUpper(attempt.status) !== "REMEDIAL";
+      const nextRemedialCount = (
+        attemptsByStageProgress.get(attempt.onboardingStageProgressId) ?? []
+      ).filter((stageAttempt) => {
+        const status =
+          stageAttempt.onboardingExamAttemptId === attempt.onboardingExamAttemptId
+            ? nextStatus
+            : stageAttempt.status;
+        return normalizeUpper(status) === "REMEDIAL";
+      }).length;
       let shouldNotifyPassedToLms = false;
 
       await prismaFlowly.$transaction(async (tx) => {
@@ -1613,9 +1632,7 @@ export class OnboardingExamResultSyncService {
             passedAt: isPassed
               ? attempt.stageProgress.passedAt ?? releasedAt
               : attempt.stageProgress.passedAt,
-            remedialCount: shouldIncrementRemedial
-              ? { increment: 1 }
-              : attempt.stageProgress.remedialCount,
+            remedialCount: nextRemedialCount,
             note: releaseNote,
             updatedAt: releasedAt,
             updatedBy: SYNC_ACTOR,

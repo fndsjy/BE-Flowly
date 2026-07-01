@@ -65,4 +65,31 @@ export class NotificationTemplateValidation {
   static readonly DELETE: ZodType = z.object({
     notificationTemplateId: z.string().min(1).max(20),
   });
+
+  static readonly LIST_MANUAL_RECIPIENTS: ZodType = z.object({
+    portalKey: portalKeySchema.optional(),
+    search: z
+      .preprocess(
+        (value) => (Array.isArray(value) ? value[0] : value),
+        z.string().trim().max(100).optional()
+      )
+      .transform((value) => (value && value.length > 0 ? value : undefined)),
+    limit: z
+      .preprocess(
+        (value) => (Array.isArray(value) ? value[0] : value),
+        z.coerce.number().int().min(1).max(200).optional()
+      )
+      .transform((value) => value ?? 100),
+  });
+
+  static readonly MANUAL_SEND: ZodType = z.object({
+    notificationTemplateId: z.string().min(1).max(20),
+    portalKey: portalKeySchema,
+    userIds: z
+      .array(z.number().int().positive())
+      .min(1, "Pilih minimal satu karyawan")
+      .max(200, "Maksimal 200 karyawan per request")
+      .transform((value) => Array.from(new Set(value))),
+    messageTemplate: z.string().trim().min(1).max(1000).optional(),
+  });
 }

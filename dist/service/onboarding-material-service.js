@@ -12,6 +12,18 @@ const ONBOARDING_ADMIN_PORTAL_KEYS = [
     "INFLUENCER",
     "COMMUNITY",
 ];
+const getMaterialFileTypeOrder = (fileType) => {
+    if (fileType === 3) {
+        return 0;
+    }
+    if (fileType === 2) {
+        return 1;
+    }
+    if (fileType === 1) {
+        return 2;
+    }
+    return 3;
+};
 const PORTAL_ORDER_MAP = new Map(ONBOARDING_ADMIN_PORTAL_KEYS.map((portalKey, index) => [portalKey, (index + 1) * 10]));
 const normalizeOptionalText = (value) => {
     const trimmed = value?.trim();
@@ -138,9 +150,14 @@ export class OnboardingMaterialService {
         AND (gm.id IS NULL OR COALESCE(gm.status, 'A') = 'A')
       ORDER BY
         m.judul_materi ASC,
+        CASE COALESCE(gm.file_type, mf.file_type)
+          WHEN 3 THEN 0
+          WHEN 2 THEN 1
+          WHEN 1 THEN 2
+          ELSE 3
+        END ASC,
         CASE WHEN COALESCE(mf.urutan, gm.urutan) IS NULL THEN 1 ELSE 0 END ASC,
         COALESCE(mf.urutan, gm.urutan) ASC,
-        COALESCE(gm.file_type, mf.file_type, 0) DESC,
         COALESCE(
           NULLIF(LTRIM(RTRIM(gm.title)), ''),
           NULLIF(LTRIM(RTRIM(mf.judul)), ''),
@@ -226,15 +243,15 @@ export class OnboardingMaterialService {
         }
         return Array.from(materialMap.values()).map((material) => {
             const files = [...material.files].sort((left, right) => {
+                const leftFileTypeOrder = getMaterialFileTypeOrder(left.fileType);
+                const rightFileTypeOrder = getMaterialFileTypeOrder(right.fileType);
+                if (leftFileTypeOrder !== rightFileTypeOrder) {
+                    return leftFileTypeOrder - rightFileTypeOrder;
+                }
                 const leftOrder = left.orderIndex ?? Number.MAX_SAFE_INTEGER;
                 const rightOrder = right.orderIndex ?? Number.MAX_SAFE_INTEGER;
                 if (leftOrder !== rightOrder) {
                     return leftOrder - rightOrder;
-                }
-                const leftFileType = left.fileType ?? Number.MIN_SAFE_INTEGER;
-                const rightFileType = right.fileType ?? Number.MIN_SAFE_INTEGER;
-                if (leftFileType !== rightFileType) {
-                    return rightFileType - leftFileType;
                 }
                 const leftLabel = (left.title ?? left.fileName).toLowerCase();
                 const rightLabel = (right.title ?? right.fileName).toLowerCase();

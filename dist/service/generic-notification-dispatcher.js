@@ -5,6 +5,11 @@ const DEFAULT_BATCH_SIZE = 10;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const CHANNEL_EMAIL = "EMAIL";
+const OUTBOX_STATUS_PENDING = "PENDING";
+const OUTBOX_STATUS_PROCESSING = "PROCESSING";
+const OUTBOX_STATUS_SENT = "SENT";
+const OUTBOX_STATUS_FAILED = "FAILED";
+const SYSTEM_ACTOR = "SYSTEM";
 const getBatchSize = () => {
     const value = Number(process.env.NOTIFICATION_BATCH_SIZE ??
         process.env.WHAPI_BATCH_SIZE ??
@@ -43,7 +48,9 @@ const parseMeta = (value) => {
 };
 const markOutboxFailed = async (id, attempts, lastError, options) => {
     const maxAttempts = getMaxAttempts();
-    const status = options?.forceFailed || attempts >= maxAttempts ? "FAILED" : "PENDING";
+    const status = options?.forceFailed || attempts >= maxAttempts
+        ? OUTBOX_STATUS_FAILED
+        : OUTBOX_STATUS_PENDING;
     await prismaFlowly.notificationOutbox.update({
         where: { notificationOutboxId: id },
         data: {
@@ -53,7 +60,7 @@ const markOutboxFailed = async (id, attempts, lastError, options) => {
             provider: options?.provider ?? null,
             sentAt: null,
             updatedAt: new Date(),
-            updatedBy: "SYSTEM",
+            updatedBy: SYSTEM_ACTOR,
         },
     });
 };
@@ -63,13 +70,29 @@ const markOutboxSent = async (id, attempts, provider) => {
         data: {
             attempts,
             lastError: null,
-            status: "SENT",
+            status: OUTBOX_STATUS_SENT,
             provider,
             sentAt: new Date(),
             updatedAt: new Date(),
-            updatedBy: "SYSTEM",
+            updatedBy: SYSTEM_ACTOR,
         },
     });
+};
+const claimPendingOutbox = async (id) => {
+    const result = await prismaFlowly.notificationOutbox.updateMany({
+        where: {
+            notificationOutboxId: id,
+            status: OUTBOX_STATUS_PENDING,
+            isDeleted: false,
+        },
+        data: {
+            status: OUTBOX_STATUS_PROCESSING,
+            lastError: null,
+            updatedAt: new Date(),
+            updatedBy: SYSTEM_ACTOR,
+        },
+    });
+    return result.count === 1;
 };
 const resolveChannel = (item) => {
     const templateChannel = normalizeChannel(item.template?.channel);
@@ -97,7 +120,11 @@ export const dispatchGenericNotificationOutboxItem = async (item) => {
             await markOutboxFailed(item.notificationOutboxId, attempts, buildErrorMessage(convertResult.error), { provider: "WHAPI" });
             return;
         }
-        const sendResult = await sendWhapiMessage(convertResult.number, message);
+        const sendResult = await sendWhapiMessage(convertResult.number, message, {
+            source: "notification_outbox",
+            referenceId: item.notificationOutboxId,
+            rawPhone: item.phoneNumber,
+        });
         if (!sendResult.ok) {
             await markOutboxFailed(item.notificationOutboxId, attempts, buildErrorMessage(sendResult.data ?? sendResult.error), { provider: "WHAPI" });
             return;
@@ -132,7 +159,7 @@ export const processGenericNotificationOutbox = async () => {
         const items = await prismaFlowly.notificationOutbox.findMany({
             where: {
                 isDeleted: false,
-                status: "PENDING",
+                status: OUTBOX_STATUS_PENDING,
                 attempts: { lt: maxAttempts },
             },
             orderBy: { createdAt: "asc" },
@@ -151,6 +178,10 @@ export const processGenericNotificationOutbox = async () => {
             },
         });
         for (const item of items) {
+            const claimed = await claimPendingOutbox(item.notificationOutboxId);
+            if (!claimed) {
+                continue;
+            }
             try {
                 await dispatchGenericNotificationOutboxItem(item);
             }

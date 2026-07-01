@@ -34,6 +34,9 @@ export class OnboardingValidation {
     static LIST_EMPLOYEE_SUMMARY = z.object({
         portalKey: z.string().trim().min(1).max(50).optional(),
     });
+    static CANCEL_EMPLOYEE_ONBOARDING = z.object({
+        onboardingAssignmentId: z.string().trim().min(1).max(100),
+    });
     static START_MATERIAL_READ = z.object({
         onboardingAssignmentId: z.string().trim().min(1).max(100),
         onboardingStageProgressId: z.string().trim().min(1).max(100),

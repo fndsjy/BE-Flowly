@@ -1,0 +1,1 @@
+{"version":3,"file":"attendance-access.d.ts","sourceRoot":"","sources":["../../src/utils/attendance-access.ts"],"names":[],"mappings":"AAGA,MAAM,MAAM,qBAAqB,GAAG,MAAM,GAAG,MAAM,CAAC;AAOpD,eAAO,MAAM,4BAA4B,GACvC,iBAAiB,MAAM,KACtB,OAAO,CAAC,qBAAqB,CAwF/B,CAAC;AAEF,eAAO,MAAM,0BAA0B,GAAU,iBAAiB,MAAM,kBAEvE,CAAC;AAEF,eAAO,MAAM,0BAA0B,GAAU,iBAAiB,MAAM,kBAKvE,CAAC"}

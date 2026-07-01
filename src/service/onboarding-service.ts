@@ -5,6 +5,8 @@ import { invalidateProfileCache } from "../application/profile-cache.js";
 import type { Prisma } from "../generated/flowly/client.js";
 import {
   type AdminOnboardingMonitoringResponse,
+  type CancelEmployeeOnboardingRequest,
+  type CancelEmployeeOnboardingResponse,
   type DecideOnboardingRequest,
   type DecideOnboardingResponse,
   type EmployeeOnboardingSkipItem,
@@ -34,6 +36,7 @@ import {
   resolveActorType,
   writeAuditLog,
 } from "../utils/audit-log.js";
+import { hasConfiguredAccess } from "../utils/admin-access.js";
 import {
   ensureHrdCrudAccess,
   ensureHrdReadAccess,
@@ -59,6 +62,7 @@ const ONBOARDING_TRANSFER_REVIEW_CANCELLED_EVENT_KEY =
   "ONBOARDING_TRANSFER_REVIEW_CANCELLED";
 const ONBOARDING_ASSIGNMENT_CONTEXT_TYPE = "ONBOARDING_ASSIGNMENT";
 const ONBOARDING_DECISION_CONTEXT_TYPE = "ONBOARDING_DECISION";
+const ONBOARDING_EXAM_SESSION_CONTEXT_TYPE = "ONBOARDING_EXAM_SESSION";
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const CHANNEL_EMAIL = "EMAIL";
 const AUTO_FAILED_DECISION_TYPE = "AUTO_FAILED";
@@ -67,6 +71,7 @@ const DECISION_EXTEND = "EXTEND";
 const DECISION_FAIL_FINAL = "FAIL_FINAL";
 const DECISION_FREEZE_TRANSFER_REVIEW = "FREEZE_TRANSFER_REVIEW";
 const DECISION_CANCEL_TRANSFER_REVIEW = "CANCEL_TRANSFER_REVIEW";
+const ASSIGNMENT_STATUS_IN_PROGRESS = "IN_PROGRESS";
 const ASSIGNMENT_STATUS_TRANSFER_REVIEW = "TRANSFER_REVIEW";
 const EXAM_FINISHED_FLAG = "Y";
 const DEFAULT_EXTENSION_DURATION_DAYS = 90;
@@ -342,6 +347,60 @@ const ensureAdminMonitoringAccess = async (requesterUserId: string) => {
   if (!requester.isActive || requester.isDeleted || requester.role.roleLevel !== 1) {
     throw new ResponseError(403, "Admin access required");
   }
+};
+
+const ensureEmployeePortalOnboardingMonitoringAccess = async (
+  requesterUserId: string
+) => {
+  const hasAccess = await hasConfiguredAccess(requesterUserId, [
+    { resourceType: "MENU", resourceKey: "ONBOARDING" },
+  ]);
+
+  if (!hasAccess) {
+    throw new ResponseError(403, "Akses menu onboarding dibutuhkan");
+  }
+};
+
+const hasRoleOneValue = (value?: string | number | null) =>
+  String(value ?? "").trim() === "1";
+
+const ensureRoleOneOnboardingCancelAccess = async (requesterUserId: string) => {
+  const requester = await prismaFlowly.user.findUnique({
+    where: { userId: requesterUserId },
+    include: { role: true },
+  });
+
+  if (requester) {
+    if (
+      requester.isActive &&
+      !requester.isDeleted &&
+      (hasRoleOneValue(requester.roleId) || requester.role.roleLevel === 1)
+    ) {
+      return;
+    }
+
+    throw new ResponseError(
+      403,
+      "Cancel onboarding hanya bisa dilakukan role 1"
+    );
+  }
+
+  const employeeUserId = Number(requesterUserId);
+  if (Number.isInteger(employeeUserId) && employeeUserId > 0) {
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: employeeUserId },
+      select: { UserId: true, roleId: true },
+    });
+
+    if (employee && hasRoleOneValue(employee.roleId)) {
+      return;
+    }
+  }
+
+  throw new ResponseError(
+    403,
+    "Cancel onboarding hanya bisa dilakukan role 1"
+  );
 };
 
 const hasHrdCrudAccess = async (requesterUserId: string) => {
@@ -3806,6 +3865,126 @@ export class OnboardingService {
     return { expired };
   }
 
+  static async failIncompleteEmployeeOnboardingForResignation(params: {
+    employeeUserId: number;
+    actorId?: string | null;
+    resignDate?: Date | null;
+  }) {
+    if (!Number.isInteger(params.employeeUserId) || params.employeeUserId <= 0) {
+      return { failed: 0 };
+    }
+
+    const participantReferenceId = String(params.employeeUserId);
+    const now = new Date();
+    const actorId = (normalizeNote(params.actorId) ?? "SYSTEM").slice(0, 20);
+    const assignments = await prismaFlowly.onboardingAssignment.findMany({
+      where: {
+        participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+        participantReferenceId,
+        programType: PROGRAM_TYPE_ONBOARDING,
+        isDeleted: false,
+        isActive: true,
+        status: {
+          notIn: Array.from(FINAL_ASSIGNMENT_STATUSES),
+        },
+      },
+      include: {
+        stageProgresses: {
+          where: {
+            isDeleted: false,
+            isActive: true,
+          },
+          orderBy: [{ stageOrder: "asc" }, { createdAt: "asc" }],
+          select: {
+            onboardingStageProgressId: true,
+            stageOrder: true,
+            status: true,
+          },
+        },
+      },
+    });
+
+    if (assignments.length === 0) {
+      return { failed: 0 };
+    }
+
+    let failed = 0;
+
+    for (const assignment of assignments) {
+      const activeStages = assignment.stageProgresses;
+      if (
+        activeStages.length > 0 &&
+        activeStages.every((stage) => {
+          const status = normalizeUpper(stage.status);
+          return status === "PASSED" || status === "COMPLETED";
+        })
+      ) {
+        continue;
+      }
+
+      const currentStage =
+        activeStages.find(
+          (stage) => stage.stageOrder === Number(assignment.currentStageOrder ?? 0)
+        ) ??
+        activeStages.find((stage) => {
+          const status = normalizeUpper(stage.status);
+          return status !== "PASSED" && status !== "COMPLETED";
+        }) ??
+        activeStages.at(-1) ??
+        null;
+      const currentStageOrder = currentStage?.stageOrder ?? assignment.currentStageOrder;
+      const resignLabel = params.resignDate
+        ? ` per ${formatIndonesianDate(params.resignDate)}`
+        : "";
+      const failureNote = `Karyawan resign${resignLabel}. Onboarding otomatis dibuat gagal karena karyawan belum lulus.`;
+
+      await prismaFlowly.$transaction(async (tx) => {
+        await tx.onboardingAssignment.update({
+          where: {
+            onboardingAssignmentId: assignment.onboardingAssignmentId,
+          },
+          data: {
+            status: "FAIL_FINAL",
+            failedAt: now,
+            failedBy: actorId,
+            completedAt: null,
+            completedBy: null,
+            currentStageOrder,
+            note: failureNote,
+            updatedAt: now,
+            updatedBy: actorId,
+          },
+        });
+
+        await tx.onboardingStageProgress.updateMany({
+          where: {
+            onboardingAssignmentId: assignment.onboardingAssignmentId,
+            isDeleted: false,
+            isActive: true,
+            status: {
+              notIn: ["PASSED", "COMPLETED"],
+            },
+          },
+          data: {
+            status: "FAIL_FINAL",
+            failedAt: now,
+            note: failureNote,
+            updatedAt: now,
+            updatedBy: actorId,
+          },
+        });
+      });
+
+      failed += 1;
+    }
+
+    if (failed > 0) {
+      invalidateProfileCache(participantReferenceId);
+    }
+
+    return { failed };
+  }
+
   static async decideOnboarding(
     requesterUserId: string,
     request: DecideOnboardingRequest
@@ -5273,7 +5452,6 @@ export class OnboardingService {
                   endedAt: true,
                   note: true,
                 },
-                take: 3,
               },
             },
           },
@@ -5683,6 +5861,17 @@ export class OnboardingService {
                 normalizeUpper(latestExamAttempt?.status) === "WAITING_ADMIN"
                   ? null
                   : normalizeNote(latestExamAttempt?.note) ?? null,
+              examAttempts: (stageProgress?.examAttempts ?? []).map((attempt) => ({
+                onboardingExamAttemptId: attempt.onboardingExamAttemptId,
+                examId: attempt.examId,
+                attemptNo: attempt.attemptNo,
+                score: resolveAttemptScore(attempt),
+                status: attempt.status,
+                employeeExamSessionId: attempt.employeeExamSessionId,
+                submittedAt: attempt.submittedAt,
+                endedAt: attempt.endedAt,
+                note: normalizeNote(attempt.note),
+              })),
               totalMaterialCount,
               readMaterialCount,
               totalOpenCount: materials.reduce(
@@ -5916,6 +6105,17 @@ export class OnboardingService {
     }
 
     return response;
+  }
+
+  static async listEmployeePortalMonitoring(
+    requesterUserId: string
+  ): Promise<AdminOnboardingMonitoringResponse> {
+    await ensureEmployeePortalOnboardingMonitoringAccess(requesterUserId);
+
+    return OnboardingService.listAdminMonitoring(requesterUserId, {
+      skipAdminAccess: true,
+      portalKeys: [DEFAULT_PORTAL_KEY],
+    });
   }
 
   static async startMaterialRead(
@@ -6370,6 +6570,293 @@ export class OnboardingService {
     return Array.from(summariesByEmployee.values()).sort(
       (left, right) => left.userId - right.userId
     );
+  }
+
+  static async cancelEmployeeOnboarding(
+    requesterUserId: string,
+    request: CancelEmployeeOnboardingRequest
+  ): Promise<CancelEmployeeOnboardingResponse> {
+    await ensureRoleOneOnboardingCancelAccess(requesterUserId);
+
+    const validated = Validation.validate(
+      OnboardingValidation.CANCEL_EMPLOYEE_ONBOARDING,
+      request
+    ) as CancelEmployeeOnboardingRequest;
+
+    const selectedAssignment = await prismaFlowly.onboardingAssignment.findFirst({
+      where: {
+        onboardingAssignmentId: validated.onboardingAssignmentId,
+        isDeleted: false,
+      },
+      select: {
+        onboardingAssignmentId: true,
+        portalKey: true,
+        programType: true,
+        participantReferenceType: true,
+        participantReferenceId: true,
+        status: true,
+      },
+    });
+
+    if (!selectedAssignment) {
+      throw new ResponseError(404, "Assignment onboarding tidak ditemukan");
+    }
+
+    if (
+      normalizeUpper(selectedAssignment.status) !== ASSIGNMENT_STATUS_IN_PROGRESS
+    ) {
+      throw new ResponseError(
+        400,
+        "Cancel onboarding hanya bisa untuk peserta yang masih on progress"
+      );
+    }
+
+    const assignments = await prismaFlowly.onboardingAssignment.findMany({
+      where: {
+        portalKey: selectedAssignment.portalKey,
+        programType: selectedAssignment.programType,
+        participantReferenceType: selectedAssignment.participantReferenceType,
+        participantReferenceId: selectedAssignment.participantReferenceId,
+        isDeleted: false,
+      },
+      select: {
+        onboardingAssignmentId: true,
+        status: true,
+        startedAt: true,
+        completedAt: true,
+        failedAt: true,
+        currentStageOrder: true,
+        parentOnboardingAssignmentId: true,
+      },
+    });
+
+    const cancelableAssignments = assignments.filter(
+      (assignment) =>
+        normalizeUpper(assignment.status) === ASSIGNMENT_STATUS_IN_PROGRESS
+    );
+    const assignmentIds = Array.from(
+      new Set(
+        cancelableAssignments.map(
+          (assignment) => assignment.onboardingAssignmentId
+        )
+      )
+    );
+
+    if (assignmentIds.length === 0) {
+      throw new ResponseError(
+        400,
+        "Cancel onboarding hanya bisa untuk peserta yang masih on progress"
+      );
+    }
+
+    const examAttempts = await prismaFlowly.onboardingExamAttempt.findMany({
+      where: {
+        onboardingAssignmentId: {
+          in: assignmentIds,
+        },
+        employeeExamSessionId: {
+          not: null,
+        },
+        isDeleted: false,
+      },
+      select: {
+        employeeExamSessionId: true,
+      },
+    });
+    const employeeExamSessionIds = Array.from(
+      new Set(
+        examAttempts
+          .map((attempt) => normalizeNote(attempt.employeeExamSessionId))
+          .filter((value): value is string => Boolean(value))
+      )
+    );
+
+    let deletedEmployeeExamAnswers = 0;
+    let deletedEmployeeExamSessions = 0;
+    const participantEmployeeId = Number(selectedAssignment.participantReferenceId);
+    if (
+      employeeExamSessionIds.length > 0 &&
+      normalizeUpper(selectedAssignment.participantReferenceType) ===
+        EMPLOYEE_PARTICIPANT_REFERENCE_TYPE &&
+      Number.isInteger(participantEmployeeId) &&
+      participantEmployeeId > 0
+    ) {
+      const employeeDeleteResult = await prismaEmployee.$transaction(async (tx) => {
+        const answers = await tx.em_jawaban_peserta.deleteMany({
+          where: {
+            empl_id: participantEmployeeId,
+            session_exams_id: {
+              in: employeeExamSessionIds,
+            },
+          },
+        });
+        const sessions = await tx.em_session_exams.deleteMany({
+          where: {
+            empl_id: participantEmployeeId,
+            exams_id: {
+              in: employeeExamSessionIds,
+            },
+          },
+        });
+
+        return {
+          deletedEmployeeExamAnswers: answers.count,
+          deletedEmployeeExamSessions: sessions.count,
+        };
+      });
+
+      deletedEmployeeExamAnswers =
+        employeeDeleteResult.deletedEmployeeExamAnswers;
+      deletedEmployeeExamSessions =
+        employeeDeleteResult.deletedEmployeeExamSessions;
+    }
+
+    const actorId = trimAuditActor(requesterUserId);
+    const transactionTime = new Date();
+    const softDeleteData = {
+      isActive: false,
+      isDeleted: true,
+      deletedAt: transactionTime,
+      deletedBy: actorId,
+      updatedAt: transactionTime,
+      updatedBy: actorId,
+    };
+    const notificationOutboxFilters: Prisma.NotificationOutboxWhereInput[] = [
+      {
+        contextReferenceType: ONBOARDING_ASSIGNMENT_CONTEXT_TYPE,
+        contextReferenceId: {
+          in: assignmentIds,
+        },
+      },
+    ];
+    if (employeeExamSessionIds.length > 0) {
+      notificationOutboxFilters.push({
+        contextReferenceType: ONBOARDING_EXAM_SESSION_CONTEXT_TYPE,
+        contextReferenceId: {
+          in: employeeExamSessionIds,
+        },
+      });
+    }
+
+    const deleted = await prismaFlowly.$transaction(async (tx) => {
+      const notificationOutboxes = await tx.notificationOutbox.updateMany({
+        where: {
+          isDeleted: false,
+          OR: notificationOutboxFilters,
+        },
+        data: {
+          ...softDeleteData,
+          status: "CANCELLED",
+          lastError: "Onboarding peserta dibatalkan",
+        },
+      });
+      const decisions = await tx.onboardingDecision.updateMany({
+        where: {
+          onboardingAssignmentId: {
+            in: assignmentIds,
+          },
+          isDeleted: false,
+        },
+        data: softDeleteData,
+      });
+      const examAttempts = await tx.onboardingExamAttempt.updateMany({
+        where: {
+          onboardingAssignmentId: {
+            in: assignmentIds,
+          },
+          isDeleted: false,
+        },
+        data: softDeleteData,
+      });
+      const materialProgresses = await tx.onboardingMaterialProgress.updateMany({
+        where: {
+          onboardingAssignmentId: {
+            in: assignmentIds,
+          },
+          isDeleted: false,
+        },
+        data: softDeleteData,
+      });
+      const stageProgresses = await tx.onboardingStageProgress.updateMany({
+        where: {
+          onboardingAssignmentId: {
+            in: assignmentIds,
+          },
+          isDeleted: false,
+        },
+        data: softDeleteData,
+      });
+      const assignments = await tx.onboardingAssignment.updateMany({
+        where: {
+          onboardingAssignmentId: {
+            in: assignmentIds,
+          },
+          isDeleted: false,
+        },
+        data: {
+          ...softDeleteData,
+          status: "CANCELLED",
+        },
+      });
+
+      return {
+        deletedNotificationOutboxes: notificationOutboxes.count,
+        deletedDecisions: decisions.count,
+        deletedExamAttempts: examAttempts.count,
+        deletedMaterialProgresses: materialProgresses.count,
+        deletedStageProgresses: stageProgresses.count,
+        deletedAssignments: assignments.count,
+      };
+    });
+
+    invalidateProfileCache(selectedAssignment.participantReferenceId);
+
+    await writeAuditLog({
+      module: "HRD",
+      entity: "ONBOARDING_ASSIGNMENT",
+      entityId: selectedAssignment.onboardingAssignmentId,
+      action: "DELETE",
+      actorId: requesterUserId,
+      actorType: resolveActorType(requesterUserId),
+      snapshot: {
+        participantReferenceType: selectedAssignment.participantReferenceType,
+        participantReferenceId: selectedAssignment.participantReferenceId,
+        portalKey: selectedAssignment.portalKey,
+        programType: selectedAssignment.programType,
+        assignmentIds,
+        previousAssignments: cancelableAssignments.map((assignment) => ({
+          onboardingAssignmentId: assignment.onboardingAssignmentId,
+          status: assignment.status,
+          startedAt: assignment.startedAt.toISOString(),
+          completedAt: assignment.completedAt?.toISOString() ?? null,
+          failedAt: assignment.failedAt?.toISOString() ?? null,
+          currentStageOrder: assignment.currentStageOrder,
+          parentOnboardingAssignmentId:
+            assignment.parentOnboardingAssignmentId,
+        })),
+      },
+      meta: {
+        source: "HRD_PAGE",
+        reason: "CANCEL_EMPLOYEE_ONBOARDING",
+        deleted,
+        deletedEmployeeExamAnswers,
+        deletedEmployeeExamSessions,
+      },
+    });
+
+    return {
+      participantReferenceType: selectedAssignment.participantReferenceType,
+      participantReferenceId: selectedAssignment.participantReferenceId,
+      portalKey: selectedAssignment.portalKey,
+      deletedAssignments: deleted.deletedAssignments,
+      deletedStageProgresses: deleted.deletedStageProgresses,
+      deletedMaterialProgresses: deleted.deletedMaterialProgresses,
+      deletedExamAttempts: deleted.deletedExamAttempts,
+      deletedDecisions: deleted.deletedDecisions,
+      deletedNotificationOutboxes: deleted.deletedNotificationOutboxes,
+      deletedEmployeeExamSessions,
+      deletedEmployeeExamAnswers,
+    };
   }
 
   static async startEmployees(

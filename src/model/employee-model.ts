@@ -92,7 +92,7 @@ type RequiredEmployeeMutationFields = {
   Nik: string;
   city: string;
   state: string;
-  email: string;
+  email: string | null;
   IPMsnFinger: string;
 };
 
