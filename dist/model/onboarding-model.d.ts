@@ -25,6 +25,22 @@ export interface StartEmployeeOnboardingResponse {
     started: EmployeeOnboardingStartItem[];
     skipped: EmployeeOnboardingSkipItem[];
 }
+export interface CancelEmployeeOnboardingRequest {
+    onboardingAssignmentId: string;
+}
+export interface CancelEmployeeOnboardingResponse {
+    participantReferenceType: string;
+    participantReferenceId: string;
+    portalKey: string;
+    deletedAssignments: number;
+    deletedStageProgresses: number;
+    deletedMaterialProgresses: number;
+    deletedExamAttempts: number;
+    deletedDecisions: number;
+    deletedNotificationOutboxes: number;
+    deletedEmployeeExamSessions: number;
+    deletedEmployeeExamAnswers: number;
+}
 export interface EmployeeOnboardingPlacementDetailResponse {
     source: string;
     label: string;
@@ -203,6 +219,17 @@ export interface AdminOnboardingMonitoringStageTemplateResponse {
     stageDescription: string | null;
     materialCount: number;
 }
+export interface AdminOnboardingMonitoringExamAttemptResponse {
+    onboardingExamAttemptId: string;
+    examId: number | null;
+    attemptNo: number;
+    score: number | null;
+    status: string;
+    employeeExamSessionId: string | null;
+    submittedAt: Date | null;
+    endedAt: Date | null;
+    note: string | null;
+}
 export interface AdminOnboardingMonitoringStageResponse {
     onboardingStageProgressId: string | null;
     onboardingStageTemplateId: string;
@@ -223,6 +250,7 @@ export interface AdminOnboardingMonitoringStageResponse {
     examSubmittedAt: Date | null;
     examReviewedAt: Date | null;
     examNote: string | null;
+    examAttempts: AdminOnboardingMonitoringExamAttemptResponse[];
     totalMaterialCount: number;
     readMaterialCount: number;
     totalOpenCount: number;

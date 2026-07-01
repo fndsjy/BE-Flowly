@@ -990,6 +990,7 @@ model OnboardingAssignment {
   stageProgresses              OnboardingStageProgress[]
   materialProgresses           OnboardingMaterialProgress[]
   examAttempts                 OnboardingExamAttempt[]
+  examStartApprovals           OnboardingExamStartApproval[]
   decisions                    OnboardingDecision[]
 
   @@index([onboardingPortalTemplateId, isDeleted, isActive])
@@ -1028,6 +1029,7 @@ model OnboardingStageProgress {
   stageTemplate             OnboardingStageTemplate      @relation(fields: [onboardingStageTemplateId], references: [onboardingStageTemplateId], onDelete: NoAction, onUpdate: NoAction)
   materialProgresses        OnboardingMaterialProgress[]
   examAttempts              OnboardingExamAttempt[]
+  examStartApprovals        OnboardingExamStartApproval[]
 
   @@unique([onboardingAssignmentId, stageOrder])
   @@index([onboardingAssignmentId, status, isDeleted, isActive])
@@ -1110,6 +1112,38 @@ model OnboardingExamAttempt {
   @@index([onboardingStageExamId, isDeleted, isActive])
   @@index([employeeExamSessionId])
   @@map("onboarding_exam_attempt")
+}
+
+/// One-time HRD password approval before an onboarding exam or remedial starts
+model OnboardingExamStartApproval {
+  onboardingExamStartApprovalId String                  @id @db.NVarChar(100)
+  onboardingAssignmentId        String                  @db.NVarChar(100)
+  onboardingStageProgressId     String                  @db.NVarChar(100)
+  participantReferenceId        String                  @db.NVarChar(100)
+  purpose                       String                  @db.NVarChar(20)
+  passwordHash                  String                  @db.NVarChar(255)
+  expiresAt                     DateTime
+  usedAt                        DateTime?
+  failedAttemptCount            Int                     @default(0)
+  status                        String                  @db.NVarChar(20)
+  notificationOutboxId          String?                 @db.NVarChar(20)
+  isActive                      Boolean                 @default(true)
+  isDeleted                     Boolean                 @default(false)
+  createdAt                     DateTime                @default(now())
+  createdBy                     String?                 @db.NVarChar(20)
+  updatedAt                     DateTime                @updatedAt
+  updatedBy                     String?                 @db.NVarChar(20)
+  deletedAt                     DateTime?
+  deletedBy                     String?                 @db.NVarChar(20)
+  assignment                    OnboardingAssignment    @relation(fields: [onboardingAssignmentId], references: [onboardingAssignmentId], onDelete: NoAction, onUpdate: NoAction)
+  stageProgress                 OnboardingStageProgress @relation(fields: [onboardingStageProgressId], references: [onboardingStageProgressId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([onboardingAssignmentId, status, isDeleted, isActive])
+  @@index([onboardingStageProgressId, status, isDeleted, isActive])
+  @@index([participantReferenceId, status, isDeleted, isActive])
+  @@index([expiresAt])
+  @@index([notificationOutboxId])
+  @@map("onboarding_exam_start_approval")
 }
 
 /// Decision log after onboarding expiry or manager/PIC review

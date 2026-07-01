@@ -49,6 +49,10 @@ export class OnboardingValidation {
     portalKey: z.string().trim().min(1).max(50).optional(),
   });
 
+  static readonly CANCEL_EMPLOYEE_ONBOARDING: ZodType = z.object({
+    onboardingAssignmentId: z.string().trim().min(1).max(100),
+  });
+
   static readonly START_MATERIAL_READ: ZodType = z.object({
     onboardingAssignmentId: z.string().trim().min(1).max(100),
     onboardingStageProgressId: z.string().trim().min(1).max(100),

@@ -12,6 +12,7 @@ export type MasterIkResponse = {
   dibuatOlehName?: string | null;
   diketahuiOlehName?: string | null;
   disetujuiOlehName?: string | null;
+  createdByName?: string | null;
   sops: MasterIkSopInfo[];
   isActive: boolean;
   isDeleted: boolean;
@@ -27,6 +28,22 @@ export type MasterIkSopInfo = {
 };
 
 export type MasterIkListResponse = MasterIkResponse;
+
+export type MasterIkListFilters = {
+  sopId?: string;
+  search?: string;
+  status?: "all" | "active" | "inactive";
+  page?: number;
+  pageSize?: number;
+};
+
+export type MasterIkPaginatedListResponse = {
+  data: MasterIkListResponse[];
+  page: number;
+  pageSize: number;
+  total: number;
+  activeTotal: number;
+};
 
 export type CreateMasterIkRequest = {
   ikName: string;
@@ -64,6 +81,7 @@ type MasterIkRecord = MasterIK & {
   dibuatOlehName?: string | null;
   diketahuiOlehName?: string | null;
   disetujuiOlehName?: string | null;
+  createdByName?: string | null;
 };
 
 export function toMasterIkResponse(ik: MasterIkRecord): MasterIkResponse {
@@ -79,6 +97,7 @@ export function toMasterIkResponse(ik: MasterIkRecord): MasterIkResponse {
     dibuatOlehName: ik.dibuatOlehName ?? null,
     diketahuiOlehName: ik.diketahuiOlehName ?? null,
     disetujuiOlehName: ik.disetujuiOlehName ?? null,
+    createdByName: ik.createdByName ?? null,
     sops: ik.sops ?? [],
     isActive: ik.isActive,
     isDeleted: ik.isDeleted,

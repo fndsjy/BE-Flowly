@@ -4,6 +4,8 @@ export declare class NotificationTemplateController {
     static update(req: Request, res: Response, next: NextFunction): Promise<void>;
     static softDelete(req: Request, res: Response, next: NextFunction): Promise<void>;
     static sendWhatsappTest(req: Request, res: Response, next: NextFunction): Promise<void>;
+    static listManualRecipients(req: Request, res: Response, next: NextFunction): Promise<void>;
+    static sendManual(req: Request, res: Response, next: NextFunction): Promise<void>;
     static list(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 //# sourceMappingURL=notification-template-controller.d.ts.map

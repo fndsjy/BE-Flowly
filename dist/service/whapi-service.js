@@ -9,16 +9,29 @@ const buildUrl = (path) => {
     const cleanedPath = path.replace(/^\/+/, "");
     return `${WHAPI_BASE_URL}/${cleanedPath}`;
 };
-const postForm = async (path, payload) => {
+const postForm = async (path, payload, options) => {
     const response = await fetch(buildUrl(path), {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
+            ...(options?.idempotencyKey
+                ? { "Idempotency-Key": options.idempotencyKey }
+                : {}),
         },
         body: new URLSearchParams(payload).toString(),
     });
     const data = (await response.json().catch(() => ({})));
     return { ok: response.ok, status: response.status, data };
+};
+const normalizeConvertedNumber = (value) => value
+    .trim()
+    .replace(/@(c\.us|s\.whatsapp\.net)$/i, "")
+    .replace(/[^\d]/g, "");
+const maskPhone = (value) => {
+    const digits = normalizeConvertedNumber(value);
+    if (digits.length <= 6)
+        return digits;
+    return `${digits.slice(0, 4)}***${digits.slice(-4)}`;
 };
 export const convertWhapiNumber = async (phone) => {
     const { ok, data } = await postForm("convertNumber", { phone });
@@ -38,10 +51,10 @@ export const convertWhapiNumber = async (phone) => {
     }
     return {
         ok: true,
-        number: converted.replace("@c.us", ""),
+        number: normalizeConvertedNumber(converted),
     };
 };
-export const sendWhapiMessage = async (phone, message) => {
+export const sendWhapiMessage = async (phone, message, options) => {
     if (!WHAPI_API_KEY) {
         logger.warn("WHAPI_API_KEY is not set. Unable to send WhatsApp message.");
         return {
@@ -49,13 +62,49 @@ export const sendWhapiMessage = async (phone, message) => {
             error: { message: "WHAPI_API_KEY is not set" },
         };
     }
-    const { ok, data } = await postForm("sendMessage", {
-        apiKey: WHAPI_API_KEY,
-        phone,
-        message,
+    const normalizedPhone = normalizeConvertedNumber(phone);
+    if (!normalizedPhone) {
+        return {
+            ok: false,
+            error: { message: "Invalid phone number" },
+        };
+    }
+    logger.info("Sending WHAPI message", {
+        source: options?.source,
+        referenceId: options?.referenceId,
+        rawPhone: options?.rawPhone ? maskPhone(options.rawPhone) : undefined,
+        phone: maskPhone(normalizedPhone),
+        messageLength: message.length,
     });
+    const referenceId = options?.referenceId?.trim();
+    const { ok, status, data } = await postForm("sendMessage", {
+        apiKey: WHAPI_API_KEY,
+        phone: normalizedPhone,
+        message,
+        ...(referenceId
+            ? {
+                referenceId,
+                idempotencyKey: referenceId,
+                clientMessageId: referenceId,
+            }
+            : {}),
+    }, referenceId ? { idempotencyKey: referenceId } : undefined);
     const code = typeof data?.code === "number" ? data.code : undefined;
     const isOk = ok && (code === undefined || code < 400);
+    logger.info("WHAPI sendMessage response", {
+        source: options?.source,
+        referenceId: options?.referenceId,
+        phone: maskPhone(normalizedPhone),
+        httpStatus: status,
+        ok: isOk,
+        providerCode: code,
+        providerStatus: typeof data?.status === "string" ? data.status : undefined,
+        providerMessageId: typeof data?.results?.id === "string"
+            ? data.results.id
+            : typeof data?.results?.messageId === "string"
+                ? data.results.messageId
+                : undefined,
+    });
     return {
         ok: isOk,
         data,

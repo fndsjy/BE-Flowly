@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
+import type { Prisma } from "../generated/flowly/client.js";
 import { logger } from "../application/logging.js";
 import { ResponseError } from "../error/response-error.js";
 import {
@@ -7,11 +8,22 @@ import {
   generateOnboardingExamAttemptId,
 } from "../utils/id-generator.js";
 import { ensureEmployeeAdminAccess } from "../utils/admin-access.js";
+import {
+  resolveActorType,
+  writeAuditLog,
+} from "../utils/audit-log.js";
+import { invalidateProfileCache } from "../application/profile-cache.js";
 import { OnboardingEmployeeScheduleSyncService } from "./onboarding-employee-schedule-sync-service.js";
 import { OnboardingService } from "./onboarding-service.js";
 import { OnboardingMaterialService } from "./onboarding-material-service.js";
 
 type StartRuntimeExamRequest = {
+  onboardingStageProgressId?: string;
+  approvalId?: string;
+  approvalPassword?: string;
+};
+
+type RequestRuntimeExamStartApprovalRequest = {
   onboardingStageProgressId?: string;
 };
 
@@ -27,6 +39,10 @@ type SubmitRuntimeExamRequest = {
 type TestAutofillRuntimeExamRequest = {
   onboardingStageProgressId?: string;
   score?: number | string | null;
+};
+
+type ResetRuntimeExamRequest = {
+  onboardingStageProgressId?: string;
 };
 
 type SaveRuntimeExamAnswerRequest = {
@@ -52,11 +68,19 @@ type SoalUrutItem = {
   tipe: "pg" | "tf" | "es";
   options?: string[];
 };
+type RuntimeExamSessionRow = NonNullable<
+  Awaited<ReturnType<typeof prismaEmployee.em_session_exams.findFirst>>
+>;
 
 const EMPLOYEE_PARTICIPANT_REFERENCE_TYPE = "EMPLOYEE";
 const STARTABLE_STAGE_STATUSES = new Set(["WAITING_EXAM", "REMEDIAL"]);
 const FINISHED_FLAG = "Y";
+const EXPIRED_EXAM_SUBMITTED_MESSAGE =
+  "Waktu ujian sudah habis. Sesi ujian otomatis dikirim dan menunggu verifikasi HRD.";
+const EXPIRED_EXAM_SUBMITTED_NOTE =
+  "Waktu ujian habis. Sesi otomatis dikirim dan menunggu verifikasi HRD.";
 const DEFAULT_EXAM_DURATION_SECONDS = 30 * 60;
+const DEFAULT_EXPIRED_EXAM_FINALIZE_BATCH_SIZE = 50;
 const DEFAULT_TEST_AUTOFILL_SCORE = 95;
 const TEST_AUTOFILL_EMPLOYEE_IDS_ENV = "ONBOARDING_EXAM_TEST_AUTOFILL_EMPLOYEE_IDS";
 const parseExamMonitorEmployeeIds = () => {
@@ -74,6 +98,15 @@ const parseExamMonitorEmployeeIds = () => {
 };
 
 const EXAM_MONITOR_EMPLOYEE_IDS = parseExamMonitorEmployeeIds();
+const getExpiredExamFinalizeBatchSize = () => {
+  const value = Number(
+    process.env.ONBOARDING_EXAM_EXPIRY_BATCH_SIZE ??
+      DEFAULT_EXPIRED_EXAM_FINALIZE_BATCH_SIZE
+  );
+  return Number.isFinite(value) && value > 0
+    ? Math.trunc(value)
+    : DEFAULT_EXPIRED_EXAM_FINALIZE_BATCH_SIZE;
+};
 const parseTestAutofillEmployeeIds = () => {
   const configuredIds = process.env[TEST_AUTOFILL_EMPLOYEE_IDS_ENV] ?? "";
   const ids = configuredIds
@@ -101,10 +134,18 @@ const normalizeTestAutofillScore = (value: number | string | null | undefined) =
   return parsed;
 };
 const EXAM_NOTIFICATION_CONTEXT_TYPE = "ONBOARDING_EXAM_SESSION";
+const EXAM_START_APPROVAL_CONTEXT_TYPE = "ONBOARDING_EXAM_START_APPROVAL";
+const EXAM_START_APPROVAL_EVENT_KEY = "ONBOARDING_EXAM_START_PASSWORD";
 const EXAM_STARTED_EVENT_KEY = "ONBOARDING_EXAM_STARTED";
 const EXAM_FINISHED_EVENT_KEY = "ONBOARDING_EXAM_FINISHED";
 const EXAM_MONITOR_RECIPIENT_ROLE = "EXAM_MONITOR";
 const CHANNEL_WHATSAPP = "WHATSAPP";
+const EXAM_START_APPROVAL_TTL_MINUTES = 10;
+const EXAM_START_APPROVAL_MAX_FAILED_ATTEMPTS = 5;
+const RESETTABLE_EXAM_ATTEMPT_STATUSES = new Set([
+  "IN_PROGRESS",
+  "WAITING_ADMIN",
+]);
 const LOCKED_ASSIGNMENT_STATUSES = new Set([
   "TRANSFER_REVIEW",
   "FAILED",
@@ -139,6 +180,8 @@ const getNextAttemptNo = async (onboardingStageProgressId: string) => {
   const latestAttempt = await prismaFlowly.onboardingExamAttempt.findFirst({
     where: {
       onboardingStageProgressId,
+      isActive: true,
+      isDeleted: false,
     },
     orderBy: [{ attemptNo: "desc" }],
     select: {
@@ -152,6 +195,52 @@ const getNextAttemptNo = async (onboardingStageProgressId: string) => {
 const normalizeOptionalText = (value: string | null | undefined) => {
   const trimmed = value?.trim();
   return trimmed ? trimmed : null;
+};
+
+const trimActorId = (value: string) => {
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed.slice(0, 20) : "SYSTEM";
+};
+
+const hasRoleOneValue = (value?: string | number | null) =>
+  String(value ?? "").trim() === "1";
+
+const ensureRoleOneExamResetAccess = async (requesterUserId: string) => {
+  const requester = await prismaFlowly.user.findUnique({
+    where: { userId: requesterUserId },
+    select: {
+      roleId: true,
+      isActive: true,
+      isDeleted: true,
+      role: {
+        select: {
+          roleLevel: true,
+        },
+      },
+    },
+  });
+
+  if (
+    requester?.isActive &&
+    !requester.isDeleted &&
+    (hasRoleOneValue(requester.roleId) || requester.role?.roleLevel === 1)
+  ) {
+    return;
+  }
+
+  const employeeUserId = Number(requesterUserId);
+  if (Number.isInteger(employeeUserId) && employeeUserId > 0) {
+    const employee = await prismaEmployee.em_employee.findUnique({
+      where: { UserId: employeeUserId },
+      select: { roleId: true },
+    });
+
+    if (hasRoleOneValue(employee?.roleId)) {
+      return;
+    }
+  }
+
+  throw new ResponseError(403, "Ulang ujian hanya bisa dilakukan role 1");
 };
 
 const normalizePhone = (value?: string | null) => {
@@ -222,6 +311,41 @@ const getExamMonitorActionText = (event: "STARTED" | "FINISHED") =>
   event === "STARTED"
     ? "sedang mengikuti ujian onboarding"
     : "sudah selesai mengerjakan ujian onboarding";
+
+const addMinutes = (value: Date, minutes: number) =>
+  new Date(value.getTime() + minutes * 60 * 1000);
+
+const createExamStartApprovalId = () =>
+  `OESA${Date.now().toString(36).toUpperCase()}${crypto
+    .randomBytes(4)
+    .toString("hex")
+    .toUpperCase()}`.slice(0, 100);
+
+const generateExamStartPassword = () =>
+  crypto.randomInt(100000, 1000000).toString();
+
+const hashExamStartPassword = (password: string) => {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(password, salt, 32).toString("hex");
+  return `${salt}:${hash}`;
+};
+
+const verifyExamStartPassword = (password: string, stored: string) => {
+  const [salt, hash] = stored.split(":");
+  if (!salt || !hash) {
+    return false;
+  }
+
+  const expected = Buffer.from(hash, "hex");
+  const actual = crypto.scryptSync(password, salt, expected.length);
+  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
+};
+
+const getExamStartPurpose = (stageProgress: AuthorizedStageProgress) =>
+  normalizeUpper(stageProgress.status) === "REMEDIAL" ||
+  Number(stageProgress.remedialCount ?? 0) > 0
+    ? "REMEDIAL"
+    : "EXAM";
 
 const resolveRuntimeWhatsappNotificationTemplates = async (params: {
   portalKey: string;
@@ -1075,6 +1199,221 @@ type AuthorizedStageProgress = Awaited<ReturnType<typeof getAuthorizedStageProgr
 type RuntimeSourceMaterial = Awaited<
   ReturnType<typeof OnboardingMaterialService.listSourceMaterials>
 >[number];
+type ExamStartApprovalRow = {
+  onboardingExamStartApprovalId: string;
+  onboardingAssignmentId: string;
+  onboardingStageProgressId: string;
+  participantReferenceId: string;
+  purpose: string;
+  passwordHash: string;
+  expiresAt: Date;
+  usedAt: Date | null;
+  failedAttemptCount: number;
+  status: string;
+};
+
+const cancelPendingExamStartApprovals = async (params: {
+  onboardingStageProgressId: string;
+  participantReferenceId: string;
+  updatedBy: string;
+  now: Date;
+}) => {
+  await prismaFlowly.$executeRaw`
+    UPDATE [dbo].[onboarding_exam_start_approval]
+    SET [status] = 'CANCELLED',
+        [updatedAt] = ${params.now},
+        [updatedBy] = ${params.updatedBy}
+    WHERE [onboardingStageProgressId] = ${params.onboardingStageProgressId}
+      AND [participantReferenceId] = ${params.participantReferenceId}
+      AND [status] = 'PENDING'
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+};
+
+const findPendingExamStartApprovalIds = async (params: {
+  onboardingStageProgressId: string;
+  participantReferenceId: string;
+}) => {
+  const rows = await prismaFlowly.$queryRaw<
+    Array<{ onboardingExamStartApprovalId: string }>
+  >`
+    SELECT [onboardingExamStartApprovalId]
+    FROM [dbo].[onboarding_exam_start_approval]
+    WHERE [onboardingStageProgressId] = ${params.onboardingStageProgressId}
+      AND [participantReferenceId] = ${params.participantReferenceId}
+      AND [status] = 'PENDING'
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+
+  return rows
+    .map((row) => normalizeOptionalText(row.onboardingExamStartApprovalId))
+    .filter((value): value is string => Boolean(value));
+};
+
+const createExamStartApproval = async (params: {
+  approvalId: string;
+  onboardingAssignmentId: string;
+  onboardingStageProgressId: string;
+  participantReferenceId: string;
+  purpose: string;
+  passwordHash: string;
+  expiresAt: Date;
+  notificationOutboxId: string | null;
+  requesterUserId: string;
+  now: Date;
+}) => {
+  await prismaFlowly.$executeRaw`
+    INSERT INTO [dbo].[onboarding_exam_start_approval] (
+      [onboardingExamStartApprovalId],
+      [onboardingAssignmentId],
+      [onboardingStageProgressId],
+      [participantReferenceId],
+      [purpose],
+      [passwordHash],
+      [expiresAt],
+      [usedAt],
+      [failedAttemptCount],
+      [status],
+      [notificationOutboxId],
+      [isActive],
+      [isDeleted],
+      [createdAt],
+      [createdBy],
+      [updatedAt],
+      [updatedBy],
+      [deletedAt],
+      [deletedBy]
+    )
+    VALUES (
+      ${params.approvalId},
+      ${params.onboardingAssignmentId},
+      ${params.onboardingStageProgressId},
+      ${params.participantReferenceId},
+      ${params.purpose},
+      ${params.passwordHash},
+      ${params.expiresAt},
+      NULL,
+      0,
+      'PENDING',
+      ${params.notificationOutboxId},
+      1,
+      0,
+      ${params.now},
+      ${params.requesterUserId},
+      ${params.now},
+      ${params.requesterUserId},
+      NULL,
+      NULL
+    )
+  `;
+};
+
+const updateExamStartApprovalNotificationOutbox = async (params: {
+  approvalId: string;
+  notificationOutboxId: string | null;
+  updatedBy: string;
+  now: Date;
+}) => {
+  await prismaFlowly.$executeRaw`
+    UPDATE [dbo].[onboarding_exam_start_approval]
+    SET [notificationOutboxId] = ${params.notificationOutboxId},
+        [updatedAt] = ${params.now},
+        [updatedBy] = ${params.updatedBy}
+    WHERE [onboardingExamStartApprovalId] = ${params.approvalId}
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+};
+
+const findExamStartApproval = async (params: {
+  approvalId: string;
+  onboardingStageProgressId: string;
+  participantReferenceId: string;
+}) => {
+  const rows = await prismaFlowly.$queryRaw<ExamStartApprovalRow[]>`
+    SELECT TOP 1
+      [onboardingExamStartApprovalId],
+      [onboardingAssignmentId],
+      [onboardingStageProgressId],
+      [participantReferenceId],
+      [purpose],
+      [passwordHash],
+      [expiresAt],
+      [usedAt],
+      [failedAttemptCount],
+      [status]
+    FROM [dbo].[onboarding_exam_start_approval]
+    WHERE [onboardingExamStartApprovalId] = ${params.approvalId}
+      AND [onboardingStageProgressId] = ${params.onboardingStageProgressId}
+      AND [participantReferenceId] = ${params.participantReferenceId}
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+
+  return rows[0] ?? null;
+};
+
+const expireExamStartApproval = async (params: {
+  approvalId: string;
+  updatedBy: string;
+  now: Date;
+}) => {
+  await prismaFlowly.$executeRaw`
+    UPDATE [dbo].[onboarding_exam_start_approval]
+    SET [status] = 'EXPIRED',
+        [updatedAt] = ${params.now},
+        [updatedBy] = ${params.updatedBy}
+    WHERE [onboardingExamStartApprovalId] = ${params.approvalId}
+      AND [status] = 'PENDING'
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+};
+
+const recordExamStartApprovalFailure = async (params: {
+  approval: ExamStartApprovalRow;
+  updatedBy: string;
+  now: Date;
+}) => {
+  const nextFailedAttemptCount = Number(params.approval.failedAttemptCount ?? 0) + 1;
+  const nextStatus =
+    nextFailedAttemptCount >= EXAM_START_APPROVAL_MAX_FAILED_ATTEMPTS
+      ? "CANCELLED"
+      : "PENDING";
+
+  await prismaFlowly.$executeRaw`
+    UPDATE [dbo].[onboarding_exam_start_approval]
+    SET [failedAttemptCount] = ${nextFailedAttemptCount},
+        [status] = ${nextStatus},
+        [updatedAt] = ${params.now},
+        [updatedBy] = ${params.updatedBy}
+    WHERE [onboardingExamStartApprovalId] = ${params.approval.onboardingExamStartApprovalId}
+      AND [status] = 'PENDING'
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+};
+
+const markExamStartApprovalUsed = async (params: {
+  approvalId: string;
+  updatedBy: string;
+  now: Date;
+}) => {
+  return await prismaFlowly.$executeRaw`
+    UPDATE [dbo].[onboarding_exam_start_approval]
+    SET [status] = 'USED',
+        [usedAt] = ${params.now},
+        [updatedAt] = ${params.now},
+        [updatedBy] = ${params.updatedBy}
+    WHERE [onboardingExamStartApprovalId] = ${params.approvalId}
+      AND [status] = 'PENDING'
+      AND [expiresAt] > ${params.now}
+      AND [isDeleted] = 0
+      AND [isActive] = 1
+  `;
+};
 
 const enqueueExamMonitorNotification = async (params: {
   event: "STARTED" | "FINISHED";
@@ -1271,6 +1610,329 @@ const enqueueExamMonitorNotification = async (params: {
   }
 };
 
+const enqueueExamStartApprovalNotification = async (params: {
+  approvalId: string;
+  password: string;
+  employee: {
+    UserId: number;
+    BadgeNum: string;
+    CardNo: string | null;
+    Name: string | null;
+  };
+  stageProgress: AuthorizedStageProgress;
+  purpose: string;
+  expiresAt: Date;
+  occurredAt: Date;
+}) => {
+  if (EXAM_MONITOR_EMPLOYEE_IDS.length === 0) {
+    throw new ResponseError(500, "Penerima HRD ujian onboarding belum dikonfigurasi");
+  }
+
+  const recipients = await prismaEmployee.em_employee.findMany({
+    where: {
+      UserId: {
+        in: EXAM_MONITOR_EMPLOYEE_IDS,
+      },
+    },
+    select: {
+      UserId: true,
+      Name: true,
+      Phone: true,
+    },
+  });
+  const recipientMap = new Map(recipients.map((recipient) => [recipient.UserId, recipient]));
+  const notifiableRecipients = EXAM_MONITOR_EMPLOYEE_IDS.map(
+    (recipientId) => recipientMap.get(recipientId) ?? null
+  )
+    .filter((recipient): recipient is NonNullable<typeof recipient> => Boolean(recipient))
+    .map((recipient) => ({
+      ...recipient,
+      phoneNumber: normalizePhone(recipient.Phone),
+    }))
+    .filter((recipient) => Boolean(recipient.phoneNumber));
+
+  if (notifiableRecipients.length === 0) {
+    throw new ResponseError(500, "Nomor WhatsApp penerima HRD ujian onboarding belum tersedia");
+  }
+
+  const portalName =
+    params.stageProgress.stageTemplate.portalTemplate.portalName ||
+    params.stageProgress.assignment.portalKey;
+  const badgeNumber =
+    params.employee.BadgeNum?.trim() ||
+    params.employee.CardNo?.trim() ||
+    String(params.employee.UserId);
+  const employeeName =
+    params.employee.Name?.trim() || `Employee ${params.employee.UserId}`;
+  const stageName =
+    normalizeOptionalText(params.stageProgress.stageTemplate.stageName) ??
+    normalizeOptionalText(params.stageProgress.stageName) ??
+    `Tahap ${params.stageProgress.stageOrder}`;
+  const eventLabel =
+    params.purpose === "REMEDIAL"
+      ? "Password remedial onboarding"
+      : "Password ujian onboarding";
+  const context = {
+    employeeName,
+    participantName: employeeName,
+    cardNumber: badgeNumber,
+    badgeNumber,
+    portalName,
+    portalKey: params.stageProgress.assignment.portalKey,
+    stageName,
+    approvalPassword: params.password,
+    password: params.password,
+    purpose: params.purpose,
+    eventLabel,
+    occurredAt: formatDateTimeForNotification(params.occurredAt),
+    expiresAt: formatDateTimeForNotification(params.expiresAt),
+    expiresInMinutes: EXAM_START_APPROVAL_TTL_MINUTES,
+  };
+  const runtimeTemplates = await resolveRuntimeWhatsappNotificationTemplates({
+    portalKey: params.stageProgress.assignment.portalKey,
+    eventKey: EXAM_START_APPROVAL_EVENT_KEY,
+    recipientRole: EXAM_MONITOR_RECIPIENT_ROLE,
+  });
+  const notificationTemplates =
+    runtimeTemplates.length > 0
+      ? runtimeTemplates
+      : [
+          {
+            notificationTemplateId: null,
+            messageTemplate:
+              "{eventLabel}\n\n{employeeName} ({badgeNumber}) meminta mulai ujian/remedial onboarding.\nPortal: {portalName}\nTahap: {stageName}\nPassword: {approvalPassword}\nBerlaku sampai: {expiresAt}",
+          },
+        ];
+  const createNotificationOutboxId = await generateNotificationOutboxId();
+  const outboxIds: string[] = [];
+
+  await prismaFlowly.notificationOutbox.createMany({
+    data: notifiableRecipients.flatMap((recipient) => {
+      const recipientName =
+        normalizeOptionalText(recipient.Name) ?? `Monitor ${recipient.UserId}`;
+      const templateContext = {
+        ...context,
+        recipientName,
+      };
+
+      return notificationTemplates.map((template) => {
+        const notificationOutboxId = createNotificationOutboxId();
+        outboxIds.push(notificationOutboxId);
+
+        return {
+          notificationOutboxId,
+          notificationTemplateId: template.notificationTemplateId,
+          portalKey: params.stageProgress.assignment.portalKey,
+          eventKey: EXAM_START_APPROVAL_EVENT_KEY,
+          recipientRole: EXAM_MONITOR_RECIPIENT_ROLE,
+          recipientReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+          recipientReferenceId: String(recipient.UserId),
+          contextReferenceType: EXAM_START_APPROVAL_CONTEXT_TYPE,
+          contextReferenceId: params.approvalId,
+          phoneNumber: recipient.phoneNumber ?? "",
+          message: trimNotificationMessage(
+            renderNotificationTemplate(template.messageTemplate, templateContext)
+          ),
+          status: "PENDING",
+          attempts: 0,
+          lastError: null,
+          provider: null,
+          sentAt: null,
+          meta: JSON.stringify({
+            channel: CHANNEL_WHATSAPP,
+            event: "START_APPROVAL",
+            approvalId: params.approvalId,
+            participantUserId: params.employee.UserId,
+            participantName: employeeName,
+            participantBadge: badgeNumber,
+            stageProgressId: params.stageProgress.onboardingStageProgressId,
+            stageName,
+            portalKey: params.stageProgress.assignment.portalKey,
+            portalName,
+            purpose: params.purpose,
+            expiresAt: params.expiresAt.toISOString(),
+          }),
+          isActive: true,
+          isDeleted: false,
+          createdAt: params.occurredAt,
+          createdBy: "SYSTEM",
+          updatedAt: params.occurredAt,
+          updatedBy: "SYSTEM",
+          deletedAt: null,
+          deletedBy: null,
+        };
+      });
+    }),
+  });
+
+  return outboxIds[0] ?? null;
+};
+
+const finalizeExpiredRuntimeExamSession = async (params: {
+  requesterUserId: string;
+  stageProgress: AuthorizedStageProgress;
+  employee: {
+    UserId: number;
+    BadgeNum: string;
+    CardNo: string | null;
+    Name: string | null;
+  };
+  session: RuntimeExamSessionRow;
+  now?: Date;
+}) => {
+  const examsId = normalizeOptionalText(params.session.exams_id);
+  if (!examsId) {
+    return false;
+  }
+
+  const now = params.now ?? new Date();
+  const submittedAt =
+    params.session.is_token_expr &&
+    params.session.is_token_expr.getTime() <= now.getTime()
+      ? params.session.is_token_expr
+      : now;
+  const soalUrut = parseSoalUrut(params.session.soal_urut);
+  const answerRows = await prismaEmployee.em_jawaban_peserta.findMany({
+    where: {
+      empl_id: params.employee.UserId,
+      session_exams_id: examsId,
+    },
+    select: {
+      jawaban: true,
+      Score: true,
+    },
+  });
+  const answeredQuestionCount = answerRows.filter((row) =>
+    Boolean(normalizeOptionalText(row.jawaban))
+  ).length;
+  const correctQuestionCount = answerRows.filter(
+    (row) => Number(row.Score ?? 0) > 0
+  ).length;
+
+  await prismaEmployee.em_session_exams.update({
+    where: {
+      Id: params.session.Id,
+    },
+    data: {
+      end_time: params.session.end_time ?? submittedAt,
+      is_selesai: FINISHED_FLAG,
+      is_correct: 0,
+      is_notes: EXPIRED_EXAM_SUBMITTED_NOTE,
+      is_score_akhir: null,
+    },
+  });
+
+  let attempt = await prismaFlowly.onboardingExamAttempt.findFirst({
+    where: {
+      employeeExamSessionId: examsId,
+      isDeleted: false,
+    },
+    select: {
+      onboardingExamAttemptId: true,
+      onboardingAssignmentId: true,
+      onboardingStageProgressId: true,
+      status: true,
+    },
+  });
+
+  if (!attempt) {
+    const attemptResult = await createOrUpdateAttempt({
+      requesterUserId: params.requesterUserId,
+      stageProgress: params.stageProgress,
+      examsId,
+      startedAt: params.session.start_time ?? submittedAt,
+      totalQuestionCount: soalUrut.length,
+    });
+
+    if (attemptResult.onboardingExamAttemptId) {
+      attempt = {
+        onboardingExamAttemptId: attemptResult.onboardingExamAttemptId,
+        onboardingAssignmentId: params.stageProgress.onboardingAssignmentId,
+        onboardingStageProgressId: params.stageProgress.onboardingStageProgressId,
+        status: "IN_PROGRESS",
+      };
+    }
+  }
+
+  if (!attempt) {
+    return false;
+  }
+
+  const normalizedAttemptStatus = normalizeUpper(attempt.status);
+  if (normalizedAttemptStatus !== "IN_PROGRESS") {
+    return false;
+  }
+
+  let transitioned = false;
+  await prismaFlowly.$transaction(async (tx) => {
+    const updatedAttempt = await tx.onboardingExamAttempt.updateMany({
+      where: {
+        onboardingExamAttemptId: attempt.onboardingExamAttemptId,
+        status: "IN_PROGRESS",
+        isDeleted: false,
+      },
+      data: {
+        submittedAt,
+        endedAt: submittedAt,
+        totalQuestionCount: soalUrut.length,
+        answeredQuestionCount,
+        correctQuestionCount,
+        status: "WAITING_ADMIN",
+        note: EXPIRED_EXAM_SUBMITTED_NOTE,
+        updatedAt: submittedAt,
+        updatedBy: params.requesterUserId,
+      },
+    });
+
+    transitioned = updatedAttempt.count > 0;
+    if (!transitioned) {
+      return;
+    }
+
+    await tx.onboardingStageProgress.update({
+      where: {
+        onboardingStageProgressId: attempt.onboardingStageProgressId,
+      },
+      data: {
+        status: "WAITING_ADMIN",
+        completedAt: submittedAt,
+        updatedAt: submittedAt,
+        updatedBy: params.requesterUserId,
+      },
+    });
+
+    await tx.onboardingAssignment.update({
+      where: {
+        onboardingAssignmentId: attempt.onboardingAssignmentId,
+      },
+      data: {
+        status: "WAITING_ADMIN",
+        updatedAt: submittedAt,
+        updatedBy: params.requesterUserId,
+      },
+    });
+  });
+
+  if (transitioned) {
+    try {
+      await enqueueExamMonitorNotification({
+        event: "FINISHED",
+        examsId,
+        employee: params.employee,
+        stageProgress: params.stageProgress,
+        occurredAt: submittedAt,
+      });
+    } catch (error) {
+      logger.warn("Failed to enqueue expired onboarding exam notification", {
+        examsId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  return transitioned;
+};
+
 const buildMaterialProgressKey = (
   onboardingStageMaterialId: string,
   sourceFileId: number
@@ -1322,7 +1984,39 @@ const areAllStageMaterialsOpened = async (
   });
 };
 
-const getExistingActiveSession = async (scheduleId: number, employeeId: number) => {
+const resolveActiveExamSession = async (
+  existing: Awaited<ReturnType<typeof prismaEmployee.em_session_exams.findFirst>>,
+  options: { returnExpired?: boolean } = {}
+) => {
+  if (!existing) {
+    return null;
+  }
+
+  const now = new Date();
+  if (existing.is_token_expr && existing.is_token_expr.getTime() <= now.getTime()) {
+    const expiredSession = await prismaEmployee.em_session_exams.update({
+      where: {
+        Id: existing.Id,
+      },
+      data: {
+        end_time: existing.is_token_expr,
+        is_selesai: FINISHED_FLAG,
+        is_correct: 0,
+        is_notes: EXPIRED_EXAM_SUBMITTED_NOTE,
+      },
+    });
+
+    return options.returnExpired ? expiredSession : null;
+  }
+
+  return existing;
+};
+
+const getExistingActiveSession = async (
+  scheduleId: number,
+  employeeId: number,
+  options: { returnExpired?: boolean } = {}
+) => {
   const existing = await prismaEmployee.em_session_exams.findFirst({
     where: {
       schedule_id: scheduleId,
@@ -1332,27 +2026,156 @@ const getExistingActiveSession = async (scheduleId: number, employeeId: number) 
     orderBy: [{ start_time: "desc" }, { Id: "desc" }],
   });
 
-  if (!existing) {
+  return resolveActiveExamSession(existing, options);
+};
+
+const getExistingActiveSessionByStageProgress = async (
+  onboardingStageProgressId: string,
+  employeeId: number,
+  options: { returnExpired?: boolean } = {}
+) => {
+  const attempt = await prismaFlowly.onboardingExamAttempt.findFirst({
+    where: {
+      onboardingStageProgressId,
+      status: "IN_PROGRESS",
+      employeeExamSessionId: {
+        not: null,
+      },
+      isActive: true,
+      isDeleted: false,
+    },
+    orderBy: [{ startedAt: "desc" }, { createdAt: "desc" }],
+    select: {
+      employeeExamSessionId: true,
+    },
+  });
+  const examsId = normalizeOptionalText(attempt?.employeeExamSessionId);
+  if (!examsId) {
     return null;
   }
 
-  const now = new Date();
-  if (existing.is_token_expr && existing.is_token_expr.getTime() <= now.getTime()) {
-    await prismaEmployee.em_session_exams.update({
+  const existing = await prismaEmployee.em_session_exams.findFirst({
+    where: {
+      exams_id: examsId,
+      empl_id: employeeId,
+      ...(options.returnExpired
+        ? {}
+        : {
+            OR: [{ is_selesai: null }, { is_selesai: { not: FINISHED_FLAG } }],
+          }),
+    },
+    orderBy: [{ start_time: "desc" }, { Id: "desc" }],
+  });
+
+  return resolveActiveExamSession(existing, options);
+};
+
+const getExistingActiveSessionForStage = async (params: {
+  scheduleId: number;
+  onboardingStageProgressId: string;
+  employeeId: number;
+  returnExpired?: boolean;
+}) =>
+  (await getExistingActiveSession(params.scheduleId, params.employeeId, {
+    returnExpired: Boolean(params.returnExpired),
+  })) ??
+  getExistingActiveSessionByStageProgress(
+    params.onboardingStageProgressId,
+    params.employeeId,
+    { returnExpired: Boolean(params.returnExpired) }
+  );
+
+const ensureStageReadyForRuntimeExam = async (
+  requesterUserId: string,
+  stageProgress: AuthorizedStageProgress
+) => {
+  const normalizedStageStatus = normalizeUpper(stageProgress.status);
+  const canPromoteReadingStage =
+    normalizedStageStatus === "READING" ||
+    normalizedStageStatus === "PENDING" ||
+    normalizedStageStatus === "NOT_STARTED";
+  const materialsReadyForExam =
+    STARTABLE_STAGE_STATUSES.has(normalizedStageStatus) ||
+    (canPromoteReadingStage
+      ? await areAllStageMaterialsOpened(stageProgress)
+      : false);
+
+  if (!STARTABLE_STAGE_STATUSES.has(normalizedStageStatus) && !materialsReadyForExam) {
+    throw new ResponseError(400, "Tahap ini belum siap untuk ujian");
+  }
+
+  if (!STARTABLE_STAGE_STATUSES.has(normalizedStageStatus) && materialsReadyForExam) {
+    await prismaFlowly.onboardingStageProgress.update({
       where: {
-        Id: existing.Id,
+        onboardingStageProgressId: stageProgress.onboardingStageProgressId,
       },
       data: {
-        end_time: existing.is_token_expr,
-        is_selesai: FINISHED_FLAG,
-        is_correct: 0,
-        is_notes: "Waktu ujian habis sebelum submit.",
+        status: "WAITING_EXAM",
+        startedAt: stageProgress.startedAt ?? new Date(),
+        updatedBy: requesterUserId,
       },
     });
-    return null;
+    stageProgress.status = "WAITING_EXAM";
   }
 
-  return existing;
+  if (stageProgress.stageTemplate.stageExams.length === 0) {
+    throw new ResponseError(400, "Tahap ini belum memiliki ujian");
+  }
+
+  const syncResult = await OnboardingEmployeeScheduleSyncService.syncStageByTemplateId(
+    stageProgress.onboardingStageTemplateId
+  );
+  if (!syncResult) {
+    throw new ResponseError(404, "Schedule ujian onboarding tidak ditemukan");
+  }
+
+  return syncResult;
+};
+
+const validateExamStartApprovalPassword = async (params: {
+  requesterUserId: string;
+  onboardingStageProgressId: string;
+  participantReferenceId: string;
+  approvalId: string | null;
+  approvalPassword: string | null;
+  now: Date;
+}) => {
+  if (!params.approvalId || !params.approvalPassword) {
+    throw new ResponseError(403, "Password HRD wajib diisi sebelum mulai ujian");
+  }
+
+  const approval = await findExamStartApproval({
+    approvalId: params.approvalId,
+    onboardingStageProgressId: params.onboardingStageProgressId,
+    participantReferenceId: params.participantReferenceId,
+  });
+  if (!approval) {
+    throw new ResponseError(403, "Password ujian tidak valid atau sudah tidak tersedia");
+  }
+
+  if (normalizeUpper(approval.status) !== "PENDING" || approval.usedAt) {
+    throw new ResponseError(403, "Password ujian sudah tidak berlaku");
+  }
+
+  if (approval.expiresAt.getTime() <= params.now.getTime()) {
+    await expireExamStartApproval({
+      approvalId: approval.onboardingExamStartApprovalId,
+      updatedBy: params.requesterUserId,
+      now: params.now,
+    });
+    throw new ResponseError(403, "Password ujian sudah expired. Minta password baru ke HRD");
+  }
+
+  if (!verifyExamStartPassword(params.approvalPassword, approval.passwordHash)) {
+    await recordExamStartApprovalFailure({
+      approval,
+      updatedBy: params.requesterUserId,
+      now: params.now,
+    });
+    throw new ResponseError(403, "Password ujian salah");
+  }
+
+  return approval;
 };
 
 const buildObjectiveScore = (params: {
@@ -1436,6 +2259,51 @@ const getAdminStageProgressForTestAutofill = async (
               examId: true,
             },
           },
+        },
+      },
+    },
+  });
+
+  if (!stageProgress) {
+    throw new ResponseError(404, "Tahap onboarding tidak ditemukan");
+  }
+
+  return stageProgress;
+};
+
+const getAdminStageProgressForExamReset = async (
+  onboardingStageProgressId: string
+) => {
+  const stageProgress = await prismaFlowly.onboardingStageProgress.findFirst({
+    where: {
+      onboardingStageProgressId,
+      isActive: true,
+      isDeleted: false,
+      assignment: {
+        isActive: true,
+        isDeleted: false,
+      },
+    },
+    select: {
+      onboardingStageProgressId: true,
+      onboardingAssignmentId: true,
+      onboardingStageTemplateId: true,
+      stageOrder: true,
+      stageCode: true,
+      stageName: true,
+      status: true,
+      remedialCount: true,
+      completedAt: true,
+      passedAt: true,
+      failedAt: true,
+      assignment: {
+        select: {
+          onboardingAssignmentId: true,
+          participantReferenceType: true,
+          participantReferenceId: true,
+          portalKey: true,
+          status: true,
+          currentStageOrder: true,
         },
       },
     },
@@ -1644,6 +2512,274 @@ const buildTestAutofillRows = async (params: {
 };
 
 export class OnboardingExamRuntimeService {
+  static async finalizeExpiredRuntimeExamSessions(options: {
+    now?: Date;
+    batchSize?: number;
+  } = {}) {
+    const now = options.now ?? new Date();
+    const batchSize =
+      options.batchSize && Number.isFinite(options.batchSize) && options.batchSize > 0
+        ? Math.trunc(options.batchSize)
+        : getExpiredExamFinalizeBatchSize();
+
+    const attempts = await prismaFlowly.onboardingExamAttempt.findMany({
+      where: {
+        status: "IN_PROGRESS",
+        employeeExamSessionId: {
+          not: null,
+        },
+        isActive: true,
+        isDeleted: false,
+        stageProgress: {
+          isActive: true,
+          isDeleted: false,
+          assignment: {
+            participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
+            isActive: true,
+            isDeleted: false,
+          },
+        },
+      },
+      orderBy: [{ startedAt: "asc" }, { createdAt: "asc" }],
+      take: batchSize,
+      select: {
+        onboardingExamAttemptId: true,
+        onboardingStageProgressId: true,
+        employeeExamSessionId: true,
+        stageProgress: {
+          select: {
+            assignment: {
+              select: {
+                participantReferenceId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    let finalized = 0;
+    let failed = 0;
+
+    for (const attempt of attempts) {
+      const examsId = normalizeOptionalText(attempt.employeeExamSessionId);
+      const requesterUserId = normalizeOptionalText(
+        attempt.stageProgress.assignment.participantReferenceId
+      );
+      const employeeId = Number(requesterUserId);
+      if (
+        !examsId ||
+        !requesterUserId ||
+        !Number.isInteger(employeeId) ||
+        employeeId <= 0
+      ) {
+        continue;
+      }
+
+      try {
+        const session = await prismaEmployee.em_session_exams.findFirst({
+          where: {
+            exams_id: examsId,
+            empl_id: employeeId,
+            is_token_expr: {
+              lte: now,
+            },
+            OR: [{ is_selesai: null }, { is_selesai: { not: FINISHED_FLAG } }],
+          },
+          orderBy: [{ start_time: "desc" }, { Id: "desc" }],
+        });
+        if (!session) {
+          continue;
+        }
+
+        const [stageProgress, employee] = await Promise.all([
+          getAuthorizedStageProgress(
+            requesterUserId,
+            attempt.onboardingStageProgressId
+          ),
+          prismaEmployee.em_employee.findUnique({
+            where: {
+              UserId: employeeId,
+            },
+            select: {
+              UserId: true,
+              BadgeNum: true,
+              CardNo: true,
+              Name: true,
+            },
+          }),
+        ]);
+
+        if (!employee) {
+          logger.warn("Failed to finalize expired onboarding exam session", {
+            onboardingExamAttemptId: attempt.onboardingExamAttemptId,
+            examsId,
+            employeeId,
+            reason: "Employee not found",
+          });
+          failed += 1;
+          continue;
+        }
+
+        const transitioned = await finalizeExpiredRuntimeExamSession({
+          requesterUserId,
+          stageProgress,
+          employee,
+          session,
+          now,
+        });
+        if (transitioned) {
+          finalized += 1;
+        }
+      } catch (error) {
+        failed += 1;
+        logger.warn("Failed to finalize expired onboarding exam session", {
+          onboardingExamAttemptId: attempt.onboardingExamAttemptId,
+          examsId,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+
+    return {
+      scanned: attempts.length,
+      finalized,
+      failed,
+    };
+  }
+
+  static async requestStartApproval(
+    requesterUserId: string,
+    request: RequestRuntimeExamStartApprovalRequest
+  ) {
+    const onboardingStageProgressId = normalizeOptionalText(
+      request.onboardingStageProgressId
+    );
+    if (!onboardingStageProgressId) {
+      throw new ResponseError(400, "Tahap onboarding wajib diisi");
+    }
+
+    const employeeId = Number(requesterUserId);
+    if (!Number.isInteger(employeeId) || employeeId <= 0) {
+      throw new ResponseError(403, "Akun ini tidak terhubung ke employee");
+    }
+
+    await OnboardingService.expireOverdueAssignments({
+      participantReferenceIds: [requesterUserId],
+    });
+
+    const [stageProgress, employee] = await Promise.all([
+      getAuthorizedStageProgress(requesterUserId, onboardingStageProgressId),
+      prismaEmployee.em_employee.findUnique({
+        where: {
+          UserId: employeeId,
+        },
+        select: {
+          UserId: true,
+          BadgeNum: true,
+          CardNo: true,
+          Name: true,
+        },
+      }),
+    ]);
+
+    if (!employee) {
+      throw new ResponseError(404, "Data employee tidak ditemukan");
+    }
+
+    const syncResult = await ensureStageReadyForRuntimeExam(
+      requesterUserId,
+      stageProgress
+    );
+    await ensureScheduleParticipant(syncResult.scheduleId, employeeId);
+
+    const existingSession = await getExistingActiveSessionForStage({
+      scheduleId: syncResult.scheduleId,
+      onboardingStageProgressId,
+      employeeId,
+      returnExpired: true,
+    });
+    if (existingSession) {
+      if (existingSession.is_selesai === FINISHED_FLAG) {
+        await finalizeExpiredRuntimeExamSession({
+          requesterUserId,
+          stageProgress,
+          employee,
+          session: existingSession,
+        });
+        throw new ResponseError(409, EXPIRED_EXAM_SUBMITTED_MESSAGE);
+      }
+
+      return {
+        approvalRequired: false,
+        hasActiveSession: true,
+        stageProgressId: onboardingStageProgressId,
+        message: "Sesi ujian aktif masih berjalan.",
+      };
+    }
+
+    const now = new Date();
+    const expiresAt = addMinutes(now, EXAM_START_APPROVAL_TTL_MINUTES);
+    const approvalId = createExamStartApprovalId();
+    const approvalPassword = generateExamStartPassword();
+    const participantReferenceId = stageProgress.assignment.participantReferenceId;
+    const purpose = getExamStartPurpose(stageProgress);
+
+    await cancelPendingExamStartApprovals({
+      onboardingStageProgressId,
+      participantReferenceId,
+      updatedBy: requesterUserId,
+      now,
+    });
+    await createExamStartApproval({
+      approvalId,
+      onboardingAssignmentId: stageProgress.assignment.onboardingAssignmentId,
+      onboardingStageProgressId,
+      participantReferenceId,
+      purpose,
+      passwordHash: hashExamStartPassword(approvalPassword),
+      expiresAt,
+      notificationOutboxId: null,
+      requesterUserId,
+      now,
+    });
+
+    try {
+      const notificationOutboxId = await enqueueExamStartApprovalNotification({
+        approvalId,
+        password: approvalPassword,
+        employee,
+        stageProgress,
+        purpose,
+        expiresAt,
+        occurredAt: now,
+      });
+      await updateExamStartApprovalNotificationOutbox({
+        approvalId,
+        notificationOutboxId,
+        updatedBy: requesterUserId,
+        now: new Date(),
+      });
+    } catch (error) {
+      await cancelPendingExamStartApprovals({
+        onboardingStageProgressId,
+        participantReferenceId,
+        updatedBy: requesterUserId,
+        now: new Date(),
+      });
+      throw error;
+    }
+
+    return {
+      approvalRequired: true,
+      approvalId,
+      expiresAt: expiresAt.toISOString(),
+      expiresInSeconds: EXAM_START_APPROVAL_TTL_MINUTES * 60,
+      stageProgressId: onboardingStageProgressId,
+      message: "Password ujian sudah dikirim ke HRD.",
+    };
+  }
+
   static async start(requesterUserId: string, request: StartRuntimeExamRequest) {
     const onboardingStageProgressId = normalizeOptionalText(
       request.onboardingStageProgressId
@@ -1666,7 +2802,8 @@ export class OnboardingExamRuntimeService {
     const startPromise = this.startUnlocked(
       requesterUserId,
       onboardingStageProgressId,
-      employeeId
+      employeeId,
+      request
     );
     activeRuntimeExamStarts.set(startLockKey, startPromise);
 
@@ -1682,7 +2819,8 @@ export class OnboardingExamRuntimeService {
   private static async startUnlocked(
     requesterUserId: string,
     onboardingStageProgressId: string,
-    employeeId: number
+    employeeId: number,
+    request: StartRuntimeExamRequest
   ) {
     await OnboardingService.expireOverdueAssignments({
       participantReferenceIds: [requesterUserId],
@@ -1707,50 +2845,32 @@ export class OnboardingExamRuntimeService {
       throw new ResponseError(404, "Data employee tidak ditemukan");
     }
 
-    const normalizedStageStatus = normalizeUpper(stageProgress.status);
-    const canPromoteReadingStage =
-      normalizedStageStatus === "READING" ||
-      normalizedStageStatus === "PENDING" ||
-      normalizedStageStatus === "NOT_STARTED";
-    const materialsReadyForExam =
-      STARTABLE_STAGE_STATUSES.has(normalizedStageStatus) ||
-      (canPromoteReadingStage
-        ? await areAllStageMaterialsOpened(stageProgress)
-        : false);
-
-    if (!STARTABLE_STAGE_STATUSES.has(normalizedStageStatus) && !materialsReadyForExam) {
-      throw new ResponseError(400, "Tahap ini belum siap untuk ujian");
-    }
-
-    if (!STARTABLE_STAGE_STATUSES.has(normalizedStageStatus) && materialsReadyForExam) {
-      await prismaFlowly.onboardingStageProgress.update({
-        where: {
-          onboardingStageProgressId: stageProgress.onboardingStageProgressId,
-        },
-        data: {
-          status: "WAITING_EXAM",
-          startedAt: stageProgress.startedAt ?? new Date(),
-          updatedBy: requesterUserId,
-        },
-      });
-      stageProgress.status = "WAITING_EXAM";
-    }
-
-    if (stageProgress.stageTemplate.stageExams.length === 0) {
-      throw new ResponseError(400, "Tahap ini belum memiliki ujian");
-    }
-
-    const syncResult = await OnboardingEmployeeScheduleSyncService.syncStageByTemplateId(
-      stageProgress.onboardingStageTemplateId
+    const syncResult = await ensureStageReadyForRuntimeExam(
+      requesterUserId,
+      stageProgress
     );
-    if (!syncResult) {
-      throw new ResponseError(404, "Schedule ujian onboarding tidak ditemukan");
-    }
 
     await ensureScheduleParticipant(syncResult.scheduleId, employeeId);
 
-    const existingSession = await getExistingActiveSession(syncResult.scheduleId, employeeId);
+    const approvalId = normalizeOptionalText(request.approvalId);
+    const approvalPassword = normalizeOptionalText(request.approvalPassword);
+    const existingSession = await getExistingActiveSessionForStage({
+      scheduleId: syncResult.scheduleId,
+      onboardingStageProgressId,
+      employeeId,
+      returnExpired: true,
+    });
     if (existingSession) {
+      if (existingSession.is_selesai === FINISHED_FLAG) {
+        await finalizeExpiredRuntimeExamSession({
+          requesterUserId,
+          stageProgress,
+          employee,
+          session: existingSession,
+        });
+        throw new ResponseError(409, EXPIRED_EXAM_SUBMITTED_MESSAGE);
+      }
+
       const attemptResult = await createOrUpdateAttempt({
         requesterUserId,
         stageProgress,
@@ -1772,6 +2892,15 @@ export class OnboardingExamRuntimeService {
         session: existingSession,
       });
     }
+
+    const approval = await validateExamStartApprovalPassword({
+      requesterUserId,
+      onboardingStageProgressId,
+      participantReferenceId: stageProgress.assignment.participantReferenceId,
+      approvalId,
+      approvalPassword,
+      now: new Date(),
+    });
 
     const scheduleQuestions = await prismaEmployee.em_schedule3.findMany({
       where: {
@@ -1907,6 +3036,15 @@ export class OnboardingExamRuntimeService {
       ReturnType<typeof prismaEmployee.em_session_exams.create>
     > | null = null;
     let examsId = "";
+
+    const approvalUsedCount = await markExamStartApprovalUsed({
+      approvalId: approval.onboardingExamStartApprovalId,
+      updatedBy: requesterUserId,
+      now: startTime,
+    });
+    if (approvalUsedCount <= 0) {
+      throw new ResponseError(409, "Password ujian sudah dipakai atau tidak berlaku");
+    }
 
     for (let attempt = 0; attempt < 5; attempt += 1) {
       const { examsId: candidateExamsId, timestamp: tokenTimestamp } =
@@ -2204,6 +3342,329 @@ export class OnboardingExamRuntimeService {
       examsId,
       warningCount,
       recordedAt: occurredAt,
+    };
+  }
+
+  static async resetAttempt(
+    requesterUserId: string,
+    request: ResetRuntimeExamRequest
+  ) {
+    await ensureRoleOneExamResetAccess(requesterUserId);
+
+    const onboardingStageProgressId = normalizeOptionalText(
+      request.onboardingStageProgressId
+    );
+    if (!onboardingStageProgressId) {
+      throw new ResponseError(400, "Tahap onboarding wajib diisi");
+    }
+
+    const stageProgress = await getAdminStageProgressForExamReset(
+      onboardingStageProgressId
+    );
+    const participantType = normalizeUpper(
+      stageProgress.assignment.participantReferenceType
+    );
+    if (participantType !== EMPLOYEE_PARTICIPANT_REFERENCE_TYPE) {
+      throw new ResponseError(400, "Ulang ujian hanya untuk peserta employee");
+    }
+
+    const employeeId = Number(stageProgress.assignment.participantReferenceId);
+    if (!Number.isInteger(employeeId) || employeeId <= 0) {
+      throw new ResponseError(400, "Peserta employee tidak valid");
+    }
+
+    const assignmentStatus = normalizeUpper(stageProgress.assignment.status);
+    const stageStatus = normalizeUpper(stageProgress.status);
+    if (
+      LOCKED_ASSIGNMENT_STATUSES.has(assignmentStatus) ||
+      LOCKED_ASSIGNMENT_STATUSES.has(stageStatus)
+    ) {
+      throw new ResponseError(
+        403,
+        "Onboarding sudah terkunci karena gagal atau sudah selesai"
+      );
+    }
+
+    const attempts = await prismaFlowly.onboardingExamAttempt.findMany({
+      where: {
+        onboardingStageProgressId,
+        isActive: true,
+        isDeleted: false,
+      },
+      orderBy: [{ attemptNo: "desc" }, { createdAt: "desc" }],
+      select: {
+        onboardingExamAttemptId: true,
+        onboardingAssignmentId: true,
+        onboardingStageProgressId: true,
+        attemptNo: true,
+        startedAt: true,
+        submittedAt: true,
+        endedAt: true,
+        score: true,
+        status: true,
+        employeeExamSessionId: true,
+        note: true,
+      },
+    });
+
+    const latestAttempt = attempts[0] ?? null;
+    if (!latestAttempt) {
+      throw new ResponseError(400, "Belum ada riwayat ujian yang bisa diulang");
+    }
+
+    if (!RESETTABLE_EXAM_ATTEMPT_STATUSES.has(normalizeUpper(latestAttempt.status))) {
+      throw new ResponseError(
+        400,
+        "Ujian yang sudah dikoreksi tidak dapat dihapus"
+      );
+    }
+
+    const resettableAttempts = [];
+    for (const attempt of attempts) {
+      if (!RESETTABLE_EXAM_ATTEMPT_STATUSES.has(normalizeUpper(attempt.status))) {
+        break;
+      }
+      resettableAttempts.push(attempt);
+    }
+
+    const resetAttemptIds = resettableAttempts.map(
+      (attempt) => attempt.onboardingExamAttemptId
+    );
+    const resetSessionIds = Array.from(
+      new Set(
+        resettableAttempts
+          .map((attempt) => normalizeOptionalText(attempt.employeeExamSessionId))
+          .filter((value): value is string => Boolean(value))
+      )
+    );
+
+    const employeeSessions =
+      resetSessionIds.length > 0
+        ? await prismaEmployee.em_session_exams.findMany({
+            where: {
+              exams_id: {
+                in: resetSessionIds,
+              },
+              empl_id: employeeId,
+            },
+            select: {
+              exams_id: true,
+              is_correct: true,
+              is_score_akhir: true,
+            },
+          })
+        : [];
+    const correctedSession = employeeSessions.find(
+      (session) => Number(session.is_correct ?? 0) === 1
+    );
+    if (correctedSession) {
+      throw new ResponseError(
+        400,
+        "Ujian yang sudah dikoreksi tidak dapat dihapus"
+      );
+    }
+
+    const actorId = trimActorId(requesterUserId);
+    const now = new Date();
+    const remainingLatestAttempt =
+      attempts.find(
+        (attempt) => !resetAttemptIds.includes(attempt.onboardingExamAttemptId)
+      ) ?? null;
+    const remainingAttempts = attempts.filter(
+      (attempt) => !resetAttemptIds.includes(attempt.onboardingExamAttemptId)
+    );
+    const nextRemedialCount = remainingAttempts.filter(
+      (attempt) => normalizeUpper(attempt.status) === "REMEDIAL"
+    ).length;
+    const nextStageStatus =
+      nextRemedialCount > 0 ||
+      normalizeUpper(remainingLatestAttempt?.status) === "REMEDIAL"
+        ? "REMEDIAL"
+        : "WAITING_EXAM";
+    const nextAssignmentStatus =
+      nextStageStatus === "REMEDIAL" ? "REMEDIAL" : "IN_PROGRESS";
+    const pendingApprovalIds = await findPendingExamStartApprovalIds({
+      onboardingStageProgressId,
+      participantReferenceId: stageProgress.assignment.participantReferenceId,
+    });
+
+    let deletedEmployeeExamAnswers = 0;
+    let deletedEmployeeExamSessions = 0;
+    if (resetSessionIds.length > 0) {
+      const employeeDeleteResult = await prismaEmployee.$transaction(
+        async (tx) => {
+          const answers = await tx.em_jawaban_peserta.deleteMany({
+            where: {
+              empl_id: employeeId,
+              session_exams_id: {
+                in: resetSessionIds,
+              },
+            },
+          });
+          const sessions = await tx.em_session_exams.deleteMany({
+            where: {
+              empl_id: employeeId,
+              exams_id: {
+                in: resetSessionIds,
+              },
+            },
+          });
+
+          return {
+            deletedEmployeeExamAnswers: answers.count,
+            deletedEmployeeExamSessions: sessions.count,
+          };
+        }
+      );
+
+      deletedEmployeeExamAnswers =
+        employeeDeleteResult.deletedEmployeeExamAnswers;
+      deletedEmployeeExamSessions =
+        employeeDeleteResult.deletedEmployeeExamSessions;
+    }
+
+    const flowlyDeleteResult = await prismaFlowly.$transaction(async (tx) => {
+      const notificationFilters: Prisma.NotificationOutboxWhereInput[] = [];
+      if (resetSessionIds.length > 0) {
+        notificationFilters.push({
+          contextReferenceType: EXAM_NOTIFICATION_CONTEXT_TYPE,
+          contextReferenceId: {
+            in: resetSessionIds,
+          },
+        });
+      }
+      if (pendingApprovalIds.length > 0) {
+        notificationFilters.push({
+          contextReferenceType: EXAM_START_APPROVAL_CONTEXT_TYPE,
+          contextReferenceId: {
+            in: pendingApprovalIds,
+          },
+        });
+      }
+
+      const notificationOutboxes =
+        notificationFilters.length > 0
+          ? await tx.notificationOutbox.updateMany({
+              where: {
+                isDeleted: false,
+                status: "PENDING",
+                OR: notificationFilters,
+              },
+              data: {
+                status: "CANCELLED",
+                lastError: "Ujian onboarding diulang oleh admin",
+                isActive: false,
+                isDeleted: true,
+                deletedAt: now,
+                deletedBy: actorId,
+                updatedAt: now,
+                updatedBy: actorId,
+              },
+            })
+          : { count: 0 };
+
+      const examAttempts = await tx.onboardingExamAttempt.deleteMany({
+        where: {
+          onboardingExamAttemptId: {
+            in: resetAttemptIds,
+          },
+        },
+      });
+
+      await tx.onboardingStageProgress.update({
+        where: {
+          onboardingStageProgressId,
+        },
+        data: {
+          status: nextStageStatus,
+          remedialCount: nextRemedialCount,
+          completedAt: null,
+          failedAt: null,
+          updatedAt: now,
+          updatedBy: actorId,
+        },
+      });
+
+      await tx.onboardingAssignment.update({
+        where: {
+          onboardingAssignmentId: stageProgress.assignment.onboardingAssignmentId,
+        },
+        data: {
+          status: nextAssignmentStatus,
+          currentStageOrder: stageProgress.stageOrder,
+          completedAt: null,
+          completedBy: null,
+          updatedAt: now,
+          updatedBy: actorId,
+        },
+      });
+
+      return {
+        deletedNotificationOutboxes: notificationOutboxes.count,
+        deletedExamAttempts: examAttempts.count,
+      };
+    });
+
+    await cancelPendingExamStartApprovals({
+      onboardingStageProgressId,
+      participantReferenceId: stageProgress.assignment.participantReferenceId,
+      updatedBy: actorId,
+      now,
+    });
+    invalidateProfileCache(String(employeeId));
+
+    await writeAuditLog({
+      module: "ONBOARDING",
+      entity: "ONBOARDING_EXAM_ATTEMPT",
+      entityId: onboardingStageProgressId.slice(0, 50),
+      action: "DELETE",
+      actorId,
+      actorType: resolveActorType(requesterUserId),
+      at: now,
+      snapshot: {
+        onboardingStageProgressId,
+        onboardingAssignmentId: stageProgress.assignment.onboardingAssignmentId,
+        participantReferenceId: stageProgress.assignment.participantReferenceId,
+        stageStatusBefore: stageProgress.status,
+        assignmentStatusBefore: stageProgress.assignment.status,
+        resetAttempts: resettableAttempts.map((attempt) => ({
+          onboardingExamAttemptId: attempt.onboardingExamAttemptId,
+          attemptNo: attempt.attemptNo,
+          status: attempt.status,
+          employeeExamSessionId: attempt.employeeExamSessionId,
+          startedAt: attempt.startedAt,
+          submittedAt: attempt.submittedAt,
+          endedAt: attempt.endedAt,
+          score: attempt.score,
+        })),
+      },
+      meta: {
+        deletedEmployeeExamAnswers,
+        deletedEmployeeExamSessions,
+        deletedExamAttempts: flowlyDeleteResult.deletedExamAttempts,
+        deletedNotificationOutboxes:
+          flowlyDeleteResult.deletedNotificationOutboxes,
+        previousRemedialCount: stageProgress.remedialCount,
+        nextRemedialCount,
+        nextStageStatus,
+        nextAssignmentStatus,
+      },
+    });
+
+    return {
+      onboardingStageProgressId,
+      onboardingAssignmentId: stageProgress.assignment.onboardingAssignmentId,
+      participantReferenceId: stageProgress.assignment.participantReferenceId,
+      employeeId,
+      deletedAttemptCount: flowlyDeleteResult.deletedExamAttempts,
+      deletedEmployeeExamAnswerCount: deletedEmployeeExamAnswers,
+      deletedEmployeeExamSessionCount: deletedEmployeeExamSessions,
+      deletedNotificationOutboxCount:
+        flowlyDeleteResult.deletedNotificationOutboxes,
+      nextStageStatus,
+      nextAssignmentStatus,
+      nextRemedialCount,
+      message: "Riwayat ujian tahap ini berhasil dihapus",
     };
   }
 

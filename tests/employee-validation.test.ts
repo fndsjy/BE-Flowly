@@ -55,6 +55,35 @@ describe("EmployeeValidation nullable dates", () => {
     expect(parsed.ResignDate).toBeNull();
   });
 
+  test("CREATE allows empty email as null", () => {
+    const parsed = EmployeeValidation.CREATE.parse({
+      ...validCreatePayload,
+      email: "   ",
+    }) as { email?: string | null };
+
+    expect(parsed.email).toBeNull();
+  });
+
+  test("UPDATE allows omitted email", () => {
+    const { email: _email, ...payloadWithoutEmail } = validCreatePayload;
+
+    const parsed = EmployeeValidation.UPDATE.parse({
+      ...payloadWithoutEmail,
+      userId: 99,
+    }) as { email?: string | null };
+
+    expect(parsed.email).toBeNull();
+  });
+
+  test("CREATE rejects invalid email when filled", () => {
+    expect(() =>
+      EmployeeValidation.CREATE.parse({
+        ...validCreatePayload,
+        email: "email-tidak-valid",
+      })
+    ).toThrow();
+  });
+
   test("CREATE rejects future birth date", () => {
     expect(() =>
       EmployeeValidation.CREATE.parse({

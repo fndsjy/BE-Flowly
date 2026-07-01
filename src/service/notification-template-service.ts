@@ -12,6 +12,10 @@ import { dispatchGenericNotificationOutboxItem } from "./generic-notification-di
 import {
   type CreateNotificationTemplateRequest,
   type DeleteNotificationTemplateRequest,
+  type ListManualNotificationRecipientsRequest,
+  type ListManualNotificationRecipientsResponse,
+  type ManualSendNotificationRequest,
+  type ManualSendNotificationResponse,
   type TestNotificationRecipientResult,
   type TestWhatsappNotificationResponse,
   type UpdateNotificationTemplateRequest,
@@ -21,10 +25,14 @@ import {
 
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const EMPLOYEE_REFERENCE_TYPE = "EMPLOYEE";
+const PARTICIPANT_RECIPIENT_ROLE = "PARTICIPANT";
 const TEST_PORTAL_KEY = "ADMINISTRATOR";
 const TEST_EVENT_KEY = "WA_SERVICE_TEST";
 const TEST_RECIPIENT_ROLE = "EXAM_MONITOR";
 const TEST_CONTEXT_REFERENCE_TYPE = "WHATSAPP_SERVICE_TEST";
+const DEFAULT_MANUAL_PORTAL_KEY = "EMPLOYEE";
+const MANUAL_CONTEXT_REFERENCE_TYPE = "ADMIN_MANUAL_NOTIFICATION";
+const MANUAL_SOURCE = "ADMIN_NOTIFICATION_TEMPLATE_MANUAL_SEND";
 
 const normalizeUpper = (value: string) => value.trim().toUpperCase();
 
@@ -41,6 +49,117 @@ const normalizePhone = (value?: string | null) => {
 
 const normalizePortalKeys = (values?: string[] | null) =>
   [...new Set((values ?? []).map((value) => normalizeUpper(value)).filter(Boolean))].sort();
+
+const normalizeEmail = (value?: string | null) => {
+  const trimmed = value?.trim();
+  return trimmed && trimmed !== "-" ? trimmed : null;
+};
+
+const resolveTemporaryPassword = (value?: string | null) => {
+  const trimmed = value?.trim();
+  if (!trimmed) return "";
+  if (
+    trimmed.startsWith("$2a$") ||
+    trimmed.startsWith("$2b$") ||
+    trimmed.startsWith("$2y$")
+  ) {
+    return "";
+  }
+
+  return trimmed;
+};
+
+const formatDateForNotification = (value: Date) =>
+  value.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+const formatOptionalDateForNotification = (value?: Date | null) =>
+  value ? formatDateForNotification(value) : "Tanpa batas waktu";
+
+const resolveOmsLoginUrl = () => {
+  const directUrl = normalizeOptionalText(process.env.OMS_LOGIN_URL);
+  if (directUrl) {
+    return directUrl;
+  }
+
+  const baseUrl = normalizeOptionalText(process.env.OMS_APP_BASE_URL);
+  if (baseUrl) {
+    const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
+    return /\/oms$/i.test(normalizedBaseUrl)
+      ? `${normalizedBaseUrl}/login`
+      : `${normalizedBaseUrl}/oms/login`;
+  }
+
+  return "http://localhost:5173/oms/login";
+};
+
+const resolveHrdDecisionUrl = () => {
+  const loginUrl = resolveOmsLoginUrl();
+  if (/\/login$/i.test(loginUrl)) {
+    return loginUrl.replace(/\/login$/i, "/employee");
+  }
+
+  return `${loginUrl.replace(/\/+$/, "")}/employee`;
+};
+
+const resolveSupportName = () => normalizeOptionalText(process.env.OMS_SUPPORT_NAME) ?? "";
+const resolveSupportPhone = () => normalizeOptionalText(process.env.OMS_SUPPORT_PHONE) ?? "";
+
+const renderTemplate = (template: string, context: Record<string, unknown>) =>
+  template
+    .replace(/\{badgeNumber\}/g, String(context.cardNumber ?? ""))
+    .replace(/\{(\w+)\}/g, (_, key: string) => {
+      const value = context[key];
+      if (value === undefined || value === null) {
+        return "";
+      }
+
+      return String(value);
+    });
+
+const formatPortalKeyAsName = (portalKey: string) =>
+  portalKey
+    .split("_")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(" ") || portalKey;
+
+const resolveManualNotificationDefaults = async (
+  portalKey: string
+): Promise<{
+  portalKey: string;
+  portalName: string;
+  loginUrl: string;
+  hrdUrl: string;
+  supportName: string;
+  supportPhone: string;
+  defaultDurationDay: number | null;
+}> => {
+  const portal = await prismaFlowly.onboardingPortalTemplate.findFirst({
+    where: {
+      portalKey,
+      isDeleted: false,
+    },
+    orderBy: [{ isActive: "desc" }, { updatedAt: "desc" }],
+    select: {
+      portalName: true,
+      defaultDurationDay: true,
+    },
+  });
+
+  return {
+    portalKey,
+    portalName: normalizeOptionalText(portal?.portalName) ?? formatPortalKeyAsName(portalKey),
+    loginUrl: resolveOmsLoginUrl(),
+    hrdUrl: resolveHrdDecisionUrl(),
+    supportName: resolveSupportName(),
+    supportPhone: resolveSupportPhone(),
+    defaultDurationDay: portal?.defaultDurationDay ?? null,
+  };
+};
 
 const parseConfiguredTestRecipientIds = () =>
   Array.from(
@@ -414,6 +533,384 @@ export class NotificationTemplateService {
     }
 
     return toNotificationTemplateResponse(updated);
+  }
+
+  static async listManualRecipients(
+    requesterId: string,
+    filters: ListManualNotificationRecipientsRequest
+  ): Promise<ListManualNotificationRecipientsResponse> {
+    const request = Validation.validate(
+      NotificationTemplateValidation.LIST_MANUAL_RECIPIENTS,
+      filters
+    ) as ListManualNotificationRecipientsRequest & { limit: number };
+
+    await ensureAdminAccess(requesterId);
+
+    const portalKey = normalizeUpper(
+      request.portalKey ?? DEFAULT_MANUAL_PORTAL_KEY
+    );
+    const search = normalizeOptionalText(request.search);
+    const limit = request.limit ?? 100;
+    const numericSearch = search ? Number(search) : NaN;
+    const hasNumericSearch =
+      Number.isInteger(numericSearch) && Number(numericSearch) > 0;
+
+    const employees = await prismaEmployee.em_employee.findMany({
+      where: search
+        ? {
+            OR: [
+              { Name: { contains: search } },
+              { CardNo: { contains: search } },
+              { BadgeNum: { contains: search } },
+              ...(hasNumericSearch ? [{ UserId: Number(numericSearch) }] : []),
+            ],
+          }
+        : {},
+      select: {
+        UserId: true,
+        Name: true,
+        CardNo: true,
+        BadgeNum: true,
+        Phone: true,
+        email: true,
+        isFirstLogin: true,
+      },
+      orderBy: [{ Name: "asc" }, { UserId: "asc" }],
+      take: limit,
+    });
+
+    const employeeIds = employees.map((employee) => employee.UserId);
+    const assignments =
+      employeeIds.length > 0
+        ? await prismaFlowly.onboardingAssignment.findMany({
+            where: {
+              portalKey,
+              participantReferenceType: EMPLOYEE_REFERENCE_TYPE,
+              participantReferenceId: {
+                in: employeeIds.map(String),
+              },
+              isDeleted: false,
+            },
+            orderBy: [
+              { participantReferenceId: "asc" },
+              { startedAt: "desc" },
+              { createdAt: "desc" },
+            ],
+            select: {
+              onboardingAssignmentId: true,
+              participantReferenceId: true,
+              status: true,
+              startedAt: true,
+              dueAt: true,
+            },
+          })
+        : [];
+    const latestAssignmentByEmployee = new Map<
+      string,
+      (typeof assignments)[number]
+    >();
+
+    for (const assignment of assignments) {
+      if (!latestAssignmentByEmployee.has(assignment.participantReferenceId)) {
+        latestAssignmentByEmployee.set(
+          assignment.participantReferenceId,
+          assignment
+        );
+      }
+    }
+
+    const defaults = await resolveManualNotificationDefaults(portalKey);
+
+    return {
+      portalKey: defaults.portalKey,
+      portalName: defaults.portalName,
+      loginUrl: defaults.loginUrl,
+      hrdUrl: defaults.hrdUrl,
+      supportName: defaults.supportName,
+      supportPhone: defaults.supportPhone,
+      recipients: employees.map((employee) => {
+        const assignment = latestAssignmentByEmployee.get(String(employee.UserId));
+
+        return {
+          userId: employee.UserId,
+          employeeName: normalizeOptionalText(employee.Name),
+          cardNumber: normalizeOptionalText(employee.CardNo),
+          badgeNumber: normalizeOptionalText(employee.BadgeNum),
+          phoneNumber: normalizePhone(employee.Phone),
+          email: normalizeEmail(employee.email),
+          isFirstLogin: Number(employee.isFirstLogin ?? 0) !== 0,
+          latestAssignmentId: assignment?.onboardingAssignmentId ?? null,
+          latestAssignmentStatus: assignment?.status ?? null,
+          latestStartedAt: assignment?.startedAt ?? null,
+          latestDueAt: assignment?.dueAt ?? null,
+        };
+      }),
+    };
+  }
+
+  static async sendManual(
+    requesterId: string,
+    reqBody: ManualSendNotificationRequest
+  ): Promise<ManualSendNotificationResponse> {
+    const request = Validation.validate(
+      NotificationTemplateValidation.MANUAL_SEND,
+      reqBody
+    ) as ManualSendNotificationRequest;
+
+    await ensureAdminAccess(requesterId);
+
+    const portalKey = normalizeUpper(request.portalKey);
+    const client = prismaNotificationTemplate();
+    const template = await client.notificationTemplate.findUnique({
+      where: { notificationTemplateId: request.notificationTemplateId },
+      include: notificationTemplateInclude,
+    });
+
+    if (!template || template.isDeleted) {
+      throw new ResponseError(404, "Notification template not found");
+    }
+    if (!template.isActive) {
+      throw new ResponseError(400, "Template notifikasi sedang nonaktif");
+    }
+
+    const channel = normalizeUpper(template.channel);
+    if (channel !== CHANNEL_WHATSAPP) {
+      throw new ResponseError(
+        400,
+        "Kirim manual saat ini hanya mendukung template WhatsApp"
+      );
+    }
+    if (normalizeUpper(template.recipientRole) !== PARTICIPANT_RECIPIENT_ROLE) {
+      throw new ResponseError(
+        400,
+        "Kirim manual ke karyawan hanya mendukung template peserta onboarding"
+      );
+    }
+
+    const scopedPortalKeys = normalizePortalKeys(
+      (template.portalMappings ?? []).map((mapping: any) => mapping.portalKey)
+    );
+    if (scopedPortalKeys.length > 0 && !scopedPortalKeys.includes(portalKey)) {
+      throw new ResponseError(
+        400,
+        "Template tidak berlaku untuk portal yang dipilih"
+      );
+    }
+
+    const messageTemplate =
+      normalizeOptionalText(request.messageTemplate) ?? template.messageTemplate;
+    const employees = await prismaEmployee.em_employee.findMany({
+      where: {
+        UserId: {
+          in: request.userIds,
+        },
+      },
+      select: {
+        UserId: true,
+        Name: true,
+        CardNo: true,
+        BadgeNum: true,
+        Phone: true,
+        email: true,
+        Password: true,
+        isFirstLogin: true,
+      },
+    });
+    const employeeMap = new Map(
+      employees.map((employee) => [employee.UserId, employee] as const)
+    );
+    const assignments = await prismaFlowly.onboardingAssignment.findMany({
+      where: {
+        portalKey,
+        participantReferenceType: EMPLOYEE_REFERENCE_TYPE,
+        participantReferenceId: {
+          in: request.userIds.map(String),
+        },
+        isDeleted: false,
+      },
+      orderBy: [
+        { participantReferenceId: "asc" },
+        { startedAt: "desc" },
+        { createdAt: "desc" },
+      ],
+      select: {
+        onboardingAssignmentId: true,
+        participantReferenceId: true,
+        status: true,
+        startedAt: true,
+        durationDay: true,
+        dueAt: true,
+      },
+    });
+    const latestAssignmentByEmployee = new Map<
+      string,
+      (typeof assignments)[number]
+    >();
+
+    for (const assignment of assignments) {
+      if (!latestAssignmentByEmployee.has(assignment.participantReferenceId)) {
+        latestAssignmentByEmployee.set(
+          assignment.participantReferenceId,
+          assignment
+        );
+      }
+    }
+
+    const defaults = await resolveManualNotificationDefaults(portalKey);
+    const createNotificationOutboxId = await generateNotificationOutboxId();
+    const now = new Date();
+    const outboxes: any[] = [];
+    const results: ManualSendNotificationResponse["recipients"] = [];
+
+    for (const userId of request.userIds) {
+      const employee = employeeMap.get(userId);
+      if (!employee) {
+        results.push({
+          userId,
+          employeeName: null,
+          phoneNumber: null,
+          email: null,
+          notificationOutboxId: null,
+          status: "SKIPPED",
+          error: "Employee not found",
+        });
+        continue;
+      }
+
+      const phoneNumber = normalizePhone(employee.Phone);
+      const email = normalizeEmail(employee.email);
+      const employeeName =
+        normalizeOptionalText(employee.Name) ?? `Employee ${employee.UserId}`;
+      const cardNumber =
+        normalizeOptionalText(employee.CardNo) ??
+        normalizeOptionalText(employee.BadgeNum) ??
+        String(employee.UserId);
+      const assignment = latestAssignmentByEmployee.get(String(employee.UserId));
+
+      if (!phoneNumber) {
+        results.push({
+          userId: employee.UserId,
+          employeeName,
+          phoneNumber: null,
+          email,
+          notificationOutboxId: null,
+          status: "SKIPPED",
+          error: "Missing phone number",
+        });
+        continue;
+      }
+
+      const context = {
+        recipientName: employeeName,
+        employeeName,
+        participantName: employeeName,
+        portalName: defaults.portalName,
+        portalKey,
+        cardNumber,
+        username: cardNumber,
+        temporaryPassword: resolveTemporaryPassword(employee.Password),
+        deadlineDays: assignment?.durationDay ?? defaults.defaultDurationDay ?? "",
+        dueDate: formatOptionalDateForNotification(assignment?.dueAt),
+        startedDate: assignment?.startedAt
+          ? formatDateForNotification(assignment.startedAt)
+          : "",
+        status: assignment?.status ?? "",
+        previousDueDate: "",
+        extensionDays: "",
+        decisionNote: "",
+        decisionAt: "",
+        decisionLabel: "",
+        decisionType: "",
+        decisionActorName: "",
+        decisionActorBadge: "",
+        decisionUrl: defaults.hrdUrl,
+        nextDurationDay: "",
+        failedAt: "",
+        sbuSubName: "",
+        sbuName: "",
+        pilarName: "",
+        positionName: "",
+        jabatanName: "",
+        hrdUrl: defaults.hrdUrl,
+        loginUrl: defaults.loginUrl,
+        supportName: defaults.supportName,
+        supportPhone: defaults.supportPhone,
+        stageName: "",
+        examsId: "",
+        occurredAt: formatDateTimeForNotification(now),
+        eventLabel: template.eventKey,
+        examAction: "",
+      };
+      const notificationOutboxId = createNotificationOutboxId();
+      const meta = JSON.stringify({
+        channel,
+        manual: true,
+        source: MANUAL_SOURCE,
+        requestedBy: requesterId,
+        recipientUserId: employee.UserId,
+        recipientName: employeeName,
+        email,
+        phoneNumber,
+        portalName: defaults.portalName,
+        cardNumber,
+        username: cardNumber,
+        dueDate: context.dueDate,
+        startedDate: context.startedDate,
+        loginUrl: defaults.loginUrl,
+        hrdUrl: defaults.hrdUrl,
+        messageTemplateEdited: messageTemplate !== template.messageTemplate,
+      });
+
+      outboxes.push({
+        notificationOutboxId,
+        notificationTemplateId: template.notificationTemplateId,
+        portalKey,
+        eventKey: template.eventKey,
+        recipientRole: template.recipientRole,
+        recipientReferenceType: EMPLOYEE_REFERENCE_TYPE,
+        recipientReferenceId: String(employee.UserId),
+        contextReferenceType: MANUAL_CONTEXT_REFERENCE_TYPE,
+        contextReferenceId: `${employee.UserId}:${now.getTime()}`,
+        phoneNumber,
+        message: trimMessage(renderTemplate(messageTemplate, context)),
+        status: "PENDING",
+        attempts: 0,
+        lastError: null,
+        provider: null,
+        sentAt: null,
+        meta,
+        isActive: true,
+        isDeleted: false,
+        createdAt: now,
+        createdBy: requesterId,
+        updatedAt: now,
+        updatedBy: requesterId,
+        deletedAt: null,
+        deletedBy: null,
+      });
+
+      results.push({
+        userId: employee.UserId,
+        employeeName,
+        phoneNumber,
+        email,
+        notificationOutboxId,
+        status: "QUEUED",
+        error: null,
+      });
+    }
+
+    if (outboxes.length > 0) {
+      await prismaFlowly.notificationOutbox.createMany({
+        data: outboxes,
+      });
+    }
+
+    return {
+      queued: results.filter((item) => item.status === "QUEUED").length,
+      skipped: results.filter((item) => item.status === "SKIPPED").length,
+      recipients: results,
+    };
   }
 
   static async sendWhatsappTest(

@@ -11,6 +11,7 @@ export function toMasterIkResponse(ik) {
         dibuatOlehName: ik.dibuatOlehName ?? null,
         diketahuiOlehName: ik.diketahuiOlehName ?? null,
         disetujuiOlehName: ik.disetujuiOlehName ?? null,
+        createdByName: ik.createdByName ?? null,
         sops: ik.sops ?? [],
         isActive: ik.isActive,
         isDeleted: ik.isDeleted,

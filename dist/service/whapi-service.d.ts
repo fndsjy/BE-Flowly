@@ -3,8 +3,15 @@ type WhapiResponse = {
     status?: string;
     results?: {
         convert?: string;
+        id?: string;
+        messageId?: string;
     };
     [key: string]: unknown;
+};
+type SendWhapiMessageOptions = {
+    source?: string;
+    referenceId?: string;
+    rawPhone?: string;
 };
 export declare const convertWhapiNumber: (phone: string) => Promise<{
     ok: boolean;
@@ -15,7 +22,7 @@ export declare const convertWhapiNumber: (phone: string) => Promise<{
     number: string;
     error?: never;
 }>;
-export declare const sendWhapiMessage: (phone: string, message: string) => Promise<{
+export declare const sendWhapiMessage: (phone: string, message: string, options?: SendWhapiMessageOptions) => Promise<{
     ok: boolean;
     error: {
         message: string;

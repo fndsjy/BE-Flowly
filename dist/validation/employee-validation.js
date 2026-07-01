@@ -11,6 +11,17 @@ const nullableDate = z.preprocess((value) => {
 const requiredText = (max) => z.string().trim().min(1).max(max);
 const optionalTrimmedText = (max) => z.string().trim().max(max).optional().nullable();
 const optionalLongText = z.string().trim().optional().nullable();
+const optionalEmail = z.preprocess((value) => {
+    if (value === null || value === undefined) {
+        return value;
+    }
+    if (typeof value === "string" && value.trim() === "") {
+        return null;
+    }
+    return value;
+}, z.union([z.string().trim().email().max(80), z.null()])
+    .optional()
+    .transform((value) => value ?? null));
 const optionalShiftFlag = z.union([z.literal(0), z.literal(1)]).optional().nullable();
 const isFutureDate = (value) => {
     const today = new Date();
@@ -43,7 +54,7 @@ export class EmployeeValidation {
         jobDesc: optionalLongText,
         city: requiredText(200),
         state: requiredText(100),
-        email: z.string().trim().email().max(80),
+        email: optionalEmail,
         IPMsnFinger: requiredText(100),
         BPJSKshtn: optionalTrimmedText(50),
         BPJSKtngkerjaan: optionalTrimmedText(50),
@@ -97,7 +108,7 @@ export class EmployeeValidation {
         jobDesc: optionalLongText,
         city: requiredText(200),
         state: requiredText(100),
-        email: z.string().trim().email().max(80),
+        email: optionalEmail,
         IPMsnFinger: requiredText(100),
         BPJSKshtn: optionalTrimmedText(50),
         BPJSKtngkerjaan: optionalTrimmedText(50),
