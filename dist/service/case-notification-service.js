@@ -148,6 +148,7 @@ export class CaseNotificationService {
             caseDepartmentId: params.caseDepartmentId,
             sbuSubId: params.sbuSubId,
             assigneeEmployeeIds: [params.assigneeEmployeeId],
+            ...(params.notificationEventId ? { notificationEventId: params.notificationEventId } : {}),
             requesterId: params.requesterId,
         });
     }
@@ -201,6 +202,7 @@ export class CaseNotificationService {
                     sbuSubName: sbuSub.sbu_sub_name,
                     role: "ASSIGNEE",
                     action: "ASSIGN_TASK",
+                    notificationEventId: params.notificationEventId ?? now.toISOString(),
                 }),
                 isActive: true,
                 isDeleted: false,
@@ -323,6 +325,7 @@ export class CaseNotificationService {
                     sbuSubCode: recipient.sbuSubCode,
                     role: recipient.role,
                     action: "DECISION",
+                    notificationEventId: params.notificationEventId ?? now.toISOString(),
                 }),
                 isActive: true,
                 isDeleted: false,
@@ -492,6 +495,7 @@ export class CaseNotificationService {
                     sbuSubCode: recipient.sbuSubCode,
                     role: recipient.role,
                     action: "FEEDBACK_COMMENT",
+                    notificationEventId: params.notificationEventId ?? now.toISOString(),
                     commenterName: params.commenterName ?? "",
                     commentText: params.commentText ?? "",
                 }),

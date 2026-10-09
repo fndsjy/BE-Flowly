@@ -121,7 +121,7 @@ const formatDateTimeForNotification = (value) => value.toLocaleString("id-ID", {
     hour: "2-digit",
     minute: "2-digit",
 });
-const trimMessage = (value) => value.trim().slice(0, 1000);
+const trimMessage = (value) => value.trim();
 const buildErrorMessage = (value) => {
     if (!value)
         return "Unknown error";

@@ -212,12 +212,14 @@ export class CaseNotificationService {
     sbuSubId: number;
     assigneeEmployeeId: number;
     requesterId: string;
+    notificationEventId?: string;
   }) {
     await CaseNotificationService.enqueueAssigneeNotifications({
       caseId: params.caseId,
       caseDepartmentId: params.caseDepartmentId,
       sbuSubId: params.sbuSubId,
       assigneeEmployeeIds: [params.assigneeEmployeeId],
+      ...(params.notificationEventId ? { notificationEventId: params.notificationEventId } : {}),
       requesterId: params.requesterId,
     });
   }
@@ -228,6 +230,7 @@ export class CaseNotificationService {
     sbuSubId: number;
     assigneeEmployeeIds: number[];
     requesterId: string;
+    notificationEventId?: string;
   }) {
     const assigneeIds = Array.from(
       new Set(params.assigneeEmployeeIds.filter((id) => Number.isFinite(id)))
@@ -281,6 +284,7 @@ export class CaseNotificationService {
             sbuSubName: sbuSub.sbu_sub_name,
             role: "ASSIGNEE",
             action: "ASSIGN_TASK",
+            notificationEventId: params.notificationEventId ?? now.toISOString(),
           }),
           isActive: true,
           isDeleted: false,
@@ -367,6 +371,7 @@ export class CaseNotificationService {
     caseId: string;
     caseDepartmentId: string;
     requesterId: string;
+    notificationEventId?: string;
   }) {
     const caseHeader = await prismaFlowly.caseHeader.findUnique({
       where: { caseId: params.caseId },
@@ -420,6 +425,7 @@ export class CaseNotificationService {
             sbuSubCode: recipient.sbuSubCode,
             role: recipient.role,
             action: "DECISION",
+            notificationEventId: params.notificationEventId ?? now.toISOString(),
           }),
           isActive: true,
           isDeleted: false,
@@ -441,6 +447,7 @@ export class CaseNotificationService {
   static async enqueueFeedbackCommentNotifications(params: {
     caseId: string;
     requesterId: string;
+    notificationEventId?: string;
     commenterEmployeeId?: number | null;
     commenterName?: string | null;
     commentText?: string | null;
@@ -629,6 +636,7 @@ export class CaseNotificationService {
             sbuSubCode: recipient.sbuSubCode,
             role: recipient.role,
             action: "FEEDBACK_COMMENT",
+            notificationEventId: params.notificationEventId ?? now.toISOString(),
             commenterName: params.commenterName ?? "",
             commentText: params.commentText ?? "",
           }),

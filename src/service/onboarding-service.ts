@@ -1,3 +1,4 @@
+import { enqueueUniqueNotifications } from "./notification-outbox-deduplication.js";
 import bcrypt from "bcrypt";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { logger } from "../application/logging.js";
@@ -73,6 +74,7 @@ const DECISION_FREEZE_TRANSFER_REVIEW = "FREEZE_TRANSFER_REVIEW";
 const DECISION_CANCEL_TRANSFER_REVIEW = "CANCEL_TRANSFER_REVIEW";
 const ASSIGNMENT_STATUS_IN_PROGRESS = "IN_PROGRESS";
 const ASSIGNMENT_STATUS_TRANSFER_REVIEW = "TRANSFER_REVIEW";
+const ASSIGNMENT_STATUS_PASSED_PREVIOUSLY = "PASSED_PREVIOUSLY";
 const EXAM_FINISHED_FLAG = "Y";
 const DEFAULT_EXTENSION_DURATION_DAYS = 90;
 const DEFAULT_CERTIFICATE_ASSET_BASE_URL =
@@ -82,6 +84,7 @@ const FINAL_ASSIGNMENT_STATUSES = new Set([
   "PASSED",
   "PASSED_TO_LMS",
   "PASSED_OVERRIDE",
+  ASSIGNMENT_STATUS_PASSED_PREVIOUSLY,
   "FAILED",
   "FAIL_FINAL",
   "CANCELLED",
@@ -330,7 +333,8 @@ const isCompletedAssignmentStatus = (status?: string | null) => {
     ? normalized === "COMPLETED" ||
         normalized === "PASSED" ||
         normalized === "PASSED_TO_LMS" ||
-        normalized === "PASSED_OVERRIDE"
+        normalized === "PASSED_OVERRIDE" ||
+        normalized === ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
     : false;
 };
 
@@ -942,7 +946,7 @@ const renderTemplate = (template: string, context: Record<string, unknown>) =>
     return String(value);
   });
 
-const trimMessage = (value: string) => value.trim().slice(0, 1000);
+const trimMessage = (value: string) => value.trim();
 
 const parseWorkspaceSelectionMetadata = (
   note: string | null | undefined
@@ -2038,7 +2042,7 @@ const enqueueOnboardingOverdueNotification = async (params: {
       return;
     }
 
-    await prismaFlowly.notificationOutbox.createMany({
+    await enqueueUniqueNotifications({
       data: outboxes,
     });
   } catch (error) {
@@ -2261,7 +2265,7 @@ const enqueueOnboardingPicDecisionNotification = async (params: {
       return;
     }
 
-    await prismaFlowly.notificationOutbox.createMany({
+    await enqueueUniqueNotifications({
       data: outboxes,
     });
   } catch (error) {
@@ -2532,7 +2536,7 @@ const enqueueOnboardingTransferReviewCancelledNotifications = async (params: {
     }
 
     if (outboxes.length > 0) {
-      await prismaFlowly.notificationOutbox.createMany({
+      await enqueueUniqueNotifications({
         data: outboxes,
       });
     }
@@ -2788,7 +2792,7 @@ const enqueueOnboardingFailFinalParticipantNotification = async (params: {
     }
 
     if (outboxes.length > 0) {
-      await prismaFlowly.notificationOutbox.createMany({
+      await enqueueUniqueNotifications({
         data: outboxes,
       });
     }
@@ -2977,7 +2981,7 @@ const enqueueOnboardingParticipantDecisionNotification = async (params: {
     }
 
     if (outboxes.length > 0) {
-      await prismaFlowly.notificationOutbox.createMany({
+      await enqueueUniqueNotifications({
         data: outboxes,
       });
     }
@@ -6875,6 +6879,10 @@ export class OnboardingService {
       ? new Date(validated.startedAt)
       : new Date();
     const note = normalizeNote(validated.note);
+    const previouslyPassedNote = normalizeNote(validated.previouslyPassedNote);
+    const previouslyPassedUserIdSet = new Set(
+      validated.previouslyPassedUserIds ?? []
+    );
 
     const portalTemplate = await prismaFlowly.onboardingPortalTemplate.findFirst({
       where: {
@@ -7008,6 +7016,12 @@ export class OnboardingService {
         .map((assignment) => Number(assignment.participantReferenceId))
         .filter((value) => Number.isFinite(value) && value > 0)
     );
+    const completedAssignmentIds = new Set(
+      existingAssignments
+        .filter((assignment) => isCompletedAssignmentStatus(assignment.status))
+        .map((assignment) => Number(assignment.participantReferenceId))
+        .filter((value) => Number.isFinite(value) && value > 0)
+    );
 
     const activeFreeEmployees = eligibleEmployees.filter((employee) => {
       if (activeAssignmentIds.has(employee.UserId)) {
@@ -7015,6 +7029,18 @@ export class OnboardingService {
           userId: employee.UserId,
           employeeName: employee.Name ?? null,
           reason: "Onboarding masih aktif",
+        });
+        return false;
+      }
+
+      if (
+        previouslyPassedUserIdSet.has(employee.UserId) &&
+        completedAssignmentIds.has(employee.UserId)
+      ) {
+        skipped.push({
+          userId: employee.UserId,
+          employeeName: employee.Name ?? null,
+          reason: "Karyawan sudah tercatat lulus onboarding",
         });
         return false;
       }
@@ -7037,11 +7063,15 @@ export class OnboardingService {
 
       return true;
     });
+    const employeesToStart = startableEmployees.filter(
+      (employee) => !previouslyPassedUserIdSet.has(employee.UserId)
+    );
 
     if (startableEmployees.length === 0) {
       return {
         portalKey,
         started: [],
+        previouslyPassed: [],
         skipped,
       };
     }
@@ -7067,7 +7097,7 @@ export class OnboardingService {
           messageTemplate: template.messageTemplate,
         }));
       const sbuSubPicRecipients = await resolveSbuSubPicOnboardingRecipients(
-        startableEmployees.map((employee) => employee.UserId)
+        employeesToStart.map((employee) => employee.UserId)
       );
       const sbuSubPicRecipientsByEmployee =
         groupSbuSubPicRecipientsByEmployee(sbuSubPicRecipients);
@@ -7085,8 +7115,10 @@ export class OnboardingService {
         })),
       ];
       const createNotificationOutboxId =
-        firstLoginParticipantRuntimeTemplates.length > 0 ||
-        (startableEmployees.some(
+        (employeesToStart.some((employee) =>
+          isEmployeeFirstLogin(employee.isFirstLogin)
+        ) && firstLoginParticipantRuntimeTemplates.length > 0) ||
+        (employeesToStart.some(
           (employee) => !isEmployeeFirstLogin(employee.isFirstLogin)
         ) &&
           returningParticipantNotificationTemplates.length > 0) ||
@@ -7108,10 +7140,14 @@ export class OnboardingService {
     const notificationOutboxesToCreate: Prisma.NotificationOutboxCreateManyInput[] =
       [];
     const started: EmployeeOnboardingStartItem[] = [];
+    const previouslyPassed: EmployeeOnboardingStartItem[] = [];
 
     for (const employee of startableEmployees) {
       const onboardingAssignmentId = createAssignmentId();
-      const dueAt = durationDay ? addDays(startedAt, durationDay) : null;
+      const passedPreviously = previouslyPassedUserIdSet.has(employee.UserId);
+      const assignmentStartedAt = passedPreviously ? transactionTime : startedAt;
+      const dueAt =
+        !passedPreviously && durationDay ? addDays(startedAt, durationDay) : null;
       const isFirstLoginEmployee = isEmployeeFirstLogin(employee.isFirstLogin);
       const temporaryPassword = isFirstLoginEmployee
         ? buildEmployeeFirstLoginPassword(employee.CardNo, employee.UserId)
@@ -7131,16 +7167,18 @@ export class OnboardingService {
         programType: PROGRAM_TYPE_ONBOARDING,
         participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
         participantReferenceId: String(employee.UserId),
-        startedAt,
-        durationDay,
+        startedAt: assignmentStartedAt,
+        durationDay: passedPreviously ? null : durationDay,
         dueAt,
-        status: "IN_PROGRESS",
-        currentStageOrder: firstStageOrder,
+        status: passedPreviously
+          ? ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+          : ASSIGNMENT_STATUS_IN_PROGRESS,
+        currentStageOrder: passedPreviously ? null : firstStageOrder,
         assignedAt: transactionTime,
         assignedBy: actorId,
-        note,
-        completedAt: null,
-        completedBy: null,
+        note: passedPreviously ? previouslyPassedNote : note,
+        completedAt: passedPreviously ? transactionTime : null,
+        completedBy: passedPreviously ? actorId : null,
         failedAt: null,
         failedBy: null,
         parentOnboardingAssignmentId: null,
@@ -7153,6 +7191,20 @@ export class OnboardingService {
         deletedAt: null,
         deletedBy: null,
       });
+
+      if (passedPreviously) {
+        previouslyPassed.push({
+          userId: employee.UserId,
+          employeeName: employee.Name ?? null,
+          onboardingAssignmentId,
+          portalKey,
+          status: ASSIGNMENT_STATUS_PASSED_PREVIOUSLY,
+          startedAt: assignmentStartedAt,
+          dueAt: null,
+          currentStageOrder: null,
+        });
+        continue;
+      }
 
         const employeeForNotification: EmployeeLookup = {
           UserId: employee.UserId,
@@ -7378,14 +7430,16 @@ export class OnboardingService {
         data: assignmentsToCreate,
       });
 
-      await tx.onboardingStageProgress.createMany({
-        data: stageProgressesToCreate,
-      });
+      if (stageProgressesToCreate.length > 0) {
+        await tx.onboardingStageProgress.createMany({
+          data: stageProgressesToCreate,
+        });
+      }
     });
 
     if (notificationOutboxesToCreate.length > 0) {
       try {
-        await prismaFlowly.notificationOutbox.createMany({
+        await enqueueUniqueNotifications({
           data: notificationOutboxesToCreate,
         });
         } catch (error) {
@@ -7399,7 +7453,7 @@ export class OnboardingService {
       }
 
     await Promise.all(
-      started.map((item) =>
+      [...started, ...previouslyPassed].map((item) =>
         writeAuditLog({
           module: "HRD",
           entity: "ONBOARDING_ASSIGNMENT",
@@ -7418,15 +7472,27 @@ export class OnboardingService {
           },
           meta: {
             source: "HRD_PAGE",
-            note,
+            verificationType:
+              item.status === ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                ? ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                : "START_ONBOARDING",
+            note:
+              item.status === ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                ? previouslyPassedNote
+                : note,
           },
         })
       )
     );
 
+    for (const item of [...started, ...previouslyPassed]) {
+      invalidateProfileCache(String(item.userId));
+    }
+
     return {
       portalKey,
       started,
+      previouslyPassed,
       skipped,
     };
   }

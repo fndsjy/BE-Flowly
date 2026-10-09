@@ -1,3 +1,4 @@
+import { FailedNotificationService } from "../service/failed-notification-service.js";
 import type { NextFunction, Request, Response } from "express";
 import type {
   CreateNotificationTemplateRequest,
@@ -18,6 +19,23 @@ const parseBoolean = (value: unknown) => {
 };
 
 export class NotificationTemplateController {
+  static async failedMessages(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.cookies.access_token) throw new ResponseError(401, "Unauthorized");
+      const payload = verifyToken(req.cookies.access_token);
+      res.json({ response: await FailedNotificationService.list(payload.userId) });
+    } catch (error) { next(error); }
+  }
+  static async retryFailedMessage(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.cookies.access_token) throw new ResponseError(401, "Unauthorized");
+      const payload = verifyToken(req.cookies.access_token);
+      const id = String(req.body.notificationOutboxId ?? "");
+      if (!id || id.length > 20) throw new ResponseError(400, "ID pesan tidak valid");
+      res.json({ response: await FailedNotificationService.retry(payload.userId, id) });
+    } catch (error) { next(error); }
+  }
+
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.cookies.access_token;

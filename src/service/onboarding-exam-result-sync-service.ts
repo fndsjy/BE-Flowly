@@ -1,3 +1,4 @@
+import { enqueueUniqueNotifications } from "./notification-outbox-deduplication.js";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { invalidateProfileCache } from "../application/profile-cache.js";
@@ -198,7 +199,7 @@ const renderTemplate = (template: string, context: Record<string, unknown>) =>
       return String(value);
     });
 
-const trimMessage = (value: string) => value.trim().slice(0, 1000);
+const trimMessage = (value: string) => value.trim();
 
 const formatIndonesianDate = (value: Date) =>
   value.toLocaleDateString("id-ID", {
@@ -1210,7 +1211,7 @@ const enqueueOnboardingPassedNotifications = async (params: {
     }
 
     if (outboxes.length > 0) {
-      await prismaFlowly.notificationOutbox.createMany({
+      await enqueueUniqueNotifications({
         data: outboxes,
       });
     }

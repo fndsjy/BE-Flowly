@@ -1,3 +1,4 @@
+import { FailedNotificationService } from "../service/failed-notification-service.js";
 import { verifyToken } from "../utils/auth.js";
 import { ResponseError } from "../error/response-error.js";
 import { NotificationTemplateService } from "../service/notification-template-service.js";
@@ -12,6 +13,31 @@ const parseBoolean = (value) => {
     return undefined;
 };
 export class NotificationTemplateController {
+    static async failedMessages(req, res, next) {
+        try {
+            if (!req.cookies.access_token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(req.cookies.access_token);
+            res.json({ response: await FailedNotificationService.list(payload.userId) });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async retryFailedMessage(req, res, next) {
+        try {
+            if (!req.cookies.access_token)
+                throw new ResponseError(401, "Unauthorized");
+            const payload = verifyToken(req.cookies.access_token);
+            const id = String(req.body.notificationOutboxId ?? "");
+            if (!id || id.length > 20)
+                throw new ResponseError(400, "ID pesan tidak valid");
+            res.json({ response: await FailedNotificationService.retry(payload.userId, id) });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
     static async create(req, res, next) {
         try {
             const token = req.cookies.access_token;

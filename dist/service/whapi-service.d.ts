@@ -5,6 +5,7 @@ type WhapiResponse = {
         convert?: string;
         id?: string;
         messageId?: string;
+        state?: string;
     };
     [key: string]: unknown;
 };

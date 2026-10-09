@@ -144,6 +144,13 @@ const canEmployeeLoginByOnboardingStatus = async (employeeUserId) => {
     return !BLOCKED_EMPLOYEE_ONBOARDING_LOGIN_STATUSES.has(assignment.status.trim().toUpperCase());
 };
 const PASSED_ONBOARDING_STAGE_STATUSES = new Set(["PASSED", "COMPLETED"]);
+const PASSED_ONBOARDING_ASSIGNMENT_STATUSES = new Set([
+    "COMPLETED",
+    "PASSED",
+    "PASSED_TO_LMS",
+    "PASSED_OVERRIDE",
+    "PASSED_PREVIOUSLY",
+]);
 const employeeProfileSelect = {
     UserId: true,
     CardNo: true,
@@ -293,6 +300,7 @@ const hasPassedOnboarding = async (employeeUserId) => {
         },
         orderBy: [{ startedAt: "desc" }, { createdAt: "desc" }],
         select: {
+            status: true,
             stageProgresses: {
                 where: {
                     isActive: true,
@@ -304,7 +312,13 @@ const hasPassedOnboarding = async (employeeUserId) => {
             },
         },
     });
-    if (!assignment || assignment.stageProgresses.length === 0) {
+    if (!assignment) {
+        return false;
+    }
+    if (PASSED_ONBOARDING_ASSIGNMENT_STATUSES.has(normalizeUpper(assignment.status))) {
+        return true;
+    }
+    if (assignment.stageProgresses.length === 0) {
         return false;
     }
     return assignment.stageProgresses.every((stage) => PASSED_ONBOARDING_STAGE_STATUSES.has(normalizeUpper(stage.status)));

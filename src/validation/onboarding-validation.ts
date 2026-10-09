@@ -33,17 +33,46 @@ const optionalText = (max: number) =>
   );
 
 export class OnboardingValidation {
-  static readonly START_EMPLOYEE: ZodType = z.object({
-    portalKey: z.string().trim().min(1).max(50).optional(),
-    userIds: z
-      .array(z.number().int().positive())
-      .min(1, "Pilih minimal satu karyawan")
-      .max(200, "Maksimal 200 karyawan per request")
-      .transform((value) => Array.from(new Set(value))),
-    startedAt: optionalDate,
-    durationDay: z.number().int().positive().max(3650).optional().nullable(),
-    note: optionalText(1000).optional(),
-  });
+  static readonly START_EMPLOYEE: ZodType = z
+    .object({
+      portalKey: z.string().trim().min(1).max(50).optional(),
+      userIds: z
+        .array(z.number().int().positive())
+        .min(1, "Pilih minimal satu karyawan")
+        .max(200, "Maksimal 200 karyawan per request")
+        .transform((value) => Array.from(new Set(value))),
+      previouslyPassedUserIds: z
+        .array(z.number().int().positive())
+        .max(200, "Maksimal 200 karyawan per request")
+        .optional()
+        .transform((value) => Array.from(new Set(value ?? []))),
+      previouslyPassedNote: optionalText(1000).optional(),
+      startedAt: optionalDate,
+      durationDay: z.number().int().positive().max(3650).optional().nullable(),
+      note: optionalText(1000).optional(),
+    })
+    .superRefine((value, ctx) => {
+      const selectedUserIds = new Set(value.userIds);
+      const invalidUserId = value.previouslyPassedUserIds.find(
+        (userId) => !selectedUserIds.has(userId)
+      );
+
+      if (invalidUserId !== undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["previouslyPassedUserIds"],
+          message: "Karyawan yang sudah lulus sebelumnya harus termasuk dalam pilihan",
+        });
+      }
+
+      if (value.previouslyPassedUserIds.length > 0 && !value.previouslyPassedNote) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["previouslyPassedNote"],
+          message: "Keterangan wajib diisi untuk karyawan yang sudah lulus sebelumnya",
+        });
+      }
+    });
 
   static readonly LIST_EMPLOYEE_SUMMARY: ZodType = z.object({
     portalKey: z.string().trim().min(1).max(50).optional(),

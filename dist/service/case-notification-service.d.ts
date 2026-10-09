@@ -12,6 +12,7 @@ export declare class CaseNotificationService {
         sbuSubId: number;
         assigneeEmployeeId: number;
         requesterId: string;
+        notificationEventId?: string;
     }): Promise<void>;
     static enqueueAssigneeNotifications(params: {
         caseId: string;
@@ -19,6 +20,7 @@ export declare class CaseNotificationService {
         sbuSubId: number;
         assigneeEmployeeIds: number[];
         requesterId: string;
+        notificationEventId?: string;
     }): Promise<void>;
     static enqueueDepartmentAddedNotification(params: {
         caseId: string;
@@ -30,10 +32,12 @@ export declare class CaseNotificationService {
         caseId: string;
         caseDepartmentId: string;
         requesterId: string;
+        notificationEventId?: string;
     }): Promise<void>;
     static enqueueFeedbackCommentNotifications(params: {
         caseId: string;
         requesterId: string;
+        notificationEventId?: string;
         commenterEmployeeId?: number | null;
         commenterName?: string | null;
         commentText?: string | null;

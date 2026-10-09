@@ -1,8 +1,9 @@
+import { claimCaseDelivery } from "./notification-outbox-deduplication.js";
+import { sendAndRecordNotification } from "./notification-delivery.js";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { convertWhapiNumber, sendWhapiMessage } from "./whapi-service.js";
 const DEFAULT_BATCH_SIZE = 10;
-const DEFAULT_MAX_ATTEMPTS = 3;
 const OUTBOX_STATUS_PENDING = "PENDING";
 const OUTBOX_STATUS_PROCESSING = "PROCESSING";
 const OUTBOX_STATUS_SENT = "SENT";
@@ -11,10 +12,6 @@ const SYSTEM_ACTOR = "SYSTEM";
 const getBatchSize = () => {
     const value = Number(process.env.WHAPI_BATCH_SIZE ?? DEFAULT_BATCH_SIZE);
     return Number.isFinite(value) && value > 0 ? value : DEFAULT_BATCH_SIZE;
-};
-const getMaxAttempts = () => {
-    const value = Number(process.env.WHAPI_MAX_ATTEMPTS ?? DEFAULT_MAX_ATTEMPTS);
-    return Number.isFinite(value) && value > 0 ? value : DEFAULT_MAX_ATTEMPTS;
 };
 let isRunning = false;
 const buildErrorMessage = (value) => {
@@ -30,14 +27,12 @@ const buildErrorMessage = (value) => {
     }
 };
 const markOutboxFailed = async (id, attempts, lastError) => {
-    const maxAttempts = getMaxAttempts();
-    const status = attempts >= maxAttempts ? OUTBOX_STATUS_FAILED : OUTBOX_STATUS_PENDING;
     await prismaFlowly.caseNotificationOutbox.update({
         where: { caseNotificationId: id },
         data: {
             attempts,
-            lastError,
-            status,
+            lastError: (lastError.startsWith("DELIVERY_UNCERTAIN:") ? lastError : `DELIVERY_NOT_SENT: ${lastError}`).slice(0, 500),
+            status: OUTBOX_STATUS_FAILED,
             provider: "WHAPI",
             updatedAt: new Date(),
             updatedBy: SYSTEM_ACTOR,
@@ -67,16 +62,17 @@ const persistFinalMessage = async (id, message) => {
         },
     });
 };
-const claimPendingOutbox = async (id) => {
+const claimPendingOutbox = async (id, attempts) => {
     const result = await prismaFlowly.caseNotificationOutbox.updateMany({
         where: {
             caseNotificationId: id,
+            attempts: 0,
             status: OUTBOX_STATUS_PENDING,
             isDeleted: false,
         },
         data: {
             status: OUTBOX_STATUS_PROCESSING,
-            lastError: null,
+            lastError: "DELIVERY_PREPARING",
             updatedAt: new Date(),
             updatedBy: SYSTEM_ACTOR,
         },
@@ -469,16 +465,16 @@ const dispatchOutboxItem = async (item) => {
         await markOutboxFailed(item.caseNotificationId, attempts, buildErrorMessage(convertResult.error));
         return;
     }
-    const sendResult = await sendWhapiMessage(convertResult.number, message, {
+    // Persist the send attempt before contacting the provider. A crashed send
+    // remains PROCESSING until its delivery can be reconciled.
+    const sendClaim = await claimCaseDelivery(item.caseNotificationId, item.attempts, convertResult.number, message);
+    if (!sendClaim)
+        return;
+    await sendAndRecordNotification(() => sendWhapiMessage(convertResult.number, message, {
         source: "case_notification_outbox",
         referenceId: item.caseNotificationId,
         rawPhone: item.phoneNumber,
-    });
-    if (!sendResult.ok) {
-        await markOutboxFailed(item.caseNotificationId, attempts, buildErrorMessage(sendResult.data ?? sendResult.error));
-        return;
-    }
-    await markOutboxSent(item.caseNotificationId, attempts);
+    }), () => markOutboxSent(item.caseNotificationId, attempts));
 };
 export const processNotificationOutbox = async () => {
     if (isRunning)
@@ -486,13 +482,17 @@ export const processNotificationOutbox = async () => {
     isRunning = true;
     try {
         const batchSize = getBatchSize();
-        const maxAttempts = getMaxAttempts();
+        // Retire retry work left by older versions without contacting the provider.
+        await prismaFlowly.caseNotificationOutbox.updateMany({
+            where: { status: OUTBOX_STATUS_PENDING, attempts: { gt: 0 }, isDeleted: false },
+            data: { status: OUTBOX_STATUS_FAILED, updatedBy: SYSTEM_ACTOR },
+        });
         const items = await prismaFlowly.caseNotificationOutbox.findMany({
             where: {
                 isDeleted: false,
                 channel: "WHATSAPP",
                 status: OUTBOX_STATUS_PENDING,
-                attempts: { lt: maxAttempts },
+                attempts: 0,
             },
             orderBy: { createdAt: "asc" },
             take: batchSize,
@@ -509,7 +509,7 @@ export const processNotificationOutbox = async () => {
             },
         });
         for (const item of items) {
-            const claimed = await claimPendingOutbox(item.caseNotificationId);
+            const claimed = await claimPendingOutbox(item.caseNotificationId, item.attempts);
             if (!claimed) {
                 continue;
             }

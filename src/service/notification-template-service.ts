@@ -184,7 +184,7 @@ const formatDateTimeForNotification = (value: Date) =>
     minute: "2-digit",
   });
 
-const trimMessage = (value: string) => value.trim().slice(0, 1000);
+const trimMessage = (value: string) => value.trim();
 
 const buildErrorMessage = (value: unknown) => {
   if (!value) return "Unknown error";

@@ -281,6 +281,13 @@ const canEmployeeLoginByOnboardingStatus = async (employeeUserId: number) => {
 };
 
 const PASSED_ONBOARDING_STAGE_STATUSES = new Set(["PASSED", "COMPLETED"]);
+const PASSED_ONBOARDING_ASSIGNMENT_STATUSES = new Set([
+  "COMPLETED",
+  "PASSED",
+  "PASSED_TO_LMS",
+  "PASSED_OVERRIDE",
+  "PASSED_PREVIOUSLY",
+]);
 
 const employeeProfileSelect = {
   UserId: true,
@@ -482,6 +489,7 @@ const hasPassedOnboarding = async (employeeUserId?: number | null) => {
     },
     orderBy: [{ startedAt: "desc" }, { createdAt: "desc" }],
     select: {
+      status: true,
       stageProgresses: {
         where: {
           isActive: true,
@@ -494,7 +502,15 @@ const hasPassedOnboarding = async (employeeUserId?: number | null) => {
     },
   });
 
-  if (!assignment || assignment.stageProgresses.length === 0) {
+  if (!assignment) {
+    return false;
+  }
+
+  if (PASSED_ONBOARDING_ASSIGNMENT_STATUSES.has(normalizeUpper(assignment.status))) {
+    return true;
+  }
+
+  if (assignment.stageProgresses.length === 0) {
     return false;
   }
 

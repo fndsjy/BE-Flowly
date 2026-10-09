@@ -41,7 +41,28 @@ export declare class OnboardingExamRuntimeService {
         finalized: number;
         failed: number;
     }>;
+    static getStartApprovalStatus(requesterUserId: string, stageId: string): Promise<{
+        approvalRequired: boolean;
+        deliveryStatus: "NONE";
+        approvalId?: never;
+        expiresAt?: never;
+    } | {
+        approvalRequired: boolean;
+        approvalId: string;
+        expiresAt: string;
+        deliveryStatus: string;
+    }>;
     static requestStartApproval(requesterUserId: string, request: RequestRuntimeExamStartApprovalRequest): Promise<{
+        approvalRequired: boolean;
+        deliveryStatus: "NONE";
+        approvalId?: never;
+        expiresAt?: never;
+    } | {
+        approvalRequired: boolean;
+        approvalId: string;
+        expiresAt: string;
+        deliveryStatus: string;
+    } | {
         approvalRequired: boolean;
         hasActiveSession: boolean;
         stageProgressId: string;
@@ -57,7 +78,26 @@ export declare class OnboardingExamRuntimeService {
         stageProgressId: string;
         message: string;
         hasActiveSession?: never;
+    } | {
+        deliveryStatus: "PENDING";
+        message: string;
+        approvalRequired: boolean;
+        hasActiveSession: boolean;
+        stageProgressId: string;
+        approvalId?: never;
+        expiresAt?: never;
+        expiresInSeconds?: never;
+    } | {
+        deliveryStatus: "PENDING";
+        message: string;
+        approvalRequired: boolean;
+        approvalId: string;
+        expiresAt: string;
+        expiresInSeconds: number;
+        stageProgressId: string;
+        hasActiveSession?: never;
     }>;
+    private static createStartApproval;
     static start(requesterUserId: string, request: StartRuntimeExamRequest): Promise<{
         onboardingStageProgressId: string;
         session: {

@@ -173,6 +173,7 @@ export class CaseFeedbackCommentService {
         });
         try {
             await CaseNotificationService.enqueueFeedbackCommentNotifications({
+                notificationEventId: commentId,
                 caseId: request.caseId,
                 requesterId,
                 commenterEmployeeId,

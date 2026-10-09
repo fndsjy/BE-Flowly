@@ -729,6 +729,7 @@ export class CaseDepartmentService {
     if (addedAssigneeIds.length > 0) {
       try {
         await CaseNotificationService.enqueueAssigneeNotifications({
+          notificationEventId: `${updated.caseDepartmentId}:${now.toISOString()}`,
           caseId: updated.caseId,
           caseDepartmentId: updated.caseDepartmentId,
           sbuSubId: updated.sbuSubId,
@@ -746,6 +747,7 @@ export class CaseDepartmentService {
     if (shouldNotifyDecision) {
       try {
         await CaseNotificationService.enqueueRequesterDecisionNotification({
+          notificationEventId: `${updated.caseDepartmentId}:${now.toISOString()}`,
           caseId: updated.caseId,
           caseDepartmentId: updated.caseDepartmentId,
           requesterId,

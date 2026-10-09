@@ -9,6 +9,7 @@ export declare class OnboardingController {
     static decideOnboarding(req: Request, res: Response, next: NextFunction): Promise<void>;
     static cancelEmployeeOnboarding(req: Request, res: Response, next: NextFunction): Promise<void>;
     static startExam(req: Request, res: Response, next: NextFunction): Promise<void>;
+    static examStartApprovalStatus(req: Request, res: Response, next: NextFunction): Promise<void>;
     static requestExamStartApproval(req: Request, res: Response, next: NextFunction): Promise<void>;
     static saveExamAnswer(req: Request, res: Response, next: NextFunction): Promise<void>;
     static recordExamWarning(req: Request, res: Response, next: NextFunction): Promise<void>;

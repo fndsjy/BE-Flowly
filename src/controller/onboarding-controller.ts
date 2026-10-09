@@ -184,6 +184,16 @@ export class OnboardingController {
     }
   }
 
+  static async examStartApprovalStatus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.access_token;
+      if (!token) throw new ResponseError(401, "Unauthorized");
+      const payload = verifyToken(token);
+      const response = await OnboardingExamRuntimeService.getStartApprovalStatus(payload.userId, String(req.query.stageId ?? ""));
+      res.status(200).json({ response });
+    } catch (error) { next(error); }
+  }
+
   static async requestExamStartApproval(
     req: Request,
     res: Response,

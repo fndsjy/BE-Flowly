@@ -1,3 +1,5 @@
+import { deliveryState } from "./notification-delivery-status.js";
+import { enqueueUniqueNotifications } from "./notification-outbox-deduplication.js";
 import crypto from "node:crypto";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import type { Prisma } from "../generated/flowly/client.js";
@@ -154,6 +156,7 @@ const LOCKED_ASSIGNMENT_STATUSES = new Set([
   "PASSED",
   "PASSED_TO_LMS",
   "PASSED_OVERRIDE",
+  "PASSED_PREVIOUSLY",
   "COMPLETED",
 ]);
 const TRUE_FALSE_OPTIONS = [
@@ -271,7 +274,7 @@ const renderNotificationTemplate = (
     }
   );
 
-const trimNotificationMessage = (value: string) => value.trim().slice(0, 1000);
+const trimNotificationMessage = (value: string) => value.trim();
 
 const parseFocusWarningCount = (note: string | null | undefined) => {
   const matches = Array.from(
@@ -1550,7 +1553,7 @@ const enqueueExamMonitorNotification = async (params: {
       return;
     }
 
-    await prismaFlowly.notificationOutbox.createMany({
+    await enqueueUniqueNotifications({
       data: notifiableRecipients.flatMap((recipient) => {
         const recipientName =
           normalizeOptionalText(recipient.Name) ?? `Monitor ${recipient.UserId}`;
@@ -1704,9 +1707,8 @@ const enqueueExamStartApprovalNotification = async (params: {
           },
         ];
   const createNotificationOutboxId = await generateNotificationOutboxId();
-  const outboxIds: string[] = [];
 
-  await prismaFlowly.notificationOutbox.createMany({
+  const queued = await enqueueUniqueNotifications({
     data: notifiableRecipients.flatMap((recipient) => {
       const recipientName =
         normalizeOptionalText(recipient.Name) ?? `Monitor ${recipient.UserId}`;
@@ -1717,7 +1719,6 @@ const enqueueExamStartApprovalNotification = async (params: {
 
       return notificationTemplates.map((template) => {
         const notificationOutboxId = createNotificationOutboxId();
-        outboxIds.push(notificationOutboxId);
 
         return {
           notificationOutboxId,
@@ -1765,7 +1766,7 @@ const enqueueExamStartApprovalNotification = async (params: {
     }),
   });
 
-  return outboxIds[0] ?? null;
+  return queued.notificationOutboxIds[0] ?? null;
 };
 
 const finalizeExpiredRuntimeExamSession = async (params: {
@@ -2648,7 +2649,52 @@ export class OnboardingExamRuntimeService {
     };
   }
 
-  static async requestStartApproval(
+  static async getStartApprovalStatus(requesterUserId: string, stageId: string) {
+    const stage = await getAuthorizedStageProgress(requesterUserId, stageId);
+    const rows = await prismaFlowly.$queryRaw<Array<{ approvalId: string; expiresAt: Date }>>`
+      SELECT TOP 1 [onboardingExamStartApprovalId] AS approvalId, [expiresAt]
+      FROM [dbo].[onboarding_exam_start_approval]
+      WHERE [onboardingStageProgressId] = ${stageId}
+        AND [participantReferenceId] = ${stage.assignment.participantReferenceId}
+        AND [status] = 'PENDING' AND [isActive] = 1 AND [isDeleted] = 0
+      ORDER BY [createdAt] DESC
+    `;
+    const approval = rows[0];
+    if (!approval) return { approvalRequired: true, deliveryStatus: "NONE" as const };
+    const notifications = await prismaFlowly.notificationOutbox.findMany({ where: {
+      contextReferenceType: EXAM_START_APPROVAL_CONTEXT_TYPE,
+      contextReferenceId: approval.approvalId, isDeleted: false,
+    }, select: { status: true, attempts: true, lastError: true } });
+    const deliveryStatus = deliveryState(notifications);
+    // Uncertain sends remain blocked even after the password expires.
+    const expired = approval.expiresAt.getTime() <= Date.now();
+    return { approvalRequired: true, approvalId: approval.approvalId,
+      expiresAt: approval.expiresAt.toISOString(),
+      deliveryStatus: expired && notifications.some(row => row.status === "PROCESSING" && row.attempts > 0)
+        ? "UNCERTAIN" : expired && deliveryStatus !== "UNCERTAIN" ? "EXPIRED" : deliveryStatus };
+  }
+
+  static async requestStartApproval(requesterUserId: string, request: RequestRuntimeExamStartApprovalRequest) {
+    const stageId = normalizeOptionalText(request.onboardingStageProgressId);
+    if (!stageId) throw new ResponseError(400, "Tahap onboarding wajib diisi");
+    return prismaFlowly.$transaction(async (tx) => {
+      const resource = "exam-password-stage:" + stageId;
+      const lock = await tx.$queryRaw<Array<{ result: number }>>`
+        DECLARE @result int;
+        EXEC @result = sys.sp_getapplock @Resource = ${resource}, @LockMode = 'Exclusive',
+          @LockOwner = 'Transaction', @LockTimeout = 10000;
+        SELECT @result AS result;
+      `;
+      if (!lock[0] || lock[0].result < 0) throw new ResponseError(409, "Permintaan sedang diproses. Silakan periksa status.");
+      const existing = await this.getStartApprovalStatus(requesterUserId, stageId);
+      if (!["NONE", "FAILED", "EXPIRED"].includes(existing.deliveryStatus)) return existing;
+      const created = await this.createStartApproval(requesterUserId, request);
+      if (!created.approvalRequired) return created;
+      return { ...created, deliveryStatus: "PENDING" as const, message: "Permintaan password sedang diproses." };
+    }, { maxWait: 15000, timeout: 60000 });
+  }
+
+  private static async createStartApproval(
     requesterUserId: string,
     request: RequestRuntimeExamStartApprovalRequest
   ) {

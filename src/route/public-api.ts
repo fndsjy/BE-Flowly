@@ -110,6 +110,7 @@ v1.post(
   "/onboarding/exam/request-start",
   OnboardingController.requestExamStartApproval
 );
+v1.get("/onboarding/exam/request-start/status", OnboardingController.examStartApprovalStatus);
 v1.post("/onboarding/exam/start", OnboardingController.startExam);
 v1.post("/onboarding/exam/answer", OnboardingController.saveExamAnswer);
 v1.post("/onboarding/exam/warning", OnboardingController.recordExamWarning);
@@ -252,6 +253,8 @@ v1.delete(
 );
 v1.get("/case-notification-template", CaseNotificationTemplateController.list);
 
+v1.get("/notification-delivery/failed", NotificationTemplateController.failedMessages);
+v1.post("/notification-delivery/retry", NotificationTemplateController.retryFailedMessage);
 v1.post("/notification-template", NotificationTemplateController.create);
 v1.put("/notification-template", NotificationTemplateController.update);
 v1.get(

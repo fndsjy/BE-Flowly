@@ -1,4 +1,6 @@
 import { logger } from "../application/logging.js";
+import { hostname } from "node:os";
+import { randomUUID } from "node:crypto";
 const rawBaseUrl = (process.env.WHAPI_BASE_URL ?? "").trim();
 const WHAPI_BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 const WHAPI_API_KEY = (process.env.WHAPI_API_KEY ?? "").trim();
@@ -69,7 +71,11 @@ export const sendWhapiMessage = async (phone, message, options) => {
             error: { message: "Invalid phone number" },
         };
     }
+    const sendAttemptId = randomUUID();
+    const startedAt = Date.now();
+    const worker = { host: hostname(), processId: process.pid, sendAttemptId };
     logger.info("Sending WHAPI message", {
+        ...worker,
         source: options?.source,
         referenceId: options?.referenceId,
         rawPhone: options?.rawPhone ? maskPhone(options.rawPhone) : undefined,
@@ -88,10 +94,20 @@ export const sendWhapiMessage = async (phone, message, options) => {
                 clientMessageId: referenceId,
             }
             : {}),
-    }, referenceId ? { idempotencyKey: referenceId } : undefined);
+    }, referenceId ? { idempotencyKey: referenceId } : undefined).catch(error => {
+        logger.warn("WHAPI sendMessage transport error", {
+            ...worker, source: options?.source, referenceId, phone: maskPhone(normalizedPhone),
+            durationMs: Date.now() - startedAt,
+            error: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+    });
     const code = typeof data?.code === "number" ? data.code : undefined;
     const isOk = ok && (code === undefined || code < 400);
     logger.info("WHAPI sendMessage response", {
+        ...worker,
+        durationMs: Date.now() - startedAt,
+        providerState: typeof data?.results?.state === "string" ? data.results.state : undefined,
         source: options?.source,
         referenceId: options?.referenceId,
         phone: maskPhone(normalizedPhone),

@@ -1,3 +1,4 @@
+import { enqueueUniqueNotifications } from "./notification-outbox-deduplication.js";
 import bcrypt from "bcrypt";
 import { prismaEmployee, prismaFlowly } from "../application/database.js";
 import { logger } from "../application/logging.js";
@@ -39,6 +40,7 @@ const DECISION_FREEZE_TRANSFER_REVIEW = "FREEZE_TRANSFER_REVIEW";
 const DECISION_CANCEL_TRANSFER_REVIEW = "CANCEL_TRANSFER_REVIEW";
 const ASSIGNMENT_STATUS_IN_PROGRESS = "IN_PROGRESS";
 const ASSIGNMENT_STATUS_TRANSFER_REVIEW = "TRANSFER_REVIEW";
+const ASSIGNMENT_STATUS_PASSED_PREVIOUSLY = "PASSED_PREVIOUSLY";
 const EXAM_FINISHED_FLAG = "Y";
 const DEFAULT_EXTENSION_DURATION_DAYS = 90;
 const DEFAULT_CERTIFICATE_ASSET_BASE_URL = "https://lms.domas.co.id/assets/img/sertifikat/peserta";
@@ -47,6 +49,7 @@ const FINAL_ASSIGNMENT_STATUSES = new Set([
     "PASSED",
     "PASSED_TO_LMS",
     "PASSED_OVERRIDE",
+    ASSIGNMENT_STATUS_PASSED_PREVIOUSLY,
     "FAILED",
     "FAIL_FINAL",
     "CANCELLED",
@@ -157,7 +160,8 @@ const isCompletedAssignmentStatus = (status) => {
         ? normalized === "COMPLETED" ||
             normalized === "PASSED" ||
             normalized === "PASSED_TO_LMS" ||
-            normalized === "PASSED_OVERRIDE"
+            normalized === "PASSED_OVERRIDE" ||
+            normalized === ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
         : false;
 };
 const ensureAdminMonitoringAccess = async (requesterUserId) => {
@@ -628,7 +632,7 @@ const renderTemplate = (template, context) => template.replace(/\{badgeNumber\}/
     }
     return String(value);
 });
-const trimMessage = (value) => value.trim().slice(0, 1000);
+const trimMessage = (value) => value.trim();
 const parseWorkspaceSelectionMetadata = (note) => {
     const normalizedNote = normalizeNote(note);
     if (!normalizedNote) {
@@ -1383,7 +1387,7 @@ const enqueueOnboardingOverdueNotification = async (params) => {
         if (outboxes.length === 0) {
             return;
         }
-        await prismaFlowly.notificationOutbox.createMany({
+        await enqueueUniqueNotifications({
             data: outboxes,
         });
     }
@@ -1558,7 +1562,7 @@ const enqueueOnboardingPicDecisionNotification = async (params) => {
         if (outboxes.length === 0) {
             return;
         }
-        await prismaFlowly.notificationOutbox.createMany({
+        await enqueueUniqueNotifications({
             data: outboxes,
         });
     }
@@ -1781,7 +1785,7 @@ const enqueueOnboardingTransferReviewCancelledNotifications = async (params) => 
             }
         }
         if (outboxes.length > 0) {
-            await prismaFlowly.notificationOutbox.createMany({
+            await enqueueUniqueNotifications({
                 data: outboxes,
             });
         }
@@ -1979,7 +1983,7 @@ const enqueueOnboardingFailFinalParticipantNotification = async (params) => {
             });
         }
         if (outboxes.length > 0) {
-            await prismaFlowly.notificationOutbox.createMany({
+            await enqueueUniqueNotifications({
                 data: outboxes,
             });
         }
@@ -2131,7 +2135,7 @@ const enqueueOnboardingParticipantDecisionNotification = async (params) => {
             });
         }
         if (outboxes.length > 0) {
-            await prismaFlowly.notificationOutbox.createMany({
+            await enqueueUniqueNotifications({
                 data: outboxes,
             });
         }
@@ -5123,6 +5127,8 @@ export class OnboardingService {
             ? new Date(validated.startedAt)
             : new Date();
         const note = normalizeNote(validated.note);
+        const previouslyPassedNote = normalizeNote(validated.previouslyPassedNote);
+        const previouslyPassedUserIdSet = new Set(validated.previouslyPassedUserIds ?? []);
         const portalTemplate = await prismaFlowly.onboardingPortalTemplate.findFirst({
             where: {
                 portalKey,
@@ -5230,12 +5236,25 @@ export class OnboardingService {
             .filter((assignment) => !isFinalAssignmentStatus(assignment.status))
             .map((assignment) => Number(assignment.participantReferenceId))
             .filter((value) => Number.isFinite(value) && value > 0));
+        const completedAssignmentIds = new Set(existingAssignments
+            .filter((assignment) => isCompletedAssignmentStatus(assignment.status))
+            .map((assignment) => Number(assignment.participantReferenceId))
+            .filter((value) => Number.isFinite(value) && value > 0));
         const activeFreeEmployees = eligibleEmployees.filter((employee) => {
             if (activeAssignmentIds.has(employee.UserId)) {
                 skipped.push({
                     userId: employee.UserId,
                     employeeName: employee.Name ?? null,
                     reason: "Onboarding masih aktif",
+                });
+                return false;
+            }
+            if (previouslyPassedUserIdSet.has(employee.UserId) &&
+                completedAssignmentIds.has(employee.UserId)) {
+                skipped.push({
+                    userId: employee.UserId,
+                    employeeName: employee.Name ?? null,
+                    reason: "Karyawan sudah tercatat lulus onboarding",
                 });
                 return false;
             }
@@ -5253,10 +5272,12 @@ export class OnboardingService {
             }
             return true;
         });
+        const employeesToStart = startableEmployees.filter((employee) => !previouslyPassedUserIdSet.has(employee.UserId));
         if (startableEmployees.length === 0) {
             return {
                 portalKey,
                 started: [],
+                previouslyPassed: [],
                 skipped,
             };
         }
@@ -5277,7 +5298,7 @@ export class OnboardingService {
             channel: template.channel,
             messageTemplate: template.messageTemplate,
         }));
-        const sbuSubPicRecipients = await resolveSbuSubPicOnboardingRecipients(startableEmployees.map((employee) => employee.UserId));
+        const sbuSubPicRecipients = await resolveSbuSubPicOnboardingRecipients(employeesToStart.map((employee) => employee.UserId));
         const sbuSubPicRecipientsByEmployee = groupSbuSubPicRecipientsByEmployee(sbuSubPicRecipients);
         const sbuSubPicRuntimeTemplates = await resolveRuntimeNotificationTemplates({
             portalKey,
@@ -5291,8 +5312,8 @@ export class OnboardingService {
                 messageTemplate: template.messageTemplate,
             })),
         ];
-        const createNotificationOutboxId = firstLoginParticipantRuntimeTemplates.length > 0 ||
-            (startableEmployees.some((employee) => !isEmployeeFirstLogin(employee.isFirstLogin)) &&
+        const createNotificationOutboxId = (employeesToStart.some((employee) => isEmployeeFirstLogin(employee.isFirstLogin)) && firstLoginParticipantRuntimeTemplates.length > 0) ||
+            (employeesToStart.some((employee) => !isEmployeeFirstLogin(employee.isFirstLogin)) &&
                 returningParticipantNotificationTemplates.length > 0) ||
             (sbuSubPicRecipients.length > 0 &&
                 sbuSubPicNotificationTemplates.length > 0)
@@ -5306,9 +5327,12 @@ export class OnboardingService {
         const stageProgressesToCreate = [];
         const notificationOutboxesToCreate = [];
         const started = [];
+        const previouslyPassed = [];
         for (const employee of startableEmployees) {
             const onboardingAssignmentId = createAssignmentId();
-            const dueAt = durationDay ? addDays(startedAt, durationDay) : null;
+            const passedPreviously = previouslyPassedUserIdSet.has(employee.UserId);
+            const assignmentStartedAt = passedPreviously ? transactionTime : startedAt;
+            const dueAt = !passedPreviously && durationDay ? addDays(startedAt, durationDay) : null;
             const isFirstLoginEmployee = isEmployeeFirstLogin(employee.isFirstLogin);
             const temporaryPassword = isFirstLoginEmployee
                 ? buildEmployeeFirstLoginPassword(employee.CardNo, employee.UserId)
@@ -5326,16 +5350,18 @@ export class OnboardingService {
                 programType: PROGRAM_TYPE_ONBOARDING,
                 participantReferenceType: EMPLOYEE_PARTICIPANT_REFERENCE_TYPE,
                 participantReferenceId: String(employee.UserId),
-                startedAt,
-                durationDay,
+                startedAt: assignmentStartedAt,
+                durationDay: passedPreviously ? null : durationDay,
                 dueAt,
-                status: "IN_PROGRESS",
-                currentStageOrder: firstStageOrder,
+                status: passedPreviously
+                    ? ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                    : ASSIGNMENT_STATUS_IN_PROGRESS,
+                currentStageOrder: passedPreviously ? null : firstStageOrder,
                 assignedAt: transactionTime,
                 assignedBy: actorId,
-                note,
-                completedAt: null,
-                completedBy: null,
+                note: passedPreviously ? previouslyPassedNote : note,
+                completedAt: passedPreviously ? transactionTime : null,
+                completedBy: passedPreviously ? actorId : null,
                 failedAt: null,
                 failedBy: null,
                 parentOnboardingAssignmentId: null,
@@ -5348,6 +5374,19 @@ export class OnboardingService {
                 deletedAt: null,
                 deletedBy: null,
             });
+            if (passedPreviously) {
+                previouslyPassed.push({
+                    userId: employee.UserId,
+                    employeeName: employee.Name ?? null,
+                    onboardingAssignmentId,
+                    portalKey,
+                    status: ASSIGNMENT_STATUS_PASSED_PREVIOUSLY,
+                    startedAt: assignmentStartedAt,
+                    dueAt: null,
+                    currentStageOrder: null,
+                });
+                continue;
+            }
             const employeeForNotification = {
                 UserId: employee.UserId,
                 CardNo: employee.CardNo ?? null,
@@ -5541,13 +5580,15 @@ export class OnboardingService {
             await tx.onboardingAssignment.createMany({
                 data: assignmentsToCreate,
             });
-            await tx.onboardingStageProgress.createMany({
-                data: stageProgressesToCreate,
-            });
+            if (stageProgressesToCreate.length > 0) {
+                await tx.onboardingStageProgress.createMany({
+                    data: stageProgressesToCreate,
+                });
+            }
         });
         if (notificationOutboxesToCreate.length > 0) {
             try {
-                await prismaFlowly.notificationOutbox.createMany({
+                await enqueueUniqueNotifications({
                     data: notificationOutboxesToCreate,
                 });
             }
@@ -5560,7 +5601,7 @@ export class OnboardingService {
                 });
             }
         }
-        await Promise.all(started.map((item) => writeAuditLog({
+        await Promise.all([...started, ...previouslyPassed].map((item) => writeAuditLog({
             module: "HRD",
             entity: "ONBOARDING_ASSIGNMENT",
             entityId: item.onboardingAssignmentId,
@@ -5578,12 +5619,21 @@ export class OnboardingService {
             },
             meta: {
                 source: "HRD_PAGE",
-                note,
+                verificationType: item.status === ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                    ? ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                    : "START_ONBOARDING",
+                note: item.status === ASSIGNMENT_STATUS_PASSED_PREVIOUSLY
+                    ? previouslyPassedNote
+                    : note,
             },
         })));
+        for (const item of [...started, ...previouslyPassed]) {
+            invalidateProfileCache(String(item.userId));
+        }
         return {
             portalKey,
             started,
+            previouslyPassed,
             skipped,
         };
     }

@@ -1,8 +1,9 @@
+import { claimGenericDelivery } from "./notification-outbox-deduplication.js";
+import { sendAndRecordNotification } from "./notification-delivery.js";
 import { prismaFlowly } from "../application/database.js";
 import { logger } from "../application/logging.js";
 import { convertWhapiNumber, sendWhapiMessage } from "./whapi-service.js";
 const DEFAULT_BATCH_SIZE = 10;
-const DEFAULT_MAX_ATTEMPTS = 3;
 const CHANNEL_WHATSAPP = "WHATSAPP";
 const CHANNEL_EMAIL = "EMAIL";
 const OUTBOX_STATUS_PENDING = "PENDING";
@@ -15,12 +16,6 @@ const getBatchSize = () => {
         process.env.WHAPI_BATCH_SIZE ??
         DEFAULT_BATCH_SIZE);
     return Number.isFinite(value) && value > 0 ? value : DEFAULT_BATCH_SIZE;
-};
-const getMaxAttempts = () => {
-    const value = Number(process.env.NOTIFICATION_MAX_ATTEMPTS ??
-        process.env.WHAPI_MAX_ATTEMPTS ??
-        DEFAULT_MAX_ATTEMPTS);
-    return Number.isFinite(value) && value > 0 ? value : DEFAULT_MAX_ATTEMPTS;
 };
 let isRunning = false;
 const buildErrorMessage = (value) => {
@@ -47,16 +42,12 @@ const parseMeta = (value) => {
     }
 };
 const markOutboxFailed = async (id, attempts, lastError, options) => {
-    const maxAttempts = getMaxAttempts();
-    const status = options?.forceFailed || attempts >= maxAttempts
-        ? OUTBOX_STATUS_FAILED
-        : OUTBOX_STATUS_PENDING;
     await prismaFlowly.notificationOutbox.update({
         where: { notificationOutboxId: id },
         data: {
             attempts,
-            lastError,
-            status,
+            lastError: (lastError.startsWith("DELIVERY_UNCERTAIN:") ? lastError : `DELIVERY_NOT_SENT: ${lastError}`).slice(0, 500),
+            status: OUTBOX_STATUS_FAILED,
             provider: options?.provider ?? null,
             sentAt: null,
             updatedAt: new Date(),
@@ -78,16 +69,17 @@ const markOutboxSent = async (id, attempts, provider) => {
         },
     });
 };
-const claimPendingOutbox = async (id) => {
+const claimPendingOutbox = async (id, attempts) => {
     const result = await prismaFlowly.notificationOutbox.updateMany({
         where: {
             notificationOutboxId: id,
+            attempts: 0,
             status: OUTBOX_STATUS_PENDING,
             isDeleted: false,
         },
         data: {
             status: OUTBOX_STATUS_PROCESSING,
-            lastError: null,
+            lastError: "DELIVERY_PREPARING",
             updatedAt: new Date(),
             updatedBy: SYSTEM_ACTOR,
         },
@@ -120,16 +112,16 @@ export const dispatchGenericNotificationOutboxItem = async (item) => {
             await markOutboxFailed(item.notificationOutboxId, attempts, buildErrorMessage(convertResult.error), { provider: "WHAPI" });
             return;
         }
-        const sendResult = await sendWhapiMessage(convertResult.number, message, {
+        // Persist the send attempt before contacting the provider. A crashed send
+        // remains PROCESSING until its delivery can be reconciled.
+        const sendClaim = await claimGenericDelivery(item.notificationOutboxId, item.attempts, convertResult.number);
+        if (!sendClaim)
+            return;
+        await sendAndRecordNotification(() => sendWhapiMessage(convertResult.number, message, {
             source: "notification_outbox",
             referenceId: item.notificationOutboxId,
             rawPhone: item.phoneNumber,
-        });
-        if (!sendResult.ok) {
-            await markOutboxFailed(item.notificationOutboxId, attempts, buildErrorMessage(sendResult.data ?? sendResult.error), { provider: "WHAPI" });
-            return;
-        }
-        await markOutboxSent(item.notificationOutboxId, attempts, "WHAPI");
+        }), () => markOutboxSent(item.notificationOutboxId, attempts, "WHAPI"));
         return;
     }
     if (channel === CHANNEL_EMAIL) {
@@ -140,13 +132,11 @@ export const dispatchGenericNotificationOutboxItem = async (item) => {
             : "Missing email address and email dispatch is not implemented yet";
         await markOutboxFailed(item.notificationOutboxId, attempts, reason, {
             provider: CHANNEL_EMAIL,
-            forceFailed: true,
         });
         return;
     }
     await markOutboxFailed(item.notificationOutboxId, attempts, `Unsupported notification channel: ${channel || "UNKNOWN"}`, {
         provider: channel || null,
-        forceFailed: true,
     });
 };
 export const processGenericNotificationOutbox = async () => {
@@ -155,12 +145,16 @@ export const processGenericNotificationOutbox = async () => {
     isRunning = true;
     try {
         const batchSize = getBatchSize();
-        const maxAttempts = getMaxAttempts();
+        // Retire retry work left by older versions without contacting the provider.
+        await prismaFlowly.notificationOutbox.updateMany({
+            where: { status: OUTBOX_STATUS_PENDING, attempts: { gt: 0 }, isDeleted: false },
+            data: { status: OUTBOX_STATUS_FAILED, updatedBy: SYSTEM_ACTOR },
+        });
         const items = await prismaFlowly.notificationOutbox.findMany({
             where: {
                 isDeleted: false,
                 status: OUTBOX_STATUS_PENDING,
-                attempts: { lt: maxAttempts },
+                attempts: 0,
             },
             orderBy: { createdAt: "asc" },
             take: batchSize,
@@ -178,7 +172,7 @@ export const processGenericNotificationOutbox = async () => {
             },
         });
         for (const item of items) {
-            const claimed = await claimPendingOutbox(item.notificationOutboxId);
+            const claimed = await claimPendingOutbox(item.notificationOutboxId, item.attempts);
             if (!claimed) {
                 continue;
             }
@@ -190,7 +184,7 @@ export const processGenericNotificationOutbox = async () => {
                     notificationOutboxId: item.notificationOutboxId,
                     error: buildErrorMessage(error),
                 });
-                await markOutboxFailed(item.notificationOutboxId, item.attempts + 1, buildErrorMessage(error));
+                await markOutboxFailed(item.notificationOutboxId, item.attempts + 1, buildErrorMessage(error), { provider: "WHAPI" });
             }
         }
     }

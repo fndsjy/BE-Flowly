@@ -1,6 +1,8 @@
 export interface StartEmployeeOnboardingRequest {
     portalKey?: string;
     userIds: number[];
+    previouslyPassedUserIds?: number[];
+    previouslyPassedNote?: string | null;
     startedAt?: Date | string | null;
     durationDay?: number | null;
     note?: string | null;
@@ -23,6 +25,7 @@ export interface EmployeeOnboardingSkipItem {
 export interface StartEmployeeOnboardingResponse {
     portalKey: string;
     started: EmployeeOnboardingStartItem[];
+    previouslyPassed: EmployeeOnboardingStartItem[];
     skipped: EmployeeOnboardingSkipItem[];
 }
 export interface CancelEmployeeOnboardingRequest {

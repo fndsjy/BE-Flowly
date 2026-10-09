@@ -94,6 +94,7 @@ v1.post("/onboarding/start-employees", OnboardingController.startEmployees);
 v1.post("/onboarding/decision", OnboardingController.decideOnboarding);
 v1.post("/onboarding/cancel-assignment", OnboardingController.cancelEmployeeOnboarding);
 v1.post("/onboarding/exam/request-start", OnboardingController.requestExamStartApproval);
+v1.get("/onboarding/exam/request-start/status", OnboardingController.examStartApprovalStatus);
 v1.post("/onboarding/exam/start", OnboardingController.startExam);
 v1.post("/onboarding/exam/answer", OnboardingController.saveExamAnswer);
 v1.post("/onboarding/exam/warning", OnboardingController.recordExamWarning);
@@ -183,6 +184,8 @@ v1.post("/case-notification-template", CaseNotificationTemplateController.create
 v1.put("/case-notification-template", CaseNotificationTemplateController.update);
 v1.delete("/case-notification-template", CaseNotificationTemplateController.softDelete);
 v1.get("/case-notification-template", CaseNotificationTemplateController.list);
+v1.get("/notification-delivery/failed", NotificationTemplateController.failedMessages);
+v1.post("/notification-delivery/retry", NotificationTemplateController.retryFailedMessage);
 v1.post("/notification-template", NotificationTemplateController.create);
 v1.put("/notification-template", NotificationTemplateController.update);
 v1.get("/notification-template/manual-recipients", NotificationTemplateController.listManualRecipients);

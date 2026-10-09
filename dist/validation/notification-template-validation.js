@@ -39,7 +39,7 @@ export class NotificationTemplateValidation {
         channel: channelSchema,
         eventKey: eventKeySchema,
         recipientRole: recipientRoleSchema,
-        messageTemplate: z.string().min(1).max(1000),
+        messageTemplate: z.string().min(1),
         portalKeys: portalKeysSchema.optional(),
         isActive: z.boolean().optional(),
     });
@@ -49,7 +49,7 @@ export class NotificationTemplateValidation {
         channel: channelSchema.optional(),
         eventKey: eventKeySchema.optional(),
         recipientRole: recipientRoleSchema.optional(),
-        messageTemplate: z.string().min(1).max(1000).optional(),
+        messageTemplate: z.string().min(1).optional(),
         portalKeys: portalKeysSchema.optional(),
         isActive: z.boolean().optional(),
     });
@@ -73,7 +73,7 @@ export class NotificationTemplateValidation {
             .min(1, "Pilih minimal satu karyawan")
             .max(200, "Maksimal 200 karyawan per request")
             .transform((value) => Array.from(new Set(value))),
-        messageTemplate: z.string().trim().min(1).max(1000).optional(),
+        messageTemplate: z.string().trim().min(1).optional(),
     });
 }
 //# sourceMappingURL=notification-template-validation.js.map
